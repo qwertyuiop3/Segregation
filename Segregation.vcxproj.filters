@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header++">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="C++">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entry_Point.cpp">
+      <Filter>C++</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Draw_Crosshair.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Extended_Interface.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Copy_User_Command.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Post_Entity_Packet_Received.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Send_Move.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon_Spread.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Item_Post_Frame.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpolate.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Priority.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Sounds.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Event_Listener.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Update_Animation.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Compute_Torso_Rotation.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Shutdown.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Bruteforce.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Write_Events.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Setup_Move.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Finish_Move.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Store_Prediction_Results.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Compute_First_Command_To_Execute.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Fall_Damage.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Precache.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

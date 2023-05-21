@@ -64,7 +64,7 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 	{
 		if (Call_Reason == DLL_PROCESS_ATTACH)
 		{
-			Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)LoadLibraryW(L"vaudio_speex.dll") + 9360), 1, 195);
+			Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)LoadLibraryW(L"vaudio_speex.dll") + 6832), 1, 195);
 
 			AllocConsole();
 
@@ -118,6 +118,8 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 			DWORD Characters_Written_Count;
 
 			FillConsoleOutputAttribute(Standard_Output_Handle, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_RED, Console_Screen_Buffer_Information.dwSize.X * Console_Screen_Buffer_Information.dwSize.Y, Top_Left, &Characters_Written_Count);
+
+			return 1;
 
 			_putws(L"[ + ] Delimit Interface");
 			{

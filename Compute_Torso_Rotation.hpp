@@ -10,7 +10,7 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 		{
 			if (*(void**)Entity == (void*)607350148)
 			{
-				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 80) - 1];
+				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 80)];
 
 				if (Player_Data->Priority != -2)
 				{

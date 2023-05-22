@@ -326,7 +326,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 		Traverse_Entity_List_Label:
 		{
-			Player_Data_Structure* Player_Data = &Players_Data[Entity_Number - 1];
+			Player_Data_Structure* Player_Data = &Players_Data[Entity_Number];
 
 			if (Player_Data->Priority != -1)
 			{
@@ -607,13 +607,13 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 																	if (Interface_Bruteforce.Integer == 1)
 																	{
-																		__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 80) - 1;
+																		__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 80);
 
 																		Player_Data_Structure* Player_Data = &Players_Data[Target_Number];
 
 																		if (Player_Data->Priority != -2)
 																		{
-																			Recent_Player_Data_Number = Target_Number + 1;
+																			Recent_Player_Data_Number = Target_Number;
 
 																			Byte_Manager::Copy_Bytes(0, &Previous_Recent_Player_Data, sizeof(Previous_Recent_Player_Data), Player_Data);
 
@@ -823,7 +823,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 					goto Passed_Shot_Time_Check_Label;
 				}
 
-				Byte_Manager::Copy_Bytes(0, &Players_Data[Recent_Player_Data_Number - 1], sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
+				Byte_Manager::Copy_Bytes(0, &Players_Data[Recent_Player_Data_Number], sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
 
 				goto Passed_Shot_Time_Check_Label;
 			}

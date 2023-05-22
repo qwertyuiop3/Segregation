@@ -10,6 +10,10 @@
 
 #include "Post_Entity_Packet_Received.hpp"
 
+void* Engine_Module_Location;
+
+void* Client_Module_Location;
+
 #include "Extended_Interface.hpp"
 
 #pragma comment(lib, "WinMM.Lib")
@@ -119,27 +123,33 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 			FillConsoleOutputAttribute(Standard_Output_Handle, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_RED, Console_Screen_Buffer_Information.dwSize.X * Console_Screen_Buffer_Information.dwSize.Y, Top_Left, &Characters_Written_Count);
 
-			return 1;
+			Engine_Module_Location = GetModuleHandleW(L"engine.dll");
 
 			_putws(L"[ + ] Delimit Interface");
 			{
-				unsigned __int8 Cheat_Flag_Bytes[4] =
+				unsigned __int8 Cheat_Flag_Bytes[5] =
 				{
 					254,
 
-					65,
+					64,
 
-					44,
+					48,
+		
+					144,
 
-					195
+					235
 				};
 
-				Byte_Manager::Copy_Bytes(1, (void*)538391351, sizeof(Cheat_Flag_Bytes), Cheat_Flag_Bytes);
+				Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Engine_Module_Location + 1359156), sizeof(Cheat_Flag_Bytes), Cheat_Flag_Bytes);
 
-				*(__int8*)542242676 = 1;
+				*(__int8*)((unsigned __int32)Engine_Module_Location + 6384240) = 1;
 
-				Byte_Manager::Set_Bytes(1, (void*)537349277, 1, 235);
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Engine_Module_Location + 1565004), 1, 235);
 			}
+
+			Client_Module_Location = GetModuleHandleW(L"client.dll");
+
+			return 1;
 
 			_putws(L"[ + ] Extend Interface");
 			{

@@ -251,13 +251,13 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Redirection_Manager::Redirect_Function(1, (void*)605951488, (void*)Redirected_Draw_Crosshair);
 			}*/
 
-			/*_putws(L"[ + ] Materials");
+			_putws(L"[ + ] Materials");
 			{
-				Redirection_Manager::Redirect_Function(Original_Precache_Caller_Location, 5, (void*)((unsigned __int32)GetModuleHandleW(L"MaterialSystem.dll") + 21984), 1, (void*)Redirected_Precache);
+				Redirection_Manager::Redirect_Function(Original_Precache_Caller_Location, 5, (void*)((unsigned __int32)GetModuleHandleW(L"MaterialSystem.dll") + 239552), 1, (void*)Redirected_Precache);
 
-				Byte_Manager::Set_Bytes(1, (void*)605462216, 2, 144);
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 1743076), 1, 0);
 
-				Byte_Manager::Set_Bytes(1, (void*)605515289, 1, 235);
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 1842904), 1, 235);
 
 				unsigned __int8 Smoke_Bytes[3] =
 				{
@@ -268,10 +268,10 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 					0
 				};
 
-				Byte_Manager::Copy_Bytes(1, (void*)605610608, sizeof(Smoke_Bytes), Smoke_Bytes);
+				Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 2311408), sizeof(Smoke_Bytes), Smoke_Bytes);
 
-				Byte_Manager::Set_Bytes(1, (void*)605809168, 1, 195);
-			}*/
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 1913184), 1, 195);
+			}
 		}
 	}
 

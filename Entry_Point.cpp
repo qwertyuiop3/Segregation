@@ -12,8 +12,6 @@
 
 void* Engine_Module_Location;
 
-void* Client_Module_Location;
-
 #include "Extended_Interface.hpp"
 
 #pragma comment(lib, "WinMM.Lib")
@@ -147,16 +145,14 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Engine_Module_Location + 1565004), 1, 235);
 			}
 
-			Client_Module_Location = GetModuleHandleW(L"client.dll");
-
-			return 1;
-
 			_putws(L"[ + ] Extend Interface");
 			{
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Engine_Module_Location + 2391305), 2, 144);
+
 				Implement_Extended_Interface();
 			}
 
-			_putws(L"[ + ] Events");
+			/*_putws(L"[ + ] Events");
 			{
 				Redirection_Manager::Redirect_Function(Original_Post_Entity_Packet_Received_Caller_Location, 0, (void*)605203088, 1, (void*)Redirected_Post_Entity_Packet_Received);
 
@@ -181,14 +177,14 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Redirection_Manager::Redirect_Function(Original_Write_Events_Caller_Location, 2, (void*)537582208, 1, (void*)Redirected_Write_Events);
 
 				Redirection_Manager::Redirect_Function(Original_Shutdown_Caller_Location, 0, (void*)537926128, 1, (void*)Redirected_Shutdown);
-			}
+			}*/
 
-			_putws(L"[ + ] Interpolation");
+			/*_putws(L"[ + ] Interpolation");
 			{
 				Redirection_Manager::Redirect_Function(Original_Interpolate_Caller_Location, 0, (void*)604201536, 1, (void*)Redirected_Interpolate);
-			}
+			}*/
 
-			_putws(L"[ + ] Animations");
+			/*_putws(L"[ + ] Animations");
 			{
 				Redirection_Manager::Redirect_Function(Original_Update_Animation_Caller_Location, 4, (void*)605800256, 1, (void*)Redirected_Update_Animation);
 
@@ -208,9 +204,9 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				};
 
 				Byte_Manager::Copy_Bytes(1, (void*)604206416, sizeof(Maintain_Sequence_Transitions_Bytes), Maintain_Sequence_Transitions_Bytes);
-			}
+			}*/
 
-			_putws(L"[ + ] Prediction");
+			/*_putws(L"[ + ] Prediction");
 			{
 				Byte_Manager::Set_Bytes(1, (void*)537158868, 5, 144);
 
@@ -231,31 +227,31 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Byte_Manager::Set_Bytes(1, (void*)605954536, 9, 144);
 
 				Redirection_Manager::Redirect_Function(Original_Weapon_Spread_Caller_Location, 1, (void*)605949248, 1, (void*)Redirected_Weapon_Spread);
-			}
+			}*/
 
-			_putws(L"[ + ] Input");
+			/*_putws(L"[ + ] Input");
 			{
 				Byte_Manager::Set_Bytes(1, (void*)604993824, 3, 144);
 
 				Redirection_Manager::Redirect_Function(Original_Copy_User_Command_Caller_Location, 0, (void*)604850464, 1, (void*)Redirected_Copy_User_Command);
-			}
+			}*/
 
-			_putws(L"[ + ] Network");
+			/*_putws(L"[ + ] Network");
 			{
 				Redirection_Manager::Redirect_Function(1, (void*)537142224, (void*)Redirected_Send_Move);
-			}
+			}*/
 
-			_putws(L"[ + ] View Effects");
+			/*_putws(L"[ + ] View Effects");
 			{
 				Byte_Manager::Set_Bytes(1, (void*)604082898, 34, 144);
-			}
+			}*/
 
-			_putws(L"[ + ] Crosshair");
+			/*_putws(L"[ + ] Crosshair");
 			{
 				Redirection_Manager::Redirect_Function(1, (void*)605951488, (void*)Redirected_Draw_Crosshair);
-			}
+			}*/
 
-			_putws(L"[ + ] Materials");
+			/*_putws(L"[ + ] Materials");
 			{
 				Redirection_Manager::Redirect_Function(Original_Precache_Caller_Location, 5, (void*)((unsigned __int32)GetModuleHandleW(L"MaterialSystem.dll") + 21984), 1, (void*)Redirected_Precache);
 
@@ -275,7 +271,7 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Byte_Manager::Copy_Bytes(1, (void*)605610608, sizeof(Smoke_Bytes), Smoke_Bytes);
 
 				Byte_Manager::Set_Bytes(1, (void*)605809168, 1, 195);
-			}
+			}*/
 		}
 	}
 

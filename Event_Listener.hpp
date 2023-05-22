@@ -32,7 +32,7 @@ void __stdcall Event_Processor(void* Event)
 					{
 						if (Name[7] == 'd')
 						{
-							Player_Data_Structure* Player_Data = &Players_Data[Killer_Number - 1];
+							Player_Data_Structure* Player_Data = &Players_Data[Killer_Number];
 
 							Player_Data->Memory_Tolerance = 0;
 
@@ -50,7 +50,7 @@ void __stdcall Event_Processor(void* Event)
 							{
 								__int8 Revert = 1;
 
-								Player_Data_Structure* Player_Data = &Players_Data[Victim_Number - 1];
+								Player_Data_Structure* Player_Data = &Players_Data[Victim_Number];
 
 								if (Name[7] == 'h')
 								{

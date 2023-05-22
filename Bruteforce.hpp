@@ -75,6 +75,8 @@ void Bruteforce_Set_Angles(Interface_Structure* Console_Variable)
 
 	Bruteforce_Angles = (float*)realloc(Bruteforce_Angles, Bruteforce_Angles_Count * sizeof(Bruteforce_Angles[0]));
 
+	Console_Variable = (Interface_Structure*)((unsigned __int32)Console_Variable - 24);
+
 	Bruteforce_Angles[Bruteforce_Angles_Count - 1] = atof(Console_Variable->String);
 
 	char* String = strchr(Console_Variable->String, ',');

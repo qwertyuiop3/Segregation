@@ -236,10 +236,10 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Redirection_Manager::Redirect_Function(Original_Copy_User_Command_Caller_Location, 0, (void*)604850464, 1, (void*)Redirected_Copy_User_Command);
 			}*/
 
-			/*_putws(L"[ + ] Network");
+			_putws(L"[ + ] Network");
 			{
-				Redirection_Manager::Redirect_Function(1, (void*)537142224, (void*)Redirected_Send_Move);
-			}*/
+				Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Engine_Module_Location + 772928), (void*)Redirected_Send_Move);
+			}
 
 			_putws(L"[ + ] View Effects");
 			{

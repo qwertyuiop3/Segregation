@@ -4,23 +4,17 @@ void Redirected_Send_Move()
 	{
 		__int8 Message[76];
 
-		void Construct(__int8* Data)
+		void Construct(__int8* Data, unsigned __int32 Size)
 		{
 			Byte_Manager::Set_Bytes(0, Message, sizeof(Message), 0);
 
 			*(void**)Message = (void*)539887964;
 
-			*(__int32*)((unsigned __int32)Message + 36) = -1;
-
-			*(__int8*)((unsigned __int32)Message + 45) = 1;
-
 			*(void**)((unsigned __int32)Message + 52) = Data;
 
-			*(__int32*)((unsigned __int32)Message + 56) = 4000;
+			*(__int32*)((unsigned __int32)Message + 56) = Size;
 
-			*(__int32*)((unsigned __int32)Message + 60) = 32000;
-
-			*(__int8*)((unsigned __int32)Message + 69) = 1;
+			*(__int32*)((unsigned __int32)Message + 60) = Size * 8;
 		}
 	};
 
@@ -28,7 +22,7 @@ void Redirected_Send_Move()
 
 	__int8 Data[4000];
 
-	Message.Construct(Data);
+	Message.Construct(Data, sizeof(Data));
 
 	__int32 Choked_Commands = *(__int32*)540627872;
 
@@ -68,7 +62,7 @@ void Redirected_Send_Move()
 
 	*(__int32*)((unsigned __int32)Network_Channel + 28) -= Extra_Commands_Queue;
 
-	using Send_Network_Message_Type = void(__thiscall*)(void* Network_Channel, void* Message, void* Unknown_Parameter);
+	using Send_Network_Message_Type = void(__thiscall*)(void* Network_Channel, void* Message, __int8 Reliable);
 
-	Send_Network_Message_Type(537917776)(Network_Channel, &Message, nullptr);
+	Send_Network_Message_Type(537917776)(Network_Channel, &Message, 1);
 }

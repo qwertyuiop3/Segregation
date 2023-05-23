@@ -8,7 +8,7 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 
 		if (Entity != *(void**)((unsigned __int32)Client_Module_Location + 5015784))
 		{
-			if (*(void**)Entity == (void*)607350148)
+			if (*(void**)Entity == (void*)((unsigned __int32)Client_Module_Location + 3952404))
 			{
 				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 84)];
 
@@ -25,7 +25,7 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 						*(float*)((unsigned __int32)Animation_State + 64) = *(float*)((unsigned __int32)Animation_State + 24) - Player_Data->Memorized_Y;
 					}
 
-					Set_Torso_Rotation_Type(604022992)(Animation_State, __builtin_remainderf(*(float*)((unsigned __int32)Animation_State + 24) - *(float*)((unsigned __int32)Animation_State + 64), 360));
+					Set_Torso_Rotation_Type((unsigned __int32)Client_Module_Location + 384064)(Animation_State, __builtin_remainderf(*(float*)((unsigned __int32)Animation_State + 24) - *(float*)((unsigned __int32)Animation_State + 64), 360));
 
 					return;
 				}
@@ -33,7 +33,7 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 		}
 	}
 
-	if (__builtin_return_address(0) == (void*)604026641)
+	if (__builtin_return_address(0) == (void*)((unsigned __int32)Client_Module_Location + 384578))
 	{
 		(decltype(&Redirected_Compute_Torso_Rotation)(Original_Compute_Torso_Rotation_Caller_Location))(Animation_State);
 	}

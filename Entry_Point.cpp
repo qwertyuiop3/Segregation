@@ -192,9 +192,9 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 601904), 2, 144);
 
-				/*Redirection_Manager::Redirect_Function(Original_Compute_Torso_Rotation_Caller_Location, 1, (void*)604022496, 1, (void*)Redirected_Compute_Torso_Rotation);
+				Redirection_Manager::Redirect_Function(Original_Compute_Torso_Rotation_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 376048), 1, (void*)Redirected_Compute_Torso_Rotation);
 
-				unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] =
+				/*unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] =
 				{
 					194,
 

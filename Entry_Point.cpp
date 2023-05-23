@@ -241,10 +241,10 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Redirection_Manager::Redirect_Function(1, (void*)537142224, (void*)Redirected_Send_Move);
 			}*/
 
-			/*_putws(L"[ + ] View Effects");
+			_putws(L"[ + ] View Effects");
 			{
-				Byte_Manager::Set_Bytes(1, (void*)604082898, 34, 144);
-			}*/
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 430022), 52, 144);
+			}
 
 			_putws(L"[ + ] Crosshair");
 			{

@@ -8,9 +8,9 @@
 
 #include "Redirection_Manager/Redirection_Manager.hpp"
 
-#include "Post_Entity_Packet_Received.hpp"
-
 #include "Extended_Interface.hpp"
+
+#include "Post_Entity_Packet_Received.hpp"
 
 #pragma comment(lib, "WinMM.Lib")
 

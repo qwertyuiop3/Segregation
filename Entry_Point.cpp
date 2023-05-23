@@ -8,11 +8,11 @@
 
 #include "Redirection_Manager/Redirection_Manager.hpp"
 
-#include "Post_Entity_Packet_Received.hpp"
-
 void* Engine_Module_Location;
 
 #include "Extended_Interface.hpp"
+
+#include "Post_Entity_Packet_Received.hpp"
 
 #pragma comment(lib, "WinMM.Lib")
 
@@ -246,10 +246,10 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Byte_Manager::Set_Bytes(1, (void*)604082898, 34, 144);
 			}*/
 
-			/*_putws(L"[ + ] Crosshair");
+			_putws(L"[ + ] Crosshair");
 			{
-				Redirection_Manager::Redirect_Function(1, (void*)605951488, (void*)Redirected_Draw_Crosshair);
-			}*/
+				Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Client_Module_Location + 2156016), (void*)Redirected_Draw_Crosshair);
+			}
 
 			_putws(L"[ + ] Materials");
 			{

@@ -62,7 +62,7 @@ void Redirected_Send_Move()
 
 	*(__int32*)((unsigned __int32)Network_Channel + 28) -= Extra_Commands_Queue;
 
-	using Send_Network_Message_Type = void(__thiscall*)(void* Network_Channel, void* Message, __int8 Reliable);
+	using Send_Network_Message_Type = void(__thiscall*)(void* Network_Channel, void* Message, void* Unknown_Parameter);
 
-	Send_Network_Message_Type(537917776)(Network_Channel, &Message, 1);
+	Send_Network_Message_Type(537917776)(Network_Channel, &Message, nullptr);
 }

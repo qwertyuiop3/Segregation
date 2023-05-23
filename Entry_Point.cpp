@@ -152,13 +152,13 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Implement_Extended_Interface();
 			}
 
-			/*_putws(L"[ + ] Events");
+			_putws(L"[ + ] Events");
 			{
-				Redirection_Manager::Redirect_Function(Original_Post_Entity_Packet_Received_Caller_Location, 0, (void*)605203088, 1, (void*)Redirected_Post_Entity_Packet_Received);
+				//Redirection_Manager::Redirect_Function(Original_Post_Entity_Packet_Received_Caller_Location, 0, (void*)605203088, 1, (void*)Redirected_Post_Entity_Packet_Received);
 
-				Byte_Manager::Set_Bytes(1, (void*)537149578, 1, 235);
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Engine_Module_Location + 785516), 1, 235);
 
-				void* Event_Listener = (void*)malloc(sizeof(void*));
+				/*void* Event_Listener = (void*)malloc(sizeof(void*));
 
 				void* Event_Listener_Table = malloc(sizeof(void*) * 2);
 
@@ -172,12 +172,12 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 				Add_Listener_Type(537586416)((void*)540812808, Event_Listener, (char*)"player_death", nullptr);
 
-				Add_Listener_Type(537586416)((void*)540812808, Event_Listener, (char*)"bullet_impact", nullptr);
+				Add_Listener_Type(537586416)((void*)540812808, Event_Listener, (char*)"bullet_impact", nullptr);*/
 
-				Redirection_Manager::Redirect_Function(Original_Write_Events_Caller_Location, 2, (void*)537582208, 1, (void*)Redirected_Write_Events);
+				Redirection_Manager::Redirect_Function(Original_Write_Events_Caller_Location, 0, (void*)((unsigned __int32)Engine_Module_Location + 1672192), 1, (void*)Redirected_Write_Events);
 
-				Redirection_Manager::Redirect_Function(Original_Shutdown_Caller_Location, 0, (void*)537926128, 1, (void*)Redirected_Shutdown);
-			}*/
+				Redirection_Manager::Redirect_Function(Original_Shutdown_Caller_Location, 0, (void*)((unsigned __int32)Engine_Module_Location + 1886736), 1, (void*)Redirected_Shutdown);
+			}
 
 			_putws(L"[ + ] Interpolation");
 			{

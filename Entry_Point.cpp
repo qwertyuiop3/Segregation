@@ -154,7 +154,7 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 			_putws(L"[ + ] Events");
 			{
-				//Redirection_Manager::Redirect_Function(Original_Post_Entity_Packet_Received_Caller_Location, 0, (void*)605203088, 1, (void*)Redirected_Post_Entity_Packet_Received);
+				Redirection_Manager::Redirect_Function(Original_Post_Entity_Packet_Received_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 1550256), 1, (void*)Redirected_Post_Entity_Packet_Received);
 
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Engine_Module_Location + 785516), 1, 235);
 

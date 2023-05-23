@@ -4,7 +4,7 @@ void __thiscall Redirected_Store_Prediction_Results(void* Unknown_Parameter_1, v
 {
 	void* Local_Player = *(void**)((unsigned __int32)Client_Module_Location + 5015784);
 
-	__int32 Tick_Number = *(__int32*)((unsigned __int32)Local_Player + 3592);
+	__int32 Tick_Number = *(__int32*)((unsigned __int32)Local_Player + 4332);
 
 	Prediction_Data_Structure* Predicted_Data = &Prediction_Data[Tick_Number % 90];
 

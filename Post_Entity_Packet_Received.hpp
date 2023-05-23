@@ -25,7 +25,7 @@ struct Prediction_Copy_Structure
 	{
 		using Construct_Type = void(__thiscall*)(void* Prediction_Copy, __int32 Unknown_Parameter_1, void* Destination, void* Unknown_Parameter_2, void* Source, __int8 Unknown_Parameter_3, __int8 Unknown_Parameter_4, void* Unknown_Parameter_5, void* Unknown_Parameter_6, __int8 Unknown_Parameter_7, void* Handler);
 
-		Construct_Type(605209952)(this, 2, Destination, nullptr, Source, 1, 1, nullptr, nullptr, 1, Handler);
+		Construct_Type((unsigned __int32)Client_Module_Location + 1555696)(this, 2, Destination, nullptr, Source, 1, 1, nullptr, nullptr, 1, Handler);
 	}
 };
 
@@ -37,7 +37,7 @@ void Predicton_Copy_Compare(char* Class, void* Unknown_Parameter_1, void* Unknow
 	{
 		Prediction_Copy_Structure::Field_Structure* Field = Predicton_Copy.Field;
 
-		Byte_Manager::Copy_Bytes(0, (void*)(*(unsigned __int32*)((unsigned __int32)Client_Module_Location + 5015784) + 2884 * (Class[1] == 'P') + Field->Offset[0]), Field->Bytes, (void*)((unsigned __int32)Predicton_Copy.Source + Field->Offset[1]));
+		Byte_Manager::Copy_Bytes(0, (void*)(*(unsigned __int32*)((unsigned __int32)Client_Module_Location + 5015784) + 3548 * (Class[1] == 'P') + Field->Offset[0]), Field->Bytes, (void*)((unsigned __int32)Predicton_Copy.Source + Field->Offset[1]));
 	}
 }
 
@@ -49,11 +49,11 @@ void Redirected_Post_Entity_Packet_Received()
 
 	void* Local_Player = *(void**)((unsigned __int32)Client_Module_Location + 5015784);
 
-	__int32 Tick_Base = *(__int32*)((unsigned __int32)Local_Player + 3592);
+	__int32 Tick_Number = *(__int32*)((unsigned __int32)Local_Player + 4332);
 
 	Traverse_Stored_Results_Label:
 	{
-		void* Stored_Result = *(void**)((unsigned __int32)Local_Player + 700 + Stored_Result_Number * 4);
+		void* Stored_Result = *(void**)((unsigned __int32)Local_Player + 856 + Stored_Result_Number * 4);
 
 		if (Stored_Result == nullptr)
 		{
@@ -69,9 +69,9 @@ void Redirected_Post_Entity_Packet_Received()
 		}
 		else
 		{
-			if (*(__int32*)((unsigned __int32)Stored_Result + 761) == Tick_Base)
+			if (*(__int32*)((unsigned __int32)Stored_Result + 832) == Tick_Number)
 			{
-				Tick_Base = -(700 + Stored_Result_Number * 4);
+				Tick_Number = -(856 + Stored_Result_Number * 4);
 			}
 			else
 			{
@@ -80,13 +80,13 @@ void Redirected_Post_Entity_Packet_Received()
 		}
 	}
 
-	if (__builtin_signbitf(Tick_Base) == 1)
+	if (__builtin_signbitf(Tick_Number) == 1)
 	{
-		Predicton_Copy.Construct(Local_Player, *(void**)((unsigned __int32)Local_Player + -Tick_Base), (void*)Predicton_Copy_Compare);
+		Predicton_Copy.Construct(Local_Player, *(void**)((unsigned __int32)Local_Player + -Tick_Number), (void*)Predicton_Copy_Compare);
 
 		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, void* Map);
 
-		Transfer_Data_Type(605218912)(&Predicton_Copy, nullptr, -1, (void*)607768164);
+		Transfer_Data_Type((void*)((unsigned __int32)Client_Module_Location + 1561808))(&Predicton_Copy, nullptr, -1, (void*)((unsigned __int32)Client_Module_Location + 4819316));
 	}
 
 	(decltype(&Redirected_Post_Entity_Packet_Received)(Original_Post_Entity_Packet_Received_Caller_Location))();

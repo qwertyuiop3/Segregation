@@ -158,7 +158,7 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Engine_Module_Location + 785516), 1, 235);
 
-				/*void* Event_Listener = (void*)malloc(sizeof(void*));
+				void* Event_Listener = (void*)malloc(sizeof(void*));
 
 				void* Event_Listener_Table = malloc(sizeof(void*) * 2);
 
@@ -168,11 +168,11 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 				using Add_Listener_Type = __int8(__thiscall*)(void* Event_Manager, void* Listener, char* Event, void* Unknown_Parameter);
 
-				Add_Listener_Type(537586416)((void*)540812808, Event_Listener, (char*)"player_hurt", nullptr);
+				Add_Listener_Type((unsigned __int32)Engine_Module_Location + 1665088)((void*)((unsigned __int32)Engine_Module_Location + 6512952), Event_Listener, (char*)"player_hurt", nullptr);
 
-				Add_Listener_Type(537586416)((void*)540812808, Event_Listener, (char*)"player_death", nullptr);
+				Add_Listener_Type((unsigned __int32)Engine_Module_Location + 1665088)((void*)((unsigned __int32)Engine_Module_Location + 6512952), Event_Listener, (char*)"player_death", nullptr);
 
-				Add_Listener_Type(537586416)((void*)540812808, Event_Listener, (char*)"bullet_impact", nullptr);*/
+				Add_Listener_Type((unsigned __int32)Engine_Module_Location + 1665088)((void*)((unsigned __int32)Engine_Module_Location + 6512952), Event_Listener, (char*)"bullet_impact", nullptr);
 
 				Redirection_Manager::Redirect_Function(Original_Write_Events_Caller_Location, 0, (void*)((unsigned __int32)Engine_Module_Location + 1672192), 1, (void*)Redirected_Write_Events);
 

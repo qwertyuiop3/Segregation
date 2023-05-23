@@ -32,7 +32,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 		Update_Type(605209712)(Prediction, 1, 1, *(void**)540627876, *(__int32*)540627868 + *(__int32*)540627872);
 	}
 
-	void* Local_Player = *(void**)607867332;
+	void* Local_Player = *(void**)((unsigned __int32)Client_Module_Location + 5015784);
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 135) == 0)
 	{
@@ -305,7 +305,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 		float Corrected_Total_Latency = std::clamp(Total_Latency + Interpolation_Time, 0.f, 1.f);
 
-		Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)607726732;
+		Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)((unsigned __int32)Client_Module_Location + 4825720);
 
 		struct alignas(16) Target_Structure
 		{
@@ -607,7 +607,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 																	if (Interface_Bruteforce.Integer == 1)
 																	{
-																		__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 80);
+																		__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 84);
 
 																		Player_Data_Structure* Player_Data = &Players_Data[Target_Number];
 

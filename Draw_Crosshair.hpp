@@ -49,25 +49,23 @@ void Redirected_Draw_Crosshair()
 			(__int32)(Uber_Alles * __builtin_cosf((Rotation_Angle + 180) * 3.1415927f / 180)),
 		};
 
-		using Draw_Line_Type = void(__thiscall*)(void* Surface, __int32 From_X, __int32 From_Y, __int32 To_X, __int32 To_Y);
+		using Draw_Line_Type = void(__thiscall**)(void* Surface, __int32 From_X, __int32 From_Y, __int32 To_X, __int32 To_Y);
 
-		void* Draw_Line_Location = *(void**)(*(unsigned __int32*)Surface + 60);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[0], Y - Points[1]);
 
-		Draw_Line_Type((unsigned __int32)Draw_Line_Location)(Surface, X, Y, X + Points[0], Y - Points[1]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[0], Y - Points[1], X + Points[2], Y - Points[3]);
 
-		Draw_Line_Type((unsigned __int32)Draw_Line_Location)(Surface, X + Points[0], Y - Points[1], X + Points[2], Y - Points[3]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[4], Y - Points[5]);
 
-		Draw_Line_Type((unsigned __int32)Draw_Line_Location)(Surface, X, Y, X + Points[4], Y - Points[5]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[4], Y - Points[5], X + Points[6], Y - Points[7]);
 
-		Draw_Line_Type((unsigned __int32)Draw_Line_Location)(Surface, X + Points[4], Y - Points[5], X + Points[6], Y - Points[7]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[8], Y - Points[9]);
 
-		Draw_Line_Type((unsigned __int32)Draw_Line_Location)(Surface, X, Y, X + Points[8], Y - Points[9]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[8], Y - Points[9], X + Points[10], Y - Points[11]);
 
-		Draw_Line_Type((unsigned __int32)Draw_Line_Location)(Surface, X + Points[8], Y - Points[9], X + Points[10], Y - Points[11]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[12], Y - Points[13]);
 
-		Draw_Line_Type((unsigned __int32)Draw_Line_Location)(Surface, X, Y, X + Points[12], Y - Points[13]);
-
-		Draw_Line_Type((unsigned __int32)Draw_Line_Location)(Surface, X + Points[12], Y - Points[13], X + Points[14], Y - Points[15]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[12], Y - Points[13], X + Points[14], Y - Points[15]);
 	};
 
 	using Get_Screen_Size_Type = __int32(__cdecl*)();

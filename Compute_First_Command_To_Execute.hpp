@@ -23,7 +23,7 @@ __int32 __thiscall Redirected_Compute_First_Command_To_Execute(void* Unknown_Par
 {
 	__int32 Return_Value = (decltype(&Redirected_Compute_First_Command_To_Execute)(Original_Compute_First_Command_To_Execute_Caller_Location))(Unknown_Parameter_1, Unknown_Parameter_2, Unknown_Parameter_3, Unknown_Parameter_4);
 
-	void* Local_Player = *(void**)607867332;
+	void* Local_Player = *(void**)((unsigned __int32)Client_Module_Location + 5015784);
 
 	__int32 Tick_Number = *(__int32*)((unsigned __int32)Local_Player + 3592);
 

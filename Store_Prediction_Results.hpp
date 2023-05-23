@@ -2,7 +2,7 @@ void* Original_Store_Prediction_Results_Caller_Location;
 
 void __thiscall Redirected_Store_Prediction_Results(void* Unknown_Parameter_1, void* Unknown_Parameter_2)
 {
-	void* Local_Player = *(void**)607867332;
+	void* Local_Player = *(void**)((unsigned __int32)Client_Module_Location + 5015784);
 
 	__int32 Tick_Number = *(__int32*)((unsigned __int32)Local_Player + 3592);
 

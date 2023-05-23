@@ -37,7 +37,7 @@ void Predicton_Copy_Compare(char* Class, void* Unknown_Parameter_1, void* Unknow
 	{
 		Prediction_Copy_Structure::Field_Structure* Field = Predicton_Copy.Field;
 
-		Byte_Manager::Copy_Bytes(0, (void*)(*(unsigned __int32*)607867332 + 2884 * (Class[1] == 'P') + Field->Offset[0]), Field->Bytes, (void*)((unsigned __int32)Predicton_Copy.Source + Field->Offset[1]));
+		Byte_Manager::Copy_Bytes(0, (void*)(*(unsigned __int32*)((unsigned __int32)Client_Module_Location + 5015784) + 2884 * (Class[1] == 'P') + Field->Offset[0]), Field->Bytes, (void*)((unsigned __int32)Predicton_Copy.Source + Field->Offset[1]));
 	}
 }
 
@@ -47,7 +47,7 @@ void Redirected_Post_Entity_Packet_Received()
 {
 	__int32 Stored_Result_Number = 0;
 
-	void* Local_Player = *(void**)607867332;
+	void* Local_Player = *(void**)((unsigned __int32)Client_Module_Location + 5015784);
 
 	__int32 Tick_Base = *(__int32*)((unsigned __int32)Local_Player + 3592);
 

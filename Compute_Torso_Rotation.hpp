@@ -6,11 +6,11 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 	{
 		void* Entity = *(void**)((unsigned __int32)Animation_State + 20);
 
-		if (Entity != *(void**)607867332)
+		if (Entity != *(void**)((unsigned __int32)Client_Module_Location + 5015784))
 		{
 			if (*(void**)Entity == (void*)607350148)
 			{
-				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 80)];
+				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 84)];
 
 				if (Player_Data->Priority != -2)
 				{

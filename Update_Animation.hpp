@@ -4,7 +4,7 @@ void* Original_Update_Animation_Caller_Location;
 
 void __thiscall Redirected_Update_Animation(void* Player)
 {
-    if (Player == *(void**)607867332)
+    if (Player == *(void**)((unsigned __int32)Client_Module_Location + 5015784))
     {
         *(float*)((unsigned __int32)Player + 4124) = Update_Animation_Angles[0];
 

@@ -179,10 +179,10 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Redirection_Manager::Redirect_Function(Original_Shutdown_Caller_Location, 0, (void*)537926128, 1, (void*)Redirected_Shutdown);
 			}*/
 
-			/*_putws(L"[ + ] Interpolation");
+			_putws(L"[ + ] Interpolation");
 			{
-				Redirection_Manager::Redirect_Function(Original_Interpolate_Caller_Location, 0, (void*)604201536, 1, (void*)Redirected_Interpolate);
-			}*/
+				Redirection_Manager::Redirect_Function(Original_Interpolate_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 547872), 1, (void*)Redirected_Interpolate);
+			}
 
 			/*_putws(L"[ + ] Animations");
 			{

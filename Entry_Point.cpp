@@ -34,6 +34,8 @@ void* Engine_Module_Location;
 
 #include "Setup_Move.hpp"
 
+#include "Player_Move.hpp"
+
 #include <algorithm>
 
 #include "Finish_Move.hpp"
@@ -205,6 +207,8 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Redirection_Manager::Redirect_Function(Original_Store_Prediction_Results_Caller_Location, 4, (void*)((unsigned __int32)Client_Module_Location + 1554880), 1, (void*)Redirected_Store_Prediction_Results);
 
 				Redirection_Manager::Redirect_Function(Original_Setup_Move_Caller_Location, 2, (void*)((unsigned __int32)Client_Module_Location + 1553824), 1, (void*)Redirected_Setup_Move);
+
+				Redirection_Manager::Redirect_Function(Original_Player_Move_Caller_Location, 1, (void*)((unsigned __int32)Client_Module_Location + 1945776), 1, (void*)Redirected_Player_Move);
 
 				Redirection_Manager::Redirect_Function(Original_Finish_Move_Caller_Location, 1, (void*)((unsigned __int32)Client_Module_Location + 1549072), 1, (void*)Redirected_Finish_Move);
 

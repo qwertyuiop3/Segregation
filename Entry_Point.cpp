@@ -233,7 +233,7 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 			{
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 1343395), 3, 144);
 
-				//Redirection_Manager::Redirect_Function(Original_Copy_User_Command_Caller_Location, 0, (void*)604850464, 1, (void*)Redirected_Copy_User_Command);
+				Redirection_Manager::Redirect_Function(Original_Copy_User_Command_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 1173520), 1, (void*)Redirected_Copy_User_Command);
 			}
 
 			_putws(L"[ + ] Network");

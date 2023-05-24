@@ -22,8 +22,6 @@ void* Engine_Module_Location;
 
 #include "Write_Events.hpp"
 
-#include "Shutdown.hpp"
-
 #include "Interpolate.hpp"
 
 #include "Update_Animation.hpp"
@@ -171,8 +169,6 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Add_Listener_Type((unsigned __int32)Engine_Module_Location + 1665088)((void*)((unsigned __int32)Engine_Module_Location + 6512952), Event_Listener, (char*)"bullet_impact", nullptr);
 
 				Redirection_Manager::Redirect_Function(Original_Write_Events_Caller_Location, 0, (void*)((unsigned __int32)Engine_Module_Location + 1672192), 1, (void*)Redirected_Write_Events);
-
-				Redirection_Manager::Redirect_Function(Original_Shutdown_Caller_Location, 0, (void*)((unsigned __int32)Engine_Module_Location + 1886736), 1, (void*)Redirected_Shutdown);
 			}
 
 			_putws(L"[ + ] Interpolation");

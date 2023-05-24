@@ -414,7 +414,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 							{
 								/*if (*(float*)((unsigned __int32)Local_Player + 2544) <= Global_Variables->Current_Time)
 								{
-									void* Weapon = *(void**)((unsigned __int32)Client_Module_Location + 5135076 + (((*(unsigned __int32*)((unsigned __int32)Local_Player + 2872) & 4095) - 4097) << 4));
+									void* Weapon = *(void**)((unsigned __int32)Client_Module_Location + 5135076 + (((*(unsigned __int32*)((unsigned __int32)Local_Player + 3456) & 4095) - 4097) << 4));
 
 									if (Weapon != nullptr)
 									{

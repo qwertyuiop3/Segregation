@@ -10,11 +10,7 @@ struct Prediction_Data_Structure
 
 	__int8 Delay_Fire;
 
-	float Accuracy;
-
 	float Shots_Fired_Decrementor;
-
-	float Last_Fire;
 };
 
 Prediction_Data_Structure Prediction_Data[90];
@@ -31,19 +27,15 @@ __int32 __thiscall Redirected_Compute_First_Command_To_Execute(void* Unknown_Par
 
 	if (Predicted_Data->Tick_Number == Tick_Number)
 	{
-		*(float*)((unsigned __int32)Local_Player + 3936) = Predicted_Data->Friction;
+		*(float*)((unsigned __int32)Local_Player + 4728) = Predicted_Data->Friction;
 
 		void* Weapon = Predicted_Data->Weapon;
 
 		if (Weapon != nullptr)
 		{
-			*(__int8*)((unsigned __int32)Weapon + 1884) = Predicted_Data->Delay_Fire;
+			*(__int8*)((unsigned __int32)Weapon + 2340) = Predicted_Data->Delay_Fire;
 
-			*(float*)((unsigned __int32)Weapon + 1888) = Predicted_Data->Accuracy;
-
-			*(float*)((unsigned __int32)Weapon + 1892) = Predicted_Data->Shots_Fired_Decrementor;
-
-			*(float*)((unsigned __int32)Weapon + 1912) = Predicted_Data->Last_Fire;
+			*(float*)((unsigned __int32)Weapon + 2356) = Predicted_Data->Shots_Fired_Decrementor;
 		}
 	}
 

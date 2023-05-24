@@ -204,9 +204,9 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 			_putws(L"[ + ] Prediction");
 			{
-				//Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller_Location, 2, (void*)605206464, 1, (void*)Redirected_Compute_First_Command_To_Execute);
+				Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 1548784), 1, (void*)Redirected_Compute_First_Command_To_Execute);
 
-				//Redirection_Manager::Redirect_Function(Original_Store_Prediction_Results_Caller_Location, 0, (void*)605209056, 1, (void*)Redirected_Store_Prediction_Results);
+				Redirection_Manager::Redirect_Function(Original_Store_Prediction_Results_Caller_Location, 4, (void*)((unsigned __int32)Client_Module_Location + 1554880), 1, (void*)Redirected_Store_Prediction_Results);
 
 				Redirection_Manager::Redirect_Function(Original_Setup_Move_Caller_Location, 2, (void*)((unsigned __int32)Client_Module_Location + 1553824), 1, (void*)Redirected_Setup_Move);
 

@@ -293,17 +293,17 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 				}
 			}
 
-			/*__int32 Entity_Number = 1;
+			__int32 Entity_Number = 1;
 
-			__int32 Team_Number = *(__int32*)((unsigned __int32)Local_Player + 144);
+			__int32 Team_Number = *(__int32*)((unsigned __int32)Local_Player + 156);
 
 			using Get_Latency_Type = float(__thiscall*)(void* Network_Channel, __int32 Type);
 
 			void* Network_Channel = *(void**)((unsigned __int32)Engine_Module_Location + 4683720);
 
-			float Total_Latency = Get_Latency_Type(537919008)(Network_Channel, 0) + Get_Latency_Type(537919008)(Network_Channel, 1);
+			float Total_Latency = Get_Latency_Type((unsigned __int32)Engine_Module_Location + 1871040)(Network_Channel, 0) + Get_Latency_Type((unsigned __int32)Engine_Module_Location + 1871040)(Network_Channel, 1);
 
-			float Interpolation_Time = max(*(float*)541928632, std::clamp(*(float*)607906336, *(float*)542242312, *(float*)542242072) / std::clamp(*(__int32*)540495212, *(__int32*)542221268, *(__int32*)542221412));
+			float Interpolation_Time = max(*(float*)((unsigned __int32)Client_Module_Location + 5064356), std::clamp(*(float*)((unsigned __int32)Client_Module_Location + 5064284), *(float*)((unsigned __int32)Engine_Module_Location + 6385172), *(float*)((unsigned __int32)Engine_Module_Location + 6385244)) / std::clamp(*(__int32*)((unsigned __int32)Engine_Module_Location + 6429584), *(__int32*)((unsigned __int32)Engine_Module_Location + 6190472), *(__int32*)((unsigned __int32)Engine_Module_Location + 6190400)));
 
 			float Corrected_Total_Latency = std::clamp(Total_Latency + Interpolation_Time, 0.f, 1.f);
 
@@ -332,17 +332,17 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 				if (Player_Data->Priority != -1)
 				{
-					void* Entity = *(void**)((unsigned __int32)607973860 + ((Entity_Number - 4097) << 4));
+					void* Entity = *(void**)((unsigned __int32)Client_Module_Location + 5135076 + ((Entity_Number - 4097) << 4));
 
 					if (Entity != nullptr)
 					{
 						if (*(__int8*)((unsigned __int32)Entity + 147) == 0)
 						{
-							if (*(__int32*)((unsigned __int32)Entity + 144) != Team_Number)
+							if (*(__int32*)((unsigned __int32)Entity + 156) != Team_Number)
 							{
-								if (*(__int8*)((unsigned __int32)Entity + 320) == 0)
+								if (*(__int8*)((unsigned __int32)Entity + 382) == 0)
 								{
-									__int32 Tick_Number = (*(float*)((unsigned __int32)Entity + 104) + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f;
+									__int32 Tick_Number = (*(float*)((unsigned __int32)Entity + 108) + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f;
 
 									float* Entity_Origin = (float*)((unsigned __int32)Entity + 824);
 
@@ -412,9 +412,9 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 							if (Send_Packet_Sequence == 2)
 							{
-								if (*(float*)((unsigned __int32)Local_Player + 2544) <= Global_Variables->Current_Time)
+								/*if (*(float*)((unsigned __int32)Local_Player + 2544) <= Global_Variables->Current_Time)
 								{
-									void* Weapon = *(void**)((unsigned __int32)607973860 + (((*(unsigned __int32*)((unsigned __int32)Local_Player + 2872) & 4095) - 4097) << 4));
+									void* Weapon = *(void**)((unsigned __int32)Client_Module_Location + 5135076 + (((*(unsigned __int32*)((unsigned __int32)Local_Player + 2872) & 4095) - 4097) << 4));
 
 									if (Weapon != nullptr)
 									{
@@ -811,7 +811,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 											}
 										}
 									}
-								}
+								}*/
 							}
 						}
 					}
@@ -866,7 +866,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 						User_Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180 / 3.1415927f + Interface_Angle_Y.Floating_Point;
 					}
 				}
-			}*/
+			}
 
 			Correct_Movement();
 

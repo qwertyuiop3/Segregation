@@ -50,29 +50,6 @@ void* Engine_Module_Location;
 
 #include "Precache.hpp"
 
-void* organimdebug;
-
-void __stdcall redanimdebug(bool x)
-{
-	(decltype(&redanimdebug)(organimdebug))(x);
-
-	if (x)
-	{
-		static void* server = GetModuleHandleW(L"server.dll");
-
-		void* engine = *(void**)((unsigned __int32)server + 0x50B5F8);
-
-		void* anim = (*(void*(__thiscall**)(void*, int))(*(DWORD*)engine + 76))(engine, 2);
-		anim = *(void**)((unsigned __int32)anim + 0xc);
-		if (!anim)
-			return;
-
-		using DrawServerHitboxes = void(__thiscall*)(void* ent, float dur, bool mono);
-
-		DrawServerHitboxes((unsigned __int32)server + 0xB7BF0)(anim, 0, 0);
-	}
-}
-
 __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reason, void* Reserved)
 {
 	if (Call_Reason == DLL_PROCESS_DETACH)
@@ -209,18 +186,16 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 				Redirection_Manager::Redirect_Function(Original_Compute_Torso_Rotation_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 376048), 1, (void*)Redirected_Compute_Torso_Rotation);
 
-				/*unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] =
+				unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] =
 				{
 					194,
 
-					24,
+					16,
 
 					0
 				};
 
-				Byte_Manager::Copy_Bytes(1, (void*)604206416, sizeof(Maintain_Sequence_Transitions_Bytes), Maintain_Sequence_Transitions_Bytes);*/
-
-				Redirection_Manager::Redirect_Function(organimdebug, 1, (void*)((unsigned __int32)GetModuleHandleW(L"server.dll") + 0x158E40), 1, (void*)redanimdebug);
+				Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 549072), sizeof(Maintain_Sequence_Transitions_Bytes), Maintain_Sequence_Transitions_Bytes);
 			}
 
 			_putws(L"[ + ] Prediction");

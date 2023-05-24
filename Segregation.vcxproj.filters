@@ -31,9 +31,6 @@
     <ClInclude Include="Send_Move.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon_Spread.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Item_Post_Frame.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
@@ -74,9 +71,6 @@
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Compute_First_Command_To_Execute.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
-    <ClInclude Include="Fall_Damage.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Precache.hpp">

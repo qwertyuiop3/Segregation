@@ -87,7 +87,6 @@
     <ClInclude Include="Compute_Torso_Rotation.hpp" />
     <ClInclude Include="Draw_Crosshair.hpp" />
     <ClInclude Include="Event_Listener.hpp" />
-    <ClInclude Include="Fall_Damage.hpp" />
     <ClInclude Include="Finish_Move.hpp" />
     <ClInclude Include="Interpolate.hpp" />
     <ClInclude Include="Precache.hpp" />
@@ -101,7 +100,6 @@
     <ClInclude Include="Update_Animation.hpp" />
     <ClInclude Include="Send_Move.hpp" />
     <ClInclude Include="Sounds.hpp" />
-    <ClInclude Include="Weapon_Spread.hpp" />
     <ClInclude Include="Write_Events.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

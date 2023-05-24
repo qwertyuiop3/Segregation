@@ -36,15 +36,11 @@ void* Engine_Module_Location;
 
 #include "Setup_Move.hpp"
 
-#include "Fall_Damage.hpp"
-
 #include <algorithm>
 
 #include "Finish_Move.hpp"
 
 #include "Item_Post_Frame.hpp"
-
-#include "Weapon_Spread.hpp"
 
 #include <vector>
 
@@ -208,25 +204,15 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 			_putws(L"[ + ] Prediction");
 			{
-				/*Byte_Manager::Set_Bytes(1, (void*)537158868, 5, 144);
+				//Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller_Location, 2, (void*)605206464, 1, (void*)Redirected_Compute_First_Command_To_Execute);
 
-				Byte_Manager::Set_Bytes(1, (void*)605209595, 1, 235);
+				//Redirection_Manager::Redirect_Function(Original_Store_Prediction_Results_Caller_Location, 0, (void*)605209056, 1, (void*)Redirected_Store_Prediction_Results);
 
-				Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller_Location, 2, (void*)605206464, 1, (void*)Redirected_Compute_First_Command_To_Execute);
+				Redirection_Manager::Redirect_Function(Original_Setup_Move_Caller_Location, 2, (void*)((unsigned __int32)Client_Module_Location + 1553824), 1, (void*)Redirected_Setup_Move);
 
-				Redirection_Manager::Redirect_Function(Original_Store_Prediction_Results_Caller_Location, 0, (void*)605209056, 1, (void*)Redirected_Store_Prediction_Results);
-
-				Redirection_Manager::Redirect_Function(Original_Setup_Move_Caller_Location, 0, (void*)605206752, 1, (void*)Redirected_Setup_Move);
-
-				Redirection_Manager::Redirect_Function(1, (void*)605024544, (void*)Redirected_Fall_Damage);
-
-				Redirection_Manager::Redirect_Function(Original_Finish_Move_Caller_Location, 1, (void*)605207376, 1, (void*)Redirected_Finish_Move);*/
+				Redirection_Manager::Redirect_Function(Original_Finish_Move_Caller_Location, 1, (void*)((unsigned __int32)Client_Module_Location + 1549072), 1, (void*)Redirected_Finish_Move);
 
 				Redirection_Manager::Redirect_Function(Original_Item_Post_Frame_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 432656), 1, (void*)Redirected_Item_Post_Frame);
-
-				/*Byte_Manager::Set_Bytes(1, (void*)605954536, 9, 144);
-
-				Redirection_Manager::Redirect_Function(Original_Weapon_Spread_Caller_Location, 1, (void*)605949248, 1, (void*)Redirected_Weapon_Spread);*/
 			}
 
 			_putws(L"[ + ] Input");

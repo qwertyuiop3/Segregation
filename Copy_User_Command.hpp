@@ -412,17 +412,17 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 							if (Send_Packet_Sequence == 2)
 							{
-								/*if (*(float*)((unsigned __int32)Local_Player + 2544) <= Global_Variables->Current_Time)
+								if (*(float*)((unsigned __int32)Local_Player + 3128) <= Global_Variables->Current_Time)
 								{
 									void* Weapon = *(void**)((unsigned __int32)Client_Module_Location + 5135076 + (((*(unsigned __int32*)((unsigned __int32)Local_Player + 3456) & 4095) - 4097) << 4));
 
 									if (Weapon != nullptr)
 									{
-										if (*(__int32*)((unsigned __int32)Weapon + 1780) != -1)
+										if (*(__int32*)((unsigned __int32)Weapon + 2228) != -1)
 										{
-											if (*(__int32*)((unsigned __int32)Weapon + 1788) > 0)
+											if (*(__int32*)((unsigned __int32)Weapon + 2236) > 0)
 											{
-												if (*(float*)((unsigned __int32)Weapon + 1720) <= Global_Variables->Current_Time)
+												if (*(float*)((unsigned __int32)Weapon + 2168) <= Global_Variables->Current_Time)
 												{
 													size_t Target_Number = 0;
 
@@ -430,17 +430,17 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 													float Eye_Position[3];
 
-													Get_Eye_Position_Type(604058320)(Local_Player, Eye_Position);
+													Get_Eye_Position_Type((unsigned __int32)Client_Module_Location + 415008)(Local_Player, Eye_Position);
 
 													using Get_Weapon_Information_Type = void*(__thiscall*)(void* Weapon);
 
-													float Weapon_Range = *(float*)((unsigned __int32)Get_Weapon_Information_Type(604037872)(Weapon) + 2020);
+													float Weapon_Range = *(float*)((unsigned __int32)Get_Weapon_Information_Type((unsigned __int32)Client_Module_Location + 403600)(Weapon) + 2188);
 
 													Recent_Player_Data_Number = 0;
 
 													Traverse_Sorted_Target_List_Label:
 													{
-														if (Target_Number != Sorted_Target_List.size())
+														if (Target_Number != Sorted_Target_List.size() && 0)
 														{
 															Target_Structure* Target = &Sorted_Target_List.at(Target_Number);
 
@@ -675,23 +675,39 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 														using Random_Seed_Type = void(__cdecl*)(__int32 Seed);
 
-														static void* Random_Seed_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11856);
+														static void* Random_Seed_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 47040);
 
 														Random_Seed_Type((unsigned __int32)Random_Seed_Location)((User_Command->Random_Seed & 255) + 1);
 
 														using Random_Float_Type = float(__cdecl*)(float Minimum, float Maximum);
 
-														static void* Random_Float_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
+														static void* Random_Float_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 46880);
 
-														float Random_X = Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f) + Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f);
+														using Update_Accuracy_Penalty_Type = void(__thiscall**)(void* Weapon);
 
-														Weapon_Spread = -1;
+														(*Update_Accuracy_Penalty_Type(*(unsigned __int32*)Weapon + 1512))(Weapon);
 
-														using Primary_Attack_Type = void(__thiscall**)(void* Weapon);
+														using Get_Inaccuracy_Type = float(__thiscall**)(void* Weapon);
 
-														(*Primary_Attack_Type(*(unsigned __int32*)Weapon + 856))(Weapon);
+														using Get_Spread_Type = float(__thiscall**)(void* Weapon);
 
-														float Random_Y = Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f) + Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f);
+														float Random[4] =
+														{
+															Random_Float_Type(Random_Float_Location)(0, 6.283185f),
+
+															Random_Float_Type(Random_Float_Location)(0, (*Get_Inaccuracy_Type(*(unsigned __int32*)Weapon + 1504))(Weapon)),
+
+															Random_Float_Type(Random_Float_Location)(0, 6.283185f),
+
+															Random_Float_Type(Random_Float_Location)(0, (*Get_Spread_Type(*(unsigned __int32*)Weapon + 1508))(Weapon))
+														};
+
+														float Spread[2] =
+														{
+															__builtin_cosf(Random[0]) * Random[1] + __builtin_cosf(Random[2]) * Random[3],
+
+															__builtin_sinf(Random[0]) * Random[1] + __builtin_sinf(Random[2]) * Random[3]
+														};
 
 														float Directions[2][3] =
 														{
@@ -704,15 +720,13 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 															},
 
 															{
-																Forward[0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0],
+																Forward[0] + Spread[0] * Right[0] + Spread[1] * Up[0],
 
-																Forward[1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1],
+																Forward[1] + Spread[0] * Right[1] + Spread[1] * Up[1],
 
-																Forward[2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2]
+																Forward[2] + Spread[0] * Right[2] + Spread[1] * Up[2]
 															}
 														};
-
-														Weapon_Spread = 0;
 
 														Calculate_Rotation_Label:
 														{
@@ -784,7 +798,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 															Forward[0] * Rotation[2][0] + Forward[1] * Rotation[2][1] + Forward[2] * Rotation[2][2]
 														};
 
-														float* Recoil = (float*)((unsigned __int32)Local_Player + 2992);
+														float* Recoil = (float*)((unsigned __int32)Local_Player + 3656);
 
 														User_Command->Angles[0] = 180 - __builtin_atan2f(-Rotated_Forward[2], __builtin_hypotf(Rotated_Forward[0], Rotated_Forward[1])) * 180 / 3.1415927f - Recoil[0] * 2;
 
@@ -811,7 +825,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 											}
 										}
 									}
-								}*/
+								}
 							}
 						}
 					}

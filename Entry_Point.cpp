@@ -206,9 +206,9 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Byte_Manager::Copy_Bytes(1, (void*)604206416, sizeof(Maintain_Sequence_Transitions_Bytes), Maintain_Sequence_Transitions_Bytes);*/
 			}
 
-			/*_putws(L"[ + ] Prediction");
+			_putws(L"[ + ] Prediction");
 			{
-				Byte_Manager::Set_Bytes(1, (void*)537158868, 5, 144);
+				/*Byte_Manager::Set_Bytes(1, (void*)537158868, 5, 144);
 
 				Byte_Manager::Set_Bytes(1, (void*)605209595, 1, 235);
 
@@ -220,14 +220,14 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 				Redirection_Manager::Redirect_Function(1, (void*)605024544, (void*)Redirected_Fall_Damage);
 
-				Redirection_Manager::Redirect_Function(Original_Finish_Move_Caller_Location, 1, (void*)605207376, 1, (void*)Redirected_Finish_Move);
+				Redirection_Manager::Redirect_Function(Original_Finish_Move_Caller_Location, 1, (void*)605207376, 1, (void*)Redirected_Finish_Move);*/
 
-				Redirection_Manager::Redirect_Function(Original_Item_Post_Frame_Caller_Location, 0, (void*)604081184, 1, (void*)Redirected_Item_Post_Frame);
+				Redirection_Manager::Redirect_Function(Original_Item_Post_Frame_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 432656), 1, (void*)Redirected_Item_Post_Frame);
 
-				Byte_Manager::Set_Bytes(1, (void*)605954536, 9, 144);
+				/*Byte_Manager::Set_Bytes(1, (void*)605954536, 9, 144);
 
-				Redirection_Manager::Redirect_Function(Original_Weapon_Spread_Caller_Location, 1, (void*)605949248, 1, (void*)Redirected_Weapon_Spread);
-			}*/
+				Redirection_Manager::Redirect_Function(Original_Weapon_Spread_Caller_Location, 1, (void*)605949248, 1, (void*)Redirected_Weapon_Spread);*/
+			}
 
 			_putws(L"[ + ] Input");
 			{

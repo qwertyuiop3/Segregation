@@ -4,8 +4,6 @@ struct Prediction_Data_Structure
 {
 	__int32 Tick_Number;
 
-	float Friction;
-
 	void* Weapon;
 
 	__int8 Delay_Fire;
@@ -27,8 +25,6 @@ __int32 __thiscall Redirected_Compute_First_Command_To_Execute(void* Unknown_Par
 
 	if (Predicted_Data->Tick_Number == Tick_Number)
 	{
-		*(float*)((unsigned __int32)Local_Player + 4728) = Predicted_Data->Friction;
-
 		void* Weapon = Predicted_Data->Weapon;
 
 		if (Weapon != nullptr)

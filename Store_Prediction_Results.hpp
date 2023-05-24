@@ -10,8 +10,6 @@ void __thiscall Redirected_Store_Prediction_Results(void* Unknown_Parameter_1, v
 
 	Predicted_Data->Tick_Number = Tick_Number;
 
-	Predicted_Data->Friction = *(float*)((unsigned __int32)Local_Player + 4728);
-
 	void* Weapon = *(void**)((unsigned __int32)Client_Module_Location + 5135076 + (((*(unsigned __int32*)((unsigned __int32)Local_Player + 3456) & 4095) - 4097) << 4));
 
 	Predicted_Data->Weapon = Weapon;

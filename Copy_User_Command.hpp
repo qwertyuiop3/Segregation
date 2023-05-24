@@ -180,15 +180,11 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 				Byte_Manager::Copy_Bytes(0, Local_Player_Previous_Origin, sizeof(Local_Player_Previous_Origin), Local_Player_Origin);
 			}
 
-			float Previous_Friction = *(float*)((unsigned __int32)Local_Player + 4728);
-
 			using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Local_Player, User_Command_Structure* User_Command, void* Move_Helper);
 
 			Run_Command_Type((unsigned __int32)Client_Module_Location + 1552000)(Prediction, Local_Player, User_Command, (void*)((unsigned __int32)Client_Module_Location + 4839036));
 
 			*(void**)((unsigned __int32)Engine_Module_Location + 4334668) = Previous_Audio_Device;
-
-			*(float*)((unsigned __int32)Local_Player + 4728) = Previous_Friction;
 
 			User_Command->Move[0] = Previous_Move[0];
 
@@ -440,25 +436,25 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 													Traverse_Sorted_Target_List_Label:
 													{
-														if (Target_Number != Sorted_Target_List.size() && 0)
+														if (Target_Number != Sorted_Target_List.size())
 														{
 															Target_Structure* Target = &Sorted_Target_List.at(Target_Number);
 
 															if (Target->Valid == 1)
 															{
-																Redirected_Compute_Torso_Rotation((void*)(*(unsigned __int32*)((unsigned __int32)Target->Self + 3968) - 148));
+																Redirected_Compute_Torso_Rotation((void*)(*(unsigned __int32*)((unsigned __int32)Target->Self + 5112) - 148));
 
 																using Setup_Bones_Type = __int8(__thiscall*)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time);
 
 																float Bones[128][3][4];
 
-																if (Setup_Bones_Type(604209888)((void*)((unsigned __int32)Target->Self + 4), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
+																if (Setup_Bones_Type((unsigned __int32)Client_Module_Location + 560320)((void*)((unsigned __int32)Target->Self + 4), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
 																{
 																	auto Trace_Ray = [&](float Direction[3]) -> __int8
 																	{
 																		struct alignas(4) Ray_Structure
 																		{
-																			__int8 Additional_Bytes[50];
+																			__int8 Additional_Bytes[65];
 																		};
 
 																		struct Filter_Structure
@@ -468,6 +464,8 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 																			void* Skip;
 
 																			__int32 Group;
+
+																			void* Handler;
 																		};
 
 																		struct Trace_Structure
@@ -500,19 +498,21 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 																			Eye_Position[2] + Direction[2] * Weapon_Range
 																		};
 
-																		Initialize_Ray_Type(537380224)(&Ray, Eye_Position, End);
+																		Initialize_Ray_Type((unsigned __int32)Client_Module_Location + 389504)(&Ray, Eye_Position, End);
 
 																		Filter_Structure Filter;
 
-																		Filter.Table = (void*)607282692;
+																		Filter.Table = (void*)((unsigned __int32)Client_Module_Location + 3908280);
 
 																		Filter.Skip = Local_Player;
 
 																		Filter.Group = 0;
 
+																		Filter.Handler = nullptr;
+
 																		Trace_Structure Trace;
 
-																		Trace_Ray_Type(537565888)((void*)540446304, &Ray, 1174421515, &Filter, &Trace);
+																		Trace_Ray_Type((unsigned __int32)Engine_Module_Location + 1658128)((void*)((unsigned __int32)Engine_Module_Location + 3941436), &Ray, 1174421515, &Filter, &Trace);
 
 																		using Clip_Trace_To_Players_Type = void(__cdecl*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
@@ -522,7 +522,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 																		End[2] += Direction[2] * 40;
 
-																		Clip_Trace_To_Players_Type(605426672)(Eye_Position, End, 1174421515, &Filter, &Trace);
+																		Clip_Trace_To_Players_Type((unsigned __int32)Client_Module_Location + 1695232)(Eye_Position, End, 1174421515, &Filter, &Trace);
 
 																		if (Trace.Entity == Target->Self)
 																		{
@@ -537,9 +537,9 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 																		return 0;
 																	};
 
-																	using Get_Studio_Header_Type = void*(__thiscall*)(void* Entity);
+																	using Get_Studio_Header_Type = void* (__thiscall*)(void* Model_Information, void* Model);
 
-																	void* Studio_Header = *(void**)Get_Studio_Header_Type(604188448)(Target->Self);
+																	void* Studio_Header = Get_Studio_Header_Type((unsigned __int32)Engine_Module_Location + 1862384)(*(void**)((unsigned __int32)Client_Module_Location + 5064492), *(void**)((unsigned __int32)Target->Self + 96));
 
 																	void* Hitbox_Set = (void*)((unsigned __int32)Studio_Header + *(__int32*)((unsigned __int32)Studio_Header + 176));
 

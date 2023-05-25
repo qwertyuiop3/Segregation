@@ -1,6 +1,6 @@
 void* Original_Player_Move_Caller_Location;
 
-struct alignas(4) Ray_Structure
+struct alignas(16) Ray_Structure
 {
 	__int8 Additional_Bytes[65];
 };

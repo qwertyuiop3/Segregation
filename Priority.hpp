@@ -23,6 +23,8 @@ struct __attribute__((packed)) Player_Data_Structure
 
 	__int32 Shots_Fired;
 
+	__int8 Switch_X;
+
 	float Memorized_Y;
 };
 

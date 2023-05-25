@@ -56,6 +56,8 @@ void Bruteforce_Reset()
 
 		Player_Data->Shots_Fired = 0;
 
+		Player_Data->Switch_X = 0;
+
 		Entity_Number += 1;
 
 		if (Entity_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))

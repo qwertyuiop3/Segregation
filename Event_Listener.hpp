@@ -65,6 +65,11 @@ void __stdcall Event_Processor(void* Event)
 										{
 											if (Player_Data->Tolerance == Interface_Bruteforce_Tolerance.Integer)
 											{
+												if (Player_Data->Shots_Fired == 0)
+												{
+													Player_Data->Switch_X ^= 1;
+												}
+
 												Player_Data->Shots_Fired = ((Player_Data->Shots_Fired - 1) % Bruteforce_Angles_Count + Bruteforce_Angles_Count) % Bruteforce_Angles_Count;
 											}
 											else

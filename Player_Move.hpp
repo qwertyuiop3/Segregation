@@ -1,102 +1,133 @@
 void* Original_Player_Move_Caller_Location;
 
+struct alignas(4) Ray_Structure
+{
+	__int8 Additional_Bytes[65];
+};
+
+struct Filter_Structure
+{
+	void* Table;
+
+	void* Skip;
+
+	__int32 Group;
+
+	void* Handler;
+};
+
+struct Trace_Structure
+{
+	__int8 Additional_Bytes_1[44];
+
+	float Fraction;
+
+	__int8 Additional_Bytes_2[20];
+
+	__int32 Group;
+
+	__int8 Additional_Bytes_3[4];
+
+	void* Entity;
+
+	__int8 Additional_Bytes_4[4];
+};
+
 void __thiscall Redirected_Player_Move(void* Game_Movement)
 {
-	void* Local_Player = *(void**)((unsigned __int32)Game_Movement + 3744);
+	(decltype(&Redirected_Player_Move)(Original_Player_Move_Caller_Location))(Game_Movement);
 
-	int flags = *(__int32*)((unsigned __int32)Local_Player + 848);
-	bool ducked = *(__int8*)((unsigned __int32)Local_Player + 3548 + 68);
-	bool ducking = *(__int8*)((unsigned __int32)Local_Player + 3548 + 69);
-	constexpr int FL_DUCKING = 2;
-
-	const float eyeClearance = 12.0f;
-
-	float offset = *(float*)((unsigned __int32)Local_Player + 240);
-
-	float vHullMin[3] = { -16, -16, 0 };
-	float vHullMax[3] = { 16, 16, ducked ? 45.f : 62.f };
-
-	float start[3] = { *(float*)((unsigned __int32)Local_Player + 824),
-		*(float*)((unsigned __int32)Local_Player + 824 + 4),
-		*(float*)((unsigned __int32)Local_Player + 824 + 8)
-	};
-	start[2] += vHullMax[2];
-	float end[3] = { start[0], start[1], start[2] };
-	end[2] += eyeClearance - vHullMax[2];
-	end[2] += ducked ? 47 : 64;
-	vHullMax[2] = 0;
-
-	vHullMin[0] += 1;
-	vHullMin[1] += 1;
-	vHullMax[0] -= 1;
-	vHullMax[1] -= 1;
-
-	struct alignas(4) Ray_Structure
-	{
-		__int8 Additional_Bytes[65];
-	};
-
-	struct Filter_Structure
-	{
-		void* Table;
-
-		void* Skip;
-
-		__int32 Group;
-
-		void* Handler;
-	};
-
-	struct Trace_Structure
-	{
-		__int8 Additional_Bytes_1[44];
-
-		float Fraction; 
-
-		__int8 Additional_Bytes_2[36];
-	};
+	using Trace_Ray_Type = void(__thiscall*)(void* Engine, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
 	using Initialize_Ray_Type = void(__thiscall*)(Ray_Structure* Ray, float* Start, float* End, float* Minimum, float* Maximum);
 
-	Trace_Structure trace;
-	Ray_Structure ray;
-	Filter_Structure filter;
-	filter.Table = (void*)((unsigned __int32)Client_Module_Location + 0x3BA2B8);
-	filter.Skip = (void*)Local_Player;
-	filter.Group = 8;
-	filter.Handler = nullptr;
-	Initialize_Ray_Type(((unsigned __int32)Client_Module_Location + 419584))(&ray, start, end, vHullMin, vHullMax);
-	using Trace_Ray_Type = void(__thiscall*)(void* Engine, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
-	Trace_Ray_Type((unsigned __int32)Engine_Module_Location + 1658128)((void*)((unsigned __int32)Engine_Module_Location + 3941436), &ray, 33636363, &filter, &trace);
+	Ray_Structure Ray;
 
-	if (trace.Fraction < 1.0f)
+	void* Player = *(void**)((unsigned __int32)Game_Movement + 3744);
+
+	float* Origin = (float*)((unsigned __int32)Player + 824);
+
+	__int8 Ducked = *(__int8*)((unsigned __int32)Player + 3616);
+
+	float Start[3] =
 	{
-		float est = start[2] + trace.Fraction * (end[2] - start[2]) - *(float*)((unsigned __int32)Local_Player + 824 + 8) - eyeClearance;
-		if ((flags & FL_DUCKING) == 0 && !ducking && !ducked)
-		{	
-			offset = est;
+		Origin[0],
+
+		Origin[1],
+
+		Origin[2] + (Ducked == 1 ? 45.f : 62.f)
+	};
+
+	float End[3] =
+	{
+		Start[0],
+
+		Start[1],
+
+		Start[2] + 14
+	};
+
+	float Minimum[3] =
+	{
+		-15,
+
+		-15,
+
+		0
+	};
+
+	float Maximum[3] =
+	{
+		15,
+
+		15,
+
+		0
+	};
+
+	Initialize_Ray_Type(((unsigned __int32)Client_Module_Location + 419584))(&Ray, Start, End, Minimum, Maximum);
+
+	Filter_Structure Filter;
+
+	Filter.Table = (void*)((unsigned __int32)Client_Module_Location + 3908280);
+
+	Filter.Skip = (void*)Player;
+
+	Filter.Group = 8;
+
+	Filter.Handler = nullptr;
+
+	Trace_Structure Trace;
+
+	Trace_Ray_Type((unsigned __int32)Engine_Module_Location + 1658128)((void*)((unsigned __int32)Engine_Module_Location + 3941436), &Ray, 33636363, &Filter, &Trace);
+
+	__int8 Ducking = *(__int8*)((unsigned __int32)Player + 3617);
+
+	if (Trace.Fraction < 1)
+	{
+		float Estimation = Start[2] + (End[2] - Start[2]) * Trace.Fraction - Origin[2] - 12;
+
+		if (Ducked + Ducking == 0)
+		{
+			*(float*)((unsigned __int32)Player + 240) = Estimation;
 		}
 		else
 		{
-			offset = min(est, offset);
+			*(float*)((unsigned __int32)Player + 240) = min(Estimation, *(float*)((unsigned __int32)Player + 240));
 		}
-		*(float*)((unsigned __int32)Local_Player + 240) = offset;
 	}
 	else
 	{
-		if ((flags & FL_DUCKING) == 0 && !ducking && !ducked)
+		if (Ducked + Ducking == 0)
 		{
-			*(float*)((unsigned __int32)Local_Player + 240) = 64;
+			*(float*)((unsigned __int32)Player + 240) = 64;
 		}
-		else if (*(__int8*)((unsigned __int32)Local_Player + 5208))
+		else
 		{
-			*(float*)((unsigned __int32)Local_Player + 240) = 47;
-		}
-		else if (ducked && !ducking)
-		{
-			*(float*)((unsigned __int32)Local_Player + 240) = 47;
+			if (Ducked > Ducking)
+			{
+				*(float*)((unsigned __int32)Player + 240) = 47;
+			}
 		}
 	}
-
-	(decltype(&Redirected_Player_Move)(Original_Player_Move_Caller_Location))(Game_Movement);
 }

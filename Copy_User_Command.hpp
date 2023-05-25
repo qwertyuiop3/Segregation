@@ -452,35 +452,6 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 																{
 																	auto Trace_Ray = [&](float Direction[3]) -> __int8
 																	{
-																		struct alignas(4) Ray_Structure
-																		{
-																			__int8 Additional_Bytes[65];
-																		};
-
-																		struct Filter_Structure
-																		{
-																			void* Table;
-
-																			void* Skip;
-
-																			__int32 Group;
-
-																			void* Handler;
-																		};
-
-																		struct Trace_Structure
-																		{
-																			__int8 Additional_Bytes_1[68];
-
-																			__int32 Group;
-
-																			__int8 Additional_Bytes_2[4];
-
-																			void* Entity;
-
-																			__int8 Additional_Bytes_3[4];
-																		};
-
 																		using Trace_Ray_Type = void(__thiscall*)(void* Engine, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
 																		using Initialize_Ray_Type = void(__thiscall*)(Ray_Structure* Ray, float* Start, float* End);
@@ -537,9 +508,9 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 																		return 0;
 																	};
 
-																	using Get_Studio_Header_Type = void* (__thiscall*)(void* Model_Information, void* Model);
+																	using Get_Studio_Header_Type = void*(__thiscall*)(void* Entity);
 
-																	void* Studio_Header = Get_Studio_Header_Type((unsigned __int32)Engine_Module_Location + 1862384)(*(void**)((unsigned __int32)Client_Module_Location + 5064492), *(void**)((unsigned __int32)Target->Self + 96));
+																	void* Studio_Header = *(void**)Get_Studio_Header_Type(((unsigned __int32)Client_Module_Location + 541120))(Target->Self);
 
 																	void* Hitbox_Set = (void*)((unsigned __int32)Studio_Header + *(__int32*)((unsigned __int32)Studio_Header + 176));
 

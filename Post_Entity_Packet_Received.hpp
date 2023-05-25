@@ -1,3 +1,24 @@
+struct Prediction_Field_Structure
+{
+	__int32 Type;
+
+	char* Name;
+
+	__int32 Offset[2];
+
+	unsigned __int16 Size;
+
+	__int16 Flags;
+
+	__int8 Additional_Bytes_1[16];
+
+	__int32 Bytes;
+
+	__int8 Additional_Bytes_2[8];
+
+	float Tolerance;
+};
+
 struct Prediction_Copy_Structure
 {
 	__int8 Additional_Bytes_1[8];
@@ -6,18 +27,7 @@ struct Prediction_Copy_Structure
 
 	__int8 Additional_Bytes_2[11];
 
-	struct Field_Structure
-	{
-		__int8 Additional_Bytes_1[8];
-
-		__int32 Offset[2];
-
-		__int8 Additional_Bytes_2[20];
-
-		__int32 Bytes;
-	};
-
-	Field_Structure* Field;
+	Prediction_Field_Structure* Field;
 
 	__int8 Additional_Bytes_3[32];
 
@@ -35,11 +45,24 @@ void Predicton_Copy_Compare(char* Class, void* Unknown_Parameter_1, void* Unknow
 {
 	if (Within_Tolerance == 1)
 	{
-		Prediction_Copy_Structure::Field_Structure* Field = Predicton_Copy.Field;
+		Prediction_Field_Structure* Field = Predicton_Copy.Field;
 
 		Byte_Manager::Copy_Bytes(0, (void*)(*(unsigned __int32*)((unsigned __int32)Client_Module_Location + 5015784) + 3548 * (Class[1] == 'P') + Field->Offset[0]), Field->Bytes, (void*)((unsigned __int32)Predicton_Copy.Source + Field->Offset[1]));
 	}
 }
+
+struct Prediction_Descriptor_Structure
+{
+	Prediction_Field_Structure* Fields;
+
+	__int32 Size;
+
+	char* Name;
+
+	Prediction_Descriptor_Structure* Parent;
+
+	__int8 Additional_Bytes[6];
+};
 
 void* Original_Post_Entity_Packet_Received_Caller_Location;
 
@@ -84,9 +107,9 @@ void Redirected_Post_Entity_Packet_Received()
 	{
 		Predicton_Copy.Construct(Local_Player, *(void**)((unsigned __int32)Local_Player + -Tick_Number), (void*)Predicton_Copy_Compare);
 
-		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, void* Map);
+		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
 
-		Transfer_Data_Type((unsigned __int32)Client_Module_Location + 1561808)(&Predicton_Copy, nullptr, -1, (void*)((unsigned __int32)Client_Module_Location + 4819316));
+		Transfer_Data_Type((unsigned __int32)Client_Module_Location + 1561808)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module_Location + 4819316));
 	}
 
 	(decltype(&Redirected_Post_Entity_Packet_Received)(Original_Post_Entity_Packet_Received_Caller_Location))();

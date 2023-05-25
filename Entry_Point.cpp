@@ -202,6 +202,31 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 			_putws(L"[ + ] Prediction");
 			{
+				*(__int16*)((unsigned __int32)Client_Module_Location + 4862038) = 512;
+
+				static Prediction_Descriptor_Structure Original_Prediction_Descriptor;
+
+				Prediction_Descriptor_Structure* Prediction_Descriptor = (Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module_Location + 4819316);
+
+				Byte_Manager::Copy_Bytes(0, &Original_Prediction_Descriptor, sizeof(Prediction_Descriptor_Structure), Prediction_Descriptor);
+
+				static Prediction_Field_Structure Prediction_Fields[3] =
+				{
+					{ },
+
+					{ 1, (char*)"m_flStamina", { 5160 }, 1, 256, { }, sizeof(float), { }, 0.1f },
+
+					{ 1, (char*)"m_flVelocityModifier", { 5176 }, 1, 256, { }, sizeof(float), { }, 0.005f }
+				};
+
+				Prediction_Descriptor->Fields = &Prediction_Fields[1];
+
+				Prediction_Descriptor->Size = sizeof(Prediction_Fields) / sizeof(Prediction_Field_Structure) - 1;
+
+				Prediction_Descriptor->Name = (char*)"C_CSPlayer";
+
+				Prediction_Descriptor->Parent = &Original_Prediction_Descriptor;
+
 				Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 1548784), 1, (void*)Redirected_Compute_First_Command_To_Execute);
 
 				Redirection_Manager::Redirect_Function(Original_Store_Prediction_Results_Caller_Location, 4, (void*)((unsigned __int32)Client_Module_Location + 1554880), 1, (void*)Redirected_Store_Prediction_Results);

@@ -84,7 +84,7 @@ void Redirected_Post_Entity_Packet_Received()
 	{
 		Predicton_Copy.Construct(Local_Player, *(void**)((unsigned __int32)Local_Player + -Tick_Number), (void*)Predicton_Copy_Compare);
 
-		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, void* Map);
+		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, void* Descriptor);
 
 		Transfer_Data_Type(605218912)(&Predicton_Copy, nullptr, -1, (void*)607768164);
 	}

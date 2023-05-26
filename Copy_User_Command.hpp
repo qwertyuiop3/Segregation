@@ -23,19 +23,19 @@ void* Original_Copy_User_Command_Caller_Location;
 
 void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Command_Structure* User_Command)
 {
-	void* Prediction = *(void**)540494880;
-
-	if (*(__int32*)541926600 != 1)
-	{
-		using Update_Type = void(__thiscall*)(void* Prediction, __int8 Unknown_Parameter_1, __int8 Unknown_Parameter_2, void* Unknown_Parameter_3, __int32 Unknown_Parameter_4);
-
-		Update_Type(605209712)(Prediction, 1, 1, *(void**)540627876, *(__int32*)540627868 + *(__int32*)540627872);
-	}
-
 	void* Local_Player = *(void**)607867332;
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 135) == 0)
 	{
+		void* Prediction = *(void**)540494880;
+
+		if (*(__int32*)541926608 != 1)
+		{
+			using Update_Type = void(__thiscall*)(void* Prediction, __int8 Unknown_Parameter_1, __int8 Unknown_Parameter_2, void* Unknown_Parameter_3, __int32 Unknown_Parameter_4);
+
+			Update_Type(605209712)(Prediction, 1, 1, *(void**)540627876, *(__int32*)540627868 + *(__int32*)540627872);
+		}
+
 		auto Angle_Vectors = [](float* Angles, float* Forward, float* Right, float* Up) -> void
 		{
 			using Angle_Vectors_Type = void(__cdecl*)(float* Angles, float* Forward, float* Right, float* Up);

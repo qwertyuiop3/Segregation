@@ -26,8 +26,6 @@ void* Engine_Module_Location;
 
 #include "Update_Animation.hpp"
 
-#include "Compute_Head_Rotation.hpp"
-
 #include "Compute_Torso_Rotation.hpp"
 
 #include "Compute_First_Command_To_Execute.hpp"
@@ -187,8 +185,6 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 1915365), 1, 235);
 
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 601904), 2, 144);
-
-				Redirection_Manager::Redirect_Function(Original_Compute_Head_Rotation_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 375888), 1, (void*)Redirected_Compute_Head_Rotation);
 
 				Redirection_Manager::Redirect_Function(Original_Compute_Torso_Rotation_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 376048), 1, (void*)Redirected_Compute_Torso_Rotation);
 

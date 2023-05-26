@@ -442,15 +442,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 															if (Target->Valid == 1)
 															{
-																using Get_Studio_Header_Type = void* (__thiscall*)(void* Entity);
-
-																void* Animation_State = (void*)(*(unsigned __int32*)((unsigned __int32)Target->Self + 5112) - 148);
-
-																void* Studio_Header = *(void**)Get_Studio_Header_Type(((unsigned __int32)Client_Module_Location + 541120))(Target->Self);
-
-																//Redirected_Compute_Head_Rotation(Animation_State, Studio_Header);
-
-																Redirected_Compute_Torso_Rotation(Animation_State);
+																Redirected_Compute_Torso_Rotation((void*)(*(unsigned __int32*)((unsigned __int32)Target->Self + 5112) - 148));
 
 																using Setup_Bones_Type = __int8(__thiscall*)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time);
 
@@ -515,6 +507,10 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 																		return 0;
 																	};
+
+																	using Get_Studio_Header_Type = void* (__thiscall*)(void* Entity);
+
+																	void* Studio_Header = *(void**)Get_Studio_Header_Type(((unsigned __int32)Client_Module_Location + 541120))(Target->Self);
 
 																	void* Hitbox_Set = (void*)((unsigned __int32)Studio_Header + *(__int32*)((unsigned __int32)Studio_Header + 176));
 

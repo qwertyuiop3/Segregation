@@ -76,8 +76,5 @@
     <ClInclude Include="Player_Move.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Compute_Head_Rotation.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

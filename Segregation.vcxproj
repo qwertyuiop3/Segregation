@@ -83,7 +83,6 @@
   <ItemGroup>
     <ClInclude Include="Bruteforce.hpp" />
     <ClInclude Include="Compute_First_Command_To_Execute.hpp" />
-    <ClInclude Include="Compute_Head_Rotation.hpp" />
     <ClInclude Include="Extended_Interface.hpp" />
     <ClInclude Include="Compute_Torso_Rotation.hpp" />
     <ClInclude Include="Draw_Crosshair.hpp" />

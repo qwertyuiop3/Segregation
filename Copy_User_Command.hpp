@@ -25,19 +25,19 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 {
 	if (__builtin_return_address(0) == (void*)((unsigned __int32)Client_Module_Location + 1340913))
 	{
-		using Update_Type = void(__thiscall*)(void* Prediction, __int8 Unknown_Parameter_1, __int8 Unknown_Parameter_2, void* Unknown_Parameter_3, __int32 Unknown_Parameter_4);
-
-		void* Prediction = *(void**)((unsigned __int32)Engine_Module_Location + 4566764);
-
-		if (*(__int32*)((unsigned __int32)Engine_Module_Location + 6518320) != 1)
-		{
-			Update_Type((unsigned __int32)Client_Module_Location + 1555456)(Prediction, 1, 1, *(void**)((unsigned __int32)Engine_Module_Location + 4702952), *(__int32*)((unsigned __int32)Engine_Module_Location + 4702944) + *(__int32*)((unsigned __int32)Engine_Module_Location + 4702948));
-		}
-
 		void* Local_Player = *(void**)((unsigned __int32)Client_Module_Location + 5015784);
 
 		if (*(__int8*)((unsigned __int32)Local_Player + 147) == 0)
 		{
+			using Update_Type = void(__thiscall*)(void* Prediction, __int8 Unknown_Parameter_1, __int8 Unknown_Parameter_2, void* Unknown_Parameter_3, __int32 Unknown_Parameter_4);
+
+			void* Prediction = *(void**)((unsigned __int32)Engine_Module_Location + 4566764);
+
+			if (*(__int32*)((unsigned __int32)Engine_Module_Location + 6518320) != 1)
+			{
+				Update_Type((unsigned __int32)Client_Module_Location + 1555456)(Prediction, 1, 1, *(void**)((unsigned __int32)Engine_Module_Location + 4702952), *(__int32*)((unsigned __int32)Engine_Module_Location + 4702944) + *(__int32*)((unsigned __int32)Engine_Module_Location + 4702948));
+			}
+
 			auto Angle_Vectors = [](float* Angles, float* Forward, float* Right, float* Up) -> void
 			{
 				using Angle_Vectors_Type = void(__cdecl*)(float* Angles, float* Forward, float* Right, float* Up);

@@ -202,6 +202,8 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 			_putws(L"[ + ] Prediction");
 			{
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 582833), 2, 144);
+
 				*(__int16*)((unsigned __int32)Client_Module_Location + 4862038) = 512;
 
 				static Prediction_Descriptor_Structure Original_Prediction_Descriptor;

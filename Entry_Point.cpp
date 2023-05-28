@@ -52,6 +52,8 @@ void* Engine_Module_Location;
 
 #include "Precache.hpp"
 
+#include "Draw_Model.hpp"
+
 __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reason, void* Reserved)
 {
 	if (Call_Reason == DLL_PROCESS_DETACH)
@@ -265,6 +267,8 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 			_putws(L"[ + ] Materials");
 			{
 				Redirection_Manager::Redirect_Function(Original_Precache_Caller_Location, 5, (void*)((unsigned __int32)GetModuleHandleW(L"MaterialSystem.dll") + 239552), 1, (void*)Redirected_Precache);
+
+				Redirection_Manager::Redirect_Function(Original_Draw_Model_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 532080), 1, (void*)Redirected_Draw_Model);
 
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 1743076), 1, 0);
 

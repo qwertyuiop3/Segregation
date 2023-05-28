@@ -2,9 +2,9 @@ void* Original_Draw_Model_Caller_Location;
 
 __int32 __thiscall Redirected_Draw_Model(void* Entity, void* Unknown_Parameter)
 {
-	using Should_Draw_Local_Player_Type = __int8(__thiscall*)(void* Entity);
+	using Should_Draw_Local_Player_Type = __int8(__cdecl*)();
 
-	if (Should_Draw_Local_Player_Type((unsigned __int32)Client_Module_Location + 671040)(*(void**)((unsigned __int32)Client_Module_Location + 5015784)) == 1)
+	if (Should_Draw_Local_Player_Type((unsigned __int32)Client_Module_Location + 671040)() == 1)
 	{
 		if (*(__int32*)((unsigned __int32)Entity + 140) == *(__int32*)((unsigned __int32)Entity + 2180))
 		{

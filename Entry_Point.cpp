@@ -268,8 +268,6 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 			{
 				Redirection_Manager::Redirect_Function(Original_Precache_Caller_Location, 5, (void*)((unsigned __int32)GetModuleHandleW(L"MaterialSystem.dll") + 239552), 1, (void*)Redirected_Precache);
 
-				Redirection_Manager::Redirect_Function(Original_Draw_Model_Caller_Location, 0, (void*)((unsigned __int32)Client_Module_Location + 532080), 1, (void*)Redirected_Draw_Model);
-
 				Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Client_Module_Location + 582800), (void*)Redirected_Calculate_Override_Model_Index);
 
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module_Location + 1743076), 1, 0);

@@ -1,5 +1,3 @@
-void* Original_Calculate_Override_Model_Index_Caller_Location;
-
 __int32 __thiscall Redirected_Calculate_Override_Model_Index(void* Weapon)
 {
 	if (__builtin_return_address(0) == (void*)((unsigned __int32)Client_Module_Location + 584192))

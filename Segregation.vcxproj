@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bruteforce.hpp" />
+    <ClInclude Include="Calculate_Override_Model_Index.hpp" />
     <ClInclude Include="Compute_First_Command_To_Execute.hpp" />
     <ClInclude Include="Draw_Model.hpp" />
     <ClInclude Include="Extended_Interface.hpp" />

@@ -12,7 +12,11 @@ struct User_Command_Structure
 
 	__int32 Buttons;
 
-	__int8 Additional_Bytes_2[9];
+	__int8 Additional_Bytes_2[1];
+
+	__int32 Select;
+
+	__int8 Additional_Bytes_3[4];
 
 	__int32 Random_Seed;
 };
@@ -393,417 +397,420 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 		__int8 In_Attack = 0;
 
-		if (__builtin_fabsf(Global_Variables->Current_Time - Shot_Time) > 0.5f)
+		if (User_Command->Select == 0)
 		{
-			if (Shot_Time == 0)
+			if (__builtin_fabsf(Global_Variables->Current_Time - Shot_Time) > 0.5f)
 			{
-				Passed_Shot_Time_Check_Label:
+				if (Shot_Time == 0)
 				{
-					if ((User_Command->Buttons & 2048) == 0)
+					Passed_Shot_Time_Check_Label:
 					{
-						__int8 Send_Packet_Sequence = (Send_Packet == 0) + (Predicted_Send_Packet == 1);
-
-						if (Interface_Alternative.Integer != 0)
+						if ((User_Command->Buttons & 2048) == 0)
 						{
-							Send_Packet_Sequence = 2;
-						}
+							__int8 Send_Packet_Sequence = (Send_Packet == 0) + (Predicted_Send_Packet == 1);
 
-						if (Send_Packet_Sequence == 2)
-						{
-							if (*(float*)((unsigned __int32)Local_Player + 2544) <= Global_Variables->Current_Time)
+							if (Interface_Alternative.Integer != 0)
 							{
-								void* Weapon = *(void**)((unsigned __int32)607973860 + (((*(unsigned __int32*)((unsigned __int32)Local_Player + 2872) & 4095) - 4097) << 4));
+								Send_Packet_Sequence = 2;
+							}
 
-								if (Weapon != nullptr)
+							if (Send_Packet_Sequence == 2)
+							{
+								if (*(float*)((unsigned __int32)Local_Player + 2544) <= Global_Variables->Current_Time)
 								{
-									if (*(__int32*)((unsigned __int32)Weapon + 1780) != -1)
+									void* Weapon = *(void**)((unsigned __int32)607973860 + (((*(unsigned __int32*)((unsigned __int32)Local_Player + 2872) & 4095) - 4097) << 4));
+
+									if (Weapon != nullptr)
 									{
-										if (*(__int32*)((unsigned __int32)Weapon + 1788) > 0)
+										if (*(__int32*)((unsigned __int32)Weapon + 1780) != -1)
 										{
-											if (*(float*)((unsigned __int32)Weapon + 1720) <= Global_Variables->Current_Time)
+											if (*(__int32*)((unsigned __int32)Weapon + 1788) > 0)
 											{
-												size_t Target_Number = 0;
-
-												using Get_Eye_Position_Type = void(__thiscall*)(void* Player, float* Eye_Position);
-
-												float Eye_Position[3];
-
-												Get_Eye_Position_Type(604058320)(Local_Player, Eye_Position);
-
-												using Get_Weapon_Information_Type = void*(__thiscall*)(void* Weapon);
-
-												float Weapon_Range = *(float*)((unsigned __int32)Get_Weapon_Information_Type(604037872)(Weapon) + 2020);
-
-												Recent_Player_Data_Number = 0;
-
-												Traverse_Sorted_Target_List_Label:
+												if (*(float*)((unsigned __int32)Weapon + 1720) <= Global_Variables->Current_Time)
 												{
-													if (Target_Number != Sorted_Target_List.size())
+													size_t Target_Number = 0;
+
+													using Get_Eye_Position_Type = void(__thiscall*)(void* Player, float* Eye_Position);
+
+													float Eye_Position[3];
+
+													Get_Eye_Position_Type(604058320)(Local_Player, Eye_Position);
+
+													using Get_Weapon_Information_Type = void*(__thiscall*)(void* Weapon);
+
+													float Weapon_Range = *(float*)((unsigned __int32)Get_Weapon_Information_Type(604037872)(Weapon) + 2020);
+
+													Recent_Player_Data_Number = 0;
+
+													Traverse_Sorted_Target_List_Label:
 													{
-														Target_Structure* Target = &Sorted_Target_List.at(Target_Number);
-
-														if (Target->Valid == 1)
+														if (Target_Number != Sorted_Target_List.size())
 														{
-															Redirected_Compute_Torso_Rotation((void*)(*(unsigned __int32*)((unsigned __int32)Target->Self + 3968) - 148));
+															Target_Structure* Target = &Sorted_Target_List.at(Target_Number);
 
-															using Setup_Bones_Type = __int8(__thiscall*)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time);
-
-															float Bones[128][3][4];
-
-															if (Setup_Bones_Type(604209888)((void*)((unsigned __int32)Target->Self + 4), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
+															if (Target->Valid == 1)
 															{
-																auto Trace_Ray = [&](float Direction[3]) -> __int8
+																Redirected_Compute_Torso_Rotation((void*)(*(unsigned __int32*)((unsigned __int32)Target->Self + 3968) - 148));
+
+																using Setup_Bones_Type = __int8(__thiscall*)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time);
+
+																float Bones[128][3][4];
+
+																if (Setup_Bones_Type(604209888)((void*)((unsigned __int32)Target->Self + 4), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
 																{
-																	struct alignas(4) Ray_Structure
+																	auto Trace_Ray = [&](float Direction[3]) -> __int8
 																	{
-																		__int8 Additional_Bytes[50];
-																	};
-
-																	struct Filter_Structure
-																	{
-																		void* Table;
-
-																		void* Skip;
-
-																		__int32 Group;
-																	};
-
-																	struct Trace_Structure
-																	{
-																		__int8 Additional_Bytes_1[68];
-
-																		__int32 Group;
-
-																		__int8 Additional_Bytes_2[4];
-
-																		void* Entity;
-
-																		__int8 Additional_Bytes_3[4];
-																	};
-
-																	using Trace_Ray_Type = void(__thiscall*)(void* Engine, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
-
-																	using Initialize_Ray_Type = void(__thiscall*)(Ray_Structure* Ray, float* Start, float* End);
-
-																	Ray_Structure Ray;
-
-																	Vector_Normalize(Direction);
-
-																	float End[3]
-																	{
-																		Eye_Position[0] + Direction[0] * Weapon_Range,
-
-																		Eye_Position[1] + Direction[1] * Weapon_Range,
-
-																		Eye_Position[2] + Direction[2] * Weapon_Range
-																	};
-
-																	Initialize_Ray_Type(537380224)(&Ray, Eye_Position, End);
-
-																	Filter_Structure Filter;
-
-																	Filter.Table = (void*)607282692;
-
-																	Filter.Skip = Local_Player;
-
-																	Filter.Group = 0;
-
-																	Trace_Structure Trace;
-
-																	Trace_Ray_Type(537565888)((void*)540446304, &Ray, 1174421515, &Filter, &Trace);
-
-																	using Clip_Trace_To_Players_Type = void(__cdecl*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
-
-																	End[0] += Direction[0] * 40;
-
-																	End[1] += Direction[1] * 40;
-
-																	End[2] += Direction[2] * 40;
-
-																	Clip_Trace_To_Players_Type(605426672)(Eye_Position, End, 1174421515, &Filter, &Trace);
-
-																	if (Trace.Entity == Target->Self)
-																	{
-																		if (Interface_Aim_Intersection.Integer == 0)
+																		struct alignas(4) Ray_Structure
 																		{
-																			return Trace.Group == 1;
+																			__int8 Additional_Bytes[50];
+																		};
+
+																		struct Filter_Structure
+																		{
+																			void* Table;
+
+																			void* Skip;
+
+																			__int32 Group;
+																		};
+
+																		struct Trace_Structure
+																		{
+																			__int8 Additional_Bytes_1[68];
+
+																			__int32 Group;
+
+																			__int8 Additional_Bytes_2[4];
+
+																			void* Entity;
+
+																			__int8 Additional_Bytes_3[4];
+																		};
+
+																		using Trace_Ray_Type = void(__thiscall*)(void* Engine, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
+
+																		using Initialize_Ray_Type = void(__thiscall*)(Ray_Structure* Ray, float* Start, float* End);
+
+																		Ray_Structure Ray;
+
+																		Vector_Normalize(Direction);
+
+																		float End[3]
+																		{
+																			Eye_Position[0] + Direction[0] * Weapon_Range,
+
+																			Eye_Position[1] + Direction[1] * Weapon_Range,
+
+																			Eye_Position[2] + Direction[2] * Weapon_Range
+																		};
+
+																		Initialize_Ray_Type(537380224)(&Ray, Eye_Position, End);
+
+																		Filter_Structure Filter;
+
+																		Filter.Table = (void*)607282692;
+
+																		Filter.Skip = Local_Player;
+
+																		Filter.Group = 0;
+
+																		Trace_Structure Trace;
+
+																		Trace_Ray_Type(537565888)((void*)540446304, &Ray, 1174421515, &Filter, &Trace);
+
+																		using Clip_Trace_To_Players_Type = void(__cdecl*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
+
+																		End[0] += Direction[0] * 40;
+
+																		End[1] += Direction[1] * 40;
+
+																		End[2] += Direction[2] * 40;
+
+																		Clip_Trace_To_Players_Type(605426672)(Eye_Position, End, 1174421515, &Filter, &Trace);
+
+																		if (Trace.Entity == Target->Self)
+																		{
+																			if (Interface_Aim_Intersection.Integer == 0)
+																			{
+																				return Trace.Group == 1;
+																			}
+
+																			return 1;
 																		}
 
-																		return 1;
-																	}
+																		return 0;
+																	};
 
-																	return 0;
-																};
+																	using Get_Studio_Header_Type = void*(__thiscall*)(void* Entity);
 
-																using Get_Studio_Header_Type = void*(__thiscall*)(void* Entity);
+																	void* Studio_Header = *(void**)Get_Studio_Header_Type(604188448)(Target->Self);
 
-																void* Studio_Header = *(void**)Get_Studio_Header_Type(604188448)(Target->Self);
+																	void* Hitbox_Set = (void*)((unsigned __int32)Studio_Header + *(__int32*)((unsigned __int32)Studio_Header + 176));
 
-																void* Hitbox_Set = (void*)((unsigned __int32)Studio_Header + *(__int32*)((unsigned __int32)Studio_Header + 176));
+																	float* Hitbox_Minimum = (float*)((unsigned __int32)Hitbox_Set + 836);
 
-																float* Hitbox_Minimum = (float*)((unsigned __int32)Hitbox_Set + 836);
+																	float* Hitbox_Maximum = (float*)((unsigned __int32)Hitbox_Set + 848);
 
-																float* Hitbox_Maximum = (float*)((unsigned __int32)Hitbox_Set + 848);
-
-																float Hitbox_Center[3]
-																{
-																	(Hitbox_Minimum[0] + Hitbox_Maximum[0]) / 2,
-
-																	(Hitbox_Minimum[1] + Hitbox_Maximum[1]) / 2,
-
-																	(Hitbox_Minimum[2] + Hitbox_Maximum[2]) / 2
-																};
-
-																float Hitbox_Z_Vertices[8]
-																{
-																	Bones[14][2][0] * Hitbox_Minimum[0] + Bones[14][2][1] * Hitbox_Minimum[1] + Bones[14][2][2] * Hitbox_Minimum[2],
-
-																	Bones[14][2][0] * Hitbox_Maximum[0] + Bones[14][2][1] * Hitbox_Minimum[1] + Bones[14][2][2] * Hitbox_Minimum[2],
-
-																	Bones[14][2][0] * Hitbox_Minimum[0] + Bones[14][2][1] * Hitbox_Maximum[1] + Bones[14][2][2] * Hitbox_Minimum[2],
-
-																	Bones[14][2][0] * Hitbox_Minimum[0] + Bones[14][2][1] * Hitbox_Minimum[1] + Bones[14][2][2] * Hitbox_Maximum[2],
-
-																	Bones[14][2][0] * Hitbox_Maximum[0] + Bones[14][2][1] * Hitbox_Maximum[1] + Bones[14][2][2] * Hitbox_Minimum[2],
-
-																	Bones[14][2][0] * Hitbox_Maximum[0] + Bones[14][2][1] * Hitbox_Minimum[1] + Bones[14][2][2] * Hitbox_Maximum[2],
-
-																	Bones[14][2][0] * Hitbox_Minimum[0] + Bones[14][2][1] * Hitbox_Maximum[1] + Bones[14][2][2] * Hitbox_Maximum[2],
-
-																	Bones[14][2][0] * Hitbox_Maximum[0] + Bones[14][2][1] * Hitbox_Maximum[1] + Bones[14][2][2] * Hitbox_Maximum[2]
-																};
-
-																float* Hitbox_Z_Extremes[2];
-
-																std::tie(Hitbox_Z_Extremes[0], Hitbox_Z_Extremes[1]) = std::minmax_element(Hitbox_Z_Vertices, &Hitbox_Z_Vertices[sizeof(Hitbox_Z_Vertices) / sizeof(Hitbox_Z_Vertices[0])]);
-
-																float Target_Origin[3] =
-																{
-																	Bones[14][0][0] * Hitbox_Center[0] + Bones[14][0][1] * Hitbox_Center[1] + Bones[14][0][2] * Hitbox_Center[2] + Bones[14][0][3],
-
-																	Bones[14][1][0] * Hitbox_Center[0] + Bones[14][1][1] * Hitbox_Center[1] + Bones[14][1][2] * Hitbox_Center[2] + Bones[14][1][3],
-
-																	Hitbox_Z_Extremes[0][0] + (Hitbox_Z_Extremes[1][0] - Hitbox_Z_Extremes[0][0]) * Interface_Aim_Height.Floating_Point + Bones[14][2][3]
-																};
-
-																float Direction[3] =
-																{
-																	Target_Origin[0] - Eye_Position[0],
-
-																	Target_Origin[1] - Eye_Position[1],
-
-																	Target_Origin[2] - Eye_Position[2]
-																};
-
-																if (Trace_Ray(Direction) == 1)
-																{
-																	User_Command->Tick_Number = Target->Tick_Number;
-
-																	User_Command->Angles[0] = __builtin_atan2f(-Direction[2], __builtin_hypotf(Direction[0], Direction[1])) * 180 / 3.1415927f;
-
-																	User_Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180 / 3.1415927f;
-
-																	User_Command->Buttons |= 1;
-
-																	if (Interface_Bruteforce.Integer == 1)
+																	float Hitbox_Center[3]
 																	{
-																		__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 80);
+																		(Hitbox_Minimum[0] + Hitbox_Maximum[0]) / 2,
 
-																		Player_Data_Structure* Player_Data = &Players_Data[Target_Number];
+																		(Hitbox_Minimum[1] + Hitbox_Maximum[1]) / 2,
 
-																		if (Player_Data->Priority != -2)
+																		(Hitbox_Minimum[2] + Hitbox_Maximum[2]) / 2
+																	};
+
+																	float Hitbox_Z_Vertices[8]
+																	{
+																		Bones[14][2][0] * Hitbox_Minimum[0] + Bones[14][2][1] * Hitbox_Minimum[1] + Bones[14][2][2] * Hitbox_Minimum[2],
+
+																		Bones[14][2][0] * Hitbox_Maximum[0] + Bones[14][2][1] * Hitbox_Minimum[1] + Bones[14][2][2] * Hitbox_Minimum[2],
+
+																		Bones[14][2][0] * Hitbox_Minimum[0] + Bones[14][2][1] * Hitbox_Maximum[1] + Bones[14][2][2] * Hitbox_Minimum[2],
+
+																		Bones[14][2][0] * Hitbox_Minimum[0] + Bones[14][2][1] * Hitbox_Minimum[1] + Bones[14][2][2] * Hitbox_Maximum[2],
+
+																		Bones[14][2][0] * Hitbox_Maximum[0] + Bones[14][2][1] * Hitbox_Maximum[1] + Bones[14][2][2] * Hitbox_Minimum[2],
+
+																		Bones[14][2][0] * Hitbox_Maximum[0] + Bones[14][2][1] * Hitbox_Minimum[1] + Bones[14][2][2] * Hitbox_Maximum[2],
+
+																		Bones[14][2][0] * Hitbox_Minimum[0] + Bones[14][2][1] * Hitbox_Maximum[1] + Bones[14][2][2] * Hitbox_Maximum[2],
+
+																		Bones[14][2][0] * Hitbox_Maximum[0] + Bones[14][2][1] * Hitbox_Maximum[1] + Bones[14][2][2] * Hitbox_Maximum[2]
+																	};
+
+																	float* Hitbox_Z_Extremes[2];
+
+																	std::tie(Hitbox_Z_Extremes[0], Hitbox_Z_Extremes[1]) = std::minmax_element(Hitbox_Z_Vertices, &Hitbox_Z_Vertices[sizeof(Hitbox_Z_Vertices) / sizeof(Hitbox_Z_Vertices[0])]);
+
+																	float Target_Origin[3] =
+																	{
+																		Bones[14][0][0] * Hitbox_Center[0] + Bones[14][0][1] * Hitbox_Center[1] + Bones[14][0][2] * Hitbox_Center[2] + Bones[14][0][3],
+
+																		Bones[14][1][0] * Hitbox_Center[0] + Bones[14][1][1] * Hitbox_Center[1] + Bones[14][1][2] * Hitbox_Center[2] + Bones[14][1][3],
+
+																		Hitbox_Z_Extremes[0][0] + (Hitbox_Z_Extremes[1][0] - Hitbox_Z_Extremes[0][0]) * Interface_Aim_Height.Floating_Point + Bones[14][2][3]
+																	};
+
+																	float Direction[3] =
+																	{
+																		Target_Origin[0] - Eye_Position[0],
+
+																		Target_Origin[1] - Eye_Position[1],
+
+																		Target_Origin[2] - Eye_Position[2]
+																	};
+
+																	if (Trace_Ray(Direction) == 1)
+																	{
+																		User_Command->Tick_Number = Target->Tick_Number;
+
+																		User_Command->Angles[0] = __builtin_atan2f(-Direction[2], __builtin_hypotf(Direction[0], Direction[1])) * 180 / 3.1415927f;
+
+																		User_Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180 / 3.1415927f;
+
+																		User_Command->Buttons |= 1;
+
+																		if (Interface_Bruteforce.Integer == 1)
 																		{
-																			Recent_Player_Data_Number = Target_Number;
+																			__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 80);
 
-																			Byte_Manager::Copy_Bytes(0, &Previous_Recent_Player_Data, sizeof(Previous_Recent_Player_Data), Player_Data);
+																			Player_Data_Structure* Player_Data = &Players_Data[Target_Number];
 
-																			if (Player_Data->Memory_Tolerance == 0)
+																			if (Player_Data->Priority != -2)
 																			{
-																				if (Player_Data->Tolerance == 0)
-																				{
-																					Player_Data->Shots_Fired = (Player_Data->Shots_Fired + 1) % Bruteforce_Angles_Count;
+																				Recent_Player_Data_Number = Target_Number;
 
-																					Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Integer;
+																				Byte_Manager::Copy_Bytes(0, &Previous_Recent_Player_Data, sizeof(Previous_Recent_Player_Data), Player_Data);
+
+																				if (Player_Data->Memory_Tolerance == 0)
+																				{
+																					if (Player_Data->Tolerance == 0)
+																					{
+																						Player_Data->Shots_Fired = (Player_Data->Shots_Fired + 1) % Bruteforce_Angles_Count;
+
+																						Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Integer;
+																					}
+																					else
+																					{
+																						Player_Data->Tolerance -= 1;
+																					}
 																				}
 																				else
 																				{
-																					Player_Data->Tolerance -= 1;
+																					Player_Data->Memory_Tolerance -= 1;
 																				}
 																			}
-																			else
-																			{
-																				Player_Data->Memory_Tolerance -= 1;
-																			}
 																		}
-																	}
 
-																	goto Found_Target_Label;
+																		goto Found_Target_Label;
+																	}
 																}
+															}
+
+															Target_Number += 1;
+
+															goto Traverse_Sorted_Target_List_Label;
+
+															Found_Target_Label:
+															{
+
+															}
+														}
+													}
+
+													if ((User_Command->Buttons & 1) == 1)
+													{
+														float Rotations[2][3][3];
+
+														unsigned __int8 Calculation_Number = 0;
+
+														float Forward[3];
+
+														float Right[3];
+
+														float Up[3];
+
+														Angle_Vectors(User_Command->Angles, Forward, Right, Up);
+
+														User_Command->Command_Number = -2076434770;
+
+														User_Command->Random_Seed = 32;
+
+														using Random_Seed_Type = void(__cdecl*)(__int32 Seed);
+
+														static void* Random_Seed_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11856);
+
+														Random_Seed_Type((unsigned __int32)Random_Seed_Location)((User_Command->Random_Seed & 255) + 1);
+
+														using Random_Float_Type = float(__cdecl*)(float Minimum, float Maximum);
+
+														static void* Random_Float_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
+
+														float Random_X = Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f) + Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f);
+
+														Weapon_Spread = -1;
+
+														using Primary_Attack_Type = void(__thiscall**)(void* Weapon);
+
+														(*Primary_Attack_Type(*(unsigned __int32*)Weapon + 856))(Weapon);
+
+														float Random_Y = Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f) + Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f);
+
+														float Directions[2][3] =
+														{
+															{
+																Forward[0],
+
+																Forward[1],
+
+																Forward[2]
+															},
+
+															{
+																Forward[0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0],
+
+																Forward[1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1],
+
+																Forward[2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2]
+															}
+														};
+
+														Weapon_Spread = 0;
+
+														Calculate_Rotation_Label:
+														{
+															Rotations[Calculation_Number][0][0] = Directions[Calculation_Number][0];
+
+															Rotations[Calculation_Number][0][1] = Directions[Calculation_Number][1];
+
+															Rotations[Calculation_Number][0][2] = Directions[Calculation_Number][2];
+
+															Vector_Normalize(Rotations[Calculation_Number][0]);
+
+															Rotations[Calculation_Number][1][0] = Directions[Calculation_Number][1] - Directions[Calculation_Number][2];
+
+															Rotations[Calculation_Number][1][1] = Directions[Calculation_Number][2] - Directions[Calculation_Number][0];
+
+															Rotations[Calculation_Number][1][2] = Directions[Calculation_Number][0] - Directions[Calculation_Number][1];
+
+															Vector_Normalize(Rotations[Calculation_Number][1]);
+
+															Rotations[Calculation_Number][2][0] = Directions[Calculation_Number][1] * Rotations[Calculation_Number][1][2] - Directions[Calculation_Number][2] * Rotations[Calculation_Number][1][1];
+
+															Rotations[Calculation_Number][2][1] = Directions[Calculation_Number][2] * Rotations[Calculation_Number][1][0] - Directions[Calculation_Number][0] * Rotations[Calculation_Number][1][2];
+
+															Rotations[Calculation_Number][2][2] = Directions[Calculation_Number][0] * Rotations[Calculation_Number][1][1] - Directions[Calculation_Number][1] * Rotations[Calculation_Number][1][0];
+
+															Vector_Normalize(Rotations[Calculation_Number][2]);
+
+															if (Calculation_Number != 1)
+															{
+																Calculation_Number = 1;
+
+																goto Calculate_Rotation_Label;
 															}
 														}
 
-														Target_Number += 1;
-
-														goto Traverse_Sorted_Target_List_Label;
-
-														Found_Target_Label:
+														float Rotation[3][3] =
 														{
+															{
+																Rotations[0][0][0] * Rotations[1][0][0] + Rotations[0][1][0] * Rotations[1][1][0] + Rotations[0][2][0] * Rotations[1][2][0],
 
-														}
+																Rotations[0][0][0] * Rotations[1][0][1] + Rotations[0][1][0] * Rotations[1][1][1] + Rotations[0][2][0] * Rotations[1][2][1],
+
+																Rotations[0][0][0] * Rotations[1][0][2] + Rotations[0][1][0] * Rotations[1][1][2] + Rotations[0][2][0] * Rotations[1][2][2]
+															},
+
+															{
+																Rotations[0][0][1] * Rotations[1][0][0] + Rotations[0][1][1] * Rotations[1][1][0] + Rotations[0][2][1] * Rotations[1][2][0],
+
+																Rotations[0][0][1] * Rotations[1][0][1] + Rotations[0][1][1] * Rotations[1][1][1] + Rotations[0][2][1] * Rotations[1][2][1],
+
+																Rotations[0][0][1] * Rotations[1][0][2] + Rotations[0][1][1] * Rotations[1][1][2] + Rotations[0][2][1] * Rotations[1][2][2]
+															},
+
+															{
+																Rotations[0][0][2] * Rotations[1][0][0] + Rotations[0][1][2] * Rotations[1][1][0] + Rotations[0][2][2] * Rotations[1][2][0],
+
+																Rotations[0][0][2] * Rotations[1][0][1] + Rotations[0][1][2] * Rotations[1][1][1] + Rotations[0][2][2] * Rotations[1][2][1],
+
+																Rotations[0][0][2] * Rotations[1][0][2] + Rotations[0][1][2] * Rotations[1][1][2] + Rotations[0][2][2] * Rotations[1][2][2]
+															}
+														};
+
+														float Rotated_Forward[3] =
+														{
+															Forward[0] * Rotation[0][0] + Forward[1] * Rotation[0][1] + Forward[2] * Rotation[0][2],
+
+															Forward[0] * Rotation[1][0] + Forward[1] * Rotation[1][1] + Forward[2] * Rotation[1][2],
+
+															Forward[0] * Rotation[2][0] + Forward[1] * Rotation[2][1] + Forward[2] * Rotation[2][2]
+														};
+
+														float* Recoil = (float*)((unsigned __int32)Local_Player + 2992);
+
+														User_Command->Angles[0] = 180 - __builtin_atan2f(-Rotated_Forward[2], __builtin_hypotf(Rotated_Forward[0], Rotated_Forward[1])) * 180 / 3.1415927f - Recoil[0] * 2;
+
+														User_Command->Angles[1] = 180 + __builtin_atan2f(Rotated_Forward[1], Rotated_Forward[0]) * 180 / 3.1415927f - Recoil[1] * 2;
+
+														float Rotated_Up[3] =
+														{
+															Up[0] * Rotation[0][0] + Up[1] * Rotation[0][1] + Up[2] * Rotation[0][2],
+
+															Up[0] * Rotation[1][0] + Up[1] * Rotation[1][1] + Up[2] * Rotation[1][2],
+
+															Up[0] * Rotation[2][0] + Up[1] * Rotation[2][1] + Up[2] * Rotation[2][2]
+														};
+
+														User_Command->Angles[2] = 180 + __builtin_atan2f(Rotated_Forward[1] * Rotated_Up[0] - Rotated_Forward[0] * Rotated_Up[1], Rotated_Forward[0] * (Rotated_Forward[0] * Rotated_Up[2] - Rotated_Forward[2] * Rotated_Up[0]) - Rotated_Forward[1] * (Rotated_Forward[2] * Rotated_Up[1] - Rotated_Forward[1] * Rotated_Up[2])) * 180 / 3.1415927f - Recoil[2] * 2;
+
+														In_Attack = 1;
+
+														Send_Packet = (Interface_Alternative.Integer != 0) * 2;
+
+														Shot_Time = Global_Variables->Current_Time;
 													}
-												}
-
-												if ((User_Command->Buttons & 1) == 1)
-												{
-													float Rotations[2][3][3];
-
-													unsigned __int8 Calculation_Number = 0;
-
-													float Forward[3];
-
-													float Right[3];
-
-													float Up[3];
-
-													Angle_Vectors(User_Command->Angles, Forward, Right, Up);
-
-													User_Command->Command_Number = -2076434770;
-
-													User_Command->Random_Seed = 32;
-
-													using Random_Seed_Type = void(__cdecl*)(__int32 Seed);
-
-													static void* Random_Seed_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11856);
-
-													Random_Seed_Type((unsigned __int32)Random_Seed_Location)((User_Command->Random_Seed & 255) + 1);
-
-													using Random_Float_Type = float(__cdecl*)(float Minimum, float Maximum);
-
-													static void* Random_Float_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
-
-													float Random_X = Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f) + Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f);
-
-													Weapon_Spread = -1;
-
-													using Primary_Attack_Type = void(__thiscall**)(void* Weapon);
-
-													(*Primary_Attack_Type(*(unsigned __int32*)Weapon + 856))(Weapon);
-
-													float Random_Y = Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f) + Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f);
-
-													float Directions[2][3] =
-													{
-														{
-															Forward[0],
-
-															Forward[1],
-
-															Forward[2]
-														},
-
-														{
-															Forward[0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0],
-
-															Forward[1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1],
-
-															Forward[2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2]
-														}
-													};
-
-													Weapon_Spread = 0;
-
-													Calculate_Rotation_Label:
-													{
-														Rotations[Calculation_Number][0][0] = Directions[Calculation_Number][0];
-
-														Rotations[Calculation_Number][0][1] = Directions[Calculation_Number][1];
-
-														Rotations[Calculation_Number][0][2] = Directions[Calculation_Number][2];
-
-														Vector_Normalize(Rotations[Calculation_Number][0]);
-
-														Rotations[Calculation_Number][1][0] = Directions[Calculation_Number][1] - Directions[Calculation_Number][2];
-
-														Rotations[Calculation_Number][1][1] = Directions[Calculation_Number][2] - Directions[Calculation_Number][0];
-
-														Rotations[Calculation_Number][1][2] = Directions[Calculation_Number][0] - Directions[Calculation_Number][1];
-
-														Vector_Normalize(Rotations[Calculation_Number][1]);
-
-														Rotations[Calculation_Number][2][0] = Directions[Calculation_Number][1] * Rotations[Calculation_Number][1][2] - Directions[Calculation_Number][2] * Rotations[Calculation_Number][1][1];
-
-														Rotations[Calculation_Number][2][1] = Directions[Calculation_Number][2] * Rotations[Calculation_Number][1][0] - Directions[Calculation_Number][0] * Rotations[Calculation_Number][1][2];
-
-														Rotations[Calculation_Number][2][2] = Directions[Calculation_Number][0] * Rotations[Calculation_Number][1][1] - Directions[Calculation_Number][1] * Rotations[Calculation_Number][1][0];
-
-														Vector_Normalize(Rotations[Calculation_Number][2]);
-
-														if (Calculation_Number != 1)
-														{
-															Calculation_Number = 1;
-
-															goto Calculate_Rotation_Label;
-														}
-													}
-
-													float Rotation[3][3] =
-													{
-														{
-															Rotations[0][0][0] * Rotations[1][0][0] + Rotations[0][1][0] * Rotations[1][1][0] + Rotations[0][2][0] * Rotations[1][2][0],
-
-															Rotations[0][0][0] * Rotations[1][0][1] + Rotations[0][1][0] * Rotations[1][1][1] + Rotations[0][2][0] * Rotations[1][2][1],
-
-															Rotations[0][0][0] * Rotations[1][0][2] + Rotations[0][1][0] * Rotations[1][1][2] + Rotations[0][2][0] * Rotations[1][2][2]
-														},
-
-														{
-															Rotations[0][0][1] * Rotations[1][0][0] + Rotations[0][1][1] * Rotations[1][1][0] + Rotations[0][2][1] * Rotations[1][2][0],
-
-															Rotations[0][0][1] * Rotations[1][0][1] + Rotations[0][1][1] * Rotations[1][1][1] + Rotations[0][2][1] * Rotations[1][2][1],
-
-															Rotations[0][0][1] * Rotations[1][0][2] + Rotations[0][1][1] * Rotations[1][1][2] + Rotations[0][2][1] * Rotations[1][2][2]
-														},
-
-														{
-															Rotations[0][0][2] * Rotations[1][0][0] + Rotations[0][1][2] * Rotations[1][1][0] + Rotations[0][2][2] * Rotations[1][2][0],
-
-															Rotations[0][0][2] * Rotations[1][0][1] + Rotations[0][1][2] * Rotations[1][1][1] + Rotations[0][2][2] * Rotations[1][2][1],
-
-															Rotations[0][0][2] * Rotations[1][0][2] + Rotations[0][1][2] * Rotations[1][1][2] + Rotations[0][2][2] * Rotations[1][2][2]
-														}
-													};
-
-													float Rotated_Forward[3] =
-													{
-														Forward[0] * Rotation[0][0] + Forward[1] * Rotation[0][1] + Forward[2] * Rotation[0][2],
-
-														Forward[0] * Rotation[1][0] + Forward[1] * Rotation[1][1] + Forward[2] * Rotation[1][2],
-
-														Forward[0] * Rotation[2][0] + Forward[1] * Rotation[2][1] + Forward[2] * Rotation[2][2]
-													};
-
-													float* Recoil = (float*)((unsigned __int32)Local_Player + 2992);
-
-													User_Command->Angles[0] = 180 - __builtin_atan2f(-Rotated_Forward[2], __builtin_hypotf(Rotated_Forward[0], Rotated_Forward[1])) * 180 / 3.1415927f - Recoil[0] * 2;
-
-													User_Command->Angles[1] = 180 + __builtin_atan2f(Rotated_Forward[1], Rotated_Forward[0]) * 180 / 3.1415927f - Recoil[1] * 2;
-
-													float Rotated_Up[3] =
-													{
-														Up[0] * Rotation[0][0] + Up[1] * Rotation[0][1] + Up[2] * Rotation[0][2],
-
-														Up[0] * Rotation[1][0] + Up[1] * Rotation[1][1] + Up[2] * Rotation[1][2],
-
-														Up[0] * Rotation[2][0] + Up[1] * Rotation[2][1] + Up[2] * Rotation[2][2]
-													};
-
-													User_Command->Angles[2] = 180 + __builtin_atan2f(Rotated_Forward[1] * Rotated_Up[0] - Rotated_Forward[0] * Rotated_Up[1], Rotated_Forward[0] * (Rotated_Forward[0] * Rotated_Up[2] - Rotated_Forward[2] * Rotated_Up[0]) - Rotated_Forward[1] * (Rotated_Forward[2] * Rotated_Up[1] - Rotated_Forward[1] * Rotated_Up[2])) * 180 / 3.1415927f - Recoil[2] * 2;
-
-													In_Attack = 1;
-
-													Send_Packet = (Interface_Alternative.Integer != 0) * 2;
-
-													Shot_Time = Global_Variables->Current_Time;
 												}
 											}
 										}
@@ -813,19 +820,19 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 						}
 					}
 				}
-			}
-			else
-			{
-				Shot_Time = 0;
-
-				if (Recent_Player_Data_Number == 0)
+				else
 				{
+					Shot_Time = 0;
+
+					if (Recent_Player_Data_Number == 0)
+					{
+						goto Passed_Shot_Time_Check_Label;
+					}
+
+					Byte_Manager::Copy_Bytes(0, &Players_Data[Recent_Player_Data_Number], sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
+
 					goto Passed_Shot_Time_Check_Label;
 				}
-
-				Byte_Manager::Copy_Bytes(0, &Players_Data[Recent_Player_Data_Number], sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
-
-				goto Passed_Shot_Time_Check_Label;
 			}
 		}
 

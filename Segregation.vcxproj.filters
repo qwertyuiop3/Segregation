@@ -76,9 +76,6 @@
     <ClInclude Include="Player_Move.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Draw_Model.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Calculate_Override_Model_Index.hpp">
       <Filter>Header++</Filter>
     </ClInclude>

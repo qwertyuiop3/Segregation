@@ -52,8 +52,6 @@ void* Engine_Module_Location;
 
 #include "Precache.hpp"
 
-#include "Draw_Model.hpp"
-
 #include "Calculate_Override_Model_Index.hpp"
 
 __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reason, void* Reserved)

@@ -667,9 +667,9 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 															Angle_Vectors(User_Command->Angles, Forward, Right, Up);
 
-															User_Command->Command_Number = -2076434770;
+															User_Command->Command_Number = -242;
 
-															User_Command->Random_Seed = 32;
+															User_Command->Random_Seed = 165;
 
 															using Random_Seed_Type = void(__cdecl*)(__int32 Seed);
 

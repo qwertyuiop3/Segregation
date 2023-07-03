@@ -172,7 +172,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 				if (X != 0)
 				{
-					User_Command->Buttons |= __builtin_signbitf(X) == 0 ? 8 : 16;
+					User_Command->Buttons |= __builtin_signbit(X) == 0 ? 8 : 16;
 				}
 
 				float Y = (__int16)((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider);
@@ -181,7 +181,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 				if (Y != 0)
 				{
-					User_Command->Buttons |= __builtin_signbitf(Y) == 0 ? 1024 : 512;
+					User_Command->Buttons |= __builtin_signbit(Y) == 0 ? 1024 : 512;
 				}
 			};
 

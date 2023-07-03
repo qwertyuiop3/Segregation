@@ -162,9 +162,25 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 			float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-			User_Command->Move[0] = (__int16)((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider);
+			float X = (__int16)((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider);
 
-			User_Command->Move[1] = (__int16)((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider);
+			User_Command->Move[0] = X;
+
+			User_Command->Buttons &= ~1560;
+
+			if (X != 0)
+			{
+				User_Command->Buttons |= __builtin_signbitf(X) == 0 ? 8 : 16;
+			}
+
+			float Y = (__int16)((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider);
+
+			User_Command->Move[1] = Y;
+
+			if (Y != 0)
+			{
+				User_Command->Buttons |= __builtin_signbitf(Y) == 0 ? 1024 : 512;
+			}
 		};
 
 		Correct_Movement();

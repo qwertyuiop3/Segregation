@@ -86,7 +86,7 @@ void Implement_Extended_Interface()
 
 	Create_Console_Variable(&Interface_Bruteforce_Angles, (char*)"Bruteforce_Angles", (char*)"0, -45, 45, -90, 90", (void*)Bruteforce_Set_Angles);
 
-	Bruteforce_Set_Angles(&Interface_Bruteforce_Angles);
+	Bruteforce_Set_Angles((Interface_Structure*)((unsigned __int32)&Interface_Bruteforce_Angles + 24));
 
 	Create_Console_Variable(&Interface_Alternative, (char*)"Alternative", (char*)"1", nullptr);
 

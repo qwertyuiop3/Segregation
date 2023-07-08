@@ -20,7 +20,7 @@ struct User_Command_Structure
 
 	__int32 Random_Seed;
 };
-	
+
 Player_Data_Structure Previous_Recent_Player_Data;
 
 void* Original_Copy_User_Command_Caller_Location;

@@ -14,13 +14,11 @@ void Redirected_Draw_Crosshair()
 
 		float Uber_Alles = Interface_Uber_Alles_Scale.Integer;
 
-		__int32 Points[16]
+		__int32 Points[12]
 		{
 			(__int32)(Uber_Alles * __builtin_sinf((Rotation_Angle - 90) * 3.1415927f / 180)),
 
 			(__int32)(Uber_Alles * __builtin_cosf((Rotation_Angle - 90) * 3.1415927f / 180)),
-
-			(__int32)(Uber_Alles * __builtin_sinf((Rotation_Angle - 90) * 3.1415927f / 180)),
 
 			(__int32)(Uber_Alles * __builtin_cosf((Rotation_Angle - 90) * 3.1415927f / 180 + 1)),
 
@@ -30,13 +28,9 @@ void Redirected_Draw_Crosshair()
 
 			(__int32)(Uber_Alles * __builtin_sinf(Rotation_Angle * 3.1415927f / 180 + 1)),
 
-			(__int32)(Uber_Alles * __builtin_cosf(Rotation_Angle * 3.1415927f / 180)),
-
 			(__int32)(Uber_Alles * __builtin_sinf((Rotation_Angle + 90) * 3.1415927f / 180)),
 
 			(__int32)(Uber_Alles * __builtin_cosf((Rotation_Angle + 90) * 3.1415927f / 180)),
-
-			(__int32)(Uber_Alles * __builtin_sinf((Rotation_Angle + 90) * 3.1415927f / 180)),
 
 			(__int32)(Uber_Alles * __builtin_cosf((Rotation_Angle + 90) * 3.1415927f / 180 + 1)),
 
@@ -44,30 +38,26 @@ void Redirected_Draw_Crosshair()
 
 			(__int32)(Uber_Alles * __builtin_cosf((Rotation_Angle + 180) * 3.1415927f / 180)),
 
-			(__int32)(Uber_Alles * __builtin_sinf((Rotation_Angle + 180) * 3.1415927f / 180 + 1)),
-
-			(__int32)(Uber_Alles * __builtin_cosf((Rotation_Angle + 180) * 3.1415927f / 180)),
+			(__int32)(Uber_Alles * __builtin_sinf((Rotation_Angle + 180) * 3.1415927f / 180 + 1))
 		};
 
 		using Draw_Line_Type = void(__thiscall**)(void* Surface, __int32 From_X, __int32 From_Y, __int32 To_X, __int32 To_Y);
 
 		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[0], Y - Points[1]);
 
-		__int32 Extension = Uber_Alles - (__int32)(Uber_Alles * __builtin_cosf(-90 * 3.1415927f / 180 + 1)) + 1;
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[0], Y - Points[1], X + Points[0], Y - Points[2]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[0], Y - Points[1], X + Points[2], Y - Points[3] - Extension);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[3], Y - Points[4]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[4], Y - Points[5]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[3], Y - Points[4], X + Points[5], Y - Points[4]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[4], Y - Points[5], X + Points[6] + Extension, Y - Points[7]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[6], Y - Points[7]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[8], Y - Points[9]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[6], Y - Points[7], X + Points[6], Y - Points[8]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[8], Y - Points[9], X + Points[10], Y - Points[11] + Extension);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[9], Y - Points[10]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[12], Y - Points[13]);
-
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[12], Y - Points[13], X + Points[14] - Extension, Y - Points[15]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[9], Y - Points[10], X + Points[11], Y - Points[10]);
 	};
 
 	using Get_Screen_Size_Type = __int32(__cdecl*)();

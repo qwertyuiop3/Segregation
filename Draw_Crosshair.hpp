@@ -53,19 +53,21 @@ void Redirected_Draw_Crosshair()
 
 		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[0], Y - Points[1]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[0], Y - Points[1], X + Points[2], Y - Points[3]);
+		__int32 Extension = Uber_Alles - (__int32)(Uber_Alles * __builtin_cosf(-90 * 3.1415927f / 180 + 1)) + 1;
+
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[0], Y - Points[1], X + Points[2], Y - Points[3] - Extension);
 
 		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[4], Y - Points[5]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[4], Y - Points[5], X + Points[6], Y - Points[7]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[4], Y - Points[5], X + Points[6] + Extension, Y - Points[7]);
 
 		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[8], Y - Points[9]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[8], Y - Points[9], X + Points[10], Y - Points[11]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[8], Y - Points[9], X + Points[10], Y - Points[11] + Extension);
 
 		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X, Y, X + Points[12], Y - Points[13]);
 
-		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[12], Y - Points[13], X + Points[14], Y - Points[15]);
+		(*Draw_Line_Type(*(unsigned __int32*)Surface + 60))(Surface, X + Points[12], Y - Points[13], X + Points[14] - Extension, Y - Points[15]);
 	};
 
 	using Get_Screen_Size_Type = __int32(__cdecl*)();
@@ -92,5 +94,5 @@ void Redirected_Draw_Crosshair()
 
 	Uber_Alles(255, Screen_Width, Screen_Height);
 
-	Rotation_Angle = __builtin_remainderf(Rotation_Angle - (*(Global_Variables_Structure**)607726732)->Frame_Time * Interface_Uber_Alles_Speed.Integer, 360);
+	Rotation_Angle = __builtin_remainderf(Rotation_Angle - (*(Global_Variables_Structure**)607726732)->Frame_Time * Interface_Uber_Alles_Speed.Integer, 180);
 }

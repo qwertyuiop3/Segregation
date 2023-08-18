@@ -20,6 +20,8 @@ void* Engine_Module_Location;
 
 #include "Event_Listener.hpp"
 
+#include <vector>
+
 #include "Write_Events.hpp"
 
 #include "Interpolate.hpp"
@@ -42,11 +44,11 @@ void* Engine_Module_Location;
 
 #include "Item_Post_Frame.hpp"
 
-#include <vector>
-
 #include "Copy_User_Command.hpp"
 
 #include "Send_Move.hpp"
+
+#include "Packet_End.hpp"
 
 #include "Draw_Crosshair.hpp"
 
@@ -250,6 +252,10 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 			_putws(L"[ + ] Network");
 			{
 				Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Engine_Module_Location + 772928), (void*)Redirected_Send_Move);
+
+				Redirection_Manager::Redirect_Function(Original_Packet_End_Caller_Location, 2, (void*)((unsigned __int32)Engine_Module_Location + 2030864), 1, (void*)Redirected_Packet_End);
+
+				*(void**)((unsigned __int32)Original_Packet_End_Caller_Location + 4) = (void*)((__int32)((unsigned __int32)Engine_Module_Location + 767384) - (__int32)Original_Packet_End_Caller_Location);
 			}
 
 			_putws(L"[ + ] View Effects");

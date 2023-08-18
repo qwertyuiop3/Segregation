@@ -1,5 +1,7 @@
 void Redirected_Send_Move()
 {
+	Sequences.push_back(*(__int32*)((unsigned __int32)__builtin_frame_address(0) + 60));
+
 	struct Message_Structure
 	{
 		__int8 Message[76];

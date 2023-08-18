@@ -885,12 +885,9 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 			if (Send_Packet == 0)
 			{
-				if (max(Interface_Minimum_Choked_Commands.Integer, Interface_Maximum_Choked_Commands.Integer) < 15)
-				{
-					using Send_Datagram_Type = __int32(__thiscall*)(void* Network_Channel, void* Unknown_Parameter);
+				/*using Send_Datagram_Type = __int32(__thiscall*)(void* Network_Channel, void* Unknown_Parameter);
 
-					*(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type((unsigned __int32)Engine_Module_Location + 1880960)(Network_Channel, nullptr);
-				}
+				*(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type((unsigned __int32)Engine_Module_Location + 1880960)(Network_Channel, nullptr);*/
 			}
 			else
 			{

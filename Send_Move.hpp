@@ -1,7 +1,5 @@
 void Redirected_Send_Move()
 {
-	Sequences.push_back(*(__int32*)((unsigned __int32)__builtin_frame_address(0) + 60));
-
 	struct Message_Structure
 	{
 		__int8 Message[76];
@@ -67,4 +65,6 @@ void Redirected_Send_Move()
 	using Send_Network_Message_Type = void(__thiscall*)(void* Network_Channel, void* Message, void* Unknown_Parameter_1, void* Unknown_Parameter_2);
 
 	Send_Network_Message_Type((unsigned __int32)Engine_Module_Location + 1882928)(Network_Channel, &Message, nullptr, nullptr);
+
+	Sequences.push_back(*(__int32*)((unsigned __int32)__builtin_frame_address(0) + 60));
 }

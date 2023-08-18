@@ -255,7 +255,7 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 
 				Redirection_Manager::Redirect_Function(Original_Packet_End_Caller_Location, 2, (void*)((unsigned __int32)Engine_Module_Location + 2030864), 1, (void*)Redirected_Packet_End);
 
-				*(void**)((unsigned __int32)Original_Packet_End_Caller_Location + 4) = (void*)((__int32)((unsigned __int32)Engine_Module_Location + 767384) - (__int32)Original_Packet_End_Caller_Location);
+				*(void**)((unsigned __int32)Original_Packet_End_Caller_Location + 4) = (void*)((unsigned __int32)Engine_Module_Location + 767384 - (unsigned __int32)Original_Packet_End_Caller_Location);
 			}
 
 			_putws(L"[ + ] View Effects");

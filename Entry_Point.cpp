@@ -18,6 +18,8 @@
 
 #include "Event_Listener.hpp"
 
+#include <vector>
+
 #include "Write_Events.hpp"
 
 #include "Shutdown.hpp"
@@ -44,11 +46,11 @@
 
 #include "Weapon_Spread.hpp"
 
-#include <vector>
-
 #include "Copy_User_Command.hpp"
 
 #include "Send_Move.hpp"
+
+#include "Packet_End.hpp"
 
 #include "Draw_Crosshair.hpp"
 
@@ -231,6 +233,10 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 			_putws(L"[ + ] Network");
 			{
 				Redirection_Manager::Redirect_Function(1, (void*)537142224, (void*)Redirected_Send_Move);
+
+				Redirection_Manager::Redirect_Function(Original_Packet_End_Caller_Location, 2, (void*)538164144, 1, (void*)Redirected_Packet_End);
+
+				*(void**)((unsigned __int32)Original_Packet_End_Caller_Location + 4) = (void*)((unsigned __int32)537146696 - (unsigned __int32)Original_Packet_End_Caller_Location);
 			}
 
 			_putws(L"[ + ] View Effects");

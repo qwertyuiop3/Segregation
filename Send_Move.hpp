@@ -65,4 +65,6 @@ void Redirected_Send_Move()
 	using Send_Network_Message_Type = void(__thiscall*)(void* Network_Channel, void* Message, void* Unknown_Parameter);
 
 	Send_Network_Message_Type(537917776)(Network_Channel, &Message, nullptr);
+
+	Sequences.push_back(*(__int32*)((unsigned __int32)__builtin_frame_address(0) - 12));
 }

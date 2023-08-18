@@ -90,6 +90,7 @@
     <ClInclude Include="Fall_Damage.hpp" />
     <ClInclude Include="Finish_Move.hpp" />
     <ClInclude Include="Interpolate.hpp" />
+    <ClInclude Include="Packet_End.hpp" />
     <ClInclude Include="Precache.hpp" />
     <ClInclude Include="Copy_User_Command.hpp" />
     <ClInclude Include="Post_Entity_Packet_Received.hpp" />

@@ -902,7 +902,13 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 		User_Command->Angles[2] = Compress_Angle(User_Command->Angles[2], 256);
 
-		if (Send_Packet != 0)
+		if (Send_Packet == 0)
+		{
+			/*using Send_Datagram_Type = __int32(__thiscall*)(void* Network_Channel, void* Unknown_Parameter);
+
+			*(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type(537933616)(Network_Channel, nullptr);*/
+		}
+		else
 		{
 			Byte_Manager::Copy_Bytes(0, Update_Animation_Angles, sizeof(Update_Animation_Angles), User_Command->Angles);
 		}

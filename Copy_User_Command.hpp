@@ -889,9 +889,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 				{
 					using Send_Datagram_Type = __int32(__thiscall*)(void* Network_Channel, void* Unknown_Parameter);
 
-					*(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type((unsigned __int32)Engine_Module_Location + 1880960)(Network_Channel, nullptr);
-
-					__int32 Sequence_Number = *(__int32*)((unsigned __int32)__builtin_frame_address(0) + 112);
+					__int32 Sequence_Number = *(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type((unsigned __int32)Engine_Module_Location + 1880960)(Network_Channel, nullptr);
 
 					Sequences[Sequence_Number % 90] =
 					{

@@ -48,7 +48,7 @@ void* Engine_Module_Location;
 
 #include "Send_Move.hpp"
 
-#include "Packet_End.hpp"
+#include "Packet_Start.hpp"
 
 #include "Draw_Crosshair.hpp"
 
@@ -253,9 +253,7 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 			{
 				Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Engine_Module_Location + 772928), (void*)Redirected_Send_Move);
 
-				Redirection_Manager::Redirect_Function(Original_Packet_End_Caller_Location, 2, (void*)((unsigned __int32)Engine_Module_Location + 2030864), 1, (void*)Redirected_Packet_End);
-
-				*(void**)((unsigned __int32)Original_Packet_End_Caller_Location + 4) = (void*)((unsigned __int32)Engine_Module_Location + 767384 - (unsigned __int32)Original_Packet_End_Caller_Location);
+				Redirection_Manager::Redirect_Function(Original_Packet_Start_Caller_Location, 0, (void*)((unsigned __int32)Engine_Module_Location + 0x1EFD60), 1, (void*)Redirected_Packet_Start);
 			}
 
 			_putws(L"[ + ] View Effects");

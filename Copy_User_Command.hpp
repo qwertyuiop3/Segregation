@@ -885,9 +885,21 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 			if (Send_Packet == 0)
 			{
-				/*using Send_Datagram_Type = __int32(__thiscall*)(void* Network_Channel, void* Unknown_Parameter);
+				if (max(Interface_Minimum_Choked_Commands.Integer, Interface_Maximum_Choked_Commands.Integer) < 15)
+				{
+					using Send_Datagram_Type = __int32(__thiscall*)(void* Network_Channel, void* Unknown_Parameter);
 
-				*(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type((unsigned __int32)Engine_Module_Location + 1880960)(Network_Channel, nullptr);*/
+					*(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type((unsigned __int32)Engine_Module_Location + 1880960)(Network_Channel, nullptr);
+
+					__int32 Sequence_Number = *(__int32*)((unsigned __int32)__builtin_frame_address(0) + 112);
+
+					Sequences[Sequence_Number % 90] =
+					{
+						Sequence_Number,
+
+						Sequence_Number - Choked_Commands_Count - 1
+					};
+				}
 			}
 			else
 			{

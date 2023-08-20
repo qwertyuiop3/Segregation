@@ -89,6 +89,7 @@
     <ClInclude Include="Event_Listener.hpp" />
     <ClInclude Include="Fall_Damage.hpp" />
     <ClInclude Include="Finish_Move.hpp" />
+    <ClInclude Include="Get_User_Command.hpp" />
     <ClInclude Include="Interpolate.hpp" />
     <ClInclude Include="Packet_Start.hpp" />
     <ClInclude Include="Precache.hpp" />

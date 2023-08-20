@@ -46,6 +46,8 @@
 
 #include "Weapon_Spread.hpp"
 
+#include "Get_User_Command.hpp"
+
 #include "Copy_User_Command.hpp"
 
 #include "Send_Move.hpp"
@@ -226,6 +228,8 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 			_putws(L"[ + ] Input");
 			{
 				Byte_Manager::Set_Bytes(1, (void*)604993824, 3, 144);
+
+				Redirection_Manager::Redirect_Function(Original_Get_User_Command_Caller_Location, 1, (void*)604993792, 1, (void*)Redirected_Get_User_Command);
 
 				Redirection_Manager::Redirect_Function(Original_Copy_User_Command_Caller_Location, 0, (void*)604850464, 1, (void*)Redirected_Copy_User_Command);
 			}

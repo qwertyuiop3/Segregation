@@ -23,6 +23,9 @@ struct User_Command_Structure
 
 Player_Data_Structure Previous_Recent_Player_Data;
 
+__int32 xfirsttick;
+__int32 validticks[90][90];
+
 void* Original_Copy_User_Command_Caller_Location;
 
 void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Command_Structure* User_Command)
@@ -904,19 +907,16 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 		if (Send_Packet == 0)
 		{
-			if (max(Interface_Minimum_Choked_Commands.Integer, Interface_Maximum_Choked_Commands.Integer) < 15)
+			using Send_Datagram_Type = __int32(__thiscall*)(void* Network_Channel, void* Unknown_Parameter);
+
+			__int32 Sequence_Number = *(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type(537933616)(Network_Channel, nullptr);
+
+			Sequences[Sequence_Number % 90] =
 			{
-				using Send_Datagram_Type = __int32(__thiscall*)(void* Network_Channel, void* Unknown_Parameter);
+				Sequence_Number,
 
-				__int32 Sequence_Number = *(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type(537933616)(Network_Channel, nullptr);
-
-				Sequences[Sequence_Number % 90] =
-				{
-					Sequence_Number,
-
-					Sequence_Number - Choked_Commands_Count - 1
-				};
-			}
+				Sequence_Number - Choked_Commands_Count - 1
+			};
 		}
 		else
 		{
@@ -925,6 +925,13 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 		*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 24) = Send_Packet;
 	}
+
+	if (*(__int32*)540627872 == 0)
+	{
+		xfirsttick = User_Command->Tick_Number % 90;
+		memset(validticks[xfirsttick], 0, 90);
+	}
+	validticks[xfirsttick][*(__int32*)540627872] = User_Command->Tick_Number;
 
 	(decltype(&Redirected_Copy_User_Command)(Original_Copy_User_Command_Caller_Location))(Unknown_Parameter, User_Command);
 }

@@ -85,8 +85,5 @@
     <ClInclude Include="Packet_Start.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Get_User_Command.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

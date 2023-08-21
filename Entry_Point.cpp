@@ -46,8 +46,6 @@
 
 #include "Weapon_Spread.hpp"
 
-#include "Get_User_Command.hpp"
-
 #include "Copy_User_Command.hpp"
 
 #include "Send_Move.hpp"
@@ -57,6 +55,115 @@
 #include "Draw_Crosshair.hpp"
 
 #include "Precache.hpp"
+
+__int8 __thiscall performpred(void* Prediction, __int8 Unknown_Parameter, void* Player, __int32 Acknowledged_Command_Number, __int32 Outgoing_Command_Number)
+{
+	*(__int8*)((unsigned __int32)Prediction + 8) = 1;
+
+	using Compute_First_Command_To_Execute_Type = __int32(__thiscall*)(void* Prediction, __int8 Unknown_Parameter, __int32 Acknowledged_Command_Number, __int32 Outgoing_Command_Number);
+
+	__int32 Current_Command_Number = Compute_First_Command_To_Execute_Type(605206464)(Prediction, 1, Acknowledged_Command_Number, Outgoing_Command_Number);
+
+	__int32 Final_Command_Number = Outgoing_Command_Number + 1;
+
+	static Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)607726732;
+
+	using Get_User_Command_Type = User_Command_Structure*(__thiscall*)(void* Unknown_Parameter, __int32 Command_Number);
+
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	static std::vector<User_Command_Structure*> cmds;
+	cmds.clear();
+	for (int i = Current_Command_Number + Acknowledged_Command_Number; i < Final_Command_Number; i++)
+	{
+		cmds.push_back(Get_User_Command_Type(604993792)(*(void**)607769608, i));
+	}
+	if (cmds.size())//temporary
+	{
+		__int32 first_tick = cmds.at(0)->Tick_Number;
+		__int32 lastvalidd = first_tick;
+		for (int i = 0; i < cmds.size(); i++)
+		{
+			for (int j = 0; j < 90; j++)
+			{
+				if (validticks[first_tick % 90][j] == cmds.at(i)->Tick_Number)
+				{
+					lastvalidd = cmds.at(i)->Tick_Number;
+					goto skip_delete;
+				}
+			}
+			if (abs(cmds.at(i)->Tick_Number - lastvalidd) > 24)
+			{
+				cmds.erase(cmds.begin() + i);
+				--i;
+			}
+			else
+			{
+				lastvalidd = cmds.at(i)->Tick_Number;
+			}
+			skip_delete:{}
+		}
+	}
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Predict_Label:
+	{
+		__int32 Current_Acknowledged_Command_Number = Current_Command_Number + Acknowledged_Command_Number;
+
+		if (Current_Acknowledged_Command_Number != Final_Command_Number)
+		{
+			if (Current_Command_Number != 90)
+			{
+				User_Command_Structure* User_Command = Get_User_Command_Type(604993792)(*(void**)607769608, Current_Acknowledged_Command_Number);
+
+				if (std::find(cmds.begin(), cmds.end(), User_Command) != cmds.end())
+				{
+					using Run_Simulation_Type = void(__thiscall*)(void* Prediction, __int32 Command_Number, float Current_Time, User_Command_Structure* User_Command, void* Player);
+
+					float Current_Time = *(__int32*)((unsigned __int32)Player + 3592) * Global_Variables->Interval_Per_Tick;
+
+					if (*(__int8*)((unsigned __int32)User_Command + 60) == 0)
+					{
+						*(__int8*)((unsigned __int32)Prediction + 9) = 1;
+					}
+					else
+					{
+						*(__int8*)((unsigned __int32)Prediction + 9) = 0;
+					}
+
+					Run_Simulation_Type(605206096)(Prediction, Current_Acknowledged_Command_Number, Current_Time, User_Command, Player);
+
+					*(__int8*)((unsigned __int32)User_Command + 60) = 1;
+
+					Global_Variables->Current_Time = Current_Time;
+
+					Global_Variables->Frame_Time = Global_Variables->Interval_Per_Tick;
+
+					using Store_Results_Type = void(__thiscall*)(void* Prediction, __int32 Number);
+
+					Store_Results_Type(605209056)(Prediction, Current_Command_Number - 1);
+
+					*(__int32*)((unsigned __int32)Prediction + 16) = Current_Command_Number;
+				}
+				else
+				{
+					using Store_Results_Type = void(__thiscall*)(void* Prediction, __int32 Number);
+
+					Store_Results_Type(605209056)(Prediction, Current_Command_Number - 1);
+				}
+
+				Current_Command_Number += 1;
+
+				goto Predict_Label;
+			}
+		}
+
+		*(__int32*)((unsigned __int32)Player + 3596) = *(__int32*)((unsigned __int32)Player + 3592);
+	}
+
+	*(__int8*)((unsigned __int32)Prediction + 8) = 0;
+
+	return 1;
+}
 
 __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reason, void* Reserved)
 {
@@ -68,6 +175,8 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 	{
 		if (Call_Reason == DLL_PROCESS_ATTACH)
 		{
+			Redirection_Manager::Redirect_Function(1, (void*)0x2412C250, (void*)performpred);
+
 			Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)LoadLibraryW(L"vaudio_speex.dll") + 9360), 1, 195);
 
 			AllocConsole();
@@ -228,8 +337,6 @@ __int32 __stdcall DllMain(void* This_Module_Location, unsigned __int32 Call_Reas
 			_putws(L"[ + ] Input");
 			{
 				Byte_Manager::Set_Bytes(1, (void*)604993824, 3, 144);
-
-				Redirection_Manager::Redirect_Function(Original_Get_User_Command_Caller_Location, 1, (void*)604993792, 1, (void*)Redirected_Get_User_Command);
 
 				Redirection_Manager::Redirect_Function(Original_Copy_User_Command_Caller_Location, 0, (void*)604850464, 1, (void*)Redirected_Copy_User_Command);
 			}

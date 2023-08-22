@@ -31,10 +31,7 @@ void __thiscall Redirected_Run_Simulation(void* Unknown_Parameter_1, void* Unkno
 {
 	if (Extra_Simulations_Left == 0)
 	{
-		if (User_Command->Extra_Simulations > 0)
-		{
-			Extra_Simulations_Left = User_Command->Extra_Simulations;
-		}
+		Extra_Simulations_Left = User_Command->Extra_Simulations;
 
 		(decltype(&Redirected_Run_Simulation)(Original_Run_Simulation_Caller))(Unknown_Parameter_1, Unknown_Parameter_2, Unknown_Parameter_3, User_Command, Unknown_Parameter_4);
 	}

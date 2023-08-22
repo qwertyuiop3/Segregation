@@ -1,6 +1,6 @@
 float Update_Animation_Angles[2];
 
-void* Original_Update_Animation_Caller_Location;
+void* Original_Update_Animation_Caller;
 
 void __thiscall Redirected_Update_Animation(void* Player)
 {
@@ -11,5 +11,5 @@ void __thiscall Redirected_Update_Animation(void* Player)
         *(float*)((unsigned __int32)Player + 4128) = Update_Animation_Angles[1];
     }
 
-    (decltype(&Redirected_Update_Animation)(Original_Update_Animation_Caller_Location))(Player);
+    (decltype(&Redirected_Update_Animation)(Original_Update_Animation_Caller))(Player);
 }

@@ -1,4 +1,4 @@
-void* Original_Store_Prediction_Results_Caller_Location;
+void* Original_Store_Prediction_Results_Caller;
 
 void __thiscall Redirected_Store_Prediction_Results(void* Unknown_Parameter_1, void* Unknown_Parameter_2)
 {
@@ -27,5 +27,5 @@ void __thiscall Redirected_Store_Prediction_Results(void* Unknown_Parameter_1, v
 		Predicted_Data->Last_Fire = *(float*)((unsigned __int32)Weapon + 1912);
 	}
 
-	(decltype(&Redirected_Store_Prediction_Results)(Original_Store_Prediction_Results_Caller_Location))(Unknown_Parameter_1, Unknown_Parameter_2);
+	(decltype(&Redirected_Store_Prediction_Results)(Original_Store_Prediction_Results_Caller))(Unknown_Parameter_1, Unknown_Parameter_2);
 }

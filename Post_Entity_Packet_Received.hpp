@@ -41,7 +41,7 @@ void Predicton_Copy_Compare(char* Class, void* Unknown_Parameter_1, void* Unknow
 	}
 }
 
-void* Original_Post_Entity_Packet_Received_Caller_Location;
+void* Original_Post_Entity_Packet_Received_Caller;
 
 void Redirected_Post_Entity_Packet_Received()
 {
@@ -89,5 +89,5 @@ void Redirected_Post_Entity_Packet_Received()
 		Transfer_Data_Type(605218912)(&Predicton_Copy, nullptr, -1, (void*)607768164);
 	}
 
-	(decltype(&Redirected_Post_Entity_Packet_Received)(Original_Post_Entity_Packet_Received_Caller_Location))();
+	(decltype(&Redirected_Post_Entity_Packet_Received)(Original_Post_Entity_Packet_Received_Caller))();
 }

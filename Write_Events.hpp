@@ -7,7 +7,7 @@ struct Sequence_Structure
 
 Sequence_Structure Sequences[90];
 
-void* Original_Write_Events_Caller_Location;
+void* Original_Write_Events_Caller;
 
 void __thiscall Redirected_Write_Events(void* Unknown_Parameter_1, void* Unknown_Parameter_2)
 {
@@ -19,5 +19,5 @@ void __thiscall Redirected_Write_Events(void* Unknown_Parameter_1, void* Unknown
 
 	Byte_Manager::Set_Bytes(0, Sequences, sizeof(Sequences), 0);
 
-	(decltype(&Redirected_Write_Events)(Original_Write_Events_Caller_Location))(Unknown_Parameter_1, Unknown_Parameter_2);
+	(decltype(&Redirected_Write_Events)(Original_Write_Events_Caller))(Unknown_Parameter_1, Unknown_Parameter_2);
 }

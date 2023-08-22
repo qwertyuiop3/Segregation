@@ -1,4 +1,4 @@
-void* Original_Compute_Torso_Rotation_Caller_Location;
+void* Original_Compute_Torso_Rotation_Caller;
 
 void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 {
@@ -35,6 +35,6 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 
 	if (__builtin_return_address(0) == (void*)604026641)
 	{
-		(decltype(&Redirected_Compute_Torso_Rotation)(Original_Compute_Torso_Rotation_Caller_Location))(Animation_State);
+		(decltype(&Redirected_Compute_Torso_Rotation)(Original_Compute_Torso_Rotation_Caller))(Animation_State);
 	}
 }

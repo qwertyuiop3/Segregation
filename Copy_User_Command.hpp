@@ -1,35 +1,11 @@
-struct User_Command_Structure
-{
-	__int8 Additional_Bytes_1[4];
-
-	__int32 Command_Number;
-
-	__int32 Tick_Number;
-
-	float Angles[3];
-
-	float Move[3];
-
-	__int32 Buttons;
-
-	__int8 Additional_Bytes_2[1];
-
-	__int32 Select;
-
-	__int8 Additional_Bytes_3[4];
-
-	__int32 Random_Seed;
-};
-
 Player_Data_Structure Previous_Recent_Player_Data;
 
-__int32 xfirsttick;
-__int32 validticks[90][90];
-
-void* Original_Copy_User_Command_Caller_Location;
+void* Original_Copy_User_Command_Caller;
 
 void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Command_Structure* User_Command)
 {
+	User_Command->Extra_Simulations = 0;
+
 	void* Local_Player = *(void**)607867332;
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 135) == 0)
@@ -698,15 +674,15 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 														using Random_Seed_Type = void(__cdecl*)(__int32 Seed);
 
-														static void* Random_Seed_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11856);
+														static void* Random_Seed = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11856);
 
-														Random_Seed_Type((unsigned __int32)Random_Seed_Location)((User_Command->Random_Seed & 255) + 1);
+														Random_Seed_Type((unsigned __int32)Random_Seed)((User_Command->Random_Seed & 255) + 1);
 
 														using Random_Float_Type = float(__cdecl*)(float Minimum, float Maximum);
 
-														static void* Random_Float_Location = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
+														static void* Random_Float = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
 
-														float Random_X = Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f) + Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f);
+														float Random_X = Random_Float_Type(Random_Float)(-0.5f, 0.5f) + Random_Float_Type(Random_Float)(-0.5f, 0.5f);
 
 														Weapon_Spread = -1;
 
@@ -714,7 +690,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 														(*Primary_Attack_Type(*(unsigned __int32*)Weapon + 856))(Weapon);
 
-														float Random_Y = Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f) + Random_Float_Type(Random_Float_Location)(-0.5f, 0.5f);
+														float Random_Y = Random_Float_Type(Random_Float)(-0.5f, 0.5f) + Random_Float_Type(Random_Float)(-0.5f, 0.5f);
 
 														float Directions[2][3] =
 														{
@@ -921,17 +897,15 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 		else
 		{
 			Byte_Manager::Copy_Bytes(0, Update_Animation_Angles, sizeof(Update_Animation_Angles), User_Command->Angles);
+
+			if (Choked_Commands_Count > 14)
+			{
+				User_Command->Extra_Simulations = Choked_Commands_Count - 14;
+			}
 		}
 
 		*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 24) = Send_Packet;
 	}
 
-	if (*(__int32*)540627872 == 0)
-	{
-		xfirsttick = User_Command->Tick_Number % 90;
-		memset(validticks[xfirsttick], 0, 90);
-	}
-	validticks[xfirsttick][*(__int32*)540627872] = User_Command->Tick_Number;
-
-	(decltype(&Redirected_Copy_User_Command)(Original_Copy_User_Command_Caller_Location))(Unknown_Parameter, User_Command);
+	(decltype(&Redirected_Copy_User_Command)(Original_Copy_User_Command_Caller))(Unknown_Parameter, User_Command);
 }

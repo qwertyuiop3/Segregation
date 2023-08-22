@@ -1,4 +1,4 @@
-void* Original_Precache_Caller_Location;
+void* Original_Precache_Caller;
 
 void __thiscall Redirected_Precache(void* Material)
 {
@@ -27,5 +27,5 @@ void __thiscall Redirected_Precache(void* Material)
 		}
 	}
 
-	(decltype(&Redirected_Precache)(Original_Precache_Caller_Location))(Material);
+	(decltype(&Redirected_Precache)(Original_Precache_Caller))(Material);
 }

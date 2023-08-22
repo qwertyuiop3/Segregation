@@ -62,7 +62,7 @@ void Redirected_Send_Move()
 
 	*(__int32*)((unsigned __int32)Network_Channel + 8) += Extra_Commands_Queue;
 
-	*(__int32*)((unsigned __int32)Network_Channel + 28) -= Extra_Commands_Queue;
+	*(__int32*)((unsigned __int32)Network_Channel + 28) = 0;
 
 	using Send_Network_Message_Type = void(__thiscall*)(void* Network_Channel, void* Message, void* Unknown_Parameter);
 

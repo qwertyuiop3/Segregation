@@ -896,12 +896,9 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 		}
 		else
 		{
-			Byte_Manager::Copy_Bytes(0, Update_Animation_Angles, sizeof(Update_Animation_Angles), User_Command->Angles);
+			User_Command->Extra_Simulations = max(0, Choked_Commands_Count - 14);
 
-			if (Choked_Commands_Count > 14)
-			{
-				User_Command->Extra_Simulations = Choked_Commands_Count - 14;
-			}
+			Byte_Manager::Copy_Bytes(0, Update_Animation_Angles, sizeof(Update_Animation_Angles), User_Command->Angles);
 		}
 
 		*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 24) = Send_Packet;

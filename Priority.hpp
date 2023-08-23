@@ -40,14 +40,14 @@ void Get_Priorities()
 
 		char Name[132];
 
-		Get_Name_Type((unsigned __int32)Engine_Module_Location + 675408)((void*)((unsigned __int32)Engine_Module_Location + 3928612), Entity_Number, Name);
+		Get_Name_Type((unsigned __int32)Engine_Module + 675408)((void*)((unsigned __int32)Engine_Module + 3928612), Entity_Number, Name);
 
 		if (Name[0] != 0)
 		{
 			wprintf(L"[ ? ] \"%hs\" %i %i\n", Name, Entity_Number, Players_Data[Entity_Number].Priority);
 		}
 
-		if (Entity_Number < (*(Global_Variables_Structure**)((unsigned __int32)Client_Module_Location + 4825720))->Maximum_Clients)
+		if (Entity_Number < (*(Global_Variables_Structure**)((unsigned __int32)Client_Module + 4825720))->Maximum_Clients)
 		{
 			Entity_Number += 1;
 

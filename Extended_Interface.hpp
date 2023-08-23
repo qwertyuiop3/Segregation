@@ -15,7 +15,7 @@ struct Interface_Structure
 
 Interface_Structure Interface_Commentator;
 
-void* Client_Module_Location;
+void* Client_Module;
 
 Interface_Structure Interface_Get_Priorities;
 
@@ -61,18 +61,18 @@ void Implement_Extended_Interface()
 	{
 		using Create_Console_Variable_Type = void(__thiscall*)(Interface_Structure* Variable, char* Name, char* Value, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Handler);
 
-		Create_Console_Variable_Type((unsigned __int32)Engine_Module_Location + 2390080)(Variable, Name, Value, nullptr, nullptr, Handler);
+		Create_Console_Variable_Type((unsigned __int32)Engine_Module + 2390080)(Variable, Name, Value, nullptr, nullptr, Handler);
 
 		wprintf(L"[ + ] %hs -> %p\n", Name, Variable);
 	};
 
 	Create_Console_Variable(&Interface_Commentator, (char*)"Commentator", (char*)"1", nullptr);
 
-	Client_Module_Location = GetModuleHandleW(L"client.dll");
+	Client_Module = GetModuleHandleW(L"client.dll");
 
 	using Create_Console_Command_Type = void(__thiscall*)(Interface_Structure* Variable, char* Name, void* Handler, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3);
 
-	Create_Console_Command_Type((unsigned __int32)Client_Module_Location + 2852496)(&Interface_Get_Priorities, (char*)"Get_Priorities", (void*)Get_Priorities, nullptr, nullptr, nullptr);
+	Create_Console_Command_Type((unsigned __int32)Client_Module + 2852496)(&Interface_Get_Priorities, (char*)"Get_Priorities", (void*)Get_Priorities, nullptr, nullptr, nullptr);
 
 	wprintf(L"[ + ] Get_Priorities %p\n", &Interface_Get_Priorities);
 

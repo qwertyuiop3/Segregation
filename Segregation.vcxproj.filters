@@ -40,6 +40,9 @@
     <ClInclude Include="Priority.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
+    <ClInclude Include="Run_Simulation.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
     <ClInclude Include="Sounds.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
@@ -50,9 +53,6 @@
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Compute_Torso_Rotation.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
-    <ClInclude Include="Bruteforce.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Write_Events.hpp">
@@ -80,6 +80,12 @@
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Packet_Start.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Run_Simulation.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Bruteforce.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
   </ItemGroup>

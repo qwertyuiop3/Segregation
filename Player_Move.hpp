@@ -1,4 +1,4 @@
-void* Original_Player_Move_Caller_Location;
+void* Original_Player_Move_Caller;
 
 struct alignas(16) Ray_Structure
 {
@@ -35,7 +35,7 @@ struct Trace_Structure
 
 void __thiscall Redirected_Player_Move(void* Game_Movement)
 {
-	(decltype(&Redirected_Player_Move)(Original_Player_Move_Caller_Location))(Game_Movement);
+	(decltype(&Redirected_Player_Move)(Original_Player_Move_Caller))(Game_Movement);
 
 	using Trace_Ray_Type = void(__thiscall*)(void* Engine, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
@@ -85,11 +85,11 @@ void __thiscall Redirected_Player_Move(void* Game_Movement)
 		0
 	};
 
-	Initialize_Ray_Type(((unsigned __int32)Client_Module_Location + 419584))(&Ray, Start, End, Minimum, Maximum);
+	Initialize_Ray_Type(((unsigned __int32)Client_Module + 419584))(&Ray, Start, End, Minimum, Maximum);
 
 	Filter_Structure Filter;
 
-	Filter.Table = (void*)((unsigned __int32)Client_Module_Location + 3908280);
+	Filter.Table = (void*)((unsigned __int32)Client_Module + 3908280);
 
 	Filter.Skip = (void*)Player;
 
@@ -99,7 +99,7 @@ void __thiscall Redirected_Player_Move(void* Game_Movement)
 
 	Trace_Structure Trace;
 
-	Trace_Ray_Type((unsigned __int32)Engine_Module_Location + 1658128)((void*)((unsigned __int32)Engine_Module_Location + 3941436), &Ray, 33636363, &Filter, &Trace);
+	Trace_Ray_Type((unsigned __int32)Engine_Module + 1658128)((void*)((unsigned __int32)Engine_Module + 3941436), &Ray, 33636363, &Filter, &Trace);
 
 	__int8 Ducking = *(__int8*)((unsigned __int32)Player + 3617);
 

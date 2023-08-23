@@ -23,12 +23,12 @@ struct User_Command_Structure
 	__int32 Random_Seed;
 };
 
-__int32 Extra_Simulations_Left;
-
 void* Original_Run_Simulation_Caller;
 
 void __thiscall Redirected_Run_Simulation(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, User_Command_Structure* User_Command, void* Unknown_Parameter_4)
 {
+	static __int32 Extra_Simulations_Left;
+
 	if (Extra_Simulations_Left == 0)
 	{
 		Extra_Simulations_Left = User_Command->Extra_Simulations;

@@ -257,7 +257,7 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 			{
 				Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Engine_Module + 772928), (void*)Redirected_Send_Move);
 
-				Redirection_Manager::Redirect_Function(Original_Packet_Start_Caller, 0, (void*)((unsigned __int32)Engine_Module + 0x1EFD60), 1, (void*)Redirected_Packet_Start);
+				Redirection_Manager::Redirect_Function(Original_Packet_Start_Caller, 0, (void*)((unsigned __int32)Engine_Module + 2030944), 1, (void*)Redirected_Packet_Start);
 			}
 
 			_putws(L"[ + ] View Effects");

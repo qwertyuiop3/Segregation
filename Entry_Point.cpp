@@ -125,16 +125,7 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 
 			_putws(L"[ + ] Delimit Interface");
 			{
-				unsigned __int8 Cheat_Flag_Bytes[4] =
-				{
-					254,
-
-					65,
-
-					44,
-
-					195
-				};
+				unsigned __int8 Cheat_Flag_Bytes[4] = { 254, 65, 44, 195 };
 
 				Byte_Manager::Copy_Bytes(1, (void*)538391351, sizeof(Cheat_Flag_Bytes), Cheat_Flag_Bytes);
 
@@ -190,14 +181,7 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 
 				Redirection_Manager::Redirect_Function(Original_Compute_Torso_Rotation_Caller, 1, (void*)604022496, 1, (void*)Redirected_Compute_Torso_Rotation);
 
-				unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] =
-				{
-					194,
-
-					24,
-
-					0
-				};
+				unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] = { 194, 24, 0 };
 
 				Byte_Manager::Copy_Bytes(1, (void*)604206416, sizeof(Maintain_Sequence_Transitions_Bytes), Maintain_Sequence_Transitions_Bytes);
 			}
@@ -259,14 +243,7 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 
 				Byte_Manager::Set_Bytes(1, (void*)605515289, 1, 235);
 
-				unsigned __int8 Smoke_Bytes[3] =
-				{
-					194,
-
-					8,
-
-					0
-				};
+				unsigned __int8 Smoke_Bytes[3] = { 194, 8, 0 };
 
 				Byte_Manager::Copy_Bytes(1, (void*)605610608, sizeof(Smoke_Bytes), Smoke_Bytes);
 

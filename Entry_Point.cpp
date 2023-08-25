@@ -127,18 +127,7 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 
 			_putws(L"[ + ] Delimit Interface");
 			{
-				unsigned __int8 Cheat_Flag_Bytes[5] =
-				{
-					254,
-
-					64,
-
-					48,
-		
-					144,
-
-					235
-				};
+				unsigned __int8 Cheat_Flag_Bytes[5] = { 254, 64, 48, 144, 235 };
 
 				Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Engine_Module + 1359156), sizeof(Cheat_Flag_Bytes), Cheat_Flag_Bytes);
 
@@ -194,14 +183,7 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 
 				Redirection_Manager::Redirect_Function(Original_Compute_Torso_Rotation_Caller, 0, (void*)((unsigned __int32)Client_Module + 376048), 1, (void*)Redirected_Compute_Torso_Rotation);
 
-				unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] =
-				{
-					194,
-
-					16,
-
-					0
-				};
+				unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] = { 194, 16, 0 };
 
 				Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Client_Module + 549072), sizeof(Maintain_Sequence_Transitions_Bytes), Maintain_Sequence_Transitions_Bytes);
 			}
@@ -232,6 +214,10 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 				Prediction_Descriptor->Parent = &Original_Prediction_Descriptor;
 
 				Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller, 0, (void*)((unsigned __int32)Client_Module + 1548784), 1, (void*)Redirected_Compute_First_Command_To_Execute);
+
+				unsigned __int8 Compute_First_Command_To_Execute_Bytes[4] = { 139, 94, 16, 144 };
+
+				Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Client_Module + 1549025), sizeof(Compute_First_Command_To_Execute_Bytes), Compute_First_Command_To_Execute_Bytes);
 
 				Redirection_Manager::Redirect_Function(Original_Run_Simulation_Caller, 0, (void*)((unsigned __int32)Client_Module + 1552528), 1, (void*)Redirected_Run_Simulation);
 
@@ -280,14 +266,7 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module + 1842904), 1, 235);
 
-				unsigned __int8 Smoke_Bytes[3] =
-				{
-					194,
-
-					8,
-
-					0
-				};
+				unsigned __int8 Smoke_Bytes[3] = { 194, 8, 0 };
 
 				Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Client_Module + 2311408), sizeof(Smoke_Bytes), Smoke_Bytes);
 

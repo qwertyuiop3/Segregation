@@ -215,9 +215,7 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 
 				Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller, 0, (void*)((unsigned __int32)Client_Module + 1548784), 1, (void*)Redirected_Compute_First_Command_To_Execute);
 
-				unsigned __int8 Compute_First_Command_To_Execute_Bytes[4] = { 139, 94, 16, 144 };
-
-				Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Client_Module + 1549025), sizeof(Compute_First_Command_To_Execute_Bytes), Compute_First_Command_To_Execute_Bytes);
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module + 1548805), 8, 144);
 
 				Redirection_Manager::Redirect_Function(Original_Run_Simulation_Caller, 0, (void*)((unsigned __int32)Client_Module + 1552528), 1, (void*)Redirected_Run_Simulation);
 

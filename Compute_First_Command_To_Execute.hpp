@@ -13,9 +13,9 @@ struct Prediction_Data_Structure
 
 Prediction_Data_Structure Prediction_Data[90];
 
-__int32 __thiscall Redirected_Compute_First_Command_To_Execute(void* Prediction, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3)
+__int32 __thiscall Redirected_Compute_First_Command_To_Execute(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4)
 {
-	__int32 Return_Value = (decltype(&Redirected_Compute_First_Command_To_Execute)(Original_Compute_First_Command_To_Execute_Caller))(Prediction, Unknown_Parameter_1, Unknown_Parameter_2, Unknown_Parameter_3);
+	__int32 Return_Value = (decltype(&Redirected_Compute_First_Command_To_Execute)(Original_Compute_First_Command_To_Execute_Caller))(Unknown_Parameter_1, Unknown_Parameter_2, Unknown_Parameter_3, Unknown_Parameter_4);
 
 	void* Local_Player = *(void**)((unsigned __int32)Client_Module + 5015784);
 

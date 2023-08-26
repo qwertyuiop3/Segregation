@@ -10,13 +10,11 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 135) == 0)
 	{
-		void* Prediction = *(void**)540494880;
-
 		if (*(__int32*)541926608 != 1)
 		{
-			using Update_Type = void(__thiscall*)(void* Prediction, __int8 Unknown_Parameter_1, __int8 Unknown_Parameter_2, void* Unknown_Parameter_3, __int32 Unknown_Parameter_4);
+			using Run_Prediction_Type = void(__cdecl*)();
 
-			Update_Type(605209712)(Prediction, 1, 1, *(void**)540627876, *(__int32*)540627868 + *(__int32*)540627872);
+			Run_Prediction_Type(537158848)();
 		}
 
 		auto Angle_Vectors = [](float* Angles, float* Forward, float* Right, float* Up) -> void
@@ -181,7 +179,7 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Local_Player, User_Command_Structure* User_Command, void* Move_Helper);
 
-		Run_Command_Type(605207600)(Prediction, Local_Player, User_Command, (void*)607735532);
+		Run_Command_Type(605207600)(*(void**)540494880, Local_Player, User_Command, (void*)607735532);
 
 		*(void**)542589456 = Previous_Audio_Device;
 

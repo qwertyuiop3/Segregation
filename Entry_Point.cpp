@@ -217,6 +217,8 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module + 1548805), 8, 144);
 
+				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module + 1555313), 1, 235);
+
 				Redirection_Manager::Redirect_Function(Original_Run_Simulation_Caller, 0, (void*)((unsigned __int32)Client_Module + 1552528), 1, (void*)Redirected_Run_Simulation);
 
 				Redirection_Manager::Redirect_Function(Original_Setup_Move_Caller, 2, (void*)((unsigned __int32)Client_Module + 1553824), 1, (void*)Redirected_Setup_Move);

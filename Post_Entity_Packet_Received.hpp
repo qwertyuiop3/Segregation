@@ -80,7 +80,7 @@ void Redirected_Post_Entity_Packet_Received()
 		}
 	}
 
-	if (__builtin_signbitf(Tick_Number) == 1)
+	if (Tick_Number < 0)
 	{
 		Predicton_Copy.Construct(Local_Player, *(void**)((unsigned __int32)Local_Player + -Tick_Number), (void*)Predicton_Copy_Compare);
 

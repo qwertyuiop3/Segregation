@@ -10,12 +10,9 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 147) == 0)
 	{
-		if (*(__int32*)((unsigned __int32)Engine_Module + 6518320) != 1)
-		{
-			using Run_Prediction_Type = void(__cdecl*)();
+		using Run_Prediction_Type = void(__cdecl*)();
 
-			Run_Prediction_Type((unsigned __int32)Engine_Module + 792144)();
-		}
+		Run_Prediction_Type((unsigned __int32)Engine_Module + 792144)();
 
 		auto Angle_Vectors = [](float* Angles, float* Forward, float* Right, float* Up) -> void
 		{

@@ -1,8 +1,8 @@
 struct Sequence_Structure
 {
-	__int32 Last_Sequence_Number;
+	__int32 Network_Sequence_Number;
 
-	__int32 First_Sequence_Number;
+	__int32 Prediction_Sequence_Number;
 };
 
 Sequence_Structure Sequences[90];

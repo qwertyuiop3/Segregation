@@ -136,22 +136,22 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 			float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-			__int16 X = (Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider;
+			float X = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
 
 			User_Command->Move[0] = X;
 
 			User_Command->Buttons &= ~1560;
 
-			if (X != 0)
+			if (__builtin_truncf(X) != 0)
 			{
 				User_Command->Buttons |= 8 * ((X < 0) + 1);
 			}
 
-			__int16 Y = (Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider;
+			float Y = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
 
 			User_Command->Move[1] = Y;
 
-			if (Y != 0)
+			if (__builtin_truncf(X) != 0)
 			{
 				User_Command->Buttons |= 512 * ((Y > 0) + 1);
 			}

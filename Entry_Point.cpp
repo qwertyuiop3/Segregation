@@ -190,8 +190,6 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 
 			_putws(L"[ + ] Prediction");
 			{
-				*(__int16*)((unsigned __int32)Client_Module + 4862038) = 512;
-
 				static Prediction_Descriptor_Structure Original_Prediction_Descriptor;
 
 				Prediction_Descriptor_Structure* Prediction_Descriptor = (Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4819316);

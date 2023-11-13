@@ -1,6 +1,6 @@
 struct Global_Variables_Structure
 {
-	__int8 Additional_Bytes_1[12];
+	__int8 Additional_Bytes[12];
 
 	float Current_Time;
 
@@ -11,8 +11,6 @@ struct Global_Variables_Structure
 	__int32 Tick_Number;
 
 	float Interval_Per_Tick;
-
-	__int8 Additional_Bytes_2[12];
 };
 
 struct __attribute__((packed)) Player_Data_Structure

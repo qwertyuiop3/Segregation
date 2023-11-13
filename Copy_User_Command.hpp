@@ -6,6 +6,16 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 {
 	User_Command->Extra_Simulations = 0;
 
+	Global_Variables_Structure Previous_Global_Variables;
+
+	Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)((unsigned __int32)Client_Module + 4825720);
+
+	Byte_Manager::Copy_Bytes(0, &Previous_Global_Variables, sizeof(Previous_Global_Variables), Global_Variables);
+
+	Redirected_Read_Packets(*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 224));
+
+	Byte_Manager::Copy_Bytes(0, Global_Variables, sizeof(*Global_Variables), &Previous_Global_Variables);
+
 	void* Local_Player = *(void**)((unsigned __int32)Client_Module + 5015784);
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 147) == 0)
@@ -294,8 +304,6 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 		float Interpolation_Time = max(*(float*)((unsigned __int32)Client_Module + 5064356), std::clamp(*(float*)((unsigned __int32)Client_Module + 5064284), *(float*)((unsigned __int32)Engine_Module + 6385172), *(float*)((unsigned __int32)Engine_Module + 6385244)) / std::clamp(*(__int32*)((unsigned __int32)Engine_Module + 6429584), *(__int32*)((unsigned __int32)Engine_Module + 6190472), *(__int32*)((unsigned __int32)Engine_Module + 6190400)));
 
 		float Corrected_Total_Latency = std::clamp(Total_Latency + Interpolation_Time, 0.f, 1.f);
-
-		Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)((unsigned __int32)Client_Module + 4825720);
 
 		struct alignas(16) Target_Structure
 		{

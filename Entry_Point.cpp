@@ -46,11 +46,13 @@ void* Engine_Module;
 
 #include "Store_Prediction_Results.hpp"
 
-#include "Copy_User_Command.hpp"
+#include "Read_Packets.hpp"
 
 #include "Send_Move.hpp"
 
 #include "Packet_Start.hpp"
+
+#include "Copy_User_Command.hpp"
 
 #include "Draw_Crosshair.hpp"
 
@@ -230,18 +232,20 @@ __int32 __stdcall DllMain(void* This_Module, unsigned __int32 Call_Reason, void*
 				Redirection_Manager::Redirect_Function(Original_Store_Prediction_Results_Caller, 4, (void*)((unsigned __int32)Client_Module + 1554880), 1, (void*)Redirected_Store_Prediction_Results);
 			}
 
+			_putws(L"[ + ] Network");
+			{
+				Redirection_Manager::Redirect_Function(Original_Read_Packets_Caller, 0, (void*)((unsigned __int32)Engine_Module + 771728), 1, (void*)Redirected_Read_Packets);
+
+				Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Engine_Module + 772928), (void*)Redirected_Send_Move);
+
+				Redirection_Manager::Redirect_Function(Original_Packet_Start_Caller, 0, (void*)((unsigned __int32)Engine_Module + 2030944), 1, (void*)Redirected_Packet_Start);
+			}
+
 			_putws(L"[ + ] Input");
 			{
 				Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module + 1343395), 3, 144);
 
 				Redirection_Manager::Redirect_Function(Original_Copy_User_Command_Caller, 0, (void*)((unsigned __int32)Client_Module + 1177632), 1, (void*)Redirected_Copy_User_Command);
-			}
-
-			_putws(L"[ + ] Network");
-			{
-				Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Engine_Module + 772928), (void*)Redirected_Send_Move);
-
-				Redirection_Manager::Redirect_Function(Original_Packet_Start_Caller, 0, (void*)((unsigned __int32)Engine_Module + 2030944), 1, (void*)Redirected_Packet_Start);
 			}
 
 			_putws(L"[ + ] View Effects");

@@ -96,6 +96,7 @@
     <ClInclude Include="Post_Entity_Packet_Received.hpp" />
     <ClInclude Include="Item_Post_Frame.hpp" />
     <ClInclude Include="Priority.hpp" />
+    <ClInclude Include="Read_Packets.hpp" />
     <ClInclude Include="Run_Simulation.hpp" />
     <ClInclude Include="Setup_Move.hpp" />
     <ClInclude Include="Shutdown.hpp" />

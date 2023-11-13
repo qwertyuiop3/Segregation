@@ -88,5 +88,8 @@
     <ClInclude Include="Run_Simulation.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
+    <ClInclude Include="Read_Packets.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

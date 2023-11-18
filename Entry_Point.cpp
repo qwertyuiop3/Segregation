@@ -80,13 +80,17 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				Snapshot_Entry.dwSize = sizeof(Snapshot_Entry);
 
-				Find_Process_Label:
+				Traverse_Process_List_Label:
 				{
-					if (Process32NextW(Snapshot, &Snapshot_Entry) != 0)
+					if (Process32NextW(Snapshot, &Snapshot_Entry) == 0)
+					{
+						return 1;
+					}
+					else
 					{
 						if (wcscmp(Snapshot_Entry.szExeFile, L"hl2.exe") != 0)
 						{
-							goto Find_Process_Label;
+							goto Traverse_Process_List_Label;
 						}
 					}
 				}

@@ -86,12 +86,10 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					{
 						return 1;
 					}
-					else
+
+					if (wcscmp(Snapshot_Entry.szExeFile, L"hl2.exe") != 0)
 					{
-						if (wcscmp(Snapshot_Entry.szExeFile, L"hl2.exe") != 0)
-						{
-							goto Traverse_Snapshot_Label;
-						}
+						goto Traverse_Snapshot_Label;
 					}
 				}
 

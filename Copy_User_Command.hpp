@@ -14,6 +14,10 @@ void __thiscall Redirected_Copy_User_Command(void* Unknown_Parameter, User_Comma
 
 	Redirected_Read_Packets(*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 224));
 
+	using Fire_Events_Type = void(__cdecl*)();
+
+	Fire_Events_Type((unsigned __int32)Engine_Module + 785424)();
+
 	Byte_Manager::Copy_Bytes(0, Global_Variables, sizeof(*Global_Variables), &Previous_Global_Variables);
 
 	void* Local_Player = *(void**)((unsigned __int32)Client_Module + 5015784);

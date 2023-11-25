@@ -91,5 +91,8 @@
     <ClInclude Include="Read_Packets.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
+    <ClInclude Include="Move.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -52,6 +52,8 @@
 
 #include "Read_Packets.hpp"
 
+#include "Move.hpp"
+
 #include "Send_Move.hpp"
 
 #include "Packet_Start.hpp"
@@ -255,6 +257,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 				_putws(L"[ + ] Network");
 				{
 					Redirection_Manager::Redirect_Function(Original_Read_Packets_Caller, 1, (void*)537132304, 1, (void*)Redirected_Read_Packets);
+
+					Redirection_Manager::Redirect_Function(Original_Move_Caller, 0, (void*)537142544, 1, (void*)Redirected_Move);
 
 					Redirection_Manager::Redirect_Function(1, (void*)537142224, (void*)Redirected_Send_Move);
 

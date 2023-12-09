@@ -77,7 +77,7 @@ void Implement_Extended_Interface()
 		wprintf(L"[ + ] %hs -> %p\n", Name, Interface);
 	};
 
-	#define Pointer_Name(name) &name, (char*)#name + 10
+	#define Pointer_Name(Interface) &Interface, (char*)#Interface + 10
 
 	Create_Console_Interface(Pointer_Name(Interface_Commentator), (char*)"1", nullptr);
 

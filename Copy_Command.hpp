@@ -174,7 +174,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		float Previous_Friction = *(float*)((unsigned __int32)Local_Player + 3936);
 
-		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Local_Player, Command_Structure* Command, void* Move_Helper);
+		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
 
 		Run_Command_Type(605207600)(*(void**)540494880, Local_Player, Command, (void*)607735532);
 

@@ -1,4 +1,4 @@
-struct User_Command_Structure
+struct Command_Structure
 {
 	__int8 Additional_Bytes_1[4];
 
@@ -25,15 +25,15 @@ struct User_Command_Structure
 
 void* Original_Run_Simulation_Caller;
 
-void __thiscall Redirected_Run_Simulation(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, User_Command_Structure* User_Command, void* Unknown_Parameter_4)
+void __thiscall Redirected_Run_Simulation(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, Command_Structure* Command, void* Unknown_Parameter_4)
 {
 	static __int32 Extra_Simulations_Left;
 
 	if (Extra_Simulations_Left == 0)
 	{
-		Extra_Simulations_Left = User_Command->Extra_Simulations;
+		Extra_Simulations_Left = Command->Extra_Simulations;
 
-		(decltype(&Redirected_Run_Simulation)(Original_Run_Simulation_Caller))(Unknown_Parameter_1, Unknown_Parameter_2, Unknown_Parameter_3, User_Command, Unknown_Parameter_4);
+		(decltype(&Redirected_Run_Simulation)(Original_Run_Simulation_Caller))(Unknown_Parameter_1, Unknown_Parameter_2, Unknown_Parameter_3, Command, Unknown_Parameter_4);
 	}
 	else
 	{

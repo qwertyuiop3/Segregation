@@ -58,7 +58,7 @@
 
 #include "Packet_Start.hpp"
 
-#include "Copy_User_Command.hpp"
+#include "Copy_Command.hpp"
 
 #include "Draw_Crosshair.hpp"
 
@@ -269,7 +269,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 				{
 					Byte_Manager::Set_Bytes(1, (void*)604993824, 3, 144);
 
-					Redirection_Manager::Redirect_Function(Original_Copy_User_Command_Caller, 0, (void*)604850464, 1, (void*)Redirected_Copy_User_Command);
+					Redirection_Manager::Redirect_Function(Original_Copy_Command_Caller, 0, (void*)604850464, 1, (void*)Redirected_Copy_Command);
 				}
 
 				_putws(L"[ + ] View Effects");

@@ -22,7 +22,7 @@
     <ClInclude Include="Extended_Interface.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Copy_User_Command.hpp">
+    <ClInclude Include="Copy_Command.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Post_Entity_Packet_Received.hpp">

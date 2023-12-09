@@ -172,7 +172,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Byte_Manager::Copy_Bytes(0, Local_Player_Previous_Origin, sizeof(Local_Player_Previous_Origin), Local_Player_Origin);
 		}
 
-		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Local_Player, Command_Structure* Command, void* Move_Helper);
+		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
 
 		Run_Command_Type((unsigned __int32)Client_Module + 1552000)(*(void**)((unsigned __int32)Engine_Module + 4566764), Local_Player, Command, (void*)((unsigned __int32)Client_Module + 4839036));
 

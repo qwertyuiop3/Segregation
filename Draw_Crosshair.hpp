@@ -1,6 +1,6 @@
 void Redirected_Draw_Crosshair()
 {
-	*(__int8*)((unsigned __int32)Client_Module + 5190296) = 0;
+	*(__int32*)((unsigned __int32)Client_Module + 5190296) = 0;
 
 	static float Rotation_Angle;
 

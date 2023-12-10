@@ -673,11 +673,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														Random_Seed_Type((unsigned __int32)Random_Seed)((Command->Random_Seed & 255) + 1);
 
-														using Random_Float_Type = float(__cdecl*)(float Minimum, float Maximum);
+														using Random_Type = float(__cdecl*)(float Minimum, float Maximum);
 
-														static void* Random_Float = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
+														static void* Random = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
 
-														float Random_X = Random_Float_Type(Random_Float)(-0.5f, 0.5f) + Random_Float_Type(Random_Float)(-0.5f, 0.5f);
+														float Random_X = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
 
 														Weapon_Spread = -1;
 
@@ -685,7 +685,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														(*Primary_Attack_Type(*(unsigned __int32*)Weapon + 856))(Weapon);
 
-														float Random_Y = Random_Float_Type(Random_Float)(-0.5f, 0.5f) + Random_Float_Type(Random_Float)(-0.5f, 0.5f);
+														float Random_Y = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
 
 														float Directions[2][3] =
 														{

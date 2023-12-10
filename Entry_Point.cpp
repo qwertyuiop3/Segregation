@@ -22,8 +22,6 @@ void* Engine_Module;
 
 #include "Event_Listener.hpp"
 
-#include <vector>
-
 #include "Write_Events.hpp"
 
 #include "Interpolate.hpp"
@@ -55,6 +53,8 @@ void* Engine_Module;
 #include "Send_Move.hpp"
 
 #include "Packet_Start.hpp"
+
+#include <vector>
 
 #include "Copy_Command.hpp"
 

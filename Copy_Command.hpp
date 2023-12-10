@@ -301,7 +301,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)607726732;
 
-		struct alignas(16) Target_Structure
+		struct Target_Structure
 		{
 			__int8 Priority;
 

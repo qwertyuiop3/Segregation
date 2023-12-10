@@ -287,8 +287,6 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		__int32 Entity_Number = 1;
 
-		__int32 Team_Number = *(__int32*)((unsigned __int32)Local_Player + 144);
-
 		using Get_Latency_Type = float(__thiscall*)(void* Network_Channel, __int32 Type);
 
 		void* Network_Channel = *(void**)540608912;
@@ -330,7 +328,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 				{
 					if (*(__int8*)((unsigned __int32)Entity + 135) == 0)
 					{
-						if (*(__int32*)((unsigned __int32)Entity + 144) != Team_Number)
+						if (*(__int32*)((unsigned __int32)Entity + 144) != *(__int32*)((unsigned __int32)Local_Player + 144))
 						{
 							if (*(__int8*)((unsigned __int32)Entity + 320) == 0)
 							{

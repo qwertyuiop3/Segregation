@@ -20,8 +20,6 @@
 
 #include "Event_Listener.hpp"
 
-#include <vector>
-
 #include "Write_Events.hpp"
 
 #include "Shutdown.hpp"
@@ -57,6 +55,8 @@
 #include "Send_Move.hpp"
 
 #include "Packet_Start.hpp"
+
+#include <vector>
 
 #include "Copy_Command.hpp"
 

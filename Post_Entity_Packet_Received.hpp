@@ -33,9 +33,9 @@ struct Prediction_Copy_Structure
 
 	void Construct(void* Destination, void* Source, void* Handler)
 	{
-		using Construct_Type = void(__thiscall*)(void* Prediction_Copy, __int32 Unknown_Parameter_1, void* Destination, void* Unknown_Parameter_2, void* Source, __int8 Unknown_Parameter_3, __int8 Unknown_Parameter_4, void* Unknown_Parameter_5, void* Unknown_Parameter_6, __int8 Unknown_Parameter_7, void* Handler);
+		using Construct_Type = void(__thiscall*)(void* Prediction_Copy, __int32 Type, void* Destination, __int8 Destination_Packed, void* Source, __int8 Source_Packed, __int8 Count_Errors, void* Unknown_Parameter_1, void* Unknown_Parameter_2, __int8 Report_Errors, void* Handler);
 
-		Construct_Type((unsigned __int32)Client_Module + 1555696)(this, 2, Destination, nullptr, Source, 1, 1, nullptr, nullptr, 1, Handler);
+		Construct_Type((unsigned __int32)Client_Module + 1555696)(this, 2, Destination, 0, Source, 1, 1, nullptr, nullptr, 1, Handler);
 	}
 };
 

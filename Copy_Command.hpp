@@ -414,7 +414,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 												{
 													size_t Target_Number = 0;
 
-													using Get_Eye_Position_Type = void(__thiscall*)(void* Player, float* Eye_Position);
+													using Get_Eye_Position_Type = void(__thiscall*)(void* Entity, float* Eye_Position);
 
 													float Eye_Position[3];
 

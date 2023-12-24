@@ -83,12 +83,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Previous_Move_Angle_Y = Move_Angles[1];
 		}
 
-		float Previous_Move[2] =
-		{
-			Command->Move[0],
+		float Previous_Move[2];
 
-			Command->Move[1]
-		};
+		Byte_Manager::Copy_Bytes(0, Previous_Move, sizeof(Previous_Move), Command->Move);
 
 		float Desired_Move_Forward[3];
 
@@ -178,9 +175,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		*(void**)((unsigned __int32)Engine_Module + 4334668) = Previous_Audio_Device;
 
-		Command->Move[0] = Previous_Move[0];
-
-		Command->Move[1] = Previous_Move[1];
+		Byte_Manager::Copy_Bytes(0, Command->Move, sizeof(Previous_Move), Previous_Move);
 
 		static __int8 Send_Packet;
 

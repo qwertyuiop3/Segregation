@@ -638,13 +638,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														using Random_Seed_Type = void(__cdecl*)(__int32 Seed);
 
-														static void* Random_Seed = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 47040);
+														static void* Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
 
-														Random_Seed_Type((unsigned __int32)Random_Seed)((Command->Random_Seed & 255) + 1);
+														Random_Seed_Type((unsigned __int32)Standard_Library_Module + 47040)((Command->Random_Seed & 255) + 1);
 
 														using Random_Type = float(__cdecl*)(float Minimum, float Maximum);
-
-														static void* Random = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 46880);
 
 														using Update_Accuracy_Penalty_Type = void(__thiscall**)(void* Weapon);
 
@@ -656,13 +654,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														float Random[4] =
 														{
-															Random_Type(Random)(0, 6.283185f),
+															Random_Type((unsigned __int32)Standard_Library_Module + 46880)(0, 6.283185f),
 
-															Random_Type(Random)(0, (*Get_Inaccuracy_Type(*(unsigned __int32*)Weapon + 1504))(Weapon)),
+															Random_Type((unsigned __int32)Standard_Library_Module + 46880)(0, (*Get_Inaccuracy_Type(*(unsigned __int32*)Weapon + 1504))(Weapon)),
 
-															Random_Type(Random)(0, 6.283185f),
+															Random_Type((unsigned __int32)Standard_Library_Module + 46880)(0, 6.283185f),
 
-															Random_Type(Random)(0, (*Get_Spread_Type(*(unsigned __int32*)Weapon + 1508))(Weapon))
+															Random_Type((unsigned __int32)Standard_Library_Module + 46880)(0, (*Get_Spread_Type(*(unsigned __int32*)Weapon + 1508))(Weapon))
 														};
 
 														float Spread[2] =

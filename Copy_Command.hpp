@@ -171,7 +171,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
 
-		Run_Command_Type((unsigned __int32)Client_Module + 1552000)(*(void**)((unsigned __int32)Engine_Module + 4566764), Local_Player, Command, (void*)((unsigned __int32)Client_Module + 4839036));
+		Run_Command_Type((unsigned __int32)Client_Module + 1552000)((void*)((unsigned __int32)Client_Module + 5269460), Local_Player, Command, (void*)((unsigned __int32)Client_Module + 4839036));
 
 		*(void**)((unsigned __int32)Engine_Module + 4334668) = Previous_Audio_Device;
 

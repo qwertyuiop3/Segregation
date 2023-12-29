@@ -55,7 +55,7 @@ void __thiscall Redirected_Player_Move(void* Game_Movement)
 
 		Origin[1],
 
-		Origin[2] + (Ducked == 1 ? 45.f : 62.f)
+		Origin[2] + 62 - 17 * Ducked
 	};
 
 	float End[3] =

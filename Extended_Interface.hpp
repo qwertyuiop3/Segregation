@@ -59,15 +59,15 @@ void Implement_Extended_Interface()
 	{
 		if (Value == nullptr)
 		{
-			using Create_Console_Interface_Type = void(__thiscall*)(Interface_Structure* Interface, char* Name, char* Value, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Handler);
-
-			Create_Console_Interface_Type(539131040)(Interface, Name, Value, nullptr, nullptr, Handler);
-		}
-		else
-		{
 			using Create_Console_Command_Type = void(__thiscall*)(Interface_Structure* Interface, char* Name, void* Handler, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3);
 
 			Create_Console_Command_Type(606174864)(Interface, Name, Handler, nullptr, nullptr, nullptr);
+		}
+		else
+		{
+			using Create_Console_Interface_Type = void(__thiscall*)(Interface_Structure* Interface, char* Name, char* Value, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Handler);
+
+			Create_Console_Interface_Type(539131040)(Interface, Name, Value, nullptr, nullptr, Handler);
 		}
 
 		wprintf(L"[ + ] %hs -> %p\n", Name, Interface);
@@ -89,7 +89,7 @@ void Implement_Extended_Interface()
 
 	Create_Console_Interface(Pointer_Name(Interface_Bruteforce_Angles), (char*)"0, -45, 45, -90, 90", (void*)Bruteforce_Set_Angles);
 
-	Bruteforce_Set_Angles(&Interface_Bruteforce_Angles);
+	//Bruteforce_Set_Angles(&Interface_Bruteforce_Angles);
 
 	Create_Console_Interface(Pointer_Name(Interface_Alternative), (char*)"1", nullptr);
 

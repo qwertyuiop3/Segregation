@@ -169,15 +169,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Byte_Manager::Copy_Bytes(0, Local_Player_Previous_Origin, sizeof(Local_Player_Previous_Origin), Local_Player_Origin);
 		}
 
-		float Previous_Friction = *(float*)((unsigned __int32)Local_Player + 3936);
-
 		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
 
-		Run_Command_Type(605207600)(*(void**)540494880, Local_Player, Command, (void*)607735532);
+		Run_Command_Type(605207600)((void*)608163016, Local_Player, Command, (void*)607735532);
 
 		*(void**)542589456 = Previous_Audio_Device;
-
-		*(float*)((unsigned __int32)Local_Player + 3936) = Previous_Friction;
 
 		Byte_Manager::Copy_Bytes(0, Command->Move, sizeof(Previous_Move), Previous_Move);
 

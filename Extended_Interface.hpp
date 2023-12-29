@@ -65,9 +65,9 @@ void Implement_Extended_Interface()
 		}
 		else
 		{
-			using Create_Console_Interface_Type = void(__thiscall*)(Interface_Structure* Interface, char* Name, char* Value, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Handler);
+			using Create_Console_Variable_Type = void(__thiscall*)(Interface_Structure* Interface, char* Name, char* Value, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Handler);
 
-			Create_Console_Interface_Type(539131040)(Interface, Name, Value, nullptr, nullptr, Handler);
+			Create_Console_Variable_Type(539131040)(Interface, Name, Value, nullptr, nullptr, Handler);
 		}
 
 		wprintf(L"[ + ] %hs -> %p\n", Name, Interface);

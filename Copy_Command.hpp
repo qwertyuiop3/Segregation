@@ -292,7 +292,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		struct Target_Structure
 		{
-			__int8 Priority;
+			__int32 Priority;
 
 			void* Self;
 
@@ -329,7 +329,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 								Target_Structure Target =
 								{
-									Player_Data->Priority == -2 ? (__int8)0 : Player_Data->Priority,
+									Player_Data->Priority == -2 ? 0 : Player_Data->Priority,
 
 									Entity,
 

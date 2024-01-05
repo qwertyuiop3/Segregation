@@ -68,9 +68,9 @@ void* Original_Post_Entity_Packet_Received_Caller;
 
 void Redirected_Post_Entity_Packet_Received()
 {
-	__int32 Stored_Result_Number = 0;
-
 	void* Local_Player = *(void**)((unsigned __int32)Client_Module + 5015784);
+
+	__int32 Stored_Result_Number = 0;
 
 	__int32 Tick_Number = *(__int32*)((unsigned __int32)Local_Player + 4332);
 

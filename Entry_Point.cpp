@@ -239,14 +239,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Copy_Bytes(0, &Original_Prediction_Descriptor, sizeof(Prediction_Descriptor_Structure), Prediction_Descriptor);
 
-					static Prediction_Field_Structure Prediction_Fields[2] =
-					{
-						{ 1, (char*)"m_flStamina", { 5160 }, 1, 256, { }, sizeof(float), { }, 0.1f },
+					static Prediction_Field_Structure Prediction_Fields = { 1, (char*)"m_flVelocityModifier", { 5176 }, 1, 256, { }, sizeof(float), { }, 0.005f };
 
-						{ 1, (char*)"m_flVelocityModifier", { 5176 }, 1, 256, { }, sizeof(float), { }, 0.005f }
-					};
-
-					Prediction_Descriptor->Fields = Prediction_Fields;
+					Prediction_Descriptor->Fields = &Prediction_Fields;
 
 					Prediction_Descriptor->Size = sizeof(Prediction_Fields) / sizeof(Prediction_Field_Structure);
 

@@ -109,7 +109,7 @@ void Redirected_Post_Entity_Packet_Received()
 
 		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
 
-		Transfer_Data_Type((unsigned __int32)Client_Module + 1561808)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4819316));
+		Transfer_Data_Type((unsigned __int32)Client_Module + 1561808)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4861888));
 	}
 
 	(decltype(&Redirected_Post_Entity_Packet_Received)(Original_Post_Entity_Packet_Received_Caller))();

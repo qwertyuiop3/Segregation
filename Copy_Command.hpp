@@ -335,7 +335,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 									Tick_Number,
 
-									__builtin_fabsf(Corrected_Total_Latency - (__int32)(Global_Variables->Tick_Number + (Interface_Alternative.Integer == 0) + Total_Latency / Global_Variables->Interval_Per_Tick + 0.5f - Tick_Number) * Global_Variables->Interval_Per_Tick) <= 0.2f,
+									__builtin_fabsf(Corrected_Total_Latency - (__int32)(Global_Variables->Tick_Number + 2 - *(__int32*)((unsigned __int32)Client_Module + 3935044) + (Interface_Alternative.Integer == 0) + (__int32)(Total_Latency / Global_Variables->Interval_Per_Tick + 0.5f) - Tick_Number) * Global_Variables->Interval_Per_Tick) <= 0.2f,
 
 									__builtin_powf(Local_Player_Origin[0] - Entity_Origin[0], 2) + __builtin_powf(Local_Player_Origin[1] - Entity_Origin[1], 2) + __builtin_powf(Local_Player_Origin[2] - Entity_Origin[2], 2)
 								};

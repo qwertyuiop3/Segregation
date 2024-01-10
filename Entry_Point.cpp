@@ -245,8 +245,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Prediction_Descriptor->Size = sizeof(Prediction_Fields) / sizeof(Prediction_Field_Structure);
 
-					Prediction_Descriptor->Name = (char*)"C_CSPlayer";
-
 					Prediction_Descriptor->Parent = &Original_Prediction_Descriptor;
 
 					Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller, 0, (void*)((unsigned __int32)Client_Module + 1548784), 1, (void*)Redirected_Compute_First_Command_To_Execute);

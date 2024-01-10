@@ -57,11 +57,11 @@ struct Prediction_Descriptor_Structure
 
 	__int32 Size;
 
-	char* Name;
+	__int8 Additional_Bytes_1[4];
 
 	Prediction_Descriptor_Structure* Parent;
 
-	__int8 Additional_Bytes[6];
+	__int8 Additional_Bytes_2[6];
 };
 
 void* Original_Post_Entity_Packet_Received_Caller;

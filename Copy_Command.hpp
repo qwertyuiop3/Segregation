@@ -852,8 +852,6 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			}
 		}
 
-		Correct_Movement();
-
 		auto Compress_Angle = [](float Value, __int32 Shift) -> float
 		{
 			return ((__int32)(Value / 360 * Shift) & Shift - 1) * (360 / (float)Shift);
@@ -864,6 +862,8 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		Command->Angles[1] = Compress_Angle(Command->Angles[1], 65536);
 
 		Command->Angles[2] = Compress_Angle(Command->Angles[2], 256);
+
+		Correct_Movement();
 
 		if (Send_Packet == 0)
 		{

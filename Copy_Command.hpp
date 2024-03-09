@@ -38,7 +38,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 			if (*(__int32*)((unsigned __int32)Local_Player + 596) == -1)
 			{
-				Command->Buttons &= ~(*(__int32*)((unsigned __int32)Local_Player + 376) & 2);
+				Command->Buttons &= ~(*(__int8*)((unsigned __int32)Local_Player + 376) & 2);
 			}
 			else
 			{

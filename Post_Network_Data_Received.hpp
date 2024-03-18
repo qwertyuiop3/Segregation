@@ -10,11 +10,11 @@ struct Prediction_Field_Structure
 
 	__int16 Flags;
 
-	__int8 Additional_Bytes_1[16];
+	__int8 Additional_Bytes_2[16];
 
 	__int32 Bytes;
 
-	__int8 Additional_Bytes_2[8];
+	__int8 Additional_Bytes_3[8];
 
 	float Tolerance;
 };
@@ -64,53 +64,22 @@ struct Prediction_Descriptor_Structure
 	__int8 Additional_Bytes_2[6];
 };
 
-void* Original_Post_Entity_Packet_Received_Caller;
+void* Original_Post_Network_Data_Received_Caller;
 
-void Redirected_Post_Entity_Packet_Received()
+void __thiscall Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Commands_Acknowledged)
 {
 	void* Local_Player = *(void**)((unsigned __int32)Client_Module + 5015784);
 
-	__int32 Stored_Result_Number = 0;
+	void* Result = *(void**)((unsigned __int32)Local_Player + 856 + (90 - Commands_Acknowledged * 90 % -~90) * 4);
 
-	__int32 Tick_Number = *(__int32*)((unsigned __int32)Local_Player + 4332);
-
-	Traverse_Stored_Results_Label:
+	if (Result != nullptr)
 	{
-		void* Stored_Result = *(void**)((unsigned __int32)Local_Player + 856 + Stored_Result_Number * 4);
-
-		if (Stored_Result == nullptr)
-		{
-			Continue_Traversing_Stored_Results_Label:
-			{
-				if (Stored_Result_Number != 90)
-				{
-					Stored_Result_Number += 1;
-
-					goto Traverse_Stored_Results_Label;
-				}
-			}
-		}
-		else
-		{
-			if (*(__int32*)((unsigned __int32)Stored_Result + 832) == Tick_Number)
-			{
-				Tick_Number = -(856 + Stored_Result_Number * 4);
-			}
-			else
-			{
-				goto Continue_Traversing_Stored_Results_Label;
-			}
-		}
-	}
-
-	if (Tick_Number < 0)
-	{
-		Predicton_Copy.Construct(Local_Player, *(void**)((unsigned __int32)Local_Player + -Tick_Number), (void*)Predicton_Copy_Compare);
+		Predicton_Copy.Construct(Local_Player, Result, (void*)Predicton_Copy_Compare);
 
 		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
 
 		Transfer_Data_Type((unsigned __int32)Client_Module + 1561808)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4861888));
 	}
 
-	(decltype(&Redirected_Post_Entity_Packet_Received)(Original_Post_Entity_Packet_Received_Caller))();
+	(decltype(&Redirected_Post_Network_Data_Received)(Original_Post_Network_Data_Received_Caller))(Unknown_Parameter, Commands_Acknowledged);
 }

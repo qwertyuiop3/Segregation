@@ -14,7 +14,7 @@ void* Engine_Module;
 
 #include "Extended_Interface.hpp"
 
-#include "Post_Entity_Packet_Received.hpp"
+#include "Post_Network_Data_Received.hpp"
 
 #pragma comment(lib, "WinMM.Lib")
 
@@ -30,8 +30,6 @@ void* Engine_Module;
 
 #include "Compute_Torso_Rotation.hpp"
 
-#include "Compute_First_Command_To_Execute.hpp"
-
 #include "Run_Simulation.hpp"
 
 #include "Setup_Move.hpp"
@@ -43,8 +41,6 @@ void* Engine_Module;
 #include "Finish_Move.hpp"
 
 #include "Item_Post_Frame.hpp"
-
-#include "Store_Prediction_Results.hpp"
 
 #include "Read_Packets.hpp"
 
@@ -188,7 +184,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Events");
 				{
-					Redirection_Manager::Redirect_Function(Original_Post_Entity_Packet_Received_Caller, 0, (void*)((unsigned __int32)Client_Module + 1550256), 1, (void*)Redirected_Post_Entity_Packet_Received);
+					Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module + 616208), 1, 195);
+
+					Redirection_Manager::Redirect_Function(Original_Post_Network_Data_Received_Caller, 0, (void*)((unsigned __int32)Client_Module + 1550352), 1, (void*)Redirected_Post_Network_Data_Received);
 
 					Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Engine_Module + 785516), 1, 235);
 
@@ -233,21 +231,31 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Prediction");
 				{
-					static Prediction_Descriptor_Structure Original_Prediction_Descriptor;
+					auto Add_Prediction_Fields = [](Prediction_Descriptor_Structure* Descriptor, Prediction_Field_Structure* Fields, __int32 Size) -> void
+					{
+						Prediction_Descriptor_Structure* Original_Descriptor = (Prediction_Descriptor_Structure*)malloc(sizeof(Prediction_Descriptor_Structure));
 
-					Prediction_Descriptor_Structure* Prediction_Descriptor = (Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4819316);
+						Byte_Manager::Copy_Bytes(0, Original_Descriptor, sizeof(Prediction_Descriptor_Structure), Descriptor);
 
-					Byte_Manager::Copy_Bytes(0, &Original_Prediction_Descriptor, sizeof(Prediction_Descriptor_Structure), Prediction_Descriptor);
+						Descriptor->Fields = Fields;
 
-					static Prediction_Field_Structure Prediction_Fields = { 1, (char*)"m_flVelocityModifier", { 5176 }, 1, 256, { }, sizeof(float), { }, 0.005f };
+						Descriptor->Size = Size;
 
-					Prediction_Descriptor->Fields = &Prediction_Fields;
+						Descriptor->Parent = Original_Descriptor;
+					};
 
-					Prediction_Descriptor->Size = sizeof(Prediction_Fields) / sizeof(Prediction_Field_Structure);
+					static Prediction_Field_Structure Player_Fields = { 1, (char*)"m_flVelocityModifier", { 5176 }, 1, 256, { }, sizeof(float), { }, 0.005f };
 
-					Prediction_Descriptor->Parent = &Original_Prediction_Descriptor;
+					Add_Prediction_Fields((Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4861888), &Player_Fields, sizeof(Player_Fields) / sizeof(Prediction_Field_Structure));
 
-					Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller, 0, (void*)((unsigned __int32)Client_Module + 1548784), 1, (void*)Redirected_Compute_First_Command_To_Execute);
+					static Prediction_Field_Structure Weapon_Fields[4] = 
+					{ 
+						{ 1, (char*)"m_bDelayFire", { 2340 }, 1, 0, { }, sizeof(__int8), { }, 0},
+
+						{ 1, (char*)"m_flDecreaseShotsFired", { 2356 }, 1, 0, { }, sizeof(float), { }, 0 }
+					};
+
+					Add_Prediction_Fields((Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4867964), Weapon_Fields, sizeof(Weapon_Fields) / sizeof(Prediction_Field_Structure));
 
 					Byte_Manager::Set_Bytes(1, (void*)((unsigned __int32)Client_Module + 1548805), 8, 144);
 
@@ -262,8 +270,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Redirection_Manager::Redirect_Function(Original_Finish_Move_Caller, 1, (void*)((unsigned __int32)Client_Module + 1549072), 1, (void*)Redirected_Finish_Move);
 
 					Redirection_Manager::Redirect_Function(Original_Item_Post_Frame_Caller, 0, (void*)((unsigned __int32)Client_Module + 432656), 1, (void*)Redirected_Item_Post_Frame);
-
-					Redirection_Manager::Redirect_Function(Original_Store_Prediction_Results_Caller, 4, (void*)((unsigned __int32)Client_Module + 1554880), 1, (void*)Redirected_Store_Prediction_Results);
 				}
 
 				_putws(L"[ + ] Network");

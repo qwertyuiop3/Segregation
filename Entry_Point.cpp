@@ -12,7 +12,7 @@
 
 #include "Extended_Interface.hpp"
 
-#include "Post_Entity_Packet_Received.hpp"
+#include "Post_Network_Data_Received.hpp"
 
 #pragma comment(lib, "WinMM.Lib")
 
@@ -30,8 +30,6 @@
 
 #include "Compute_Torso_Rotation.hpp"
 
-#include "Compute_First_Command_To_Execute.hpp"
-
 #include "Run_Simulation.hpp"
 
 #include "Setup_Move.hpp"
@@ -45,8 +43,6 @@
 #include "Item_Post_Frame.hpp"
 
 #include "Weapon_Spread.hpp"
-
-#include "Store_Prediction_Results.hpp"
 
 #include "Read_Packets.hpp"
 
@@ -184,7 +180,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Events");
 				{
-					Redirection_Manager::Redirect_Function(Original_Post_Entity_Packet_Received_Caller, 0, (void*)605203088, 1, (void*)Redirected_Post_Entity_Packet_Received);
+					Byte_Manager::Set_Bytes(1, (void*)604255664, 1, 195);
+
+					Redirection_Manager::Redirect_Function(Original_Post_Network_Data_Received_Caller, 0, (void*)605205024, 1, (void*)Redirected_Post_Network_Data_Received);
 
 					Byte_Manager::Set_Bytes(1, (void*)537149578, 1, 235);
 
@@ -231,11 +229,39 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Prediction");
 				{
+					auto Add_Prediction_Fields = [&](Prediction_Descriptor_Structure* Descriptor, Prediction_Field_Structure* Fields, __int32 Size) -> void
+					{
+						Prediction_Descriptor_Structure* Original_Descriptor = (Prediction_Descriptor_Structure*)malloc(sizeof(Prediction_Descriptor_Structure));
+
+						Byte_Manager::Copy_Bytes(0, Original_Descriptor, sizeof(Prediction_Descriptor_Structure), Descriptor);
+
+						Descriptor->Fields = Fields;
+
+						Descriptor->Size = Size;
+
+						Descriptor->Parent = Original_Descriptor;
+					};
+
+					static Prediction_Field_Structure Player_Fields = { 1, { }, { 3936 }, 1, { }, sizeof(float), { } };
+
+					Add_Prediction_Fields((Prediction_Descriptor_Structure*)607768164, &Player_Fields, sizeof(Player_Fields) / sizeof(Prediction_Field_Structure));
+
+					static Prediction_Field_Structure Weapon_Fields[4] = 
+					{ 
+						{ 1, { }, { 1884 }, 1, { }, sizeof(__int8), { } },
+
+						{ 1, { }, { 1888 }, 1, { }, sizeof(float), { } },
+
+						{ 1, { }, { 1892 }, 1, { }, sizeof(float), { } },
+
+						{ 1, { }, { 1912 }, 1, { }, sizeof(float), { } }
+					};
+
+					Add_Prediction_Fields((Prediction_Descriptor_Structure*)607772016, Weapon_Fields, sizeof(Weapon_Fields) / sizeof(Prediction_Field_Structure));
+
 					Byte_Manager::Set_Bytes(1, (void*)537158868, 5, 144);
 
 					Byte_Manager::Set_Bytes(1, (void*)605209595, 1, 235);
-
-					Redirection_Manager::Redirect_Function(Original_Compute_First_Command_To_Execute_Caller, 2, (void*)605206464, 1, (void*)Redirected_Compute_First_Command_To_Execute);
 
 					Redirection_Manager::Redirect_Function(Original_Run_Simulation_Caller, 0, (void*)605206096, 1, (void*)Redirected_Run_Simulation);
 
@@ -250,8 +276,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Byte_Manager::Set_Bytes(1, (void*)605954536, 9, 144);
 
 					Redirection_Manager::Redirect_Function(Original_Weapon_Spread_Caller, 1, (void*)605949248, 1, (void*)Redirected_Weapon_Spread);
-
-					Redirection_Manager::Redirect_Function(Original_Store_Prediction_Results_Caller, 0, (void*)605209056, 1, (void*)Redirected_Store_Prediction_Results);
 				}
 
 				_putws(L"[ + ] Network");

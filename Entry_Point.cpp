@@ -229,7 +229,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Prediction");
 				{
-					auto Add_Prediction_Fields = [&](Prediction_Descriptor_Structure* Descriptor, Prediction_Field_Structure* Fields, __int32 Size) -> void
+					auto Add_Prediction_Fields = [](Prediction_Descriptor_Structure* Descriptor, Prediction_Field_Structure* Fields, __int32 Size) -> void
 					{
 						Prediction_Descriptor_Structure* Original_Descriptor = (Prediction_Descriptor_Structure*)malloc(sizeof(Prediction_Descriptor_Structure));
 
@@ -242,19 +242,19 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 						Descriptor->Parent = Original_Descriptor;
 					};
 
-					static Prediction_Field_Structure Player_Fields = { 1, { }, { 3936 }, 1, { }, sizeof(float), { } };
+					static Prediction_Field_Structure Player_Fields = { 1, (char*)"m_surfaceFriction", { 3936 }, 1, { }, sizeof(float), { } };
 
 					Add_Prediction_Fields((Prediction_Descriptor_Structure*)607768164, &Player_Fields, sizeof(Player_Fields) / sizeof(Prediction_Field_Structure));
 
 					static Prediction_Field_Structure Weapon_Fields[4] = 
 					{ 
-						{ 1, { }, { 1884 }, 1, { }, sizeof(__int8), { } },
+						{ 1, (char*)"m_bDelayFire", { 1884 }, 1, { }, sizeof(__int8), { } },
 
-						{ 1, { }, { 1888 }, 1, { }, sizeof(float), { } },
+						{ 1, (char*)"m_flAccuracy", { 1888 }, 1, { }, sizeof(float), { } },
 
-						{ 1, { }, { 1892 }, 1, { }, sizeof(float), { } },
+						{ 1, (char*)"m_flDecreaseShotsFired", { 1892 }, 1, { }, sizeof(float), { } },
 
-						{ 1, { }, { 1912 }, 1, { }, sizeof(float), { } }
+						{ 1, (char*)"m_flLastFire", { 1912 }, 1, { }, sizeof(float), { } }
 					};
 
 					Add_Prediction_Fields((Prediction_Descriptor_Structure*)607772016, Weapon_Fields, sizeof(Weapon_Fields) / sizeof(Prediction_Field_Structure));

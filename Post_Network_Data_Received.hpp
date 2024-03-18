@@ -2,7 +2,7 @@ struct Prediction_Field_Structure
 {
 	__int32 Type;
 
-	__int8 Additional_Bytes_1[4];
+	char* Name;
 
 	__int32 Offset[2];
 

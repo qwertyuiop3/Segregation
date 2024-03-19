@@ -10,46 +10,16 @@ struct Prediction_Field_Structure
 
 	__int16 Flags;
 
-	__int8 Additional_Bytes_2[16];
+	__int8 Additional_Bytes_1[10];
+
+	struct Prediction_Descriptor_Structure* Descriptor;
 
 	__int32 Bytes;
 
-	__int8 Additional_Bytes_3[8];
+	__int8 Additional_Bytes_2[8];
 
 	float Tolerance;
 };
-
-struct Prediction_Copy_Structure
-{
-	__int8 Additional_Bytes_1[8];
-
-	void* Source;
-
-	__int8 Additional_Bytes_2[11];
-
-	Prediction_Field_Structure* Field;
-
-	__int8 Additional_Bytes_3[32];
-
-	void Construct(void* Destination, void* Source, void* Handler)
-	{
-		using Construct_Type = void(__thiscall*)(void* Prediction_Copy, __int32 Type, void* Destination, __int8 Destination_Packed, void* Source, __int8 Source_Packed, __int8 Count_Errors, void* Unknown_Parameter_1, void* Unknown_Parameter_2, __int8 Report_Errors, void* Handler);
-
-		Construct_Type((unsigned __int32)Client_Module + 1555696)(this, 2, Destination, 0, Source, 1, 1, nullptr, nullptr, 1, Handler);
-	}
-};
-
-Prediction_Copy_Structure Predicton_Copy;
-
-void Predicton_Copy_Compare(char* Class, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, __int8 Within_Tolerance, void* Unknown_Parameter_6)
-{
-	if (Within_Tolerance == 1)
-	{
-		Prediction_Field_Structure* Field = Predicton_Copy.Field;
-
-		Byte_Manager::Copy_Bytes(0, (void*)(*(unsigned __int32*)((unsigned __int32)Client_Module + 5015784) + 3548 * (Class[1] == 'P') + Field->Offset[0]), Field->Bytes, (void*)((unsigned __int32)Predicton_Copy.Source + Field->Offset[1]));
-	}
-}
 
 struct Prediction_Descriptor_Structure
 {
@@ -63,6 +33,83 @@ struct Prediction_Descriptor_Structure
 
 	__int8 Additional_Bytes_2[6];
 };
+
+struct Prediction_Copy_Structure
+{
+	__int8 Additional_Bytes_1[8];
+
+	void* Source;
+
+	__int8 Additional_Bytes_2[11];
+
+	Prediction_Field_Structure* Field;
+
+	__int8 Additional_Bytes_3[4];
+
+	Prediction_Descriptor_Structure* Descriptor;
+
+	__int8 Additional_Bytes_4[24];
+
+	void Construct(void* Destination, void* Source, void* Handler)
+	{
+		using Construct_Type = void(__thiscall*)(void* Prediction_Copy, __int32 Type, void* Destination, __int8 Destination_Packed, void* Source, __int8 Source_Packed, __int8 Count_Errors, void* Unknown_Parameter_1, void* Unknown_Parameter_2, __int8 Report_Errors, void* Handler);
+
+		Construct_Type((unsigned __int32)Client_Module + 1555696)(this, 2, Destination, 0, Source, 1, 1, nullptr, nullptr, 1, Handler);
+	}
+};
+
+__int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* Descriptor, void* Search_Field, __int32 Base_Offset)
+{
+	if (*Offset == 0)
+	{
+		if (Descriptor->Parent)
+		{
+			Compute_Flat_Offset(Offset, Descriptor->Parent, Search_Field, Base_Offset);
+		}
+
+		__int32 Field_Number = 0;
+
+		Traverse_Fields_Label:
+		{
+			Prediction_Field_Structure* Field = &Descriptor->Fields[Field_Number];
+
+			if (Field == Search_Field)
+			{
+				*Offset = Base_Offset + Field->Offset[0];
+			}
+			else
+			{
+				if (Field->Type == 10)
+				{
+					Compute_Flat_Offset(Offset, Field->Descriptor, Search_Field, Base_Offset + Field->Offset[0]);
+				}
+
+				if (Field_Number != Descriptor->Size)
+				{
+					Field_Number += 1;
+
+					goto Traverse_Fields_Label;
+				}
+			}
+		}
+	}
+
+	return *Offset;
+}
+
+Prediction_Copy_Structure Predicton_Copy;
+
+void Predicton_Copy_Compare(char* Class, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, __int8 Within_Tolerance, void* Unknown_Parameter_6)
+{
+	if (Within_Tolerance == 1)
+	{
+		Prediction_Field_Structure* Field = Predicton_Copy.Field;
+
+		static std::unordered_map<void*, __int32> Flat_Offsets;
+
+		Byte_Manager::Copy_Bytes(0, (void*)(*(unsigned __int32*)((unsigned __int32)Client_Module + 5015784) + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int32)Predicton_Copy.Source + Field->Offset[1]));
+	}
+}
 
 void* Original_Post_Network_Data_Received_Caller;
 

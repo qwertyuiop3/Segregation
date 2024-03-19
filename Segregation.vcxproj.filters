@@ -25,7 +25,7 @@
     <ClInclude Include="Copy_Command.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Post_Entity_Packet_Received.hpp">
+    <ClInclude Include="Post_Network_Data_Received.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Send_Move.hpp">
@@ -62,12 +62,6 @@
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Finish_Move.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
-    <ClInclude Include="Store_Prediction_Results.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
-    <ClInclude Include="Compute_First_Command_To_Execute.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Precache.hpp">

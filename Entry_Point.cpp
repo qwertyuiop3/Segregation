@@ -14,6 +14,8 @@ void* Engine_Module;
 
 #include "Extended_Interface.hpp"
 
+#include <unordered_map>
+
 #include "Post_Network_Data_Received.hpp"
 
 #pragma comment(lib, "WinMM.Lib")
@@ -244,15 +246,15 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 						Descriptor->Parent = Original_Descriptor;
 					};
 
-					static Prediction_Field_Structure Player_Fields = { 1, (char*)"m_flVelocityModifier", { 5176 }, 1, 256, { }, sizeof(float), { }, 0.005f };
+					static Prediction_Field_Structure Player_Fields = { 1, (char*)"m_flVelocityModifier", { 5176 }, 1, 256, { }, nullptr, sizeof(float), { }, 0.005f };
 
 					Add_Prediction_Fields((Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4861888), &Player_Fields, sizeof(Player_Fields) / sizeof(Prediction_Field_Structure));
 
 					static Prediction_Field_Structure Weapon_Fields[4] = 
 					{ 
-						{ 1, (char*)"m_bDelayFire", { 2340 }, 1, 0, { }, sizeof(__int8), { }, 0},
+						{ 1, (char*)"m_bDelayFire", { 2340 }, 1, 0, { }, nullptr, sizeof(__int8), { }, 0},
 
-						{ 1, (char*)"m_flDecreaseShotsFired", { 2356 }, 1, 0, { }, sizeof(float), { }, 0 }
+						{ 1, (char*)"m_flDecreaseShotsFired", { 2356 }, 1, 0, { }, nullptr, sizeof(float), { }, 0 }
 					};
 
 					Add_Prediction_Fields((Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4867964), Weapon_Fields, sizeof(Weapon_Fields) / sizeof(Prediction_Field_Structure));

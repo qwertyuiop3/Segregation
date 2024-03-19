@@ -182,7 +182,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Events");
 				{
-					Byte_Manager::Set_Bytes(1, (void*)604255664, 1, 195);
+					Byte_Manager::Set_Bytes(1, (void*)604255733, 1, 0);
 
 					Redirection_Manager::Redirect_Function(Original_Post_Network_Data_Received_Caller, 0, (void*)605205024, 1, (void*)Redirected_Post_Network_Data_Received);
 

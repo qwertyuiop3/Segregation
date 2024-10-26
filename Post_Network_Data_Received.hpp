@@ -95,7 +95,7 @@ __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* De
 
 Prediction_Copy_Structure Predicton_Copy;
 
-void Predicton_Copy_Compare(char* Class, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, __int8 Within_Tolerance, void* Unknown_Parameter_6)
+void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, void* Unknown_Parameter_6, __int8 Within_Tolerance, void* Unknown_Parameter_7)
 {
 	if (Within_Tolerance == 1)
 	{
@@ -111,17 +111,20 @@ void* Original_Post_Network_Data_Received_Caller;
 
 void __thiscall Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Commands_Acknowledged)
 {
-	void* Local_Player = *(void**)607867332;
-
-	void* Result = *(void**)((unsigned __int32)Local_Player + 700 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 4);
-
-	if (Result != nullptr)
+	if (Commands_Acknowledged >= 0)
 	{
-		Predicton_Copy.Construct(Local_Player, Result, (void*)Predicton_Copy_Compare);
+		void* Local_Player = *(void**)607867332;
 
-		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
+		void* Result = *(void**)((unsigned __int32)Local_Player + 700 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 4);
 
-		Transfer_Data_Type(605218912)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)607768164);
+		if (Result != nullptr)
+		{
+			Predicton_Copy.Construct(Local_Player, Result, (void*)Predicton_Copy_Compare);
+
+			using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
+
+			Transfer_Data_Type(605218912)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)607768164);
+		}
 	}
 
 	(decltype(&Redirected_Post_Network_Data_Received)(Original_Post_Network_Data_Received_Caller))(Unknown_Parameter, Commands_Acknowledged);

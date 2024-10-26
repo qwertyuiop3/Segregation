@@ -113,7 +113,7 @@ void __thiscall Redirected_Post_Network_Data_Received(void* Unknown_Parameter, _
 {
 	void* Local_Player = *(void**)607867332;
 
-	void* Result = *(void**)((unsigned __int32)Local_Player + 700 + (90 - Commands_Acknowledged * 90 % -~90) * 4);
+	void* Result = *(void**)((unsigned __int32)Local_Player + 700 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 4);
 
 	if (Result != nullptr)
 	{

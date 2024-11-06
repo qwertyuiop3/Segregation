@@ -25,9 +25,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		{
 			Command->Angles[0],
 
-			Command->Angles[1],
-
-			0
+			Command->Angles[1]
 		};
 
 		static float Previous_Move_Angle_Y;
@@ -45,23 +43,23 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 				Command->Buttons &= ~(*(__int32*)((unsigned __int32)Local_Player + 3420) & 2);
 			}
 
-			float Difference = __builtin_remainderf(Move_Angles[1] - Previous_Move_Angle_Y, 360);
+			float Difference = __builtin_remainderf(Move_Angles[1] - Previous_Move_Angle_Y, 360.f);
 
 			Previous_Move_Angle_Y = Move_Angles[1];
 
 			float* Velocity = (float*)((unsigned __int32)Local_Player + 224);
 
-			if (__builtin_fabsf(Difference) < __builtin_atan2f(30, __builtin_hypotf(Velocity[0], Velocity[1])) * 180 / 3.1415927f)
+			if (__builtin_fabsf(Difference) < __builtin_atan2f(30.f, __builtin_hypotf(Velocity[0], Velocity[1])) * 180.f / 3.1415927f)
 			{
-				float Strafe_Angle = __builtin_remainderf(Move_Angles[1] - __builtin_atan2f(Velocity[1], Velocity[0]) * 180 / 3.1415927f, 360);
+				float Strafe_Angle = __builtin_remainderf(Move_Angles[1] - __builtin_atan2f(Velocity[1], Velocity[0]) * 180.f / 3.1415927f, 360.f);
 
 				if (__builtin_signbitf(Strafe_Angle) == 0)
 				{
-					Command->Move[1] = -400;
+					Command->Move[1] = -400.f;
 				}
 				else
 				{
-					Command->Move[1] = 400;
+					Command->Move[1] = 400.f;
 				}
 
 				Move_Angles[1] -= Strafe_Angle;
@@ -70,11 +68,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			{
 				if (__builtin_signbitf(Difference) == 0)
 				{
-					Command->Move[1] = -400;
+					Command->Move[1] = -400.f;
 				}
 				else
 				{
-					Command->Move[1] = 400;
+					Command->Move[1] = 400.f;
 				}
 			}
 		}
@@ -85,7 +83,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		float Previous_Move[2];
 
-		Byte_Manager::Copy_Bytes(0, Previous_Move, sizeof(Previous_Move), Command->Move);
+		Byte_Manager::Copy_Bytes(1, Previous_Move, sizeof(Previous_Move), Command->Move);
 
 		float Desired_Move_Forward[3];
 
@@ -160,13 +158,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		*(void**)542589456 = nullptr;
 
-		float Local_Player_Previous_Origin[3];
+		float Local_Previous_Origin[3];
 
-		float* Local_Player_Origin = (float*)((unsigned __int32)Local_Player + 668);
+		float* Local_Origin = (float*)((unsigned __int32)Local_Player + 668);
 
 		if (Interface_Alternative.Integer == 0)
 		{
-			Byte_Manager::Copy_Bytes(0, Local_Player_Previous_Origin, sizeof(Local_Player_Previous_Origin), Local_Player_Origin);
+			Byte_Manager::Copy_Bytes(1, Local_Previous_Origin, sizeof(Local_Previous_Origin), Local_Origin);
 		}
 
 		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
@@ -175,7 +173,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		*(void**)542589456 = Previous_Audio_Device;
 
-		Byte_Manager::Copy_Bytes(0, Command->Move, sizeof(Previous_Move), Previous_Move);
+		Byte_Manager::Copy_Bytes(1, Command->Move, sizeof(Previous_Move), Previous_Move);
 
 		static __int8 Send_Packet;
 
@@ -183,7 +181,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		__int8 Predicted_Send_Packet = 0;
 
-		static float Networked_Origin[3];
+		static float Local_Networked_Origin[3];
 
 		if (Interface_Alternative.Integer == 0)
 		{
@@ -209,7 +207,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			{
 				if (Choked_Commands_Count < Interface_Maximum_Choked_Commands.Integer)
 				{
-					if (__builtin_powf(Networked_Origin[0] - Local_Player_Previous_Origin[0], 2) + __builtin_powf(Networked_Origin[1] - Local_Player_Previous_Origin[1], 2) + __builtin_powf(Networked_Origin[2] - Local_Player_Previous_Origin[2], 2) <= 4096)
+					if (__builtin_powf(Local_Networked_Origin[0] - Local_Previous_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Previous_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Previous_Origin[2], 2.f) <= 4096.f)
 					{
 						Send_Packet = 0;
 
@@ -221,7 +219,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 							}
 							else
 							{
-								if (__builtin_powf(Networked_Origin[0] - Local_Player_Origin[0], 2) + __builtin_powf(Networked_Origin[1] - Local_Player_Origin[1], 2) + __builtin_powf(Networked_Origin[2] - Local_Player_Origin[2], 2) > 4096)
+								if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) > 4096.f)
 								{
 									Predicted_Send_Packet = 1;
 								}
@@ -233,7 +231,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 					{
 						Send_Packet_Label:
 						{
-							Byte_Manager::Copy_Bytes(0, Networked_Origin, sizeof(Networked_Origin), Local_Player_Origin);
+							Byte_Manager::Copy_Bytes(1, Local_Networked_Origin, sizeof(Local_Networked_Origin), Local_Origin);
 
 							Send_Packet = 1;
 						}
@@ -260,7 +258,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			{
 				if (Choked_Commands_Count < Interface_Maximum_Choked_Commands.Integer)
 				{
-					if (__builtin_powf(Networked_Origin[0] - Local_Player_Origin[0], 2) + __builtin_powf(Networked_Origin[1] - Local_Player_Origin[1], 2) + __builtin_powf(Networked_Origin[2] - Local_Player_Origin[2], 2) <= 4096)
+					if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) <= 4096.f)
 					{
 						Send_Packet = 0;
 					}
@@ -284,7 +282,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		float Total_Latency = Get_Latency_Type(537919008)(Network_Channel, 0) + Get_Latency_Type(537919008)(Network_Channel, 1);
 
-		float Interpolation_Time = max(*(float*)541928632, std::clamp(*(float*)607906336, *(float*)542242312, *(float*)542242072) / std::clamp(*(float*)540495208, *(float*)542221264, *(float*)542221408));
+		float Interpolation_Time = std::clamp(*(float*)607906336, *(float*)542242312, *(float*)542242072) / std::clamp(*(float*)540495208, *(float*)542221264, *(float*)542221408);
 
 		float Corrected_Total_Latency = std::clamp(Total_Latency + Interpolation_Time, 0.f, 1.f);
 
@@ -335,9 +333,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 									Tick_Number,
 
-									__builtin_fabsf(Corrected_Total_Latency - (__int32)(Global_Variables->Tick_Number + 2 - *(__int32*)541926600 + (Interface_Alternative.Integer == 0) + (__int32)(Total_Latency / Global_Variables->Interval_Per_Tick + 0.5f) - Tick_Number) * Global_Variables->Interval_Per_Tick) <= 0.2f,
+									__builtin_fabsf(Corrected_Total_Latency - (__int32)(Global_Variables->Tick_Number + (Interface_Alternative.Integer == 0) + (__int32)(Total_Latency / Global_Variables->Interval_Per_Tick + 0.5f) - Tick_Number) * Global_Variables->Interval_Per_Tick) <= 0.2f,
 
-									__builtin_powf(Local_Player_Origin[0] - Entity_Origin[0], 2) + __builtin_powf(Local_Player_Origin[1] - Entity_Origin[1], 2) + __builtin_powf(Local_Player_Origin[2] - Entity_Origin[2], 2)
+									__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
 								};
 
 								Sorted_Target_List.push_back(Target);
@@ -584,9 +582,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																	{
 																		Command->Tick_Number = Target->Tick_Number;
 
-																		Command->Angles[0] = __builtin_atan2f(-Direction[2], __builtin_hypotf(Direction[0], Direction[1])) * 180 / 3.1415927f;
+																		Command->Angles[0] = __builtin_atan2f(-Direction[2], __builtin_hypotf(Direction[0], Direction[1])) * 180.f / 3.1415927f;
 
-																		Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180 / 3.1415927f;
+																		Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f;
 
 																		Command->Buttons |= 1;
 
@@ -600,7 +598,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																			{
 																				Recent_Player_Data_Number = Target_Number;
 
-																				Byte_Manager::Copy_Bytes(0, &Previous_Recent_Player_Data, sizeof(Previous_Recent_Player_Data), Player_Data);
+																				Byte_Manager::Copy_Bytes(1, &Previous_Recent_Player_Data, sizeof(Previous_Recent_Player_Data), Player_Data);
 
 																				if (Player_Data->Memory_Tolerance == 0)
 																				{
@@ -668,7 +666,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														float Random_X = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
 
-														Weapon_Spread = -1;
+														Weapon_Spread = -1.f;
 
 														using Primary_Attack_Type = void(__thiscall**)(void* Weapon);
 
@@ -695,7 +693,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 															}
 														};
 
-														Weapon_Spread = 0;
+														Weapon_Spread = 0.f;
 
 														Calculate_Rotation_Label:
 														{
@@ -769,9 +767,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														float* Recoil = (float*)((unsigned __int32)Local_Player + 2992);
 
-														Command->Angles[0] = 180 - __builtin_atan2f(-Rotated_Forward[2], __builtin_hypotf(Rotated_Forward[0], Rotated_Forward[1])) * 180 / 3.1415927f - Recoil[0] * 2;
+														Command->Angles[0] = 180.f - __builtin_atan2f(-Rotated_Forward[2], __builtin_hypotf(Rotated_Forward[0], Rotated_Forward[1])) * 180.f / 3.1415927f - Recoil[0] * 2.f;
 
-														Command->Angles[1] = 180 + __builtin_atan2f(Rotated_Forward[1], Rotated_Forward[0]) * 180 / 3.1415927f - Recoil[1] * 2;
+														Command->Angles[1] = 180.f + __builtin_atan2f(Rotated_Forward[1], Rotated_Forward[0]) * 180.f / 3.1415927f - Recoil[1] * 2.f;
 
 														float Rotated_Up[3] =
 														{
@@ -782,7 +780,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 															Up[0] * Rotation[2][0] + Up[1] * Rotation[2][1] + Up[2] * Rotation[2][2]
 														};
 
-														Command->Angles[2] = 180 + __builtin_atan2f(Rotated_Forward[1] * Rotated_Up[0] - Rotated_Forward[0] * Rotated_Up[1], Rotated_Forward[0] * (Rotated_Forward[0] * Rotated_Up[2] - Rotated_Forward[2] * Rotated_Up[0]) - Rotated_Forward[1] * (Rotated_Forward[2] * Rotated_Up[1] - Rotated_Forward[1] * Rotated_Up[2])) * 180 / 3.1415927f - Recoil[2] * 2;
+														Command->Angles[2] = 180.f + __builtin_atan2f(Rotated_Forward[1] * Rotated_Up[0] - Rotated_Forward[0] * Rotated_Up[1], Rotated_Forward[0] * (Rotated_Forward[0] * Rotated_Up[2] - Rotated_Forward[2] * Rotated_Up[0]) - Rotated_Forward[1] * (Rotated_Forward[2] * Rotated_Up[1] - Rotated_Forward[1] * Rotated_Up[2])) * 180.f / 3.1415927f - Recoil[2] * 2.f;
 
 														In_Attack = 1;
 
@@ -808,7 +806,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 						goto Passed_Shot_Time_Check_Label;
 					}
 
-					Byte_Manager::Copy_Bytes(0, &Players_Data[Recent_Player_Data_Number], sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
+					Byte_Manager::Copy_Bytes(1, &Players_Data[Recent_Player_Data_Number], sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
 
 					goto Passed_Shot_Time_Check_Label;
 				}
@@ -829,32 +827,32 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 				float Direction[2] =
 				{
-					Target_Origin[0] - Local_Player_Origin[0],
+					Target_Origin[0] - Local_Origin[0],
 
-					Target_Origin[1] - Local_Player_Origin[1]
+					Target_Origin[1] - Local_Origin[1]
 				};
 
 				if (Send_Packet == 0)
 				{
 					if ((Command->Command_Number % 2) == 0)
 					{
-						Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180 / 3.1415927f + Interface_First_Choked_Angle_Y.Floating_Point;
+						Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f + Interface_First_Choked_Angle_Y.Floating_Point;
 					}
 					else
 					{
-						Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180 / 3.1415927f + Interface_Second_Choked_Angle_Y.Floating_Point;
+						Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f + Interface_Second_Choked_Angle_Y.Floating_Point;
 					}
 				}
 				else
 				{
-					Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180 / 3.1415927f + Interface_Angle_Y.Floating_Point;
+					Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f + Interface_Angle_Y.Floating_Point;
 				}
 			}
 		}
 
 		auto Compress_Angle = [](float Value, __int32 Shift) -> float
 		{
-			return ((__int32)(Value / 360 * Shift) & Shift - 1) * (360 / (float)Shift);
+			return ((__int32)(Value / 360.f * Shift) & Shift - 1) * (360.f / Shift);
 		};
 
 		Command->Angles[0] = Compress_Angle(Command->Angles[0], 65536);
@@ -882,7 +880,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		{
 			Command->Extra_Simulations = max(0, Choked_Commands_Count - 14);
 
-			Byte_Manager::Copy_Bytes(0, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
+			Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
 		}
 
 		*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 24) = Send_Packet;

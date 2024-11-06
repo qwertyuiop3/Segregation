@@ -16,7 +16,7 @@ void __thiscall Redirected_Update_Animation(void* Player)
 
 	if (Player == *(void**)607867332)
 	{
-		Byte_Manager::Copy_Bytes(0, (void*)((unsigned __int32)Player + 4124), sizeof(Update_Animation_Angles), Update_Animation_Angles);
+		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Player + 4124), sizeof(Update_Animation_Angles), Update_Animation_Angles);
 	}
 
 	float Previous_Frame_Time = Global_Variables->Frame_Time;

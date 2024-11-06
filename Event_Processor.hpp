@@ -16,7 +16,7 @@ void __stdcall Event_Processor(void* Event)
 
 		using Get_Integer_Type = __int32(__thiscall*)(void* Event, char* Key, void* Unknown_Parameter);
 
-		__int32 Local_Player_Number = *(__int32*)((unsigned __int32)Local_Player + 80);
+		__int32 Local_Number = *(__int32*)((unsigned __int32)Local_Player + 80);
 
 		if (Name[0] == 'p')
 		{
@@ -28,7 +28,7 @@ void __stdcall Event_Processor(void* Event)
 			{
 				if (Killer_Number != 0)
 				{
-					if (Victim_Number == Local_Player_Number)
+					if (Victim_Number == Local_Number)
 					{
 						if (Name[7] == 'd')
 						{
@@ -44,7 +44,7 @@ void __stdcall Event_Processor(void* Event)
 					}
 					else
 					{
-						if (Killer_Number == Local_Player_Number)
+						if (Killer_Number == Local_Number)
 						{
 							if (Victim_Number == Recent_Player_Data_Number)
 							{
@@ -112,7 +112,7 @@ void __stdcall Event_Processor(void* Event)
 		}
 		else
 		{
-			Shot_Time *= Identifier_To_Number_Type(537020000)((void*)540435380, Get_Integer_Type(537579136)(Event, (char*)"userid", nullptr)) != Local_Player_Number;
+			Shot_Time *= Identifier_To_Number_Type(537020000)((void*)540435380, Get_Integer_Type(537579136)(Event, (char*)"userid", nullptr)) != Local_Number;
 		}
 	}
 }

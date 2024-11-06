@@ -87,7 +87,7 @@ void Implement_Extended_Interface()
 
 	Create_Console_Interface(Pointer_Name(Interface_Bruteforce), (char*)"1", (void*)Bruteforce_Reset);
 
-	Create_Console_Interface(Pointer_Name(Interface_Bruteforce_Angles), (char*)"0, -45, 45, -90, 90", (void*)Bruteforce_Set_Angles);
+	Create_Console_Interface(Pointer_Name(Interface_Bruteforce_Angles), (char*)"0, -90, 90", (void*)Bruteforce_Set_Angles);
 
 	Bruteforce_Set_Angles(&Interface_Bruteforce_Angles);
 
@@ -103,11 +103,11 @@ void Implement_Extended_Interface()
 
 	Create_Console_Interface(Pointer_Name(Interface_Angle_X), (char*)"180", nullptr);
 
-	Create_Console_Interface(Pointer_Name(Interface_First_Choked_Angle_Y), (char*)"46", nullptr);
+	Create_Console_Interface(Pointer_Name(Interface_First_Choked_Angle_Y), (char*)"180", nullptr);
 
-	Create_Console_Interface(Pointer_Name(Interface_Second_Choked_Angle_Y), (char*)"136", nullptr);
+	Create_Console_Interface(Pointer_Name(Interface_Second_Choked_Angle_Y), (char*)"180", nullptr);
 
-	Create_Console_Interface(Pointer_Name(Interface_Angle_Y), (char*)"-135", nullptr);
+	Create_Console_Interface(Pointer_Name(Interface_Angle_Y), (char*)"180", nullptr);
 
 	Create_Console_Interface(Pointer_Name(Interface_Uber_Alles_Scale), (char*)"16", nullptr);
 

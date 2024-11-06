@@ -14,29 +14,29 @@ void Redirected_Draw_Crosshair()
 
 		__int32 Points[12]
 		{
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf((Rotation_Angle - 90) * 3.1415927f / 180)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf((Rotation_Angle - 90.f) * 3.1415927f / 180.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle - 90) * 3.1415927f / 180)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle - 90.f) * 3.1415927f / 180.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle - 90) * 3.1415927f / 180 + 1)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle - 90.f) * 3.1415927f / 180.f + 1.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf(Rotation_Angle * 3.1415927f / 180)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf(Rotation_Angle * 3.1415927f / 180.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf(Rotation_Angle * 3.1415927f / 180)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf(Rotation_Angle * 3.1415927f / 180.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf(Rotation_Angle * 3.1415927f / 180 + 1)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf(Rotation_Angle * 3.1415927f / 180.f + 1.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf((Rotation_Angle + 90) * 3.1415927f / 180)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf((Rotation_Angle + 90.f) * 3.1415927f / 180.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle + 90) * 3.1415927f / 180)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle + 90.f) * 3.1415927f / 180.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle + 90) * 3.1415927f / 180 + 1)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle + 90.f) * 3.1415927f / 180.f + 1.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf((Rotation_Angle + 180) * 3.1415927f / 180)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf((Rotation_Angle + 180.f) * 3.1415927f / 180.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle + 180) * 3.1415927f / 180)),
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_cosf((Rotation_Angle + 180.f) * 3.1415927f / 180.f)),
 
-			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf((Rotation_Angle + 180) * 3.1415927f / 180 + 1))
+			(__int32)(Interface_Uber_Alles_Scale.Integer * __builtin_sinf((Rotation_Angle + 180.f) * 3.1415927f / 180.f + 1.f))
 		};
 
 		using Draw_Line_Type = void(__thiscall**)(void* Surface, __int32 From_X, __int32 From_Y, __int32 To_X, __int32 To_Y);
@@ -82,5 +82,5 @@ void Redirected_Draw_Crosshair()
 
 	Uber_Alles(255, Screen_Width, Screen_Height);
 
-	Rotation_Angle = __builtin_remainderf(Rotation_Angle - (*(Global_Variables_Structure**)607726732)->Frame_Time * Interface_Uber_Alles_Speed.Integer, 180);
+	Rotation_Angle = __builtin_remainderf(Rotation_Angle - (*(Global_Variables_Structure**)607726732)->Frame_Time * Interface_Uber_Alles_Speed.Integer, 180.f);
 }

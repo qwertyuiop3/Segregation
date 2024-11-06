@@ -91,7 +91,6 @@
     <ClInclude Include="Finish_Move.hpp" />
     <ClInclude Include="Interpolate.hpp" />
     <ClInclude Include="Move.hpp" />
-    <ClInclude Include="On_Render_Start.hpp" />
     <ClInclude Include="Packet_Start.hpp" />
     <ClInclude Include="Precache.hpp" />
     <ClInclude Include="Copy_Command.hpp" />

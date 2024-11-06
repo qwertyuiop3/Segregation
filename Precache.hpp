@@ -20,7 +20,7 @@ void __thiscall Redirected_Precache(void* Material)
 
 				using Color_Modulate_Type = void(__thiscall**)(void* Material, float Red, float Green, float Blue);
 
-				(*Color_Modulate_Type(*(unsigned __int32*)Material + 120))(Material, 1, 0.5f, 0.5f);
+				(*Color_Modulate_Type(*(unsigned __int32*)Material + 120))(Material, 1.f, 0.5f, 0.5f);
 			}
 
 			Precache = 0;

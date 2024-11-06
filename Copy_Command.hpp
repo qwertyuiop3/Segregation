@@ -323,7 +323,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 						{
 							if (*(__int8*)((unsigned __int32)Entity + 382) == 0)
 							{
-								__int32 Entity_Time = *(float*)((unsigned __int32)Entity + 108);
+								float Entity_Time = *(float*)((unsigned __int32)Entity + 108);
 
 								float* Entity_Origin = (float*)((unsigned __int32)Entity + 824);
 

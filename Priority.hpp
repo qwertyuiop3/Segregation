@@ -54,9 +54,9 @@ void Get_Priorities()
 	}
 }
 
-void Set_Priority(Interface_Structure* Console_Variable)
+void Set_Priority(Interface_Structure* Interface)
 {
-	__int32 Player_Number = atoi(Console_Variable->String);
+	__int32 Player_Number = atoi(Interface->String);
 
-	Players_Data[Player_Number].Priority = atoi((char*)((unsigned __int32)Console_Variable->String + 3 - (Player_Number < 10)));
+	Players_Data[Player_Number].Priority = atoi((char*)((unsigned __int32)Interface->String + 3 - (Player_Number < 10)));
 }

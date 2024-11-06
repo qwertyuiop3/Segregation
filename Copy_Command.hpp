@@ -91,7 +91,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		Angle_Vectors(Move_Angles, Desired_Move_Forward, Desired_Move_Right, nullptr);
 
-		Desired_Move_Forward[2] = 0;
+		Desired_Move_Forward[2] = 0.f;
 
 		auto Vector_Normalize = [](float* Vector) -> float
 		{
@@ -102,7 +102,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		Vector_Normalize(Desired_Move_Forward);
 
-		Desired_Move_Right[2] = 0;
+		Desired_Move_Right[2] = 0.f;
 
 		Vector_Normalize(Desired_Move_Right);
 
@@ -121,11 +121,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 			Angle_Vectors(Command->Angles, Move_Forward, Move_Right, nullptr);
 
-			Move_Forward[2] = 0;
+			Move_Forward[2] = 0.f;
 
 			Vector_Normalize(Move_Forward);
 
-			Move_Right[2] = 0;
+			Move_Right[2] = 0.f;
 
 			Vector_Normalize(Move_Right);
 
@@ -497,11 +497,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																		using Clip_Trace_To_Players_Type = void(__cdecl*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
-																		End[0] += Direction[0] * 40;
+																		End[0] += Direction[0] * 40.f;
 
-																		End[1] += Direction[1] * 40;
+																		End[1] += Direction[1] * 40.f;
 
-																		End[2] += Direction[2] * 40;
+																		End[2] += Direction[2] * 40.f;
 
 																		Clip_Trace_To_Players_Type(605426672)(Eye_Position, End, 1174421515, &Filter, &Trace);
 
@@ -530,11 +530,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																	float Hitbox_Center[3]
 																	{
-																		(Hitbox_Minimum[0] + Hitbox_Maximum[0]) / 2,
+																		(Hitbox_Minimum[0] + Hitbox_Maximum[0]) / 2.f,
 
-																		(Hitbox_Minimum[1] + Hitbox_Maximum[1]) / 2,
+																		(Hitbox_Minimum[1] + Hitbox_Maximum[1]) / 2.f,
 
-																		(Hitbox_Minimum[2] + Hitbox_Maximum[2]) / 2
+																		(Hitbox_Minimum[2] + Hitbox_Maximum[2]) / 2.f
 																	};
 
 																	float Hitbox_Z_Vertices[8]

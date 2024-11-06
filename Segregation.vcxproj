@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
@@ -83,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bruteforce.hpp" />
-    <ClInclude Include="Calculate_Override_Model_Index.hpp" />
+    <ClInclude Include="Calculate_Override_Model.hpp" />
     <ClInclude Include="Extended_Interface.hpp" />
     <ClInclude Include="Compute_Torso_Rotation.hpp" />
     <ClInclude Include="Draw_Crosshair.hpp" />
@@ -91,7 +91,6 @@
     <ClInclude Include="Finish_Move.hpp" />
     <ClInclude Include="Interpolate.hpp" />
     <ClInclude Include="Move.hpp" />
-    <ClInclude Include="On_Render_Start.hpp" />
     <ClInclude Include="Packet_Start.hpp" />
     <ClInclude Include="Precache.hpp" />
     <ClInclude Include="Copy_Command.hpp" />

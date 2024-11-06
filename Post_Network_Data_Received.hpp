@@ -58,6 +58,8 @@ struct Prediction_Copy_Structure
 	}
 };
 
+Prediction_Copy_Structure Predicton_Copy;
+
 __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* Descriptor, void* Search_Field, __int32 Base_Offset)
 {
 	if (*Offset == 0)
@@ -97,8 +99,6 @@ __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* De
 	return *Offset;
 }
 
-Prediction_Copy_Structure Predicton_Copy;
-
 void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, void* Unknown_Parameter_6, __int8 Within_Tolerance, void* Unknown_Parameter_7)
 {
 	if (Within_Tolerance == 1)
@@ -107,7 +107,7 @@ void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2
 
 		static std::unordered_map<void*, __int32> Flat_Offsets;
 
-		Byte_Manager::Copy_Bytes(0, (void*)(*(unsigned __int32*)((unsigned __int32)Client_Module + 5015784) + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int32)Predicton_Copy.Source + Field->Offset[1]));
+		Byte_Manager::Copy_Bytes(1, (void*)(*(unsigned __int32*)((unsigned __int32)Client_Module + 5015784) + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int32)Predicton_Copy.Source + Field->Offset[1]));
 	}
 }
 

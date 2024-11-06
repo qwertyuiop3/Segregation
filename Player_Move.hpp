@@ -55,7 +55,7 @@ void __thiscall Redirected_Player_Move(void* Game_Movement)
 
 		Origin[1],
 
-		Origin[2] + 62 - 17 * Ducked
+		Origin[2] + 62.f - 17.f * Ducked
 	};
 
 	float End[3] =
@@ -64,23 +64,23 @@ void __thiscall Redirected_Player_Move(void* Game_Movement)
 
 		Start[1],
 
-		Start[2] + 14
+		Start[2] + 14.f
 	};
 
 	float Minimum[3] =
 	{
-		-15,
+		-15.f,
 
-		-15,
+		-15.f,
 
 		0
 	};
 
 	float Maximum[3] =
 	{
-		15,
+		15.f,
 
-		15,
+		15.f,
 
 		0
 	};
@@ -103,9 +103,9 @@ void __thiscall Redirected_Player_Move(void* Game_Movement)
 
 	__int8 Ducking = *(__int8*)((unsigned __int32)Player + 3617);
 
-	if (Trace.Fraction < 1)
+	if (Trace.Fraction < 1.f)
 	{
-		float Estimation = Start[2] + (End[2] - Start[2]) * Trace.Fraction - Origin[2] - 12;
+		float Estimation = Start[2] + (End[2] - Start[2]) * Trace.Fraction - Origin[2] - 12.f;
 
 		if (Ducked + Ducking == 0)
 		{
@@ -120,13 +120,13 @@ void __thiscall Redirected_Player_Move(void* Game_Movement)
 	{
 		if (Ducked + Ducking == 0)
 		{
-			*(float*)((unsigned __int32)Player + 240) = 64;
+			*(float*)((unsigned __int32)Player + 240) = 64.f;
 		}
 		else
 		{
 			if (Ducked > Ducking)
 			{
-				*(float*)((unsigned __int32)Player + 240) = 47;
+				*(float*)((unsigned __int32)Player + 240) = 47.f;
 			}
 		}
 	}

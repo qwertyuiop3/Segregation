@@ -22,7 +22,7 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 
 					if (*(float*)((unsigned __int32)Animation_State + 28) == -179.91206f)
 					{
-						Set_Pose_Parameter_Type((unsigned __int32)Client_Module + 559920)(Entity, Studio_Header, 1, Player_Data->Switch_X == 0 ? 90 : -90);
+						Set_Pose_Parameter_Type((unsigned __int32)Client_Module + 559920)(Entity, Studio_Header, 1, Player_Data->Switch_X == 0 ? 90.f : -90.f);
 					}
 
 					if (Player_Data->Memory_Tolerance == 0)
@@ -34,7 +34,7 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 						*(float*)((unsigned __int32)Animation_State + 64) = *(float*)((unsigned __int32)Animation_State + 24) - Player_Data->Memorized_Y;
 					}
 
-					Set_Pose_Parameter_Type((unsigned __int32)Client_Module + 559920)(Entity, Studio_Header, 2, __builtin_remainderf(*(float*)((unsigned __int32)Animation_State + 24) - *(float*)((unsigned __int32)Animation_State + 64), 360));
+					Set_Pose_Parameter_Type((unsigned __int32)Client_Module + 559920)(Entity, Studio_Header, 2, __builtin_remainderf(*(float*)((unsigned __int32)Animation_State + 24) - *(float*)((unsigned __int32)Animation_State + 64), 360.f));
 
 					return;
 				}

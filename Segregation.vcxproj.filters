@@ -70,7 +70,7 @@
     <ClInclude Include="Player_Move.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Calculate_Override_Model_Index.hpp">
+    <ClInclude Include="Calculate_Override_Model.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Packet_Start.hpp">
@@ -86,9 +86,6 @@
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Move.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
-    <ClInclude Include="On_Render_Start.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
   </ItemGroup>

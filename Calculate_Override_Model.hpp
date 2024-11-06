@@ -1,4 +1,4 @@
-__int32 __thiscall Redirected_Calculate_Override_Model_Index(void* Weapon)
+__int32 __thiscall Redirected_Calculate_Override_Model(void* Weapon)
 {
 	if (__builtin_return_address(0) == (void*)((unsigned __int32)Client_Module + 584192))
 	{

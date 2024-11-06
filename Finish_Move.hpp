@@ -4,9 +4,9 @@ void __thiscall Redirected_Finish_Move(void* Unknown_Parameter_1, void* Player, 
 {
 	float X = *(float*)((unsigned __int32)Move_Data + 76);
 
-	if (X > 180)
+	if (X > 180.f)
 	{
-		X -= 360;
+		X -= 360.f;
 	}
 
 	*(float*)((unsigned __int32)Move_Data + 76) = std::clamp(X, -90.f, 90.f);

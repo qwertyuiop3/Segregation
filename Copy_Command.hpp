@@ -321,7 +321,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 						{
 							if (*(__int8*)((unsigned __int32)Entity + 320) == 0)
 							{
-								__int32 Tick_Number = (*(float*)((unsigned __int32)Entity + 104) + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f;
+								__int32 Entity_Time = *(float*)((unsigned __int32)Entity + 104) + Interpolation_Time;
 
 								float* Entity_Origin = (float*)((unsigned __int32)Entity + 668);
 
@@ -331,9 +331,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 									Entity,
 
-									Tick_Number,
+									(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f),
 
-									__builtin_fabsf(Corrected_Total_Latency - (__int32)(Global_Variables->Tick_Number + (Interface_Alternative.Integer == 0) + (__int32)(Total_Latency / Global_Variables->Interval_Per_Tick + 0.5f) - Tick_Number) * Global_Variables->Interval_Per_Tick) <= 0.2f,
+									__builtin_fabsf(Corrected_Total_Latency - (__int32)(Global_Variables->Tick_Number + (Interface_Alternative.Integer == 0) + (Total_Latency - Entity_Time) / Global_Variables->Interval_Per_Tick + 0.5f) * Global_Variables->Interval_Per_Tick) <= 0.2f,
 
 									__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
 								};

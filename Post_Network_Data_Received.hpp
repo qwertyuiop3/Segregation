@@ -115,20 +115,19 @@ void* Original_Post_Network_Data_Received_Caller;
 
 void __thiscall Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Commands_Acknowledged)
 {
-	if (Commands_Acknowledged >= 0)
+	void* Local_Player = *(void**)((unsigned __int32)Client_Module + 5015784);
+
+	Commands_Acknowledged = max(0, Commands_Acknowledged);
+
+	void* Result = *(void**)((unsigned __int32)Local_Player + 856 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 4);
+
+	if (Result != nullptr)
 	{
-		void* Local_Player = *(void**)((unsigned __int32)Client_Module + 5015784);
+		Predicton_Copy.Construct(Local_Player, Result, (void*)Predicton_Copy_Compare);
 
-		void* Result = *(void**)((unsigned __int32)Local_Player + 856 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 4);
+		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
 
-		if (Result != nullptr)
-		{
-			Predicton_Copy.Construct(Local_Player, Result, (void*)Predicton_Copy_Compare);
-
-			using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
-
-			Transfer_Data_Type((unsigned __int32)Client_Module + 1561808)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4861888));
-		}
+		Transfer_Data_Type((unsigned __int32)Client_Module + 1561808)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4861888));
 	}
 
 	(decltype(&Redirected_Post_Network_Data_Received)(Original_Post_Network_Data_Received_Caller))(Unknown_Parameter, Commands_Acknowledged);

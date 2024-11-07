@@ -11,7 +11,7 @@ void* Original_Write_Events_Caller;
 
 void __thiscall Redirected_Write_Events(void* Unknown_Parameter_1, void* Unknown_Parameter_2)
 {
-	if (*(__int32*)((unsigned __int32)Engine_Module + 4684008) == 5)
+	if (*(__int32*)((unsigned __int32)Engine_Module + 4684008) != 6)
 	{
 		Byte_Manager::Set_Bytes(1, Players_Data, sizeof(Players_Data), 0);
 

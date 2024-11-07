@@ -151,12 +151,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				GetConsoleScreenBufferInfo(Standard_Output_Handle, &Console_Screen_Buffer_Information);
 
-				COORD Top_Left =
-				{
-					0,
-
-					0
-				};
+				COORD Top_Left = { };
 
 				DWORD Characters_Written_Count;
 

@@ -30,13 +30,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		static float Previous_Move_Angle_Y;
 
-		if ((Command->Buttons & 2) == 2)
+		if ((Command->Buttons & 2) + *(__int8*)((unsigned __int32)Local_Player + 376) == 4)
 		{
 			Command->Move[0] = 0;
 
 			if (*(__int32*)((unsigned __int32)Local_Player + 596) == -1)
 			{
-				Command->Buttons &= ~(*(__int8*)((unsigned __int32)Local_Player + 376) & 2);
+				Command->Buttons &= ~2;
 			}
 			else
 			{
@@ -430,7 +430,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 															if (Target->Valid == 1)
 															{
 																Redirected_Compute_Torso_Rotation((void*)(*(unsigned __int32*)((unsigned __int32)Target->Self + 5112) - 148));
-
+																//don't forget about cache
 																using Setup_Bones_Type = __int8(__thiscall*)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time);
 
 																float Bones[128][3][4];

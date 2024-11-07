@@ -280,7 +280,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		void* Network_Channel = *(void**)((unsigned __int32)Engine_Module + 4683720);
 
-		float Latency = Get_Latency_Type((unsigned __int32)Engine_Module + 1871040)(Network_Channel, 0) + Get_Latency_Type((unsigned __int32)Engine_Module + 1871040)(Network_Channel, 1);
+		float Latency = Get_Latency_Type((unsigned __int32)Engine_Module + 1871040)(Network_Channel, 0);
 
 		using Get_Interpolation_Time_Type = float(__cdecl*)();
 

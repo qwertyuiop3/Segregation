@@ -280,13 +280,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		void* Network_Channel = *(void**)((unsigned __int32)Engine_Module + 4683720);
 
-		float Total_Latency = Get_Latency_Type((unsigned __int32)Engine_Module + 1871040)(Network_Channel, 0) + Get_Latency_Type((unsigned __int32)Engine_Module + 1871040)(Network_Channel, 1);
+		float Latency = Get_Latency_Type((unsigned __int32)Engine_Module + 1871040)(Network_Channel, 0) + Get_Latency_Type((unsigned __int32)Engine_Module + 1871040)(Network_Channel, 1);
 
 		using Get_Interpolation_Time_Type = float(__cdecl*)();
 
 		float Interpolation_Time = Get_Interpolation_Time_Type((unsigned __int32)Engine_Module + 853520)();
 
-		float Corrected_Total_Latency = std::clamp(Total_Latency + Interpolation_Time, 0.f, 1.f);
+		float Corrected_Latency = std::clamp(Latency + Interpolation_Time, 0.f, 1.f);
 
 		Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)((unsigned __int32)Client_Module + 4825720);
 
@@ -335,7 +335,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 									(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f),
 
-									__builtin_fabsf(Corrected_Total_Latency - (__int32)(Global_Variables->Tick_Number + (Interface_Alternative.Integer == 0) + (Total_Latency - Entity_Time) / Global_Variables->Interval_Per_Tick + 0.5f) * Global_Variables->Interval_Per_Tick) <= 0.2f,
+									__builtin_fabsf(Corrected_Latency - (__int32)(Global_Variables->Tick_Number + (Interface_Alternative.Integer == 0) + (Latency - Entity_Time) / Global_Variables->Interval_Per_Tick + 0.5f) * Global_Variables->Interval_Per_Tick) <= 0.2f,
 
 									__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
 								};

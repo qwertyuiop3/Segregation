@@ -21,11 +21,7 @@ namespace Redirection_Manager
 
 		__builtin_memcpy(Original_Function_Caller, Original_Function, 6 + Offset);
 
-		*(__int8*)((unsigned __int32)Original_Function_Caller + 6 + Offset) = 104;
-
-		*(void**)((unsigned __int32)Original_Function_Caller + 7 + Offset) = (void*)((unsigned __int32)Original_Function + 6 + Offset);
-
-		*(unsigned __int8*)((unsigned __int32)Original_Function_Caller + 11 + Offset) = 195;
+		Redirect_Function((void*)((unsigned __int32)Original_Function_Caller + 6 + Offset), (void*)((unsigned __int32)Original_Function + 6 + Offset));
 
 		Redirect_Function(Original_Function, Redirected_Function);
 

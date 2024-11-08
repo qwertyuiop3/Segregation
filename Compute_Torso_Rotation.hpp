@@ -8,7 +8,7 @@ __int8 Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 		{
 			void* Entity = *(void**)((unsigned __int64)Animation_State + 304);
 
-			if (Entity != *(void**)((unsigned __int64)Client_Module + 9394464))
+			if (Entity != Get_Local_Player())
 			{
 				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 128)];
 
@@ -37,7 +37,7 @@ __int8 Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 			}
 		}
 	}
-	
+
 	return 0;
 }
 

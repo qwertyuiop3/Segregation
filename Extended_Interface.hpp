@@ -93,7 +93,7 @@ void Implement_Extended_Interface()
 	Create_Console_Interface(Pointer_Name(Interface_Aim_Height), (char*)"0.9", nullptr);
 
 	Create_Console_Interface(Pointer_Name(Interface_Aim_Hitgroup), (char*)"1", nullptr);
-	
+
 	Create_Console_Interface(Pointer_Name(Interface_Extrapolation), (char*)"1", nullptr);
 
 	Create_Console_Interface(Pointer_Name(Interface_Angle_X), (char*)"180", nullptr);
@@ -103,7 +103,7 @@ void Implement_Extended_Interface()
 	Create_Console_Interface(Pointer_Name(Interface_Second_Choked_Angle_Y), (char*)"-130", nullptr);
 
 	Create_Console_Interface(Pointer_Name(Interface_Angle_Y), (char*)"80", nullptr);
-	
+
 	Create_Console_Interface(Pointer_Name(Interface_Team_Check), (char*)"1", nullptr);
 
 	Create_Console_Interface(Pointer_Name(Interface_Uber_Alles_Scale), (char*)"16", nullptr);

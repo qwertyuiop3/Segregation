@@ -38,7 +38,7 @@ void Redirected_Draw_Crosshair(void* Unknown_Parameter)
 
 			(__int32)(Interface_Uber_Alles_Scale.Get_Integer() * __builtin_sinf((Rotation_Angle + 180.f) * 3.1415927f / 180.f + 1.f))
 		};
-		
+
 		using Draw_Line_Type = void(**)(void* Surface, float From_X, float From_Y, float To_X, float To_Y);
 
 		(*Draw_Line_Type(*(unsigned __int64*)Surface + 152))(Surface, X, Y, X + Points[0], Y - Points[1]);
@@ -57,7 +57,7 @@ void Redirected_Draw_Crosshair(void* Unknown_Parameter)
 
 		(*Draw_Line_Type(*(unsigned __int64*)Surface + 152))(Surface, X + Points[9], Y - Points[10], X + Points[11], Y - Points[10]);
 	};
-	
+
 	__int32 Screen_Width;
 
 	__int32 Screen_Height;
@@ -65,7 +65,7 @@ void Redirected_Draw_Crosshair(void* Unknown_Parameter)
 	using Get_Screen_Size_Type = void(*)(__int32* Screen_Width, __int32* Screen_Height);
 
 	Get_Screen_Size_Type((unsigned __int64)Client_Module + 2956496)(&Screen_Width, &Screen_Height);
-	
+
 	Screen_Width /= 2;
 
 	Screen_Height /= 2;

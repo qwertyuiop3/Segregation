@@ -2,14 +2,14 @@ __int32 Recent_Player_Data_Number;
 
 void Event_Processor(void* Unknown_Parameter, void* Event)
 {
-	void* Local_Player = *(void**)((unsigned __int64)Client_Module + 9394464);
+	void* Local_Player = Get_Local_Player();
 
 	if (Local_Player != nullptr)
 	{
 		using Get_Name_Type = char*(*)(void* Event);
 
 		char* Name = Get_Name_Type((unsigned __int64)Engine_Module + 1737440)(Event);
-		
+
 		using Get_Integer_Type = __int32(*)(void* Event, char* Key, void* Unknown_Parameter);
 
 		__int32 Victim_Number;
@@ -19,7 +19,7 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 		if (Name[0] == 'p')
 		{
 			using Identifier_To_Number_Type = __int32(*)(void* Engine, __int32 Identifier);
-			
+
 			Victim_Number = Identifier_To_Number_Type((unsigned __int64)Engine_Module + 491424)((void*)((unsigned __int64)Engine_Module + 4670832), Get_Integer_Type((unsigned __int64)Engine_Module + 1737424)(Event, (char*)"userid", nullptr));
 
 			Killer_Number = Identifier_To_Number_Type((unsigned __int64)Engine_Module + 491424)((void*)((unsigned __int64)Engine_Module + 4670832), Get_Integer_Type((unsigned __int64)Engine_Module + 1737424)(Event, (char*)"attacker", nullptr));
@@ -27,10 +27,10 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 		else
 		{
 			Victim_Number = Get_Integer_Type((unsigned __int64)Engine_Module + 1737424)(Event, (char*)"entindex_killed", nullptr);
-			
+
 			Killer_Number = Get_Integer_Type((unsigned __int64)Engine_Module + 1737424)(Event, (char*)"entindex_attacker", nullptr);
 		}
-		
+
 		if (Victim_Number != Killer_Number)
 		{
 			if ((Killer_Number - 1 | (*(Global_Variables_Structure**)((unsigned __int64)Client_Module + 8690824))->Maximum_Clients - Killer_Number) >= 0)

@@ -2,6 +2,8 @@ Redirection_Manager::Manager_Structure Send_Move_Manager;
 
 void Redirected_Send_Move(void* Unknown_Parameter)
 {
+	(decltype(&Redirected_Send_Move)(Send_Move_Manager.Caller))(Unknown_Parameter);
+
 	if (__builtin_return_address(0) == (void*)((unsigned __int64)Engine_Module + 610213))
 	{
 		struct Message_Structure
@@ -71,9 +73,5 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 		using Send_Network_Message_Type = __int8(*)(void* Network_Channel, void* Message, void* Unknown_Parameter_1, void* Unknown_Parameter_2);
 
 		Send_Network_Message_Type((unsigned __int64)Engine_Module + 1963808)(Network_Channel, &Message, nullptr, nullptr);
-	}
-	else
-	{
-		(decltype(&Redirected_Send_Move)(Send_Move_Manager.Caller))(Unknown_Parameter);
 	}
 }

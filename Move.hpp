@@ -2,7 +2,7 @@ Redirection_Manager::Manager_Structure Move_Manager;
 
 void Redirected_Move(float Unknown_Parameter, __int8 Final)
 {
-	if (*(void**)((unsigned __int64)Client_Module + 9394464) != nullptr)
+	if (Get_Local_Player() != nullptr)
 	{
 		Redirected_Read_Packets(Final);
 

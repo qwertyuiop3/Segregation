@@ -16,13 +16,13 @@ struct Global_Variables_Structure
 struct Player_Data_Structure
 {
 	__int8 Breaks_Lag_Compensation;
-	
+
 	__int32 Simulation_Ticks[2];
-	
+
 	__int32 Last_Update_Tick_Number[2];
-	
+
 	float Last_Update_Origin[3];
-	
+
 	__int32 Priority;
 
 	__int32 Memory_Tolerance;
@@ -46,9 +46,11 @@ void Get_Priorities()
 	{
 		using Get_Name_Type = __int8(*)(void* Engine, __int32 Number, char* Name);
 
+		static void* Get_Name = Byte_Manager::Find_Bytes(223, (unsigned __int8*)Client_Module, 3955253202869131490);
+
 		char Name[324];
 
-		Get_Name_Type((unsigned __int64)Engine_Module + 491536)((void*)((unsigned __int64)Engine_Module + 4670832), Entity_Number, Name);
+		Get_Name_Type((unsigned __int64)Get_Name)((void*)((unsigned __int64)Engine_Module + 4670832), Entity_Number, Name);
 
 		if (Name[0] != 0)
 		{
@@ -68,7 +70,7 @@ void Set_Priority(Interface_Structure* Interface)
 {
 	Interface = (Interface_Structure*)((unsigned __int64)Interface - 48);
 
-	__int32 Player_Number = atoi(Interface->String);
+	__int32 Entity_Number = atoi(Interface->String);
 
-	Players_Data[Player_Number].Priority = atoi((char*)((unsigned __int64)Interface->String + 4 - (Player_Number < 10) - (Player_Number < 100)));
+	Players_Data[Entity_Number].Priority = atoi((char*)((unsigned __int64)Interface->String + 4 - (Entity_Number < 10) - (Entity_Number < 100)));
 }

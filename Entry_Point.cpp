@@ -83,7 +83,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 			if (GetModuleHandleW(L"gmod.exe") == nullptr)
 			{
 				DWORD Identifier;
-				
+
 				if (GetWindowThreadProcessId(FindWindowW(nullptr, L"Garry's Mod (x64)"), &Identifier) != 0)
 				{
 					void* Process = OpenProcess(PROCESS_ALL_ACCESS, 0, Identifier);
@@ -168,6 +168,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Install_Interface_Handler_Type((unsigned __int64)Install_Interface_Handler)(Find_Interface((char*)"sv_cheats"), (void*)Force_Interface_Value, 1);
 
 					Install_Interface_Handler_Type((unsigned __int64)Install_Interface_Handler)(Find_Interface((char*)"sv_allowcslua"), (void*)Force_Interface_Value, 1);
+
+					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int64)Byte_Manager::Find_Bytes(4832327113591360991, (unsigned __int8*)Engine_Module, 8537831801160118899) - 9), 1, 235);
 				}
 
 				_putws(L"[ + ] Extend Interface");

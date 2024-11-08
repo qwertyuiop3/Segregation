@@ -1,3 +1,10 @@
+void* Get_Local_Player()
+{
+	static void* Local_Player = Byte_Manager::Find_Bytes(25689991, (unsigned __int8*)Client_Module, 15743831963600548487ull);
+
+	return (decltype(&Get_Local_Player)(Local_Player))();
+}
+
 struct Prediction_Field_Structure
 {
 	__int32 Type;
@@ -58,9 +65,13 @@ struct Prediction_Copy_Structure
 	{
 		using Construct_Type = void(*)(void* Prediction_Copy, __int32 Type, void* Destination, __int8 Destination_Packed, void* Source, __int8 Source_Packed, __int8 Count_Errors, void* Unknown_Parameter_1, void* Unknown_Parameter_2, __int8 Report_Errors, void* Handler);
 
-		Construct_Type((unsigned __int64)Client_Module + 2763920)(this, 2, Destination, 0, Source, 1, 1, nullptr, nullptr, 1, Handler);
+		static void* Construct = Byte_Manager::Find_Bytes(7919, (unsigned __int8*)Client_Module, 2076044217017777087);
+
+		Construct_Type((unsigned __int64)Construct)(this, 2, Destination, 0, Source, 1, 1, nullptr, nullptr, 1, Handler);
 	}
 };
+
+Prediction_Copy_Structure Predicton_Copy;
 
 __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* Descriptor, void* Search_Field, __int32 Base_Offset)
 {
@@ -101,8 +112,6 @@ __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* De
 	return *Offset;
 }
 
-Prediction_Copy_Structure Predicton_Copy;
-
 void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, void* Unknown_Parameter_6, __int8 Within_Tolerance, void* Unknown_Parameter_7)
 {
 	if (Within_Tolerance == 1)
@@ -119,7 +128,7 @@ Redirection_Manager::Manager_Structure Post_Network_Data_Received_Manager;
 
 void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Commands_Acknowledged)
 {
-	void* Local_Player = *(void**)((unsigned __int64)Client_Module + 9394464);
+	void* Local_Player = Get_Local_Player();
 
 	Commands_Acknowledged = max(0, Commands_Acknowledged);
 
@@ -131,7 +140,9 @@ void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Comm
 
 		using Transfer_Data_Type = __int32(*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
 
-		Transfer_Data_Type((unsigned __int64)Client_Module + 2771344)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int64)Client_Module + 8586304));
+		static void* Transfer_Data = Byte_Manager::Find_Bytes(3653103, (unsigned __int8*)Client_Module, 742330376693593246);
+
+		Transfer_Data_Type((unsigned __int64)Transfer_Data)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int64)Client_Module + 8586304));
 	}
 
 	Post_Network_Data_Received_Manager.Restore_Function();

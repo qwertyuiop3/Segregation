@@ -6,11 +6,11 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 
 	if (Local_Player != nullptr)
 	{
-		using Get_Name_Type = char*(*)(void* Event);
+		using Get_Name_Type = char*(**)(void* Event);
 
-		char* Name = Get_Name_Type((unsigned __int64)Engine_Module + 1737440)(Event);
+		char* Name = (*Get_Name_Type(*(unsigned __int64*)Event + 8))(Event);
 
-		using Get_Integer_Type = __int32(*)(void* Event, char* Key, void* Unknown_Parameter);
+		using Get_Integer_Type = __int32(**)(void* Event, char* Key, void* Unknown_Parameter);
 
 		__int32 Victim_Number;
 
@@ -18,17 +18,19 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 
 		if (Name[0] == 'p')
 		{
-			using Identifier_To_Number_Type = __int32(*)(void* Engine, __int32 Identifier);
+			using Identifier_To_Number_Type = __int32(**)(void* Engine, __int32 Identifier);
 
-			Victim_Number = Identifier_To_Number_Type((unsigned __int64)Engine_Module + 491424)((void*)((unsigned __int64)Engine_Module + 4670832), Get_Integer_Type((unsigned __int64)Engine_Module + 1737424)(Event, (char*)"userid", nullptr));
+			void* Engine = (void*)((unsigned __int64)Engine_Module + 4670832);
 
-			Killer_Number = Identifier_To_Number_Type((unsigned __int64)Engine_Module + 491424)((void*)((unsigned __int64)Engine_Module + 4670832), Get_Integer_Type((unsigned __int64)Engine_Module + 1737424)(Event, (char*)"attacker", nullptr));
+			Victim_Number = (*Identifier_To_Number_Type(*(unsigned __int64*)Engine + 72))((void*)((unsigned __int64)Engine_Module + 4670832), (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"userid", nullptr));
+
+			Killer_Number = (*Identifier_To_Number_Type(*(unsigned __int64*)Engine + 72))((void*)((unsigned __int64)Engine_Module + 4670832), (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"attacker", nullptr));
 		}
 		else
 		{
-			Victim_Number = Get_Integer_Type((unsigned __int64)Engine_Module + 1737424)(Event, (char*)"entindex_killed", nullptr);
+			Victim_Number = (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"entindex_killed", nullptr);
 
-			Killer_Number = Get_Integer_Type((unsigned __int64)Engine_Module + 1737424)(Event, (char*)"entindex_attacker", nullptr);
+			Killer_Number = (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"entindex_attacker", nullptr);
 		}
 
 		if (Victim_Number != Killer_Number)

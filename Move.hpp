@@ -7,21 +7,25 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 		Redirected_Read_Packets(Final);
 
 		using Fire_Events_Type = void(*)();
+		
+		static void* Fire_Events = Byte_Manager::Find_Bytes(61442791308783, (unsigned __int8*)Engine_Module, 7283201772715103423);
 
-		Fire_Events_Type((unsigned __int64)Engine_Module + 625008)();
+		Fire_Events_Type((unsigned __int64)Fire_Events)();
 	}
 
 	(decltype(&Redirected_Move)(Move_Manager.Caller))(Unknown_Parameter, Final);
 
 	using Update_Animations_Type = void(*)();
 
-	Update_Animations_Type((unsigned __int64)Client_Module + 1682880)();
+	static void* Update_Animations = Byte_Manager::Find_Bytes(1013879, (unsigned __int8*)Client_Module, 8612103190241078388);
+
+	Update_Animations_Type((unsigned __int64)Update_Animations)();
 
 	Update_Animation_Time = (*(Global_Variables_Structure**)((unsigned __int64)Client_Module + 8690824))->Current_Time;
 
 	Update_Animation_Type = 1;
 
-	Update_Animations_Type((unsigned __int64)Client_Module + 1682880)();
+	Update_Animations_Type((unsigned __int64)Update_Animations)();
 
 	Update_Animation_Type = 0;
 }

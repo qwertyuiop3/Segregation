@@ -52,7 +52,9 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 		{
 			using Write_Command_Type = __int8(*)(void* Client, void* Data, __int32 From, __int32 To, void* Unknown_Parameter);
 
-			Write_Command_Type((unsigned __int64)Client_Module + 2060912)(*(void**)((unsigned __int64)Engine_Module + 5712576), (void*)((unsigned __int64)&Message + 104), From_Command_Number, To_Command_Number, nullptr);
+			static void* Write_Command = Byte_Manager::Find_Bytes(30599, (unsigned __int8*)Client_Module, 16215112815858314946ull);
+
+			Write_Command_Type((unsigned __int64)Write_Command)(*(void**)((unsigned __int64)Engine_Module + 5712576), (void*)((unsigned __int64)&Message + 104), From_Command_Number, To_Command_Number, nullptr);
 
 			From_Command_Number = To_Command_Number;
 
@@ -70,8 +72,8 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 
 		*(__int32*)((unsigned __int64)Network_Channel + 32) = 0;
 
-		using Send_Network_Message_Type = __int8(*)(void* Network_Channel, void* Message, void* Unknown_Parameter_1, void* Unknown_Parameter_2);
+		using Send_Message_Type = __int8(**)(void* Network_Channel, void* Message, void* Unknown_Parameter_1, void* Unknown_Parameter_2);
 
-		Send_Network_Message_Type((unsigned __int64)Engine_Module + 1963808)(Network_Channel, &Message, nullptr, nullptr);
+		(*Send_Message_Type(*(unsigned __int64*)Network_Channel + 320))(Network_Channel, &Message, nullptr, nullptr);
 	}
 }

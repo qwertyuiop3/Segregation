@@ -12,7 +12,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 	{
 		using Run_Prediction_Type = void(*)();
 
-		Run_Prediction_Type((unsigned __int64)Engine_Module + 634048)();
+		static void* Run_Prediction = Byte_Manager::Find_Bytes(26679, (unsigned __int8*)Engine_Module, 14835849722720403839ull);
+
+		Run_Prediction_Type((unsigned __int64)Run_Prediction)();
 
 		auto Angle_Vectors = [](float* Angles, float* Forward, float* Right, float* Up) -> void
 		{
@@ -309,15 +311,17 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 		__int32 Entity_Number = 1;
 
-		using Get_Latency_Type = float(*)(void* Network_Channel, __int32 Type);
+		using Get_Latency_Type = float(**)(void* Network_Channel, __int32 Type);
 
 		void* Network_Channel = *(void**)((unsigned __int64)Engine_Module + 5990752);
 
-		float Latency = Get_Latency_Type((unsigned __int64)Engine_Module + 1945664)(Network_Channel, 0);
+		float Latency = (*Get_Latency_Type(*(unsigned __int64*)Network_Channel + 72))(Network_Channel, 0);
 
 		using Get_Interpolation_Time_Type = float(*)();
 
-		float Interpolation_Time = Get_Interpolation_Time_Type((unsigned __int64)Engine_Module + 698192)();
+		static void* Get_Interpolation_Time = Byte_Manager::Find_Bytes(489591, (unsigned __int8*)Engine_Module, 7804435399762144143);
+
+		float Interpolation_Time = Get_Interpolation_Time_Type((unsigned __int64)Get_Interpolation_Time)();
 
 		float Corrected_Latency = std::clamp(Latency + Interpolation_Time, 0.f, 1.f);
 
@@ -985,9 +989,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 													Message.Construct((char*)"cl_lagcompensation", Value);
 
-													using Write_Message_To_Buffer_Type = __int8(**)(void* Message, void* Buffer);
+													using Write_Message_Type = __int8(**)(void* Message, void* Buffer);
 
-													(*Write_Message_To_Buffer_Type(*(unsigned __int64*)&Message + 40))(&Message, (void*)((unsigned __int64)Network_Channel + 88));
+													(*Write_Message_Type(*(unsigned __int64*)&Message + 40))(&Message, (void*)((unsigned __int64)Network_Channel + 88));
 
 													Command->Angles[0] = __builtin_atan2f(-Direction[2], __builtin_hypotf(Direction[0], Direction[1])) * 180.f / 3.1415927f;
 

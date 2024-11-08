@@ -14,12 +14,6 @@
     <ClCompile Include="Entry_Point.cpp">
       <Filter>C++</Filter>
     </ClCompile>
-    <ClCompile Include="safetyhook\safetyhook.cpp">
-      <Filter>C++</Filter>
-    </ClCompile>
-    <ClCompile Include="Zydis\Zydis.c">
-      <Filter>C++</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Draw_Crosshair.hpp">

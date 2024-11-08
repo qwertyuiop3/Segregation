@@ -19,9 +19,9 @@ struct Prediction_Field_Structure
 	__int8 Additional_Bytes_2[16];
 
 	float Tolerance;
-	
+
 	__int32 Flat_Offset[2];
-	
+
 	__int8 Additional_Bytes_3[2];
 };
 
@@ -62,8 +62,6 @@ struct Prediction_Copy_Structure
 	}
 };
 
-Prediction_Copy_Structure Predicton_Copy;
-
 __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* Descriptor, void* Search_Field, __int32 Base_Offset)
 {
 	if (*Offset == 0)
@@ -103,6 +101,8 @@ __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* De
 	return *Offset;
 }
 
+Prediction_Copy_Structure Predicton_Copy;
+
 void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, void* Unknown_Parameter_6, __int8 Within_Tolerance, void* Unknown_Parameter_7)
 {
 	if (Within_Tolerance == 1)
@@ -115,24 +115,28 @@ void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2
 	}
 }
 
-SafetyHookInline Original_Post_Network_Data_Received_Caller{};
+Redirection_Manager::Manager_Structure Post_Network_Data_Received_Manager;
 
 void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Commands_Acknowledged)
 {
 	void* Local_Player = *(void**)((unsigned __int64)Client_Module + 9394464);
-	
+
 	Commands_Acknowledged = max(0, Commands_Acknowledged);
 
-	void* Prediction_Frame = *(void**)((unsigned __int64)Local_Player + 1096 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 8);
+	void* Result = *(void**)((unsigned __int64)Local_Player + 1096 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 8);
 
-	if (Prediction_Frame != nullptr)
+	if (Result != nullptr)
 	{
-		Predicton_Copy.Construct(Local_Player, Prediction_Frame, (void*)Predicton_Copy_Compare);
+		Predicton_Copy.Construct(Local_Player, Result, (void*)Predicton_Copy_Compare);
 
 		using Transfer_Data_Type = __int32(*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
 
 		Transfer_Data_Type((unsigned __int64)Client_Module + 2771344)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int64)Client_Module + 8586304));
 	}
 
-	Original_Post_Network_Data_Received_Caller.call<void>(Unknown_Parameter, Commands_Acknowledged);
+	Post_Network_Data_Received_Manager.Restore_Function();
+
+	(decltype(&Redirected_Post_Network_Data_Received)(Post_Network_Data_Received_Manager.Original_Function))(Unknown_Parameter, Commands_Acknowledged);
+
+	Post_Network_Data_Received_Manager.Restore_Redirection();
 }

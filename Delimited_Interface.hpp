@@ -19,13 +19,27 @@ struct Interface_Structure
 		
 		return (*Get_Interface_Floating_Point_Type(*(unsigned __int64*)this + 96))(this);
 	}
+
+	void Set_Integer(__int32 Integer)
+	{
+		using Set_Integer_Type = void(**)(Interface_Structure* Interface, __int32 Value);
+
+		(*Set_Integer_Type(*(unsigned __int64*)this + 128))(this, Integer);
+	}
 };
+
+Interface_Structure* Find_Interface(char* Name)
+{
+	using Find_Interface_Type = Interface_Structure*(**)(void* Interface, char* Name);
+
+	void* Interface = *(void**)((unsigned __int64)Engine_Module + 12887056);
+
+	return (*Find_Interface_Type(*(unsigned __int64*)Interface + 136))(Interface, Name);
+}
 
 void Force_Interface_Value(Interface_Structure* Interface)
 {
 	Interface = (Interface_Structure*)((unsigned __int64)Interface - 48);
 
-	using Set_Interface_Integer_Type = void(**)(Interface_Structure* Interface, __int32 Integer);
-
-	(*Set_Interface_Integer_Type(*(unsigned __int64*)Interface + 128))(Interface, 1);
+	Interface->Set_Integer(1);
 }

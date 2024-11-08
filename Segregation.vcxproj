@@ -80,8 +80,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entry_Point.cpp" />
-    <ClCompile Include="safetyhook\safetyhook.cpp" />
-    <ClCompile Include="Zydis\Zydis.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bruteforce.hpp" />

@@ -7,7 +7,7 @@ struct Sequence_Structure
 
 Sequence_Structure Sequences[90];
 
-SafetyHookInline Original_Write_Events_Caller{};
+Redirection_Manager::Manager_Structure Write_Events_Manager;
 
 void Redirected_Write_Events(void* Unknown_Parameter_1, void* Unknown_Parameter_2)
 {
@@ -22,5 +22,5 @@ void Redirected_Write_Events(void* Unknown_Parameter_1, void* Unknown_Parameter_
 		Byte_Manager::Set_Bytes(1, Sequences, sizeof(Sequences), 0);
 	}
 
-	Original_Write_Events_Caller.call<void>(Unknown_Parameter_1, Unknown_Parameter_2);
+	(decltype(&Redirected_Write_Events)(Write_Events_Manager.Caller))(Unknown_Parameter_1, Unknown_Parameter_2);
 }

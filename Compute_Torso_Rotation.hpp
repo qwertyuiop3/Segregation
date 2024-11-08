@@ -1,6 +1,6 @@
-SafetyHookInline Original_Compute_Torso_Rotation_Caller{};
+Redirection_Manager::Manager_Structure Compute_Torso_Rotation_Manager;
 
-__int8 Compute_Custom_Torso_Rotation(void* Animation_State, void* Studio_Header)
+__int8 Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 {
 	if (Interface_Bruteforce.Get_Integer() == 1)
 	{
@@ -43,8 +43,8 @@ __int8 Compute_Custom_Torso_Rotation(void* Animation_State, void* Studio_Header)
 
 void Redirected_Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 {
-	if (Compute_Custom_Torso_Rotation(Animation_State, Studio_Header) == 0)
+	if (Compute_Torso_Rotation(Animation_State, Studio_Header) == 0)
 	{
-		Original_Compute_Torso_Rotation_Caller.call<void>(Animation_State, Studio_Header);
+		(decltype(&Redirected_Compute_Torso_Rotation)(Compute_Torso_Rotation_Manager.Caller))(Animation_State, Studio_Header);
 	}
 }

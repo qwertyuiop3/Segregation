@@ -1,4 +1,4 @@
-struct Fire_Bullets_Info_Structure
+struct Bullet_Structure
 {
 	__int8 Additional_Bytes_1[28];
 
@@ -17,12 +17,12 @@ float Weapon_Spread[2];
 
 float Weapon_Range;
 
-SafetyHookInline Original_Fire_Bullets_Caller{};
+Redirection_Manager::Manager_Structure Fire_Bullets_Manager;
 
-void Redirected_Fire_Bullets(void* Player, Fire_Bullets_Info_Structure* Fire_Bullets_Info)
+void Redirected_Fire_Bullets(void* Player, Bullet_Structure* Bullet)
 {
 	Bullets_Fired = 1;
-	
+
 	if (__builtin_return_address(0) == (void*)((unsigned __int64)Client_Module + 1085853))
 	{
 		Byte_Manager::Set_Bytes(1, Weapon_Recoil, sizeof(Weapon_Recoil), 0);
@@ -32,9 +32,9 @@ void Redirected_Fire_Bullets(void* Player, Fire_Bullets_Info_Structure* Fire_Bul
 		Byte_Manager::Copy_Bytes(1, Weapon_Recoil, sizeof(Weapon_Recoil), (float*)((unsigned __int64)Player + 10760));
 	}
 
-	Byte_Manager::Copy_Bytes(1, Weapon_Spread, sizeof(Weapon_Spread), Fire_Bullets_Info->Spread);
+	Byte_Manager::Copy_Bytes(1, Weapon_Spread, sizeof(Weapon_Spread), Bullet->Spread);
 
-	Weapon_Range = Fire_Bullets_Info->Range;
+	Weapon_Range = Bullet->Range;
 
-	Original_Fire_Bullets_Caller.call<void>(Player, Fire_Bullets_Info);
+	(decltype(&Redirected_Fire_Bullets)(Fire_Bullets_Manager.Caller))(Player, Bullet);
 }

@@ -1,4 +1,4 @@
-SafetyHookInline Original_Send_Move_Caller{};
+Redirection_Manager::Manager_Structure Send_Move_Manager;
 
 void Redirected_Send_Move(void* Unknown_Parameter)
 {
@@ -74,6 +74,6 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 	}
 	else
 	{
-		Original_Send_Move_Caller.call<void>(Unknown_Parameter);
+		(decltype(&Redirected_Send_Move)(Send_Move_Manager.Caller))(Unknown_Parameter);
 	}
 }

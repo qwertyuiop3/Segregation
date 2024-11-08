@@ -1,4 +1,4 @@
-SafetyHookInline Original_Post_Data_Update_Caller{};
+Redirection_Manager::Manager_Structure Post_Data_Update_Manager;
 
 void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 {
@@ -32,5 +32,9 @@ void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 		Byte_Manager::Copy_Bytes(1, Player_Data->Last_Update_Origin, sizeof(Player_Data->Last_Update_Origin), Networked_Origin);
 	}
 	
-	Original_Post_Data_Update_Caller.call<void>(Entity, Unknown_Parameter);
+	Post_Data_Update_Manager.Restore_Function();
+
+	(decltype(&Redirected_Post_Data_Update)(Post_Data_Update_Manager.Original_Function))(Entity, Unknown_Parameter);
+
+	Post_Data_Update_Manager.Restore_Redirection();
 }

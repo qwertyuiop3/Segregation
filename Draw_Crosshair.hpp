@@ -1,4 +1,4 @@
-SafetyHookInline Original_Draw_Crosshair_Caller{};
+Redirection_Manager::Manager_Structure Draw_Crosshair_Manager;
 
 void Redirected_Draw_Crosshair(void* Unknown_Parameter)
 {

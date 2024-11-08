@@ -2,7 +2,7 @@ float Update_Animation_Time;
 
 __int8 Update_Animation_Type;
 
-SafetyHookInline Original_Update_Animation_Caller{};
+Redirection_Manager::Manager_Structure Update_Animation_Manager;
 
 void Redirected_Update_Animation(void* Player)
 {
@@ -18,7 +18,7 @@ void Redirected_Update_Animation(void* Player)
 
 	*(float*)((unsigned __int64)Player + 152) = Update_Animation_Time - Global_Variables->Frame_Time;
 
-	Original_Update_Animation_Caller.call<void>(Player);
+	(decltype(&Redirected_Update_Animation)(Update_Animation_Manager.Caller))(Player);
 
 	Global_Variables->Frame_Time = Previous_Frame_Time;
 

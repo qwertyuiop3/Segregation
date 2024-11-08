@@ -1,4 +1,4 @@
-SafetyHookInline Original_Move_Caller{};
+Redirection_Manager::Manager_Structure Move_Manager;
 
 void Redirected_Move(float Unknown_Parameter, __int8 Final)
 {
@@ -11,7 +11,7 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 		Fire_Events_Type((unsigned __int64)Engine_Module + 625008)();
 	}
 
-	Original_Move_Caller.call<void>(Unknown_Parameter, Final);
+	(decltype(&Redirected_Move)(Move_Manager.Caller))(Unknown_Parameter, Final);
 
 	using Update_Animations_Type = void(*)();
 

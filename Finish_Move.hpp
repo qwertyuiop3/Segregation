@@ -1,4 +1,4 @@
-SafetyHookInline Original_Finish_Move_Caller{};
+Redirection_Manager::Manager_Structure Finish_Move_Manager;
 
 void Redirected_Finish_Move(void* Unknown_Parameter_1, void* Player, void* Unknown_Parameter_2, void* Move_Data)
 {
@@ -11,7 +11,7 @@ void Redirected_Finish_Move(void* Unknown_Parameter_1, void* Player, void* Unkno
 
 	*(float*)((unsigned __int64)Move_Data + 76) = std::clamp(X, -90.f, 90.f);
 
-	Original_Finish_Move_Caller.call<void>(Unknown_Parameter_1, Player, Unknown_Parameter_2, Move_Data);
+	(decltype(&Redirected_Finish_Move)(Finish_Move_Manager.Caller))(Unknown_Parameter_1, Player, Unknown_Parameter_2, Move_Data);
 
 	*(__int32*)((unsigned __int64)Player + 496) |= 4096;
 }

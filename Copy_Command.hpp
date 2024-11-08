@@ -1,6 +1,6 @@
 Player_Data_Structure Previous_Recent_Player_Data;
 
-SafetyHookInline Original_Copy_Command_Caller{};
+Redirection_Manager::Manager_Structure Copy_Command_Manager;
 
 void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Frame_Address)
 {
@@ -754,7 +754,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 												}
 											}
 											
-											Compute_Custom_Torso_Rotation(*(void**)((unsigned __int64)Target->Self + 13856), Studio_Header);
+											Compute_Torso_Rotation(*(void**)((unsigned __int64)Target->Self + 13856), Studio_Header);
 
 											using Invalidate_Bone_Cache_Type = void(*)(void* Entity);
 
@@ -1046,14 +1046,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 										float Random[2];
 
 										using Random_Type = float(*)(float Minimum, float Maximum);
-										
-										void* Interface_Manager = *(void**)((unsigned __int64)Engine_Module + 12887056);
 
-										using Find_Interface_Type = Interface_Structure*(**)(void* Interface_Manager, char* Name);
+										static Interface_Structure* Interface_Shot_Bias_Min = Find_Interface((char*)"ai_shot_bias_min");
 
-										static Interface_Structure* Interface_Shot_Bias_Min = (*Find_Interface_Type(*(unsigned __int64*)Interface_Manager + 136))(Interface_Manager, (char*)"ai_shot_bias_min");
-
-										static Interface_Structure* Interface_Shot_Bias_Max = (*Find_Interface_Type(*(unsigned __int64*)Interface_Manager + 136))(Interface_Manager, (char*)"ai_shot_bias_max");
+										static Interface_Structure* Interface_Shot_Bias_Max = Find_Interface((char*)"ai_shot_bias_max");
 
 										float Shot_Bias_Min = Interface_Shot_Bias_Min->Get_Floating_Point();
 										
@@ -1219,7 +1215,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 		*(__int8*)((unsigned __int64)Frame_Address + 304) = Send_Packet;
 	}
 
-	Original_Copy_Command_Caller.call<void>(Unknown_Parameter, Command);
+	Copy_Command_Manager.Restore_Function();
+
+	using Copy_Command_Type = void(*)(void* Unknown_Parameter, Command_Structure* Command);
+
+	Copy_Command_Type(Copy_Command_Manager.Original_Function)(Unknown_Parameter, Command);
+
+	Copy_Command_Manager.Restore_Redirection();
 }
 
 __attribute__((naked)) void Redirected_Copy_Command()

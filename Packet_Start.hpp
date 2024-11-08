@@ -1,4 +1,4 @@
-SafetyHookInline Original_Packet_Start_Caller{};
+Redirection_Manager::Manager_Structure Packet_Start_Manager;
 
 void Redirected_Packet_Start(void* Unknown_Parameter_1, void* Unknown_Parameter_2, __int32 Outgoing_Sequence_Number)
 {
@@ -6,10 +6,10 @@ void Redirected_Packet_Start(void* Unknown_Parameter_1, void* Unknown_Parameter_
 
 	if (Outgoing_Sequence_Number == Sequence->Network_Sequence_Number)
 	{
-		Original_Packet_Start_Caller.call<void>(Unknown_Parameter_1, Unknown_Parameter_2, Sequence->Prediction_Sequence_Number);
+		(decltype(&Redirected_Packet_Start)(Packet_Start_Manager.Caller))(Unknown_Parameter_1, Unknown_Parameter_2, Sequence->Prediction_Sequence_Number);
 	}
 	else
 	{
-		Original_Packet_Start_Caller.call<void>(Unknown_Parameter_1, Unknown_Parameter_2, Outgoing_Sequence_Number);
+		(decltype(&Redirected_Packet_Start)(Packet_Start_Manager.Caller))(Unknown_Parameter_1, Unknown_Parameter_2, Outgoing_Sequence_Number);
 	}
 }

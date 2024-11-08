@@ -19,15 +19,15 @@ struct Command_Structure
 	__int8 Additional_Bytes_2[4];
 
 	__int32 Random_Seed;
-	
+
 	__int8 Additional_Bytes_3[24];
-	
+
 	__int8 Typing;
-	
+
 	__int8 Additional_Bytes_4[247];
 };
 
-SafetyHookInline Original_Run_Simulation_Caller{};
+Redirection_Manager::Manager_Structure Run_Simulation_Manager;
 
 void Redirected_Run_Simulation(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, Command_Structure* Command, void* Unknown_Parameter_4)
 {
@@ -36,8 +36,8 @@ void Redirected_Run_Simulation(void* Unknown_Parameter_1, void* Unknown_Paramete
 	if (Extra_Simulations_Left == 0)
 	{
 		Extra_Simulations_Left = Command->Extra_Simulations;
-		
-		Original_Run_Simulation_Caller.call<void>(Unknown_Parameter_1, Unknown_Parameter_2, Unknown_Parameter_3, Command, Unknown_Parameter_4);
+
+		(decltype(&Redirected_Run_Simulation)(Run_Simulation_Manager.Caller))(Unknown_Parameter_1, Unknown_Parameter_2, Unknown_Parameter_3, Command, Unknown_Parameter_4);
 	}
 	else
 	{

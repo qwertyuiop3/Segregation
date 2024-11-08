@@ -1,4 +1,4 @@
-SafetyHookInline Original_Precache_Caller{};
+Redirection_Manager::Manager_Structure Precache_Manager;
 
 __int8 Redirected_Precache(void* Material)
 {
@@ -27,5 +27,5 @@ __int8 Redirected_Precache(void* Material)
 		}
 	}
 
-	return Original_Precache_Caller.call<__int8>(Material);
+	return (decltype(&Redirected_Precache)(Precache_Manager.Caller))(Material);
 }

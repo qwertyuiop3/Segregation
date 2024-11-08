@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Release|Win32">
+    <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -14,7 +14,7 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>ClangCL</PlatformToolset>
@@ -26,11 +26,11 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>false</GenerateManifest>
     <TargetExt>.cpl</TargetExt>
@@ -38,7 +38,7 @@
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnabled>false</VcpkgEnabled>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -54,9 +54,9 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalOptions>/Zc:threadSafeInit- /clang:-fno-unwind-tables -Wno-multichar -Wno-microsoft-goto %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:threadSafeInit- /clang:-fno-unwind-tables -Wno-multichar -Wno-microsoft-goto -Wno-unused-function -Wno-unused-const-variable %(AdditionalOptions)</AdditionalOptions>
       <StringPooling>true</StringPooling>
       <ControlFlowGuard>false</ControlFlowGuard>
       <FloatingPointExceptions>false</FloatingPointExceptions>
@@ -80,31 +80,37 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entry_Point.cpp" />
+    <ClCompile Include="safetyhook\safetyhook.cpp" />
+    <ClCompile Include="Zydis\Zydis.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bruteforce.hpp" />
+    <ClInclude Include="Delimited_Interface.hpp" />
     <ClInclude Include="Extended_Interface.hpp" />
     <ClInclude Include="Compute_Torso_Rotation.hpp" />
     <ClInclude Include="Draw_Crosshair.hpp" />
     <ClInclude Include="Event_Processor.hpp" />
-    <ClInclude Include="Fall_Damage.hpp" />
     <ClInclude Include="Finish_Move.hpp" />
     <ClInclude Include="Interpolate.hpp" />
     <ClInclude Include="Move.hpp" />
     <ClInclude Include="Packet_Start.hpp" />
+    <ClInclude Include="Player_Tick_Received.hpp" />
+    <ClInclude Include="Post_Data_Update.hpp" />
     <ClInclude Include="Precache.hpp" />
     <ClInclude Include="Copy_Command.hpp" />
     <ClInclude Include="Post_Network_Data_Received.hpp" />
-    <ClInclude Include="Item_Post_Frame.hpp" />
+    <ClInclude Include="Fire_Bullets.hpp" />
     <ClInclude Include="Priority.hpp" />
     <ClInclude Include="Read_Packets.hpp" />
+    <ClInclude Include="Restart_Gesture.hpp" />
+    <ClInclude Include="Run_Command.hpp" />
     <ClInclude Include="Run_Simulation.hpp" />
     <ClInclude Include="Setup_Move.hpp" />
     <ClInclude Include="Shutdown.hpp" />
     <ClInclude Include="Update_Animation.hpp" />
+    <ClInclude Include="Update_Animation_State.hpp" />
     <ClInclude Include="Send_Move.hpp" />
     <ClInclude Include="Sounds.hpp" />
-    <ClInclude Include="Weapon_Spread.hpp" />
     <ClInclude Include="Write_Events.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

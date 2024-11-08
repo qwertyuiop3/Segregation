@@ -1,10 +1,10 @@
-void* Original_Interpolate_Caller;
+SafetyHookInline Original_Interpolate_Caller{};
 
-__int8 __thiscall Redirected_Interpolate(void* Entity, void* Unknown_Parameter)
+__int8 Redirected_Interpolate(void* Entity, void* Unknown_Parameter)
 {
-	if (Entity == *(void**)607867332)
+	if (Entity == *(void**)((unsigned __int64)Client_Module + 9394464))
 	{
-		return (decltype(&Redirected_Interpolate)(Original_Interpolate_Caller))(Entity, Unknown_Parameter);
+		return Original_Interpolate_Caller.call<__int8>(Entity, Unknown_Parameter);
 	}
 
 	return 1;

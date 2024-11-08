@@ -1,4 +1,4 @@
-void* Original_Read_Packets_Caller;
+SafetyHookInline Original_Read_Packets_Caller{};
 
 void Redirected_Read_Packets(__int8 Final)
 {
@@ -6,8 +6,8 @@ void Redirected_Read_Packets(__int8 Final)
 
 	if (Parsed_Packets == 0)
 	{
-		(decltype(&Redirected_Read_Packets)(Original_Read_Packets_Caller))(Final);
+		Original_Read_Packets_Caller.call<void>(Final);
 	}
 
-	Parsed_Packets = __builtin_return_address(0) != (void*)537729110;
+	Parsed_Packets = __builtin_return_address(0) != (void*)((unsigned __int64)Engine_Module + 1815028);
 }

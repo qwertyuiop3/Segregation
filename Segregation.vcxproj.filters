@@ -14,6 +14,12 @@
     <ClCompile Include="Entry_Point.cpp">
       <Filter>C++</Filter>
     </ClCompile>
+    <ClCompile Include="safetyhook\safetyhook.cpp">
+      <Filter>C++</Filter>
+    </ClCompile>
+    <ClCompile Include="Zydis\Zydis.c">
+      <Filter>C++</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Draw_Crosshair.hpp">
@@ -31,16 +37,13 @@
     <ClInclude Include="Send_Move.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon_Spread.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
-    <ClInclude Include="Item_Post_Frame.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Interpolate.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Priority.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Run_Simulation.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Sounds.hpp">
@@ -55,12 +58,6 @@
     <ClInclude Include="Compute_Torso_Rotation.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Shutdown.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
-    <ClInclude Include="Bruteforce.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Write_Events.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
@@ -68,9 +65,6 @@
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Finish_Move.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
-    <ClInclude Include="Fall_Damage.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Precache.hpp">
@@ -82,10 +76,37 @@
     <ClInclude Include="Run_Simulation.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
+    <ClInclude Include="Bruteforce.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
     <ClInclude Include="Read_Packets.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Move.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Fire_Bullets.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Restart_Gesture.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Run_Command.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Delimited_Interface.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Player_Tick_Received.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Update_Animation_State.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Post_Data_Update.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Shutdown.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
   </ItemGroup>

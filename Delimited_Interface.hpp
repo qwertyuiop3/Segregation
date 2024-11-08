@@ -32,7 +32,7 @@ Interface_Structure* Find_Interface(char* Name)
 {
 	using Find_Interface_Type = Interface_Structure*(**)(void* Interface, char* Name);
 
-	void* Interface = *(void**)((unsigned __int64)Engine_Module + 12887056);
+	static void* Interface = *(void**)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(8071, (unsigned __int8*)Engine_Module, 13509016478911313693ull), 3);
 
 	return (*Find_Interface_Type(*(unsigned __int64*)Interface + 136))(Interface, Name);
 }

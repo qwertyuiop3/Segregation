@@ -4,7 +4,9 @@ __int8 Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 {
 	if (Interface_Bruteforce.Get_Integer() == 1)
 	{
-		if (*(void**)Animation_State == (void*)((unsigned __int64)Client_Module + 7364104))
+		static void* Animation_State_Table = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(63367, (unsigned __int8*)Client_Module, 6176732474802796221), 3);
+
+		if (*(void**)Animation_State == Animation_State_Table)
 		{
 			void* Entity = *(void**)((unsigned __int64)Animation_State + 304);
 

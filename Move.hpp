@@ -21,7 +21,7 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 
 	Update_Animations_Type((unsigned __int64)Update_Animations)();
 
-	Update_Animation_Time = (*(Global_Variables_Structure**)((unsigned __int64)Client_Module + 8690824))->Current_Time;
+	Update_Animation_Time = Get_Global_Variables()->Current_Time;
 
 	Update_Animation_Type = 1;
 

@@ -6,7 +6,7 @@ Redirection_Manager::Manager_Structure Update_Animation_Manager;
 
 void Redirected_Update_Animation(void* Player)
 {
-	Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)((unsigned __int64)Client_Module + 8690824);
+	Global_Variables_Structure* Global_Variables = Get_Global_Variables();
 
 	float Previous_Current_Time = Global_Variables->Current_Time;
 

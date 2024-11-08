@@ -168,15 +168,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 		Command->Buttons |= 1;
 
-		static void* Prediction = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(136537483800711, (unsigned __int8*)Client_Module, 5560394368363882641), 3);
+		static void* Prediction = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(127111, (unsigned __int8*)Client_Module, 13429843744974553245ull), 3);
 
 		*(__int16*)((unsigned __int64)Prediction + 12) = 1;
 
 		auto Suppress_Events = [](__int8 State) -> void
 		{
-			static void* Prediction_System_Reference = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(259975, (unsigned __int8*)Client_Module, 884688427179076367), 3);
-
-			void* Prediction_System = *(void**)Prediction_System_Reference;
+			void* Prediction_System = *(void**)((unsigned __int64)Client_Module + 10394840);
 
 			Traverse_Prediction_Systems_Label:
 			{
@@ -202,9 +200,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 			Byte_Manager::Copy_Bytes(1, Local_Previous_Origin, sizeof(Local_Previous_Origin), Local_Origin);
 		}
 
-		static void* Move_Helper = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(28807, (unsigned __int8*)Client_Module, 2332256697955850039), 3);
-
-		Redirected_Run_Command(Prediction, Local_Player, Command, Move_Helper);
+		Redirected_Run_Command(Prediction, Local_Player, Command, (void*)((unsigned __int64)Client_Module + 8720768));
 
 		Suppress_Events(0);
 
@@ -216,7 +212,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 		static __int8 Send_Packet;
 
-		__int32 Choked_Commands = Get_Choked_Commands();
+		__int32 Choked_Commands_Count = Get_Choked_Commands();
 
 		__int8 Predicted_Send_Packet = 0;
 
@@ -224,15 +220,15 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 		if (Interface_Alternative.Get_Integer() == 0)
 		{
-			__int32 Predicted_Choked_Commands = Choked_Commands + 1;
+			__int32 Predicted_Choked_Commands_Count = Choked_Commands_Count + 1;
 
-			if (Choked_Commands < Interface_Minimum_Choked_Commands.Get_Integer())
+			if (Choked_Commands_Count < Interface_Minimum_Choked_Commands.Get_Integer())
 			{
 				Send_Packet = 0;
 
-				if (Predicted_Choked_Commands == Interface_Minimum_Choked_Commands.Get_Integer())
+				if (Predicted_Choked_Commands_Count == Interface_Minimum_Choked_Commands.Get_Integer())
 				{
-					if (Predicted_Choked_Commands < Interface_Maximum_Choked_Commands.Get_Integer())
+					if (Predicted_Choked_Commands_Count < Interface_Maximum_Choked_Commands.Get_Integer())
 					{
 						goto Predict_Dynamic_Send_Packet_Label;
 					}
@@ -244,7 +240,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 			}
 			else
 			{
-				if (Choked_Commands < Interface_Maximum_Choked_Commands.Get_Integer())
+				if (Choked_Commands_Count < Interface_Maximum_Choked_Commands.Get_Integer())
 				{
 					if (__builtin_powf(Local_Networked_Origin[0] - Local_Previous_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Previous_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Previous_Origin[2], 2.f) <= 4096.f)
 					{
@@ -252,7 +248,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 						Predict_Dynamic_Send_Packet_Label:
 						{
-							if (Predicted_Choked_Commands == Interface_Maximum_Choked_Commands.Get_Integer())
+							if (Predicted_Choked_Commands_Count == Interface_Maximum_Choked_Commands.Get_Integer())
 							{
 								Predicted_Send_Packet = 1;
 							}
@@ -289,13 +285,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 				goto Send_Packet_Label;
 			}
 
-			if (Choked_Commands < Interface_Minimum_Choked_Commands.Get_Integer())
+			if (Choked_Commands_Count < Interface_Minimum_Choked_Commands.Get_Integer())
 			{
 				Send_Packet = 0;
 			}
 			else
 			{
-				if (Choked_Commands < Interface_Maximum_Choked_Commands.Get_Integer())
+				if (Choked_Commands_Count < Interface_Maximum_Choked_Commands.Get_Integer())
 				{
 					if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) <= 4096.f)
 					{
@@ -314,8 +310,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 		}
 
 		__int32 Entity_Number = 1;
-
-		static void* Entity_List = (void*)((unsigned __int64)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(127111, (unsigned __int8*)Client_Module, 13429843744974553245ull), 3) + 8);
 
 		using Get_Latency_Type = float(**)(void* Network_Channel, __int32 Type);
 
@@ -356,7 +350,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 			if (Player_Data->Priority != -1)
 			{
-				void* Entity = *(void**)((unsigned __int64)Entity_List + (Entity_Number << 5));
+				void* Entity = *(void**)((unsigned __int64)Client_Module + 9532984 + (Entity_Number << 5));
 
 				if (Entity != nullptr)
 				{
@@ -424,7 +418,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 		if (Bullets_Fired == 0)
 		{
-			void* Weapon = *(void**)((unsigned __int64)Entity_List + ((*(unsigned __int32*)((unsigned __int64)Local_Player + 10560) & 16383) << 5));
+			void* Weapon = *(void**)((unsigned __int64)Client_Module + 9532984 + ((*(unsigned __int32*)((unsigned __int64)Local_Player + 10560) & 16383) << 5));
 
 			if (Weapon != nullptr)
 			{
@@ -554,9 +548,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 																	{
 																		float Previous_Current_Time = Global_Variables->Current_Time;
 
-																		static void* Lua_Gamemode = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(96606087, (unsigned __int8*)Client_Module, 260689758226777083), 3);
-
-																		void* Previous_Lua_Gamemode = *(void**)Lua_Gamemode;
+																		void* Previous_Lua_Gamemode = *(void**)((unsigned __int64)Client_Module + 9096200);
 
 																		float Previous_View_Offset[3];
 
@@ -628,11 +620,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 																		static void* Set_Ground_Entity = Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Client_Module, 6146399131556111791);
 
-																		static void* World_Table = *(void**)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(32647, (unsigned __int8*)Client_Module, 7890751109409977141), 3);
+																		Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Previous_Flags & 1) == 1 ? *(void**)((unsigned __int64)Client_Module + 9462456) : nullptr);
 
-																		Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Previous_Flags & 1) == 1 ? World_Table : nullptr);
-
-																		*(void**)Lua_Gamemode = nullptr;
+																		*(void**)((unsigned __int64)Client_Module + 9096200) = nullptr;
 
 																		*(__int32*)((unsigned __int64)Target->Self + 188) = -1;
 
@@ -708,7 +698,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 																		{
 																			if (Extrapolation_Ticks != 0)
 																			{
-																				Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
+																				Redirected_Run_Command(Prediction, Target->Self, &Target_Command, (void*)((unsigned __int64)Client_Module + 8720768));
 
 																				Extrapolation_Ticks -= 1;
 
@@ -722,7 +712,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 																		Global_Variables->Current_Time = Previous_Current_Time;
 
-																		*(void**)Lua_Gamemode = Previous_Lua_Gamemode;
+																		*(void**)((unsigned __int64)Client_Module + 9096200) = Previous_Lua_Gamemode;
 
 																		Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 316), sizeof(Previous_View_Offset), Previous_View_Offset);
 
@@ -863,8 +853,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 													static void* Trace_Ray = Byte_Manager::Find_Bytes(17486117012537343, (unsigned __int8*)Engine_Module, 9274698431606198605ull);
 
-													static void* Engine = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(34351873927, (unsigned __int8*)Engine_Module, 2998748780310145851), 3);
-
 													Ray_Structure Ray;
 
 													Vector_Normalize(Direction);
@@ -882,9 +870,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 													Filter_Structure Filter;
 
-													static void* Table = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(1047431, (unsigned __int8*)Client_Module, 8162175928024734831), 3);
-
-													Filter.Table = Table;
+													Filter.Table = (void*)((unsigned __int64)Client_Module + 7016360);
 
 													Filter.Skip = Local_Player;
 
@@ -896,7 +882,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 													Trace.Entity = nullptr;
 
-													Trace_Ray_Type((unsigned __int64)Trace_Ray)(Engine, &Ray, 1174421507, &Filter, &Trace);
+													Trace_Ray_Type((unsigned __int64)Trace_Ray)((void*)((unsigned __int64)Engine_Module + 5022592), &Ray, 1174421507, &Filter, &Trace);
 
 													if (Trace.Solid == 0)
 													{
@@ -1237,12 +1223,12 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 			{
 				Sequence_Number,
 
-				Sequence_Number - Choked_Commands - 1
+				Sequence_Number - Choked_Commands_Count - 1
 			};
 		}
 		else
 		{
-			Command->Extra_Simulations = max(0, Choked_Commands - 14);
+			Command->Extra_Simulations = max(0, Choked_Commands_Count - 14);
 
 			Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
 		}

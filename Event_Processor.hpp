@@ -20,11 +20,11 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 		{
 			using Identifier_To_Number_Type = __int32(**)(void* Engine, __int32 Identifier);
 
-			void* Engine = (void*)((unsigned __int64)Engine_Module + 4670832);
+			void* Engine = Get_Engine();
 
-			Victim_Number = (*Identifier_To_Number_Type(*(unsigned __int64*)Engine + 72))((void*)((unsigned __int64)Engine_Module + 4670832), (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"userid", nullptr));
+			Victim_Number = (*Identifier_To_Number_Type(*(unsigned __int64*)Engine + 72))(Engine, (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"userid", nullptr));
 
-			Killer_Number = (*Identifier_To_Number_Type(*(unsigned __int64*)Engine + 72))((void*)((unsigned __int64)Engine_Module + 4670832), (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"attacker", nullptr));
+			Killer_Number = (*Identifier_To_Number_Type(*(unsigned __int64*)Engine + 72))(Engine, (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"attacker", nullptr));
 		}
 		else
 		{
@@ -35,7 +35,7 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 
 		if (Victim_Number != Killer_Number)
 		{
-			if ((Killer_Number - 1 | (*(Global_Variables_Structure**)((unsigned __int64)Client_Module + 8690824))->Maximum_Clients - Killer_Number) >= 0)
+			if ((Killer_Number - 1 | Get_Global_Variables()->Maximum_Clients - Killer_Number) >= 0)
 			{
 				__int32 Local_Number = *(__int32*)((unsigned __int64)Local_Player + 128);
 

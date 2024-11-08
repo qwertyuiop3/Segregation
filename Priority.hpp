@@ -1,3 +1,10 @@
+void* Get_Engine()
+{
+	static void* Engine = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(136933539719, (unsigned __int8*)Engine_Module, 16409920955244565394ull), 3);
+
+	return Engine;
+}
+
 struct Global_Variables_Structure
 {
 	__int8 Additional_Bytes[12];
@@ -12,6 +19,13 @@ struct Global_Variables_Structure
 
 	float Interval_Per_Tick;
 };
+
+Global_Variables_Structure* Get_Global_Variables()
+{
+	static void* Global_Variables = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(7617415, (unsigned __int8*)Client_Module, 6990183020127034944), 3);
+
+	return *(Global_Variables_Structure**)Global_Variables;
+}
 
 struct Player_Data_Structure
 {
@@ -50,14 +64,14 @@ void Get_Priorities()
 
 		char Name[324];
 
-		Get_Name_Type((unsigned __int64)Get_Name)((void*)((unsigned __int64)Engine_Module + 4670832), Entity_Number, Name);
+		Get_Name_Type((unsigned __int64)Get_Name)(Get_Engine(), Entity_Number, Name);
 
 		if (Name[0] != 0)
 		{
 			wprintf(L"[ ? ] \"%hs\" %i %i\n", Name, Entity_Number, Players_Data[Entity_Number].Priority);
 		}
 
-		if (Entity_Number < (*(Global_Variables_Structure**)((unsigned __int64)Client_Module + 8690824))->Maximum_Clients)
+		if (Entity_Number < Get_Global_Variables()->Maximum_Clients)
 		{
 			Entity_Number += 1;
 

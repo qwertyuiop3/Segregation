@@ -23,7 +23,9 @@ void Redirected_Fire_Bullets(void* Player, Bullet_Structure* Bullet)
 {
 	Bullets_Fired = 1;
 
-	if (__builtin_return_address(0) == (void*)((unsigned __int64)Client_Module + 1085853))
+	static void* Fire_Bullets = Byte_Manager::Find_Bytes(16756291412291719, (unsigned __int8*)Client_Module, 15018819949705402409ull);
+
+	if (__builtin_return_address(0) == Fire_Bullets)
 	{
 		Byte_Manager::Set_Bytes(1, Weapon_Recoil, sizeof(Weapon_Recoil), 0);
 	}

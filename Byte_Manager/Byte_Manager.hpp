@@ -74,4 +74,9 @@ namespace Byte_Manager
 			goto Traverse_Bytes_Label;
 		}
 	}
+
+	void* Solve_Relative(void* Address, unsigned __int64 Offset)
+	{
+		return (void*)((unsigned __int64)Address + *(unsigned __int32*)((unsigned __int64)Address + Offset) + Offset + 4 + (*(unsigned __int8*)Address == 131));
+	}
 };

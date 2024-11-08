@@ -2,7 +2,7 @@ Redirection_Manager::Manager_Structure Post_Data_Update_Manager;
 
 void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 {
-	Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)((unsigned __int64)Client_Module + 8690824);
+	Global_Variables_Structure* Global_Variables = Get_Global_Variables();
 
 	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 112)];
 

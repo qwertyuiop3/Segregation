@@ -8,7 +8,7 @@ void Redirected_Draw_Crosshair(void* Unknown_Parameter)
 	{
 		using Set_Color_Type = void(**)(void* Surface, __int32 Red, __int32 Green, __int32 Blue, __int32 Alpha);
 
-		void* Surface = *(void**)((unsigned __int64)Client_Module + 10864400);
+		static void* Surface = *(void**)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(113543, (unsigned __int8*)Client_Module, 2457970300653241385), 3);
 
 		(*Set_Color_Type(*(unsigned __int64*)Surface + 120))(Surface, Red, 0, 0, 255);
 
@@ -90,5 +90,5 @@ void Redirected_Draw_Crosshair(void* Unknown_Parameter)
 
 	Uber_Alles(255, Screen_Width, Screen_Height);
 
-	Rotation_Angle = __builtin_remainderf(Rotation_Angle - (*(Global_Variables_Structure**)((unsigned __int64)Client_Module + 8690824))->Frame_Time * Interface_Uber_Alles_Speed.Get_Integer(), 180.f);
+	Rotation_Angle = __builtin_remainderf(Rotation_Angle - Get_Global_Variables()->Frame_Time * Interface_Uber_Alles_Speed.Get_Integer(), 180.f);
 }

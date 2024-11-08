@@ -149,9 +149,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				COORD Top_Left = { };
 
-				DWORD Characters_Written_Count;
+				DWORD Characters_Written;
 
-				FillConsoleOutputAttribute(Standard_Output_Handle, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_RED, Console_Screen_Buffer_Information.dwSize.X * Console_Screen_Buffer_Information.dwSize.Y, Top_Left, &Characters_Written_Count);
+				FillConsoleOutputAttribute(Standard_Output_Handle, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_RED, Console_Screen_Buffer_Information.dwSize.X * Console_Screen_Buffer_Information.dwSize.Y, Top_Left, &Characters_Written);
 
 				Engine_Module = GetModuleHandleW(L"engine.dll");
 
@@ -197,11 +197,13 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					void* Add_Listener = Byte_Manager::Find_Bytes(253935, (unsigned __int8*)Engine_Module, 8835901034313384778);
 
-					Add_Listener_Type((unsigned __int64)Add_Listener)((void*)((unsigned __int64)Engine_Module + 5022640), Event_Listener, (char*)"player_hurt", nullptr);
+					void* Event_Manager = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31623, (unsigned __int8*)Engine_Module, 11190410533011393613ull), 3);
 
-					Add_Listener_Type((unsigned __int64)Add_Listener)((void*)((unsigned __int64)Engine_Module + 5022640), Event_Listener, (char*)"entity_killed", nullptr);
+					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, Event_Listener, (char*)"player_hurt", nullptr);
 
-					*(void**)((unsigned __int64)Client_Module + 9400320) = (void*)Player_Tick_Received;
+					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, Event_Listener, (char*)"entity_killed", nullptr);
+
+					*(void**)((unsigned __int64)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(7918423844548743, (unsigned __int8*)Client_Module, 15881718154251215618ull), 3) + 48) = (void*)Player_Tick_Received;
 
 					Write_Events_Manager.Redirect_Function(3, Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Engine_Module, 14568127874725401427ull), (void*)Redirected_Write_Events);
 

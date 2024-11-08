@@ -1,8 +1,8 @@
 void* Get_Local_Player()
 {
-	static void* Local_Player = Byte_Manager::Find_Bytes(25689991, (unsigned __int8*)Client_Module, 15743831963600548487ull);
+	static void* Local_Player = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(2081671, (unsigned __int8*)Client_Module, 6192131677276294978), 3);
 
-	return (decltype(&Get_Local_Player)(Local_Player))();
+	return *(void**)Local_Player;
 }
 
 struct Prediction_Field_Structure
@@ -120,7 +120,7 @@ void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2
 
 		static std::unordered_map<void*, __int32> Flat_Offsets;
 
-		Byte_Manager::Copy_Bytes(1, (void*)(*(unsigned __int64*)((unsigned __int64)Client_Module + 9394464) + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int64)Predicton_Copy.Source + Field->Flat_Offset[1]));
+		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Get_Local_Player()  + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int64)Predicton_Copy.Source + Field->Flat_Offset[1]));
 	}
 }
 
@@ -142,7 +142,9 @@ void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Comm
 
 		static void* Transfer_Data = Byte_Manager::Find_Bytes(3653103, (unsigned __int8*)Client_Module, 742330376693593246);
 
-		Transfer_Data_Type((unsigned __int64)Transfer_Data)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int64)Client_Module + 8586304));
+		static Prediction_Descriptor_Structure* Descriptor = (Prediction_Descriptor_Structure*)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(502267783, (unsigned __int8*)Client_Module, 8622645398228305451), 3);
+
+		Transfer_Data_Type((unsigned __int64)Transfer_Data)(&Predicton_Copy, nullptr, -1, Descriptor);
 	}
 
 	Post_Network_Data_Received_Manager.Restore_Function();

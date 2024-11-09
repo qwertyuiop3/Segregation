@@ -448,7 +448,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																			void* Skip;
 
-																			__int32 Group;
+																			__int8 Additional_Bytes[4];
 																		};
 
 																		struct Trace_Structure
@@ -483,13 +483,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																		Initialize_Ray_Type(537380224)(&Ray, Eye_Position, End);
 
-																		Filter_Structure Filter;
-
-																		Filter.Table = (void*)607282692;
-
-																		Filter.Skip = Local_Player;
-
-																		Filter.Group = 0;
+																		Filter_Structure Filter = { (void*)607282692, Local_Player };
 
 																		Trace_Structure Trace;
 

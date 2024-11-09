@@ -18,9 +18,9 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 {
 	(decltype(&Redirected_Send_Move)(Send_Move_Manager.Caller))(Unknown_Parameter);
 
-	static void* Move = (void*)((unsigned __int64)Byte_Manager::Find_Bytes(239, (unsigned __int8*)Engine_Module, 16801912347244827565ull) + 19);
+	static void* Send_Move_Return = (void*)((unsigned __int64)Byte_Manager::Find_Bytes(239, (unsigned __int8*)Engine_Module, 16801912347244827565ull) + 19);
 
-	if (__builtin_return_address(0) == (void*)((unsigned __int64)Engine_Module + 610213))
+	if (__builtin_return_address(0) == Send_Move_Return)
 	{
 		struct Message_Structure
 		{

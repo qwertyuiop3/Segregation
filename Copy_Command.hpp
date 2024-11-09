@@ -802,7 +802,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 											if (Setup_Bones_Type((unsigned __int64)Setup_Bones)((void*)((unsigned __int64)Target->Self + 8), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
 											{
-												auto Trace_Ray = [&](float Direction[3]) -> __int8
+												auto Perform_Trace = [&](float Direction[3]) -> __int8
 												{
 													struct alignas(16) Ray_Structure
 													{
@@ -859,11 +859,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 														__int8 Additional_Bytes_4[4];
 													};
 
-													using Trace_Ray_Type = void(*)(void* Engine, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
+													using Perform_Trace_Type = void(*)(void* Tracer, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
-													static void* Trace_Ray = Byte_Manager::Find_Bytes(17486117012537343, (unsigned __int8*)Engine_Module, 9274698431606198605ull);
+													static void* Perform_Trace = Byte_Manager::Find_Bytes(17486117012537343, (unsigned __int8*)Engine_Module, 9274698431606198605ull);
 
-													static void* Engine = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(34351873927, (unsigned __int8*)Engine_Module, 2998748780310145851), 3);
+													static void* Tracer = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(34351873927, (unsigned __int8*)Engine_Module, 2998748780310145851), 3);
 
 													Ray_Structure Ray;
 
@@ -896,7 +896,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 													Trace.Entity = nullptr;
 
-													Trace_Ray_Type((unsigned __int64)Trace_Ray)(Engine, &Ray, 1174421507, &Filter, &Trace);
+													Perform_Trace_Type((unsigned __int64)Perform_Trace)(Tracer, &Ray, 1174421507, &Filter, &Trace);
 
 													if (Trace.Solid == 0)
 													{
@@ -976,7 +976,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 													Target_Origin[2] - Eye_Position[2]
 												};
 
-												if (Trace_Ray(Direction) == 1)
+												if (Perform_Trace(Direction) == 1)
 												{
 													if (Target->Valid == 1)
 													{

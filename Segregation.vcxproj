@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="Bruteforce.hpp" />
     <ClInclude Include="Delimited_Interface.hpp" />
+    <ClInclude Include="Entity_Time_Received.hpp" />
     <ClInclude Include="Extended_Interface.hpp" />
     <ClInclude Include="Compute_Torso_Rotation.hpp" />
     <ClInclude Include="Draw_Crosshair.hpp" />

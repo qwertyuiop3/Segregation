@@ -103,5 +103,8 @@
     <ClInclude Include="Shutdown.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
+    <ClInclude Include="Entity_Time_Received.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

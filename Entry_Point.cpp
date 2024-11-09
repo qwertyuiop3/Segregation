@@ -24,6 +24,8 @@ void* Client_Module;
 
 #include "Event_Processor.hpp"
 
+#include "Entity_Time_Received.hpp"
+
 #include "Player_Tick_Received.hpp"
 
 #include "Write_Events.hpp"
@@ -159,8 +161,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Delimit Interface");
 				{
-					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(248457352214407, (unsigned __int8*)Client_Module, 6900000517866524284), 161, 144);
-
 					using Install_Interface_Handler_Type = void(*)(Interface_Structure* Interface, void* Handler, __int8 Invoke);
 
 					void* Install_Interface_Handler = Byte_Manager::Find_Bytes(15855, (unsigned __int8*)Engine_Module, 9489070461722959066ull);
@@ -202,6 +202,12 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, Event_Listener, (char*)"player_hurt", nullptr);
 
 					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, Event_Listener, (char*)"entity_killed", nullptr);
+
+					void* Entity_Time_Received_Reference = (void*)((unsigned __int64)Byte_Manager::Solve_Relative((void*)((unsigned __int64)Byte_Manager::Find_Bytes(2168606945952456417, (unsigned __int8*)Client_Module, 16499196670633112084ull) - 7), 3) + 48);
+					
+					Original_Entity_Time_Received = *(void**)Entity_Time_Received_Reference;
+					
+					*(void**)Entity_Time_Received_Reference = (void*)Entity_Time_Received;
 
 					*(void**)((unsigned __int64)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(7918423844548743, (unsigned __int8*)Client_Module, 15881718154251215618ull), 3) + 48) = (void*)Player_Tick_Received;
 
@@ -283,7 +289,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Materials");
 				{
-					Precache_Manager.Redirect_Function(0, (void*)((unsigned __int64)GetModuleHandleW(L"MaterialSystem.dll") + 64576), (void*)Redirected_Precache);
+					Precache_Manager.Redirect_Function(0, (void*)((unsigned __int64)GetModuleHandleW(L"materialsystem.dll") + 64576), (void*)Redirected_Precache);
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(445, (unsigned __int8*)Client_Module, 16324833799701554475ull), 1, 116);
 

@@ -390,7 +390,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 										(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f),
 
-										__builtin_fabsf(Corrected_Latency - (Global_Variables->Current_Time + Latency + Global_Variables->Interval_Per_Tick * (Interface_Alternative.Get_Integer() == 0) - Entity_Time)) <= 0.2f,
+										__builtin_fabsf(Corrected_Latency - (Global_Variables->Interval_Per_Tick * (Global_Variables->Tick_Number + Interface_Alternative.Get_Integer() == 0) + Latency - Entity_Time)) <= 0.2f,
 
 										__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
 									};
@@ -443,9 +443,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 		}
 		else
 		{
-			if (__builtin_fabsf(Global_Variables->Current_Time - Shot_Time) > 0.5f)
+			if (__builtin_abs(*(__int32*)((unsigned __int64)Local_Player + 11608) - Shot_Tick) * Global_Variables->Interval_Per_Tick > 0.5f)
 			{
-				if (Shot_Time == 0)
+				if (Shot_Tick == 0)
 				{
 					Passed_Shot_Time_Check_Label:
 					{
@@ -1108,7 +1108,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 											Random[1] = Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * (1.f - Flatness);
 
-											if (Shot_Bias < 0)
+											if (Shot_Bias < 0.f)
 											{
 												Random[0] = (Random[0] >= 0.f) ? 1.f - Random[0] : -1.f - Random[0];
 
@@ -1173,8 +1173,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 									Send_Packet = (Interface_Alternative.Get_Integer() != 0) * 2;
 
 									Shot_Tick = *(__int32*)((unsigned __int64)Local_Player + 11608);
-
-									Shot_Time = Global_Variables->Current_Time;
 								}
 							}
 						}
@@ -1182,7 +1180,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 				}
 				else
 				{
-					Shot_Time = 0;
+					Shot_Tick = 0;
 
 					if (Recent_Player_Data_Number == 0)
 					{

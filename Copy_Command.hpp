@@ -547,7 +547,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																		Target_Origin[2] - Eye_Position[2]
 																	};
 
-																	if (Trace_Ray(Direction) == 1)
+																	if (Perform_Trace(Direction) == 1)
 																	{
 																		Command->Tick_Number = Target->Tick_Number;
 

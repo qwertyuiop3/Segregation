@@ -6,11 +6,7 @@ void Redirected_Read_Packets(__int8 Final)
 
 	if (Parsed_Packets == 0)
 	{
-		Read_Packets_Manager.Restore_Function();
-
-		(decltype(&Redirected_Read_Packets)(Read_Packets_Manager.Original_Function))(Final);
-
-		Read_Packets_Manager.Restore_Redirection();
+		Read_Packets_Manager.Special_Call(Final);
 	}
 
 	static void* Read_Packets_Return = Byte_Manager::Find_Bytes(135538168686371207, (unsigned __int8*)Engine_Module, 3046770285669898717);

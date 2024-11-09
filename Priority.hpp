@@ -58,13 +58,13 @@ void Get_Priorities()
 
 	Traverse_Entity_List_Label:
 	{
-		using Get_Name_Type = __int8(*)(void* Engine, __int32 Number, char* Name);
+		using Get_Name_Type = __int8(**)(void* Engine, __int32 Number, char* Name);
 
-		static void* Get_Name = Byte_Manager::Find_Bytes(223, (unsigned __int8*)Client_Module, 3955253202869131490);
+		void* Engine = Get_Engine();
 
 		char Name[324];
 
-		Get_Name_Type((unsigned __int64)Get_Name)(Get_Engine(), Entity_Number, Name);
+		(*Get_Name_Type(*(unsigned __int64*)Engine + 64))(Engine, Entity_Number, Name);
 
 		if (Name[0] != 0)
 		{

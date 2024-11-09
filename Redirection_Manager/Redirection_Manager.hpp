@@ -42,8 +42,7 @@ namespace Redirection_Manager
 			Redirect_Function(Original_Function, Redirected_Function);
 		}
 
-		//templates?
-		void Restore_Function()
+		template<typename... Parameters_Type> void Special_Call(Parameters_Type... Parameters)
 		{
 			DWORD Previous_Access_Rights;
 
@@ -52,10 +51,11 @@ namespace Redirection_Manager
 			__builtin_memcpy(Original_Function, Caller, 16);
 
 			VirtualProtect(Original_Function, 16, Previous_Access_Rights, &Previous_Access_Rights);
-		}
 
-		void Restore_Redirection()
-		{
+			using Variadic_Type = void(*)(...);
+
+			Variadic_Type((unsigned __int64)Original_Function)(Parameters...);
+
 			Redirect_Function(Original_Function, Redirected_Function);
 		}
 	};

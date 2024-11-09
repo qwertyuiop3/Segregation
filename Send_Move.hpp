@@ -9,9 +9,11 @@ __int32 Get_Choked_Commands()
 
 void* Get_Network_Channel()
 {
-	static void* Network_Channel = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(8071, (unsigned __int8*)Engine_Module, 15731954873997673911ull), 3);
-	
-	return *(void**)Network_Channel;
+	using Get_Network_Channel_Type = void*(**)(void* Engine);
+
+	void* Engine = Get_Engine();
+
+	return (*Get_Network_Channel_Type(*(unsigned __int64*)Engine + 576))(Engine);
 }
 
 void Redirected_Send_Move(void* Unknown_Parameter)
@@ -70,13 +72,11 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 
 		Write_Command_Label:
 		{
-			using Write_Command_Type = __int8(*)(void* Client, void* Data, __int32 From, __int32 To, void* Unknown_Parameter);
+			using Write_Command_Type = __int8(**)(void* Client, void* Data, __int32 From, __int32 To, void* Unknown_Parameter);
 
 			static void* Client = *(void**)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(3700615, (unsigned __int8*)Engine_Module, 9962792283015153587ull), 3);
 
-			static void* Write_Command = Byte_Manager::Find_Bytes(30599, (unsigned __int8*)Client_Module, 16215112815858314946ull);
-
-			Write_Command_Type((unsigned __int64)Write_Command)(Client, (void*)((unsigned __int64)&Message + 104), From_Command_Number, To_Command_Number, nullptr);
+			(*Write_Command_Type(*(unsigned __int64*)Client + 184))(Client, (void*)((unsigned __int64)&Message + 104), From_Command_Number, To_Command_Number, nullptr);
 
 			From_Command_Number = To_Command_Number;
 

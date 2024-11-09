@@ -147,9 +147,5 @@ void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Comm
 		Transfer_Data_Type((unsigned __int64)Transfer_Data)(&Predicton_Copy, nullptr, -1, Descriptor);
 	}
 
-	Post_Network_Data_Received_Manager.Restore_Function();
-
-	(decltype(&Redirected_Post_Network_Data_Received)(Post_Network_Data_Received_Manager.Original_Function))(Unknown_Parameter, Commands_Acknowledged);
-
-	Post_Network_Data_Received_Manager.Restore_Redirection();
+	Post_Network_Data_Received_Manager.Special_Call(Unknown_Parameter, Commands_Acknowledged);
 }

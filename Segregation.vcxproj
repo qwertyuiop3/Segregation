@@ -84,7 +84,7 @@
   <ItemGroup>
     <ClInclude Include="Bruteforce.hpp" />
     <ClInclude Include="Delimited_Interface.hpp" />
-    <ClInclude Include="Entity_Time_Received.hpp" />
+    <ClInclude Include="Set_Simulation_Time.hpp" />
     <ClInclude Include="Extended_Interface.hpp" />
     <ClInclude Include="Compute_Torso_Rotation.hpp" />
     <ClInclude Include="Draw_Crosshair.hpp" />
@@ -93,7 +93,7 @@
     <ClInclude Include="Interpolate.hpp" />
     <ClInclude Include="Move.hpp" />
     <ClInclude Include="Packet_Start.hpp" />
-    <ClInclude Include="Player_Tick_Received.hpp" />
+    <ClInclude Include="Set_Tick_Number.hpp" />
     <ClInclude Include="Post_Data_Update.hpp" />
     <ClInclude Include="Precache.hpp" />
     <ClInclude Include="Copy_Command.hpp" />

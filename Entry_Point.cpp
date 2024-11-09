@@ -24,9 +24,9 @@ void* Client_Module;
 
 #include "Event_Processor.hpp"
 
-#include "Entity_Time_Received.hpp"
+#include "Set_Simulation_Time.hpp"
 
-#include "Player_Tick_Received.hpp"
+#include "Set_Tick_Number.hpp"
 
 #include "Write_Events.hpp"
 
@@ -203,13 +203,13 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, Event_Listener, (char*)"entity_killed", nullptr);
 
-					void* Entity_Time_Received_Reference = (void*)((unsigned __int64)Byte_Manager::Solve_Relative((void*)((unsigned __int64)Byte_Manager::Find_Bytes(2168606945952456417, (unsigned __int8*)Client_Module, 16499196670633112084ull) - 7), 3) + 48);
+					void* Set_Simulation_Time_Reference = (void*)((unsigned __int64)Byte_Manager::Solve_Relative((void*)((unsigned __int64)Byte_Manager::Find_Bytes(2168606945952456417, (unsigned __int8*)Client_Module, 16499196670633112084ull) - 7), 3) + 48);
 					
-					Original_Entity_Time_Received = *(void**)Entity_Time_Received_Reference;
+					Original_Set_Simulation_Time = *(void**)Set_Simulation_Time_Reference;
 					
-					*(void**)Entity_Time_Received_Reference = (void*)Entity_Time_Received;
+					*(void**)Set_Simulation_Time_Reference = (void*)Redirected_Set_Simulation_Time;
 
-					*(void**)((unsigned __int64)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(7918423844548743, (unsigned __int8*)Client_Module, 15881718154251215618ull), 3) + 48) = (void*)Player_Tick_Received;
+					*(void**)((unsigned __int64)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(7918423844548743, (unsigned __int8*)Client_Module, 15881718154251215618ull), 3) + 48) = (void*)Redirected_Set_Tick_Number;
 
 					Write_Events_Manager.Redirect_Function(3, Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Engine_Module, 14568127874725401427ull), (void*)Redirected_Write_Events);
 
@@ -234,6 +234,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Compute_Torso_Rotation_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(66567663, (unsigned __int8*)Client_Module, 5523300960910562887), (void*)Redirected_Compute_Torso_Rotation);
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(2031, (unsigned __int8*)Client_Module, 12095624162194331321ull), 1, 195);
+
+					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(6927, (unsigned __int8*)Client_Module, 4463870537877969387), 17, 144);
 
 					Restart_Gesture_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(4079, (unsigned __int8*)Client_Module, 10267512153074347694ull), (void*)Redirected_Restart_Gesture);
 				}

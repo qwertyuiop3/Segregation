@@ -58,15 +58,15 @@ void Redirected_Draw_Crosshair(void* Unknown_Parameter)
 		(*Draw_Line_Type(*(unsigned __int64*)Surface + 152))(Surface, X + Points[9], Y - Points[10], X + Points[11], Y - Points[10]);
 	};
 
-	using Get_Screen_Size_Type = void(*)(__int32* Width, __int32* Height);
+	using Get_Screen_Size_Type = void(**)(void* Engine, __int32* Width, __int32* Height);
 
-	static void* Get_Screen_Size = Byte_Manager::Find_Bytes(59244015, (unsigned __int8*)Client_Module, 17246984345480614126ull);
+	void* Engine = Get_Engine();
 
 	__int32 Screen_Width;
 
 	__int32 Screen_Height;
 
-	Get_Screen_Size_Type((unsigned __int64)Get_Screen_Size)(&Screen_Width, &Screen_Height);
+	(*Get_Screen_Size_Type(*(unsigned __int64*)Engine + 40))(Engine, &Screen_Width, &Screen_Height);
 
 	Screen_Width /= 2;
 

@@ -1,16 +1,14 @@
-Redirection_Manager::Manager_Structure Compute_Torso_Rotation_Manager;
-
 __int8 Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 {
 	if (Interface_Bruteforce.Get_Integer() == 1)
 	{
-		static void* Animation_State_Table = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(63367, (unsigned __int8*)Client_Module, 6176732474802796221), 3);
+		void* Local_Player = Get_Local_Player();
 
-		if (*(void**)Animation_State == Animation_State_Table)
+		if (*(void**)Animation_State == **(void***)((unsigned __int64)Local_Player + 13856))
 		{
 			void* Entity = *(void**)((unsigned __int64)Animation_State + 304);
 
-			if (Entity != Get_Local_Player())
+			if (Entity != Local_Player)
 			{
 				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 128)];
 
@@ -44,6 +42,8 @@ __int8 Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 
 	return 0;
 }
+
+Redirection_Manager::Manager_Structure Compute_Torso_Rotation_Manager;
 
 void Redirected_Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 {

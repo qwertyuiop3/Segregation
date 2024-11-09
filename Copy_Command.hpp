@@ -2,7 +2,7 @@ Player_Data_Structure Previous_Recent_Player_Data;
 
 Redirection_Manager::Manager_Structure Copy_Command_Manager;
 
-void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Frame_Address)
+void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Stack)
 {
 	Command->Extra_Simulations = 0;
 
@@ -462,13 +462,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 							{
 								size_t Target_Number = 0;
 
-								using Get_Eye_Position_Type = void(*)(void* Entity, float* Eye_Position);
-
-								static void* Get_Eye_Position = Byte_Manager::Find_Bytes(16760303, (unsigned __int8*)Client_Module, 1142713597785563800);
+								using Get_Eye_Position_Type = void(**)(void* Entity, float* Eye_Position);
 
 								float Eye_Position[3];
 
-								Get_Eye_Position_Type((unsigned __int64)Get_Eye_Position)(Local_Player, Eye_Position);
+								(*Get_Eye_Position_Type(*(unsigned __int64*)Local_Player + 1112))(Local_Player, Eye_Position);
 
 								Recent_Player_Data_Number = 0;
 
@@ -638,9 +636,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 																		static void* Set_Ground_Entity = Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Client_Module, 6146399131556111791);
 
-																		static void* World_Table = *(void**)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(32647, (unsigned __int8*)Client_Module, 7890751109409977141), 3);
-
-																		Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Previous_Flags & 1) == 1 ? World_Table : nullptr);
+																		Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Previous_Flags & 1) == 1 ? *(void**)Entity_List : nullptr);
 
 																		*(void**)Lua_Gamemode = nullptr;
 
@@ -793,24 +789,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 											Invalidate_Cache_Type((unsigned __int64)Invalidate_Cache)(Target->Self);
 
-											using Get_Cache_Type = void*(*)(unsigned __int32 Handle);
-
-											static void* Get_Cache = Byte_Manager::Find_Bytes(1056440319, (unsigned __int8*)Client_Module, 9472803160925861231ull);
-
-											void* Cache = Get_Cache_Type((unsigned __int64)Get_Cache + 15)(*(unsigned __int32*)((unsigned __int64)Target->Self + 6816));
-
-											if (Cache != nullptr)
-											{
-												*(float*)Cache = -1.f;
-											}
-
-											using Setup_Bones_Type = __int8(*)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time);
-
-											static void* Setup_Bones = Byte_Manager::Find_Bytes(127, (unsigned __int8*)Client_Module, 7319138129503346656);
+											using Setup_Bones_Type = __int8(**)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time);
 
 											float Bones[128][3][4];
 
-											if (Setup_Bones_Type((unsigned __int64)Setup_Bones)((void*)((unsigned __int64)Target->Self + 8), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
+											if ((*Setup_Bones_Type(*(unsigned __int64*)((unsigned __int64)Target->Self + 8) + 128))((void*)((unsigned __int64)Target->Self + 8), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
 											{
 												auto Perform_Trace = [&](float Direction[3]) -> __int8
 												{
@@ -847,9 +830,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 														void* Skip;
 
-														__int32 Group;
-
-														void* Handler;
+														__int8 Additional_Bytes[16];
 													};
 
 													struct Trace_Structure
@@ -869,9 +850,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 														__int8 Additional_Bytes_4[4];
 													};
 
-													using Perform_Trace_Type = void(*)(void* Tracer, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
-
-													static void* Perform_Trace = Byte_Manager::Find_Bytes(17486117012537343, (unsigned __int8*)Engine_Module, 9274698431606198605ull);
+													using Perform_Trace_Type = void(**)(void* Tracer, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
 													static void* Tracer = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(34351873927, (unsigned __int8*)Engine_Module, 2998748780310145851), 3);
 
@@ -890,23 +869,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 
 													Ray.Initialize(Eye_Position, End);
 
-													Filter_Structure Filter;
+													static void* Filter_Table = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(1047431, (unsigned __int8*)Client_Module, 8162175928024734831), 3);
 
-													static void* Table = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(1047431, (unsigned __int8*)Client_Module, 8162175928024734831), 3);
-
-													Filter.Table = Table;
-
-													Filter.Skip = Local_Player;
-
-													Filter.Group = 0;
-
-													Filter.Handler = nullptr;
+													Filter_Structure Filter = { Filter_Table, Local_Player };
 
 													Trace_Structure Trace;
 
-													Trace.Entity = nullptr;
-
-													Perform_Trace_Type((unsigned __int64)Perform_Trace)(Tracer, &Ray, 1174421507, &Filter, &Trace);
+													(*Perform_Trace_Type(*(unsigned __int64*)Tracer + 32))(Tracer, &Ray, 1174421507, &Filter, &Trace);
 
 													if (Trace.Solid == 0)
 													{
@@ -1255,16 +1224,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 			Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
 		}
 
-		*(__int8*)((unsigned __int64)Frame_Address + 304) = Send_Packet;
+		*(__int8*)((unsigned __int64)Stack + 304) = Send_Packet;
 	}
 
-	Copy_Command_Manager.Restore_Function();
-
-	using Copy_Command_Type = void(*)(void* Unknown_Parameter, Command_Structure* Command);
-
-	Copy_Command_Type(Copy_Command_Manager.Original_Function)(Unknown_Parameter, Command);
-
-	Copy_Command_Manager.Restore_Redirection();
+	Copy_Command_Manager.Special_Call(Unknown_Parameter, Command);
 }
 
 __attribute__((naked)) void Redirected_Copy_Command()

@@ -47,11 +47,21 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Fra
 				Command->Buttons &= ~(*(__int32*)((unsigned __int64)Local_Player + 11364) & 2);
 			}
 
+			float* Velocity = (float*)((unsigned __int64)Local_Player + 328);
+
+			if ((Command->Buttons & 262144) == 262144)
+			{
+				Command->Buttons |= 4;
+
+				if (__builtin_signbitf(Velocity[2]) == 1)
+				{
+					Command->Buttons &= ~4;
+				}
+			}
+
 			float Difference = __builtin_remainderf(Move_Angles[1] - Previous_Move_Angle_Y, 360.f);
 
 			Previous_Move_Angle_Y = Move_Angles[1];
-
-			float* Velocity = (float*)((unsigned __int64)Local_Player + 328);
 
 			if (__builtin_fabsf(Difference) < __builtin_atan2f(30.f, __builtin_hypotf(Velocity[0], Velocity[1])) * 180.f / 3.1415927f)
 			{

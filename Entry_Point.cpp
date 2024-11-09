@@ -220,6 +220,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] = { 194, 24 };
 
 					Byte_Manager::Copy_Bytes(0, (void*)604206416, sizeof(Maintain_Sequence_Transitions_Bytes), Maintain_Sequence_Transitions_Bytes);
+
+					Byte_Manager::Set_Bytes(0, (void*)604199650, 14, 144);
 				}
 
 				_putws(L"[ + ] Prediction");

@@ -177,7 +177,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		static __int8 Send_Packet;
 
-		__int32 Choked_Commands_Count = *(__int32*)540627872;
+		__int32 Choked_Commands = *(__int32*)540627872;
 
 		__int8 Predicted_Send_Packet = 0;
 
@@ -185,15 +185,15 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		if (Interface_Alternative.Integer == 0)
 		{
-			__int32 Predicted_Choked_Commands_Count = Choked_Commands_Count + 1;
+			__int32 Predicted_Choked_Commands = Choked_Commands + 1;
 
-			if (Choked_Commands_Count < Interface_Minimum_Choked_Commands.Integer)
+			if (Choked_Commands < Interface_Minimum_Choked_Commands.Integer)
 			{
 				Send_Packet = 0;
 
-				if (Predicted_Choked_Commands_Count == Interface_Minimum_Choked_Commands.Integer)
+				if (Predicted_Choked_Commands == Interface_Minimum_Choked_Commands.Integer)
 				{
-					if (Predicted_Choked_Commands_Count < Interface_Maximum_Choked_Commands.Integer)
+					if (Predicted_Choked_Commands < Interface_Maximum_Choked_Commands.Integer)
 					{
 						goto Predict_Dynamic_Send_Packet_Label;
 					}
@@ -205,7 +205,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			}
 			else
 			{
-				if (Choked_Commands_Count < Interface_Maximum_Choked_Commands.Integer)
+				if (Choked_Commands < Interface_Maximum_Choked_Commands.Integer)
 				{
 					if (__builtin_powf(Local_Networked_Origin[0] - Local_Previous_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Previous_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Previous_Origin[2], 2.f) <= 4096.f)
 					{
@@ -213,7 +213,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 						Predict_Dynamic_Send_Packet_Label:
 						{
-							if (Predicted_Choked_Commands_Count == Interface_Maximum_Choked_Commands.Integer)
+							if (Predicted_Choked_Commands == Interface_Maximum_Choked_Commands.Integer)
 							{
 								Predicted_Send_Packet = 1;
 							}
@@ -250,13 +250,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 				goto Send_Packet_Label;
 			}
 
-			if (Choked_Commands_Count < Interface_Minimum_Choked_Commands.Integer)
+			if (Choked_Commands < Interface_Minimum_Choked_Commands.Integer)
 			{
 				Send_Packet = 0;
 			}
 			else
 			{
-				if (Choked_Commands_Count < Interface_Maximum_Choked_Commands.Integer)
+				if (Choked_Commands < Interface_Maximum_Choked_Commands.Integer)
 				{
 					if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) <= 4096.f)
 					{
@@ -435,7 +435,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																if (Setup_Bones_Type(604209888)((void*)((unsigned __int32)Target->Self + 4), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
 																{
-																	auto Trace_Ray = [&](float Direction[3]) -> __int8
+																	auto Perform_Trace = [&](float Direction[3]) -> __int8
 																	{
 																		struct alignas(4) Ray_Structure
 																		{
@@ -464,7 +464,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																			__int8 Additional_Bytes_3[4];
 																		};
 
-																		using Trace_Ray_Type = void(__thiscall*)(void* Engine, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
+																		using Perform_Trace_Type = void(__thiscall*)(void* Tracer, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
 																		using Initialize_Ray_Type = void(__thiscall*)(Ray_Structure* Ray, float* Start, float* End);
 
@@ -493,9 +493,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																		Trace_Structure Trace;
 
-																		Trace_Ray_Type(537565888)((void*)540446304, &Ray, 1174421515, &Filter, &Trace);
+																		Perform_Trace_Type(537565888)((void*)540446304, &Ray, 1174421515, &Filter, &Trace);
 
-																		using Clip_Trace_To_Players_Type = void(__cdecl*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
+																		using Clip_Trace = void(__cdecl*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
 																		End[0] += Direction[0] * 40.f;
 
@@ -503,7 +503,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																		End[2] += Direction[2] * 40.f;
 
-																		Clip_Trace_To_Players_Type(605426672)(Eye_Position, End, 1174421515, &Filter, &Trace);
+																		Clip_Trace(605426672)(Eye_Position, End, 1174421515, &Filter, &Trace);
 
 																		if (Trace.Entity == Target->Self)
 																		{
@@ -578,7 +578,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																		Target_Origin[2] - Eye_Position[2]
 																	};
 
-																	if (Trace_Ray(Direction) == 1)
+																	if (Perform_Trace(Direction) == 1)
 																	{
 																		Command->Tick_Number = Target->Tick_Number;
 
@@ -873,12 +873,12 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			{
 				Sequence_Number,
 
-				Sequence_Number - Choked_Commands_Count - 1
+				Sequence_Number - Choked_Commands - 1
 			};
 		}
 		else
 		{
-			Command->Extra_Simulations = max(0, Choked_Commands_Count - 14);
+			Command->Extra_Simulations = max(0, Choked_Commands - 14);
 
 			Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
 		}

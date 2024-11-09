@@ -458,15 +458,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																		Initialize_Ray_Type((unsigned __int32)Client_Module + 389504)(&Ray, Eye_Position, End);
 
-																		Filter_Structure Filter;
-
-																		Filter.Table = (void*)((unsigned __int32)Client_Module + 3908280);
-
-																		Filter.Skip = Local_Player;
-
-																		Filter.Group = 0;
-
-																		Filter.Handler = nullptr;
+																		Filter_Structure Filter = { (void*)((unsigned __int32)Client_Module + 3908280), Local_Player };
 
 																		Trace_Structure Trace;
 

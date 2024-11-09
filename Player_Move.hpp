@@ -13,7 +13,7 @@ struct Filter_Structure
 
 	__int32 Group;
 
-	void* Handler;
+	__int8 Additional_Bytes[4];
 };
 
 struct Trace_Structure
@@ -87,15 +87,7 @@ void __thiscall Redirected_Player_Move(void* Game_Movement)
 
 	Initialize_Ray_Type(((unsigned __int32)Client_Module + 419584))(&Ray, Start, End, Minimum, Maximum);
 
-	Filter_Structure Filter;
-
-	Filter.Table = (void*)((unsigned __int32)Client_Module + 3908280);
-
-	Filter.Skip = (void*)Player;
-
-	Filter.Group = 8;
-
-	Filter.Handler = nullptr;
+	Filter_Structure Filter = { (void*)((unsigned __int32)Client_Module + 3908280), Player, 8 };
 
 	Trace_Structure Trace;
 

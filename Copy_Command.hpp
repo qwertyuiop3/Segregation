@@ -437,9 +437,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																if (Setup_Bones_Type((unsigned __int32)Client_Module + 560320)((void*)((unsigned __int32)Target->Self + 4), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
 																{
-																	auto Trace_Ray = [&](float Direction[3]) -> __int8
+																	auto Perform_Trace = [&](float Direction[3]) -> __int8
 																	{
-																		using Trace_Ray_Type = void(__thiscall*)(void* Tracer, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
+																		using Perform_Trace_Type = void(__thiscall*)(void* Tracer, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
 																		using Initialize_Ray_Type = void(__thiscall*)(Ray_Structure* Ray, float* Start, float* End);
 
@@ -470,7 +470,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																		Trace_Structure Trace;
 
-																		Trace_Ray_Type((unsigned __int32)Engine_Module + 1658128)((void*)((unsigned __int32)Engine_Module + 3941436), &Ray, 1174421515, &Filter, &Trace);
+																		Perform_Trace_Type((unsigned __int32)Engine_Module + 1658128)((void*)((unsigned __int32)Engine_Module + 3941436), &Ray, 1174421515, &Filter, &Trace);
 
 																		using Clip_Trace_Type = void(__cdecl*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 

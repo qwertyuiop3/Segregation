@@ -91,9 +91,6 @@
     <ClInclude Include="Delimited_Interface.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Player_Tick_Received.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Update_Animation_State.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
@@ -103,7 +100,10 @@
     <ClInclude Include="Shutdown.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Entity_Time_Received.hpp">
+    <ClInclude Include="Set_Simulation_Time.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Set_Tick_Number.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
   </ItemGroup>

@@ -536,7 +536,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 											if (Target->Valid == 1)
 											{
-												Set_Origin(Player_Data->Last_Update_Origin);
+												Set_Origin(Player_Data->Origin);
 											}
 
 											if (Interface_Extrapolation.Get_Integer() == 1)
@@ -545,7 +545,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 												{
 													if ((Player_Data->Simulation_Ticks[Target->Valid] - 1 | 22 - Player_Data->Simulation_Ticks[Target->Valid]) >= 0)
 													{
-														__int32 Delta_Ticks = max(0, Global_Variables->Tick_Number - Player_Data->Last_Update_Tick_Number[Target->Valid]);
+														__int32 Delta_Ticks = max(0, Global_Variables->Tick_Number - Player_Data->Tick_Number[Target->Valid]);
 
 														if (Player_Data->Simulation_Ticks[Target->Valid] - Delta_Ticks > 0)
 														{

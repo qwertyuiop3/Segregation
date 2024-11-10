@@ -29,13 +29,13 @@ Global_Variables_Structure* Get_Global_Variables()
 
 struct Player_Data_Structure
 {
-	__int8 Breaks_Lag_Compensation;
-
 	__int32 Simulation_Ticks[2];
 
-	__int32 Last_Update_Tick_Number[2];
+	__int32 Tick_Number[2];
 
-	float Last_Update_Origin[3];
+	__int8 Breaks_Lag_Compensation;
+
+	float Origin[3];
 
 	__int32 Priority;
 

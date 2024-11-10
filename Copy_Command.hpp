@@ -644,41 +644,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																	__int32 Extrapolation_Ticks = Extrapolation_Windows * Player_Data->Simulation_Ticks[Target->Valid];
 
-																	float Target_Move_Angle = Target_Command.Angles[1];
-
 																	Extrapolate_Target_Label:
 																	{
 																		if (Extrapolation_Ticks != 0)
 																		{
-																			if ((Flags & 1) + *(__int8*)((unsigned __int64)Target->Self + 500) == 2)
-																			{
-																				Target_Command.Move[0] = 0;
-
-																				Target_Command.Buttons |= 2;
-
-																				if (*(__int32*)((unsigned __int64)Target->Self + 764) == -1)
-																				{
-																					Target_Command.Buttons &= ~2;
-																				}
-																				else
-																				{
-																					Target_Command.Buttons &= ~(*(__int32*)((unsigned __int64)Target->Self + 11364) & 2);
-																				}
-
-																				float Strafe_Angle = __builtin_remainderf(Target_Move_Angle - __builtin_atan2f(Velocity[1], Velocity[0]) * 180 / 3.1415927f, 360);
-
-																				if (__builtin_signbitf(Strafe_Angle) == 0)
-																				{
-																					Target_Command.Move[1] = -10000;
-																				}
-																				else
-																				{
-																					Target_Command.Move[1] = 10000;
-																				}
-
-																				Target_Command.Angles[1] -= Strafe_Angle;
-																			}
-
 																			Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
 
 																			Extrapolation_Ticks -= 1;

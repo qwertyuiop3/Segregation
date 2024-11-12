@@ -515,9 +515,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									Byte_Manager::Copy_Bytes(1, Target_Data, sizeof(Target_Data), Target->Self);
 
+									float* Target_Origin = (float*)((unsigned __int64)Target->Self + 1064);
+
 									auto Set_Origin = [&](float* Origin) -> void
 									{
-										Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 1064), sizeof(float[3]), Origin);
+										Byte_Manager::Copy_Bytes(1, Target_Origin, sizeof(float[3]), Origin);
 
 										using Set_Origin_Type = void(*)(void* Entity, float* Origin);
 
@@ -535,7 +537,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									if (Interface_Extrapolation.Get_Integer() == 1)
 									{
-										if ((Target->Valid ^ 1) + Player_Data->Breaks_Lag_Compensation != 0)
+										__int8 Teleported = __builtin_powf(Target_Origin[0] - Player_Data->Origin[0], 2.f) + __builtin_powf(Target_Origin[1] - Player_Data->Origin[1], 2.f) + __builtin_powf(Target_Origin[2] - Player_Data->Origin[2], 2.f) > 4096.f;
+
+										if ((Target->Valid ^ 1) + Teleported != 0)
 										{
 											if ((Player_Data->Simulation_Ticks[Target->Valid] - 1 | 22 - Player_Data->Simulation_Ticks[Target->Valid]) >= 0)
 											{
@@ -567,9 +571,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 															if ((Flags & 1) == 1)
 															{
-																*(float*)((unsigned __int64)Target->Self + 1072) += 0.03125f;
+																Target_Origin[2] += 0.03125f;
 
-																Set_Origin((float*)((unsigned __int64)Target->Self + 1064));
+																Set_Origin(Target_Origin);
 															}
 
 															using Set_Ground_Entity_Type = void(*)(void* Entity, void* Ground_Entity);
@@ -614,7 +618,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 															*(float*)((unsigned __int64)Target->Self + 11576) = 1.f;
 
-															Byte_Manager::Set_Bytes(1, (float*)((unsigned __int64)Target->Self + 11580), sizeof(float[2]), 0);
+															*(double*)((unsigned __int64)Target->Self + 11580) = 0.;
 
 															*(__int32*)((unsigned __int64)Target->Self + 11608) = Global_Variables->Tick_Number;
 

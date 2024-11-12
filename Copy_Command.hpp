@@ -537,9 +537,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									if (Interface_Extrapolation.Get_Integer() == 1)
 									{
-										__int8 Teleported = __builtin_powf(Target_Origin[0] - Player_Data->Origin[0], 2.f) + __builtin_powf(Target_Origin[1] - Player_Data->Origin[1], 2.f) + __builtin_powf(Target_Origin[2] - Player_Data->Origin[2], 2.f) > 4096.f;
-
-										if ((Target->Valid ^ 1) + Teleported != 0)
+										if ((Target->Valid ^ 1) + Player_Data->Teleported != 0)
 										{
 											if ((Player_Data->Simulation_Ticks[Target->Valid] - 1 | 22 - Player_Data->Simulation_Ticks[Target->Valid]) >= 0)
 											{

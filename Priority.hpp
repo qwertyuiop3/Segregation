@@ -33,6 +33,8 @@ struct Player_Data_Structure
 
 	__int32 Tick_Number[2];
 
+	__int8 Teleported;
+
 	float Origin[3];
 
 	__int32 Priority;

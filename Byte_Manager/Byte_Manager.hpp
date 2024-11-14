@@ -77,6 +77,6 @@ namespace Byte_Manager
 
 	void* Solve_Relative(void* Address, unsigned __int64 Offset)
 	{
-		return (void*)((unsigned __int64)Address + *(unsigned __int32*)((unsigned __int64)Address + Offset) + Offset + 4 + (*(unsigned __int8*)Address == 131));
+		return (void*)((unsigned __int64)Address + *(__int32*)((unsigned __int64)Address + Offset) + Offset + 4 + (*(unsigned __int8*)Address == 131));
 	}
 };

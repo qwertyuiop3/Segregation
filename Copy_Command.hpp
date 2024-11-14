@@ -479,7 +479,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								void* Studio_Header = Get_Studio_Header_Type((unsigned __int64)Get_Studio_Header)(Target->Self);
 
-								void* Hitbox_Set = (void*)((unsigned __int64)*(void**)Studio_Header + *(__int32*)((unsigned __int64)*(void**)Studio_Header + 176) + 12 * *(__int32*)((unsigned __int64)Target->Self + 5848));
+								void* Hitbox_Set = (void*)(*(unsigned __int64*)Studio_Header + *(__int32*)(*(unsigned __int64*)Studio_Header + 176) + 12 * *(__int32*)((unsigned __int64)Target->Self + 5848));
 
 								auto Find_Hitbox_By_Group = [&](__int32 Group) -> void*
 								{
@@ -535,6 +535,27 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 										Set_Origin(Player_Data->Origin);
 									}
 
+									struct Trace_Structure
+									{
+										__int8 Additional_Bytes_1[24];
+
+										float Normal[3];
+
+										__int8 Additional_Bytes_2[19];
+
+										__int8 Solid;
+
+										__int8 Additional_Bytes_3[24];
+
+										__int32 Group;
+
+										__int8 Additional_Bytes_4[4];
+
+										void* Entity;
+
+										__int8 Additional_Bytes_5[4];
+									};
+
 									if (Interface_Extrapolation.Get_Integer() == 1)
 									{
 										if ((Target->Valid ^ 1) + Player_Data->Teleported != 0)
@@ -556,8 +577,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 															Command_Structure Target_Command;
 
 															Byte_Manager::Set_Bytes(1, &Target_Command, sizeof(Target_Command), 0);
-
-															Target_Command.Angles[0] = __builtin_atan2f(-Velocity[2], __builtin_hypotf(Velocity[0], Velocity[1])) * 180.f / 3.1415927f;
 
 															Target_Command.Angles[1] = __builtin_atan2f(Velocity[1], Velocity[0]) * 180.f / 3.1415927f;
 
@@ -614,11 +633,58 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 															*(float*)((unsigned __int64)Target->Self + 11564) = 0.f;
 
-															*(float*)((unsigned __int64)Target->Self + 11576) = 1.f;
+															if (*(__int8*)((unsigned __int64)Target->Self + 500) == 9)
+															{
+																Target_Command.Angles[0] = __builtin_atan2f(-Velocity[2], __builtin_hypotf(Velocity[0], Velocity[1])) * 180.f / 3.1415927f;
 
-															*(double*)((unsigned __int64)Target->Self + 11580) = 0.;
+																float Directions[8][3] =
+																{
+																	{ Target_Origin[0] - 2, Target_Origin[1], Target_Origin[2] },
 
-															*(__int32*)((unsigned __int64)Target->Self + 11608) = Global_Variables->Tick_Number;
+																	{ Target_Origin[0], Target_Origin[1] - 2, Target_Origin[2] },
+
+																	{ Target_Origin[0] + 2, Target_Origin[1], Target_Origin[2] },
+
+																	{ Target_Origin[0], Target_Origin[1] + 2, Target_Origin[2] },
+
+																	{ Target_Origin[0] - 2, Target_Origin[1] - 2, Target_Origin[2] },
+
+																	{ Target_Origin[0] + 2, Target_Origin[1] - 2, Target_Origin[2] },
+
+																	{ Target_Origin[0] - 2, Target_Origin[1] + 2, Target_Origin[2] },
+
+																	{ Target_Origin[0] + 2, Target_Origin[1] + 2, Target_Origin[2] }
+																};
+
+																unsigned __int8 Trace_Number = 0;
+
+																Perform_Trace_Label:
+																{
+																	using Perform_Trace_Type = void(**)(void* Movement, float* Start, float* End, __int32 Mask, __int32 Group, Trace_Structure* Trace);
+
+																	static void* Movement = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31394695, (unsigned __int8*)Client_Module, 17805682010550749776ull), 3);
+
+																	Trace_Structure Trace;
+
+																	(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Target_Origin, Directions[Trace_Number], 33636363, 8, &Trace);
+
+																	using On_Ladder_Type = __int8(**)(void* Movement, Trace_Structure* Trace);
+
+																	if ((*On_Ladder_Type(*(unsigned __int64*)Movement + 280))(Movement, &Trace) == 1)
+																	{
+																		Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 11576), sizeof(Trace.Normal), Trace.Normal);
+																	}
+																	else
+																	{
+																		Trace_Number += 1;
+
+																		if (Trace_Number != 8)
+																		{
+																			goto Perform_Trace_Label;
+																		}
+																	}
+																}
+															}
 
 															Byte_Manager::Set_Bytes(1, (__int32*)((unsigned __int64)Target->Self + 11680), sizeof(__int32[3]), 255);
 
@@ -710,23 +776,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 												void* Skip;
 
 												__int8 Additional_Bytes[16];
-											};
-
-											struct Trace_Structure
-											{
-												__int8 Additional_Bytes_1[55];
-
-												__int8 Solid;
-
-												__int8 Additional_Bytes_2[24];
-
-												__int32 Group;
-
-												__int8 Additional_Bytes_3[4];
-
-												void* Entity;
-
-												__int8 Additional_Bytes_4[4];
 											};
 
 											using Perform_Trace_Type = void(**)(void* Tracer, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);

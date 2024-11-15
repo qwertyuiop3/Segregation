@@ -97,13 +97,15 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Byte_Manager::Copy_Bytes(1, Previous_Move, sizeof(Previous_Move), Command->Move);
 
+		__int32 Move_Type = *(__int8*)((unsigned __int64)Local_Player + 500);
+
+		float Desired_Move[3];
+
 		float Desired_Move_Forward[3];
 
 		float Desired_Move_Right[3];
 
 		Angle_Vectors(Move_Angles, Desired_Move_Forward, Desired_Move_Right, nullptr);
-
-		Desired_Move_Forward[2] = 0.f;
 
 		auto Vector_Normalize = [](float* Vector) -> float
 		{
@@ -114,55 +116,178 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			return Vector_Normalize_Type((unsigned __int64)Vector_Normalize)(Vector);
 		};
 
-		Vector_Normalize(Desired_Move_Forward);
-
-		Desired_Move_Right[2] = 0.f;
-
-		Vector_Normalize(Desired_Move_Right);
-
-		float Desired_Move[2] =
+		auto Get_Ladder_Move = [](float* Move, float* Forward, float Forward_Move, float* Right, float Side_Move, float* Ladder_Normal) -> void
 		{
-			Desired_Move_Forward[0] * Command->Move[0] + Desired_Move_Right[0] * Command->Move[1],
+			Move[0] = Forward[0] * Forward_Move + Right[0] * Side_Move;
 
-			Desired_Move_Forward[1] * Command->Move[0] + Desired_Move_Right[1] * Command->Move[1]
+			Move[1] = Forward[1] * Forward_Move + Right[1] * Side_Move;
+
+			float Normal = Move[0] * Ladder_Normal[0] + Move[1] * Ladder_Normal[1];
+
+			Move[0] -= Ladder_Normal[0] * Normal;
+
+			Move[1] -= Ladder_Normal[1] * Normal;
+
+			Move[2] = (Forward[2] * Forward_Move + Right[2] * Side_Move) - Ladder_Normal[2] * Normal - (__builtin_powf(Ladder_Normal[0], 2.f) + __builtin_powf(Ladder_Normal[1], 2.f)) * Normal;
+		};
+
+		float* Ladder_Normal = (float*)((unsigned __int64)Local_Player + 11576);
+
+		if (Move_Type == 2)
+		{
+			Desired_Move_Forward[2] = 0.f;
+
+			Vector_Normalize(Desired_Move_Forward);
+
+			Desired_Move_Right[2] = 0.f;
+
+			Vector_Normalize(Desired_Move_Right);
+
+			Desired_Move[0] = Desired_Move_Forward[0] * Command->Move[0] + Desired_Move_Right[0] * Command->Move[1];
+
+			Desired_Move[1] = Desired_Move_Forward[1] * Command->Move[0] + Desired_Move_Right[1] * Command->Move[1];
+		}
+		else
+		{
+			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, Command->Move[0], Desired_Move_Right, Command->Move[1], Ladder_Normal);
+		}
+
+		auto Solve_Ladder_Move = [&](float* Angles, float* Desired_Move, __int32* Buttons)
+		{
+			__int32 Solution_Number = 0;
+
+			static float Solutions[9][2] =
+			{
+				{ },
+
+				{ 10000.f },
+
+				{ 0.f, 10000.f },
+
+				{ -10000.f },
+
+				{ 0.f, -10000.f },
+
+				{ -10000.f, -10000.f },
+
+				{ -10000.f, 10000.f },
+
+				{ 10000.f, -10000.f },
+
+				{ 10000.f, 10000.f }
+			};
+
+			float Least_Deviation = __builtin_inff();
+
+			__int32 Solution[2];
+
+			Traverse_Solutions_Label:
+			{
+				__int32 Rotation = 0;
+
+				Rotate_Solution_Label:
+				{
+					float Move[3];
+
+					Angles[2] = Rotation;
+
+					float Move_Forward[3];
+
+					float Move_Right[3];
+
+					Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
+
+					Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
+
+					float Deviation = __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
+
+					if (Deviation < Least_Deviation)
+					{
+						Least_Deviation = Deviation;
+
+						Solution[0] = Solution_Number;
+
+						Solution[1] = Rotation;
+					}
+
+					if (Rotation != 180)
+					{
+						Rotation += 1;
+
+						goto Rotate_Solution_Label;
+					}
+				}
+
+				if (Solution_Number != 8)
+				{
+					Solution_Number += 1;
+
+					goto Traverse_Solutions_Label;
+				}
+			}
+
+			float X = Solutions[Solution[0]][0];
+
+			*Buttons &= ~1560;
+
+			if (__builtin_truncf(X) != 0.f)
+			{
+				*Buttons |= 8 * ((X < 0.f) + 1);
+			}
+
+			float Y = Solutions[Solution[0]][1];
+
+			if (__builtin_truncf(Y) != 0.f)
+			{
+				*Buttons |= 512 * ((Y > 0.f) + 1);
+			}
+
+			Angles[2] = Solution[1];
 		};
 
 		auto Correct_Movement = [&]() -> void
 		{
-			float Move_Forward[3];
-
-			float Move_Right[3];
-
-			Angle_Vectors(Command->Angles, Move_Forward, Move_Right, nullptr);
-
-			Move_Forward[2] = 0.f;
-
-			Vector_Normalize(Move_Forward);
-
-			Move_Right[2] = 0.f;
-
-			Vector_Normalize(Move_Right);
-
-			float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
-
-			float X = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
-
-			Command->Move[0] = X;
-
-			Command->Buttons &= ~1560;
-
-			if (__builtin_truncf(X) != 0.f)
+			if (Move_Type == 2)
 			{
-				Command->Buttons |= 8 * ((X < 0.f) + 1);
+				float Move_Forward[3];
+
+				float Move_Right[3];
+
+				Angle_Vectors(Command->Angles, Move_Forward, Move_Right, nullptr);
+
+				Move_Forward[2] = 0.f;
+
+				Vector_Normalize(Move_Forward);
+
+				Move_Right[2] = 0.f;
+
+				Vector_Normalize(Move_Right);
+
+				float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
+
+				float X = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
+
+				Command->Move[0] = X;
+
+				Command->Buttons &= ~1560;
+
+				if (__builtin_truncf(X) != 0.f)
+				{
+					Command->Buttons |= 8 * ((X < 0.f) + 1);
+				}
+
+				float Y = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
+
+				Command->Move[1] = Y;
+
+				if (__builtin_truncf(Y) != 0.f)
+				{
+					Command->Buttons |= 512 * ((Y > 0.f) + 1);
+				}
 			}
-
-			float Y = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
-
-			Command->Move[1] = Y;
-
-			if (__builtin_truncf(Y) != 0.f)
+			else
 			{
-				Command->Buttons |= 512 * ((Y > 0.f) + 1);
+				Solve_Ladder_Move(Command->Angles, Desired_Move, &Command->Buttons);
 			}
 		};
 
@@ -635,8 +760,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 															if (*(__int8*)((unsigned __int64)Target->Self + 500) == 9)
 															{
-																Target_Command.Angles[0] = __builtin_atan2f(-Velocity[2], __builtin_hypotf(Velocity[0], Velocity[1])) * 180.f / 3.1415927f;
-
 																float Directions[8][3] =
 																{
 																	{ Target_Origin[0] - 2, Target_Origin[1], Target_Origin[2] },
@@ -672,20 +795,22 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																	using On_Ladder_Type = __int8(**)(void* Movement, Trace_Structure* Trace);
 
-																	if ((*On_Ladder_Type(*(unsigned __int64*)Movement + 280))(Movement, &Trace) == 1)
+																	if ((*On_Ladder_Type(*(unsigned __int64*)Movement + 280))(Movement, &Trace) == 0)
 																	{
-																		Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 11576), sizeof(Trace.Normal), Trace.Normal);
-																	}
-																	else
-																	{
-																		Trace_Number += 1;
-
-																		if (Trace_Number != 8)
+																		if (Trace_Number != 7)
 																		{
+																			Trace_Number += 1;
+
 																			goto Perform_Trace_Label;
 																		}
 																	}
+
+																	Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 11576), sizeof(Trace.Normal), Trace.Normal);
 																}
+
+																Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13864));
+
+																Solve_Ladder_Move(Target_Command.Angles, Velocity, &Target_Command.Buttons);
 															}
 
 															Byte_Manager::Set_Bytes(1, (__int32*)((unsigned __int64)Target->Self + 11680), sizeof(__int32[3]), 255);

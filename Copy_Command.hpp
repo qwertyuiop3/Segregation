@@ -128,7 +128,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 			Move[1] -= Ladder_Normal[1] * Normal;
 
-			Move[2] = (Forward[2] * Forward_Move + Right[2] * Side_Move) - Ladder_Normal[2] * Normal - (__builtin_powf(Ladder_Normal[0], 2.f) + __builtin_powf(Ladder_Normal[1], 2.f)) * Normal;
+			Move[2] = (Forward[2] * Forward_Move + Right[2] * Side_Move) - (__builtin_powf(Ladder_Normal[0], 2.f) + __builtin_powf(Ladder_Normal[1], 2.f)) * Normal - Ladder_Normal[2] * Normal;
 		};
 
 		float* Ladder_Normal = (float*)((unsigned __int64)Local_Player + 11576);
@@ -154,7 +154,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		auto Solve_Ladder_Move = [&](float* Angles, float* Desired_Move, __int32* Buttons)
 		{
-			__int32 Solution_Number = 0;
+			unsigned __int8 Solution_Number = 0;
 
 			static float Solutions[9][2] =
 			{
@@ -179,11 +179,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 			float Least_Deviation = __builtin_inff();
 
-			__int32 Solution[2];
+			unsigned __int8 Solution[2];
 
 			Traverse_Solutions_Label:
 			{
-				__int32 Rotation = 0;
+				unsigned __int8 Rotation = 0;
 
 				Rotate_Solution_Label:
 				{
@@ -245,7 +245,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Angles[2] = Solution[1];
 		};
 
-		auto Correct_Movement = [&]() -> void
+		auto Correct_Movement = [&](float* Angles, float* Desired_Move, float* Move, __int32* Buttons) -> void
 		{
 			if (Move_Type == 2)
 			{
@@ -253,7 +253,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				float Move_Right[3];
 
-				Angle_Vectors(Command->Angles, Move_Forward, Move_Right, nullptr);
+				Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
 
 				Move_Forward[2] = 0.f;
 
@@ -267,31 +267,31 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				float X = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
 
-				Command->Move[0] = X;
+				Move[0] = X;
 
-				Command->Buttons &= ~1560;
+				*Buttons &= ~1560;
 
 				if (__builtin_truncf(X) != 0.f)
 				{
-					Command->Buttons |= 8 * ((X < 0.f) + 1);
+					*Buttons |= 8 * ((X < 0.f) + 1);
 				}
 
 				float Y = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
 
-				Command->Move[1] = Y;
+				Move[1] = Y;
 
 				if (__builtin_truncf(Y) != 0.f)
 				{
-					Command->Buttons |= 512 * ((Y > 0.f) + 1);
+					*Buttons |= 512 * ((Y > 0.f) + 1);
 				}
 			}
 			else
 			{
-				Solve_Ladder_Move(Command->Angles, Desired_Move, &Command->Buttons);
+				Solve_Ladder_Move(Angles, Desired_Move, Buttons);
 			}
 		};
 
-		Correct_Movement();
+		Correct_Movement(Command->Angles, Desired_Move, Command->Move, &Command->Buttons);
 
 		Command->Typing = 1;
 
@@ -699,17 +699,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 														if (__builtin_sqrtf(__builtin_powf(Velocity[0], 2.f) + __builtin_powf(Velocity[1], 2.f) + __builtin_powf(Velocity[2], 2.f)) >= 1.f)
 														{
-															Command_Structure Target_Command;
-
-															Byte_Manager::Set_Bytes(1, &Target_Command, sizeof(Target_Command), 0);
-
-															Target_Command.Angles[1] = __builtin_atan2f(Velocity[1], Velocity[0]) * 180.f / 3.1415927f;
-
-															Target_Command.Move[0] = 10000.f;
-
 															__int32 Flags = *(__int32*)((unsigned __int64)Target->Self + 1088);
-
-															Target_Command.Buttons |= 4 * ((Flags & 2) == 2) | 8;
 
 															if ((Flags & 1) == 1)
 															{
@@ -742,13 +732,17 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 															Byte_Manager::Set_Bytes(1, (float*)((unsigned __int64)Target->Self + 10724), sizeof(float[3]), 0);
 
+															Command_Structure Target_Command;
+
+															Byte_Manager::Set_Bytes(1, &Target_Command, sizeof(Target_Command), 0);
+
+															Target_Command.Buttons |= 4 * ((Flags & 2) == 2);
+
 															*(__int32*)((unsigned __int64)Target->Self + 10744) = Target_Command.Buttons;
 
 															*(__int8*)((unsigned __int64)Target->Self + 10960) = 1;
 
 															*(float*)((unsigned __int64)Target->Self + 11240) = *(float*)((unsigned __int64)Target->Self + 11464);
-
-															*(__int32*)((unsigned __int64)Target->Self + 11364) = Target_Command.Buttons;
 
 															*(__int32*)((unsigned __int64)Target->Self + 11376) = -1;
 
@@ -807,10 +801,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																	Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 11576), sizeof(Trace.Normal), Trace.Normal);
 																}
-
-																Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13864));
-
-																Solve_Ladder_Move(Target_Command.Angles, Velocity, &Target_Command.Buttons);
 															}
 
 															Byte_Manager::Set_Bytes(1, (__int32*)((unsigned __int64)Target->Self + 11680), sizeof(__int32[3]), 255);
@@ -825,6 +815,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 															*(__int8*)((unsigned __int64)Target->Self + 13768) = 0;
 
+															Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13864));
+
 															*(__int16*)((unsigned __int64)Prediction + 12) = 1;
 
 															Suppress_Events(1);
@@ -835,6 +827,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 															{
 																if (Extrapolation_Ticks != 0)
 																{
+																	Correct_Movement(Target_Command.Angles, Velocity, Target_Command.Move, &Target_Command.Buttons);
+
 																	Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
 
 																	Extrapolation_Ticks -= 1;
@@ -1100,7 +1094,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 						if ((Command->Buttons & 1) == 1)
 						{
-							auto Calculate_Spread = [&](float* Spread) -> void
+							auto Compute_Spread = [&](float* Spread) -> void
 							{
 								using Random_Seed_Type = void(*)(__int32 Seed);
 
@@ -1143,7 +1137,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								Spread[0] = 1.f;
 
-								Spread[1] = -Weapon_Spread[0] * Random[0];
+								Spread[1] = Weapon_Spread[0] * Random[0];
 
 								Spread[2] = Weapon_Spread[1] * Random[1];
 
@@ -1160,33 +1154,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 							float Spread[3];
 
-							Calculate_Spread(Spread);
+							Compute_Spread(Spread);
 
-							float Square_X_Z = 1.f - Spread[1] * Spread[1];
+							float Length = __builtin_sqrtf(1.f - __builtin_powf(Spread[1] * Spread[1], 2.f));
 
-							float Rotation[2];
+							Command->Angles[0] = -(__builtin_asinf(Forward[2] / Length) - __builtin_atanf(Spread[2])) * 180.f / 3.1415927f - Weapon_Recoil[0];
 
-							if (Forward[2] * Forward[2] > Square_X_Z)
-							{
-								Rotation[0] = __builtin_sqrtf(Square_X_Z);
-
-								if (Forward[2] < 0.f)
-								{
-									Rotation[0] = -Rotation[0];
-								}
-
-								Rotation[1] = 0.f;
-							}
-							else
-							{
-								Rotation[0] = Forward[2];
-
-								Rotation[1] = __builtin_sqrtf(Square_X_Z - Forward[2] * Forward[2]);
-							}
-
-							Command->Angles[0] = 180.f - __builtin_atan2f(Rotation[0] * -Spread[0] + Rotation[1] * Spread[2], Rotation[0] * Spread[2] + Rotation[1] * Spread[0]) * 180.f / 3.1415927f - Weapon_Recoil[0];
-
-							Command->Angles[1] = 180.f + __builtin_atan2f(Forward[0] * -Spread[1] + Forward[1] * Rotation[1], Forward[0] * Rotation[1] + Forward[1] * Spread[1]) * 180.f / 3.1415927f - Weapon_Recoil[1];
+							Command->Angles[1] += __builtin_atan2f(Spread[1], __builtin_sqrtf(__builtin_powf(Length, 2.f) - __builtin_powf(Forward[2], 2.f))) * 180.f / 3.1415927f - Weapon_Recoil[1];
 
 							In_Attack = 1;
 
@@ -1236,7 +1210,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			}
 		}
 
-		Correct_Movement();
+		Correct_Movement(Command->Angles, Desired_Move, Command->Move, &Command->Buttons);
 
 		if (Send_Packet == 0)
 		{

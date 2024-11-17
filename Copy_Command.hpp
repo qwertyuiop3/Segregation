@@ -245,7 +245,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Angles[2] = Solution[1];
 		};
 
-		auto Correct_Movement = [&](float* Angles, float* Desired_Move, float* Move, __int32* Buttons) -> void
+		auto Correct_Movement = [&](__int32 Move_Type, float* Angles, float* Desired_Move, float* Move, __int32* Buttons) -> void
 		{
 			if (Move_Type == 2)
 			{
@@ -291,7 +291,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			}
 		};
 
-		Correct_Movement(Command->Angles, Desired_Move, Command->Move, &Command->Buttons);
+		Correct_Movement(Move_Type, Command->Angles, Desired_Move, Command->Move, &Command->Buttons);
 
 		Command->Typing = 1;
 
@@ -681,6 +681,15 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 										__int8 Additional_Bytes_5[4];
 									};
 
+									auto Restore_Target_Data = [&]() -> void
+									{
+										*(void**)((unsigned __int64)Target_Data + 5888) = *(void**)((unsigned __int64)Target->Self + 5888);
+
+										*(void**)((unsigned __int64)Target_Data + 6816) = *(void**)((unsigned __int64)Target->Self + 6816);
+
+										Byte_Manager::Copy_Bytes(1, Target->Self, sizeof(Target_Data), Target_Data);
+									};
+
 									if (Interface_Extrapolation.Get_Integer() == 1)
 									{
 										if ((Target->Valid ^ 1) + Player_Data->Teleported != 0)
@@ -827,7 +836,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 															{
 																if (Extrapolation_Ticks != 0)
 																{
-																	Correct_Movement(Target_Command.Angles, Velocity, Target_Command.Move, &Target_Command.Buttons);
+																	Correct_Movement(*(__int8*)((unsigned __int64)Target->Self + 500), Target_Command.Angles, Velocity, Target_Command.Move, &Target_Command.Buttons);
 
 																	Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
 
@@ -1072,13 +1081,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 												}
 											}
 
-											Byte_Manager::Copy_Bytes(1, Target->Self, sizeof(Target_Data), Target_Data);
+											Restore_Target_Data();
 
 											goto Found_Target_Label;
 										}
 									}
 
-									Byte_Manager::Copy_Bytes(1, Target->Self, sizeof(Target_Data), Target_Data);
+									Restore_Target_Data();
 								}
 
 								Target_Number += 1;
@@ -1210,7 +1219,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			}
 		}
 
-		Correct_Movement(Command->Angles, Desired_Move, Command->Move, &Command->Buttons);
+		Correct_Movement(Move_Type, Command->Angles, Desired_Move, Command->Move, &Command->Buttons);
 
 		if (Send_Packet == 0)
 		{

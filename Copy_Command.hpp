@@ -515,7 +515,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 											(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f),
 
-											__builtin_fabsf(Corrected_Latency - (Global_Variables->Interval_Per_Tick * (Global_Variables->Tick_Number + Interface_Alternative.Get_Integer() == 0) + Latency - Entity_Time)) <= 0.2f,
+											__builtin_fabsf(Corrected_Latency - ((Global_Variables->Tick_Number + (Interface_Alternative.Get_Integer() == 0)) * Global_Variables->Interval_Per_Tick + Latency - Entity_Time)) <= 0.2f,
 
 											__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
 										};

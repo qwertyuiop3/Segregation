@@ -1167,9 +1167,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 							float Length = __builtin_sqrtf(1.f - __builtin_powf(Spread[1] * Spread[1], 2.f));
 
-							Command->Angles[0] = -(__builtin_asinf(Forward[2] / Length) - __builtin_atanf(Spread[2])) * 180.f / 3.1415927f - Weapon_Recoil[0];
+							Command->Angles[0] = 180.f + (__builtin_asinf(Forward[2] / Length) - __builtin_atanf(Spread[2])) * 180.f / 3.1415927f - Weapon_Recoil[0];
 
-							Command->Angles[1] += __builtin_atan2f(Spread[1], __builtin_sqrtf(__builtin_powf(Length, 2.f) - __builtin_powf(Forward[2], 2.f))) * 180.f / 3.1415927f - Weapon_Recoil[1];
+							Command->Angles[1] += 180.f + __builtin_atan2f(Spread[1], __builtin_sqrtf(__builtin_powf(Length, 2.f) - __builtin_powf(Forward[2], 2.f))) * 180.f / 3.1415927f - Weapon_Recoil[1];
 
 							In_Attack = 1;
 

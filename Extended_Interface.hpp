@@ -97,7 +97,7 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Alternative), (char*)"1", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Minimum_Choked_Commands), (char*)"2", nullptr);
+	Create_Interface(Pointer_Name(Interface_Minimum_Choked_Commands), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Maximum_Choked_Commands), (char*)"21", nullptr);
 

@@ -40,9 +40,6 @@
     <ClInclude Include="Priority.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Run_Simulation.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Sounds.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
@@ -86,6 +83,9 @@
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Move.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Send_Datagram.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
   </ItemGroup>

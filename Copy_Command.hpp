@@ -1,11 +1,32 @@
+struct Command_Structure
+{
+	__int8 Additional_Bytes_1[4];
+
+	__int32 Command_Number;
+
+	__int32 Tick_Number;
+
+	float Angles[3];
+
+	float Move[3];
+
+	__int32 Buttons;
+
+	__int8 Additional_Bytes_2[1];
+
+	__int32 Select;
+
+	__int8 Additional_Bytes_3[4];
+
+	__int32 Random_Seed;
+};
+
 Player_Data_Structure Previous_Recent_Player_Data;
 
 void* Original_Copy_Command_Caller;
 
 void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structure* Command)
 {
-	Command->Extra_Simulations = 0;
-
 	void* Local_Player = *(void**)((unsigned __int32)Client_Module + 5015784);
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 147) == 0)
@@ -840,21 +861,12 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		if (Send_Packet == 0)
 		{
-			using Send_Datagram_Type = __int32(__thiscall*)(void* Network_Channel, void* Unknown_Parameter);
+			__int32 Sequence_Number = *(__int32*)((unsigned __int32)Network_Channel + 8) = Redirected_Send_Datagram(Network_Channel, nullptr);
 
-			__int32 Sequence_Number = *(__int32*)((unsigned __int32)Network_Channel + 8) = Send_Datagram_Type((unsigned __int32)Engine_Module + 1880960)(Network_Channel, nullptr);
-
-			Sequences[Sequence_Number % 90] =
-			{
-				Sequence_Number,
-
-				Sequence_Number - Choked_Commands_Count - 1
-			};
+			Sequences[Sequence_Number % 90] = *(__int32*)((unsigned __int32)Engine_Module + 4702940);
 		}
 		else
 		{
-			Command->Extra_Simulations = max(0, Choked_Commands_Count - 14);
-
 			Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
 		}
 

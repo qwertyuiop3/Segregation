@@ -99,7 +99,7 @@
     <ClInclude Include="Priority.hpp" />
     <ClInclude Include="Player_Move.hpp" />
     <ClInclude Include="Read_Packets.hpp" />
-    <ClInclude Include="Run_Simulation.hpp" />
+    <ClInclude Include="Send_Datagram.hpp" />
     <ClInclude Include="Setup_Move.hpp" />
     <ClInclude Include="Update_Animation.hpp" />
     <ClInclude Include="Send_Move.hpp" />

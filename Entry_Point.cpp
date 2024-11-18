@@ -30,8 +30,6 @@ void* Engine_Module;
 
 #include "Compute_Torso_Rotation.hpp"
 
-#include "Run_Simulation.hpp"
-
 #include "Setup_Move.hpp"
 
 #include "Player_Move.hpp"
@@ -47,6 +45,8 @@ void* Engine_Module;
 #include "Move.hpp"
 
 #include "Send_Move.hpp"
+
+#include "Send_Datagram.hpp"
 
 #include "Packet_Start.hpp"
 
@@ -252,11 +252,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Add_Prediction_Fields((Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4867964), Weapon_Fields, sizeof(Weapon_Fields) / sizeof(Prediction_Field_Structure));
 
-					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 1548805), 8, 144);
-
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 1555313), 1, 235);
-
-					Original_Run_Simulation_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 1552528), (void*)Redirected_Run_Simulation);
 
 					Original_Setup_Move_Caller = Redirection_Manager::Redirect_Function(2, (void*)((unsigned __int32)Client_Module + 1553824), (void*)Redirected_Setup_Move);
 
@@ -274,6 +270,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Original_Move_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Engine_Module + 770528), (void*)Redirected_Move);
 
 					Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Engine_Module + 772928), (void*)Redirected_Send_Move);
+
+					Original_Send_Datagram_Caller = Redirection_Manager::Redirect_Function(2, (void*)((unsigned __int32)Engine_Module + 1880960), (void*)Redirected_Send_Datagram);
 
 					Original_Packet_Start_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Engine_Module + 2030944), (void*)Redirected_Packet_Start);
 				}

@@ -30,8 +30,6 @@
 
 #include "Compute_Torso_Rotation.hpp"
 
-#include "Run_Simulation.hpp"
-
 #include "Setup_Move.hpp"
 
 #include "Fall_Damage.hpp"
@@ -49,6 +47,8 @@
 #include "Move.hpp"
 
 #include "Send_Move.hpp"
+
+#include "Send_Datagram.hpp"
 
 #include "Packet_Start.hpp"
 
@@ -260,8 +260,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)605209595, 1, 235);
 
-					Original_Run_Simulation_Caller = Redirection_Manager::Redirect_Function(0, (void*)605206096, (void*)Redirected_Run_Simulation);
-
 					Original_Setup_Move_Caller = Redirection_Manager::Redirect_Function(0, (void*)605206752, (void*)Redirected_Setup_Move);
 
 					Redirection_Manager::Redirect_Function((void*)605024544, (void*)Redirected_Fall_Damage);
@@ -282,6 +280,10 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Original_Move_Caller = Redirection_Manager::Redirect_Function(0, (void*)537142544, (void*)Redirected_Move);
 
 					Redirection_Manager::Redirect_Function((void*)537142224, (void*)Redirected_Send_Move);
+
+					Original_Send_Datagram_Caller = Redirection_Manager::Redirect_Function(4, (void*)537933616, (void*)Redirected_Send_Datagram);
+
+					*(__int32*)((unsigned __int32)Original_Send_Datagram_Caller + 6) = (__int32)539639430 - (__int32)Original_Send_Datagram_Caller;
 
 					Original_Packet_Start_Caller = Redirection_Manager::Redirect_Function(2, (void*)538164112, (void*)Redirected_Packet_Start);
 				}

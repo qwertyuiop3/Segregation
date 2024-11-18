@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="Bruteforce.hpp" />
     <ClInclude Include="Delimited_Interface.hpp" />
+    <ClInclude Include="Send_Datagram.hpp" />
     <ClInclude Include="Set_Simulation_Time.hpp" />
     <ClInclude Include="Extended_Interface.hpp" />
     <ClInclude Include="Compute_Torso_Rotation.hpp" />
@@ -103,7 +104,6 @@
     <ClInclude Include="Read_Packets.hpp" />
     <ClInclude Include="Restart_Gesture.hpp" />
     <ClInclude Include="Run_Command.hpp" />
-    <ClInclude Include="Run_Simulation.hpp" />
     <ClInclude Include="Setup_Move.hpp" />
     <ClInclude Include="Shutdown.hpp" />
     <ClInclude Include="Update_Animation.hpp" />

@@ -1,11 +1,4 @@
-struct Sequence_Structure
-{
-	__int32 Network_Sequence_Number;
-
-	__int32 Prediction_Sequence_Number;
-};
-
-Sequence_Structure Sequences[90];
+__int32 Sequences[90];
 
 Redirection_Manager::Manager_Structure Write_Events_Manager;
 

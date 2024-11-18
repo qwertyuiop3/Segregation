@@ -1,9 +1,36 @@
+struct Command_Structure
+{
+	__int32 Command_Number;
+
+	__int32 Tick_Number;
+
+	float Angles[3];
+
+	float Move[2];
+
+	__int8 Additional_Bytes_1[4];
+
+	__int32 Buttons;
+
+	__int8 Additional_Bytes_2[1];
+
+	__int32 Select;
+
+	__int8 Additional_Bytes_3[4];
+
+	__int32 Random_Seed;
+
+	__int8 Additional_Bytes_4[24];
+
+	__int8 Typing;
+
+	__int8 Additional_Bytes_5[247];
+};
+
 Redirection_Manager::Manager_Structure Copy_Command_Manager;
 
 void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Stack)
 {
-	Command->Extra_Simulations = 0;
-
 	void* Local_Player = Get_Local_Player();
 
 	if (*(__int8*)((unsigned __int64)Local_Player + 199) == 0)
@@ -1223,27 +1250,18 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		if (Send_Packet == 0)
 		{
-			using Send_Datagram_Type = __int32(*)(void* Network_Channel, void* Unknown_Parameter);
+			*(__int32*)((unsigned __int64)Network_Channel + 32) = 0;
+			
+			__int32 Sequence_Number = *(__int32*)((unsigned __int64)Network_Channel + 12) = Redirected_Send_Datagram(Network_Channel, nullptr);
 
-			static void* Send_Datagram = Byte_Manager::Find_Bytes(1723518316740607, (unsigned __int8*)Engine_Module, 12226165932995495392ull);
-
-			__int32 Sequence_Number = *(__int32*)((unsigned __int64)Network_Channel + 12) = Send_Datagram_Type((unsigned __int64)Send_Datagram)(Network_Channel, nullptr);
-
-			Sequences[Sequence_Number % 90] =
-			{
-				Sequence_Number,
-
-				Sequence_Number - Choked_Commands - 1
-			};
+			Sequences[Sequence_Number % 90] = Get_Last_Command_Number();
 		}
 		else
 		{
-			Command->Extra_Simulations = max(0, Choked_Commands - 14);
-
 			Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
 		}
 
-		*(__int8*)((unsigned __int64)Stack + 304) = Send_Packet;
+		*(__int8*)((unsigned __int64)Stack + 296) = Send_Packet;
 	}
 
 	Copy_Command_Manager.Special_Call(Unknown_Parameter, Command);
@@ -1251,6 +1269,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 __attribute__((naked)) void Redirected_Copy_Command()
 {
-	asm("leaq -8(%rsp), %r8");
+	asm("movq %rsp, %r8");
 	asm("jmp %P0" : : "i"(Copy_Command));
 }

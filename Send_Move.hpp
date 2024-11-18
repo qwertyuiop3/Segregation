@@ -7,6 +7,13 @@ __int32 Get_Choked_Commands()
 	return *(__int32*)Choked_Commands;
 }
 
+__int32 Get_Last_Command_Number()
+{
+	static void* Last_Command_Number = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(14403, (unsigned __int8*)Engine_Module, 5131075775616746518), 2);
+
+	return *(__int32*)Last_Command_Number;
+}
+
 void* Get_Network_Channel()
 {
 	using Get_Network_Channel_Type = void*(**)(void* Engine);
@@ -64,9 +71,7 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 
 		__int32 From_Command_Number = -1;
 
-		static void* Last_Command_Number = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(14403, (unsigned __int8*)Engine_Module, 5131075775616746518), 2);
-
-		__int32 Next_Command_Number = *(__int32*)Last_Command_Number + Choked_Commands + 2;
+		__int32 Next_Command_Number = Get_Last_Command_Number() + Choked_Commands + 2;
 
 		__int32 To_Command_Number = Next_Command_Number - Commands_Queue - Backup_Commands;
 

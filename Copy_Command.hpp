@@ -6,25 +6,23 @@ struct Command_Structure
 
 	float Angles[3];
 
-	float Move[2];
-
-	__int8 Additional_Bytes_1[4];
+	float Move[3];
 
 	__int32 Buttons;
 
-	__int8 Additional_Bytes_2[1];
+	__int8 Additional_Bytes_1[1];
 
 	__int32 Select;
 
-	__int8 Additional_Bytes_3[4];
+	__int8 Additional_Bytes_2[4];
 
 	__int32 Random_Seed;
 
-	__int8 Additional_Bytes_4[24];
+	__int8 Additional_Bytes_3[24];
 
 	__int8 Typing;
 
-	__int8 Additional_Bytes_5[247];
+	__int8 Additional_Bytes_4[247];
 };
 
 Redirection_Manager::Manager_Structure Copy_Command_Manager;
@@ -179,109 +177,16 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, Command->Move[0], Desired_Move_Right, Command->Move[1], Ladder_Normal);
 		}
 
-		auto Solve_Ladder_Move = [&](float* Angles, float* Desired_Move, __int32* Buttons)
-		{
-			unsigned __int8 Solution_Number = 0;
-
-			static float Solutions[9][2] =
-			{
-				{ },
-
-				{ 10000.f },
-
-				{ 0.f, 10000.f },
-
-				{ -10000.f },
-
-				{ 0.f, -10000.f },
-
-				{ -10000.f, -10000.f },
-
-				{ -10000.f, 10000.f },
-
-				{ 10000.f, -10000.f },
-
-				{ 10000.f, 10000.f }
-			};
-
-			float Least_Deviation = __builtin_inff();
-
-			unsigned __int8 Solution[2];
-
-			Traverse_Solutions_Label:
-			{
-				unsigned __int8 Rotation = 0;
-
-				Rotate_Solution_Label:
-				{
-					float Move[3];
-
-					Angles[2] = Rotation;
-
-					float Move_Forward[3];
-
-					float Move_Right[3];
-
-					Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
-
-					Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
-
-					float Deviation = __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
-
-					if (Deviation < Least_Deviation)
-					{
-						Least_Deviation = Deviation;
-
-						Solution[0] = Solution_Number;
-
-						Solution[1] = Rotation;
-					}
-
-					if (Rotation != 180)
-					{
-						Rotation += 1;
-
-						goto Rotate_Solution_Label;
-					}
-				}
-
-				if (Solution_Number != 8)
-				{
-					Solution_Number += 1;
-
-					goto Traverse_Solutions_Label;
-				}
-			}
-
-			float X = Solutions[Solution[0]][0];
-
-			*Buttons &= ~1560;
-
-			if (__builtin_truncf(X) != 0.f)
-			{
-				*Buttons |= 8 * ((X < 0.f) + 1);
-			}
-
-			float Y = Solutions[Solution[0]][1];
-
-			if (__builtin_truncf(Y) != 0.f)
-			{
-				*Buttons |= 512 * ((Y > 0.f) + 1);
-			}
-
-			Angles[2] = Solution[1];
-		};
-
 		auto Correct_Movement = [&](__int32 Move_Type, float* Angles, float* Desired_Move, float* Move, __int32* Buttons) -> void
 		{
+			float Move_Forward[3];
+
+			float Move_Right[3];
+
+			Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
+
 			if (Move_Type == 2)
 			{
-				float Move_Forward[3];
-
-				float Move_Right[3];
-
-				Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
-
 				Move_Forward[2] = 0.f;
 
 				Vector_Normalize(Move_Forward);
@@ -292,29 +197,97 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-				float X = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
+				Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
 
-				Move[0] = X;
-
-				*Buttons &= ~1560;
-
-				if (__builtin_truncf(X) != 0.f)
-				{
-					*Buttons |= 8 * ((X < 0.f) + 1);
-				}
-
-				float Y = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
-
-				Move[1] = Y;
-
-				if (__builtin_truncf(Y) != 0.f)
-				{
-					*Buttons |= 512 * ((Y > 0.f) + 1);
-				}
+				Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
 			}
 			else
 			{
-				Solve_Ladder_Move(Angles, Desired_Move, Buttons);
+				unsigned __int8 Solution_Number = 0;
+
+				static float Solutions[9][3] =
+				{
+					{ },
+
+					{ 10000.f },
+
+					{ 0.f, 10000.f },
+
+					{ -10000.f },
+
+					{ 0.f, -10000.f },
+
+					{ -10000.f, -10000.f },
+
+					{ -10000.f, 10000.f },
+
+					{ 10000.f, -10000.f },
+
+					{ 10000.f, 10000.f }
+				};
+
+				float Least_Deviation = __builtin_inff();
+
+				unsigned __int8 Solution;
+
+				Traverse_Solutions_Label:
+				{
+					float Rotation = 0.f;
+
+					Rotate_Solution_Label:
+					{
+						float Move[3];
+
+						Angles[2] = Rotation;
+
+						Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
+
+						Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
+
+						float Deviation = __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
+
+						if (Deviation < Least_Deviation)
+						{
+							Least_Deviation = Deviation;
+
+							Solutions[Solution_Number][2] = Rotation;
+
+							Solution = Solution_Number;
+						}
+
+						if (Rotation != 180.f)
+						{
+							Rotation += 1.f;
+
+							goto Rotate_Solution_Label;
+						}
+					}
+
+					if (Solution_Number != 8)
+					{
+						Solution_Number += 1;
+
+						goto Traverse_Solutions_Label;
+					}
+				}
+
+				Move[0] = Solutions[Solution][0];
+
+				Move[1] = Solutions[Solution][1];
+
+				Angles[2] = Solutions[Solution][2];
+			}
+
+			*Buttons &= ~1560;
+
+			if (__builtin_truncf(Move[0]) != 0.f)
+			{
+				*Buttons |= 8 * ((Move[0] < 0.f) + 1);
+			}
+
+			if (__builtin_truncf(Move[1]) != 0.f)
+			{
+				*Buttons |= 512 * ((Move[1] > 0.f) + 1);
 			}
 		};
 
@@ -816,7 +789,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 																	using Perform_Trace_Type = void(**)(void* Movement, float* Start, float* End, __int32 Mask, __int32 Group, Trace_Structure* Trace);
 
 																	static void* Movement = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31394695, (unsigned __int8*)Client_Module, 17805682010550749776ull), 3);
-																	
+
 																	*(__int32*)(*(unsigned __int64*)((unsigned __int64)Movement + 16) + 4) = *(__int32*)((unsigned __int64)Target->Self + 240);
 
 																	Trace_Structure Trace;
@@ -1250,8 +1223,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		if (Send_Packet == 0)
 		{
-			*(__int32*)((unsigned __int64)Network_Channel + 32) = 0;
-			
 			__int32 Sequence_Number = *(__int32*)((unsigned __int64)Network_Channel + 12) = Redirected_Send_Datagram(Network_Channel, nullptr);
 
 			Sequences[Sequence_Number % 90] = Get_Last_Command_Number();

@@ -204,9 +204,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, Event_Listener, (char*)"entity_killed", nullptr);
 
 					void* Set_Simulation_Time_Reference = (void*)((unsigned __int64)Byte_Manager::Solve_Relative((void*)((unsigned __int64)Byte_Manager::Find_Bytes(2168606945952456417, (unsigned __int8*)Client_Module, 16499196670633112084ull) - 7), 3) + 48);
-					
+
 					Original_Set_Simulation_Time = *(void**)Set_Simulation_Time_Reference;
-					
+
 					*(void**)Set_Simulation_Time_Reference = (void*)Redirected_Set_Simulation_Time;
 
 					*(void**)((unsigned __int64)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(7918423844548743, (unsigned __int8*)Client_Module, 15881718154251215618ull), 3) + 48) = (void*)Redirected_Set_Tick_Number;
@@ -243,7 +243,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 				_putws(L"[ + ] Prediction");
 				{
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(33348587037, (unsigned __int8*)Client_Module, 15603247578755587463ull), 1, 235);
-					
+
 					Setup_Move_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(255, (unsigned __int8*)Client_Module, 14902868146442072631ull), (void*)Redirected_Setup_Move);
 
 					Finish_Move_Manager.Redirect_Function(4, Byte_Manager::Find_Bytes(502775279, (unsigned __int8*)Client_Module, 1688265399167102076), (void*)Redirected_Finish_Move);
@@ -262,7 +262,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Byte_Manager::Copy_Bytes(0, Byte_Manager::Find_Bytes(895, (unsigned __int8*)Engine_Module, 14445930051567068677ull), sizeof(Send_Move_Bytes), Send_Move_Bytes);
 
 					Send_Move_Manager.Redirect_Function(2, Byte_Manager::Find_Bytes(3599, (unsigned __int8*)Engine_Module, 14280183856799702616ull), (void*)Redirected_Send_Move);
-					
+
 					Send_Datagram_Manager.Redirect_Function(3, Byte_Manager::Find_Bytes(1723518316740607, (unsigned __int8*)Engine_Module, 12226165932995495392ull), (void*)Redirected_Send_Datagram);
 
 					Packet_Start_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(502260163, (unsigned __int8*)Engine_Module, 1280923722067716817), (void*)Redirected_Packet_Start);

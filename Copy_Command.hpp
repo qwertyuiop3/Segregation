@@ -39,6 +39,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Run_Prediction_Type((unsigned __int64)Run_Prediction)();
 
+		__int32 Move_Type = *(__int8*)((unsigned __int64)Local_Player + 500);
+
 		auto Angle_Vectors = [](float* Angles, float* Forward, float* Right, float* Up) -> void
 		{
 			using Angle_Vectors_Type = void(*)(float* Angles, float* Forward, float* Right, float* Up);
@@ -57,7 +59,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		static float Previous_Move_Angle_Y;
 
-		if ((Command->Buttons & 2) + *(__int8*)((unsigned __int64)Local_Player + 500) == 4)
+		if ((Command->Buttons & 2) + Move_Type == 4)
 		{
 			Command->Move[0] = 0;
 
@@ -122,8 +124,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Byte_Manager::Copy_Bytes(1, Previous_Move, sizeof(Previous_Move), Command->Move);
 
-		__int32 Move_Type = *(__int8*)((unsigned __int64)Local_Player + 500);
-
 		float Desired_Move[3];
 
 		float Desired_Move_Forward[3];
@@ -177,7 +177,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, Command->Move[0], Desired_Move_Right, Command->Move[1], Ladder_Normal);
 		}
 
-		auto Correct_Movement = [&](__int32 Move_Type, float* Angles, float* Desired_Move, float* Move, __int32* Buttons) -> void
+		auto Correct_Movement = [&](float* Angles, __int32 Move_Type, float* Move, float* Desired_Move, float* Ladder_Normal, __int32* Buttons) -> void
 		{
 			float Move_Forward[3];
 
@@ -291,7 +291,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			}
 		};
 
-		Correct_Movement(Move_Type, Command->Angles, Desired_Move, Command->Move, &Command->Buttons);
+		Correct_Movement(Command->Angles, Move_Type, Command->Move, Desired_Move, Ladder_Normal, &Command->Buttons);
 
 		Command->Typing = 1;
 
@@ -836,7 +836,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 															{
 																if (Extrapolation_Ticks != 0)
 																{
-																	Correct_Movement(*(__int8*)((unsigned __int64)Target->Self + 500), Target_Command.Angles, Velocity, Target_Command.Move, &Target_Command.Buttons);
+																	Correct_Movement(Target_Command.Angles, *(__int8*)((unsigned __int64)Target->Self + 500), Target_Command.Move, Velocity, (float*)((unsigned __int64)Target->Self + 11576), &Target_Command.Buttons);
 
 																	Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
 
@@ -1219,7 +1219,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			}
 		}
 
-		Correct_Movement(Move_Type, Command->Angles, Desired_Move, Command->Move, &Command->Buttons);
+		Correct_Movement(Command->Angles, Move_Type, Command->Move, Desired_Move, Ladder_Normal, &Command->Buttons);
 
 		if (Send_Packet == 0)
 		{

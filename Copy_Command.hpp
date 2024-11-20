@@ -152,24 +152,20 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 			float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-			__int16 X = (Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider;
-
-			Command->Move[0] = X;
+			Command->Move[0] = (__int16)((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider);
 
 			Command->Buttons &= ~1560;
 
-			if (X != 0)
+			if (Command->Move[0] != 0)
 			{
-				Command->Buttons |= 8 * ((X < 0) + 1);
+				Command->Buttons |= 8 * ((Command->Move[0] < 0) + 1);
 			}
 
-			__int16 Y = (Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider;
+			Command->Move[1] = (__int16)((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider);
 
-			Command->Move[1] = Y;
-
-			if (Y != 0)
+			if (Command->Move[1] != 0)
 			{
-				Command->Buttons |= 512 * ((Y > 0) + 1);
+				Command->Buttons |= 512 * ((Command->Move[1] > 0) + 1);
 			}
 		};
 

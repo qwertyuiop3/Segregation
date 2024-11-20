@@ -152,24 +152,20 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 			float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-			float X = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
-
-			Command->Move[0] = X;
+			Command->Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
 
 			Command->Buttons &= ~1560;
 
-			if (__builtin_truncf(X) != 0.f)
+			if (__builtin_truncf(Command->Move[0]) != 0.f)
 			{
-				Command->Buttons |= 8 * ((X < 0) + 1);
+				Command->Buttons |= 8 * ((Command->Move[0] < 0) + 1);
 			}
 
-			float Y = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
+			Command->Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
 
-			Command->Move[1] = Y;
-
-			if (__builtin_truncf(Y) != 0.f)
+			if (__builtin_truncf(Command->Move[1]) != 0.f)
 			{
-				Command->Buttons |= 512 * ((Y > 0) + 1);
+				Command->Buttons |= 512 * ((Command->Move[1] > 0) + 1);
 			}
 		};
 

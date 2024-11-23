@@ -326,6 +326,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Suppress_Events(1);
 
+		*(__int32*)((unsigned __int64)Local_Player + 11680) = -1;
+
 		float Local_Previous_Origin[3];
 
 		float* Local_Origin = (float*)((unsigned __int64)Local_Player + 1064);
@@ -501,7 +503,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 							{
 								if (*(__int8*)((unsigned __int64)Entity + 506) == 0)
 								{
-									if (*(void**)((unsigned __int64)Entity + 11452) == INVALID_HANDLE_VALUE)
+									if (*(__int32*)((unsigned __int64)Entity + 11452) == -1)
 									{
 										float Entity_Time = *(float*)((unsigned __int64)Entity + 160);
 

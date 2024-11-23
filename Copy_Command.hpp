@@ -10,19 +10,15 @@ struct Command_Structure
 
 	__int32 Buttons;
 
-	__int8 Additional_Bytes_1[1];
-
-	__int32 Select;
-
-	__int8 Additional_Bytes_2[4];
+	__int8 Additional_Bytes_1[9];
 
 	__int32 Random_Seed;
 
-	__int8 Additional_Bytes_3[24];
+	__int8 Additional_Bytes_2[24];
 
 	__int8 Typing;
 
-	__int8 Additional_Bytes_4[247];
+	__int8 Additional_Bytes_3[247];
 };
 
 Redirection_Manager::Manager_Structure Copy_Command_Manager;

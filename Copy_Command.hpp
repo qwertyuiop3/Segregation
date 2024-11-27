@@ -31,10 +31,6 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 135) == 0)
 	{
-		using Run_Prediction_Type = void(__cdecl*)();
-
-		Run_Prediction_Type(537158848)();
-
 		auto Angle_Vectors = [](float* Angles, float* Forward, float* Right, float* Up) -> void
 		{
 			using Angle_Vectors_Type = void(__cdecl*)(float* Angles, float* Forward, float* Right, float* Up);
@@ -55,7 +51,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		{
 			Command->Move[0] = 0;
 
-			if (*(__int32*)((unsigned __int32)Local_Player + 456) == -1)
+			if (*(void**)((unsigned __int32)Local_Player + 456) == INVALID_HANDLE_VALUE)
 			{
 				Command->Buttons &= ~2;
 			}
@@ -350,7 +346,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 									(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f),
 
-									__builtin_fabsf(Corrected_Latency - (__int32)(Global_Variables->Tick_Number + (Interface_Alternative.Integer == 0) + (Latency - Entity_Time) / Global_Variables->Interval_Per_Tick + 0.5f) * Global_Variables->Interval_Per_Tick) <= 0.2f,
+									__builtin_fabsf(Corrected_Latency - (__int32)(Global_Variables->Tick_Number + (Interface_Alternative.Integer ^ 1) + (Latency - Entity_Time) / Global_Variables->Interval_Per_Tick + 0.5f) * Global_Variables->Interval_Per_Tick) <= 0.2f,
 
 									__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
 								};
@@ -403,7 +399,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 						{
 							__int8 Send_Packet_Sequence = (Send_Packet == 0) + (Predicted_Send_Packet == 1);
 
-							if (Interface_Alternative.Integer != 0)
+							if (Interface_Alternative.Integer == 1)
 							{
 								Send_Packet_Sequence = 2;
 							}
@@ -795,7 +791,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														In_Attack = 1;
 
-														Send_Packet = (Interface_Alternative.Integer != 0) * 2;
+														Send_Packet = Interface_Alternative.Integer * 2;
 
 														Shot_Time = Global_Variables->Current_Time;
 													}

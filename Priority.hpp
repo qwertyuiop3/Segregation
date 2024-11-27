@@ -29,13 +29,13 @@ Global_Variables_Structure* Get_Global_Variables()
 
 struct Player_Data_Structure
 {
-	__int32 Simulation_Ticks[2];
-
-	__int32 Tick_Number[2];
+	__int32 Tick_Number;
 
 	__int8 Teleported;
 
-	float Origin[3];
+	__int8 Data[14872];
+
+	__int8 Animation_State[320];
 
 	__int32 Priority;
 

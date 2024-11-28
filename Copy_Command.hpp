@@ -495,7 +495,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 								{
 									if (*(__int32*)((unsigned __int64)Entity + 11452) == -1)
 									{
-										float Entity_Time = *(float*)((unsigned __int64)Entity + 160);
+										float Entity_Time = *(float*)((unsigned __int64)Player_Data->Data + 160);
 
 										float* Entity_Origin = (float*)((unsigned __int64)Entity + 1064);
 
@@ -507,7 +507,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 											(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f),
 
-											__builtin_fabsf(Corrected_Latency - ((Global_Variables->Tick_Number + (Interface_Alternative.Get_Integer() ^ 1)) * Global_Variables->Interval_Per_Tick + Latency - Entity_Time)) <= 0.2f,
+											__builtin_fabsf(Corrected_Latency - ((Global_Variables->Tick_Number + (Interface_Alternative.Get_Integer() ^ 1)) * Global_Variables->Interval_Per_Tick + Latency - Entity_Time)) <= 0.2f * (Player_Data->Teleported * Interface_Extrapolation.Get_Integer() ^ 1),
 
 											__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
 										};
@@ -685,7 +685,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									if (Interface_Extrapolation.Get_Integer() == 1)
 									{
-										if ((Target->Valid ^ 1) + Player_Data->Teleported != 0)
+										if (Target->Valid == 0)
 										{
 											float* Velocity = (float*)((unsigned __int64)Target->Self + 328);
 

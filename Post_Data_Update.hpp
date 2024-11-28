@@ -12,7 +12,9 @@ void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 
 	if ((Origin[0] != Previous_Origin[0]) + (Origin[1] != Previous_Origin[1]) + (Origin[2] != Previous_Origin[2]) != 0)
 	{
-		Player_Data->Tick_Number = Global_Variables->Tick_Number;
+		Player_Data->Tick_Number[0] = Player_Data->Tick_Number[1];
+
+		Player_Data->Tick_Number[1] = Global_Variables->Tick_Number;
 
 		Player_Data->Teleported = __builtin_powf(Origin[0] - Previous_Origin[0], 2.f) + __builtin_powf(Origin[1] - Previous_Origin[1], 2.f) + __builtin_powf(Origin[2] - Previous_Origin[2], 2.f) > 4096.f;
 	}

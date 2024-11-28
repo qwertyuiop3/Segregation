@@ -29,7 +29,7 @@ Global_Variables_Structure* Get_Global_Variables()
 
 struct Player_Data_Structure
 {
-	__int32 Tick_Number;
+	__int32 Tick_Number[2];
 
 	__int8 Teleported;
 

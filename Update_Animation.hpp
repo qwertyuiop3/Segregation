@@ -23,13 +23,4 @@ void Redirected_Update_Animation(void* Player)
 	Global_Variables->Frame_Time = Previous_Frame_Time;
 
 	Global_Variables->Current_Time = Previous_Current_Time;
-
-	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Player + 128)];
-
-	if (Player_Data->Data[6176] == -1)
-	{
-		Byte_Manager::Copy_Bytes(1, Player_Data->Data, sizeof(Player_Data->Data), Player);
-
-		Byte_Manager::Copy_Bytes(1, Player_Data->Animation_State, sizeof(Player_Data->Animation_State), *(void**)((unsigned __int64)Player + 13856));
-	}
 }

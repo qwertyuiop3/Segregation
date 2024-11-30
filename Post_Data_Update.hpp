@@ -27,7 +27,7 @@ void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 	{
 		if (__builtin_signbitf(Simulation_Time - Previous_Simulation_Time) == 0)
 		{
-			*(void**)((unsigned __int64)Player_Data->Data + 32) = (void*)((unsigned __int64)Entity - 16);
+			Player_Data->Data[6176] = -1;
 		}
 	}
 

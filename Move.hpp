@@ -12,6 +12,12 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 
 		Run_Prediction_Type((unsigned __int64)Run_Prediction)();
 
+		using Fire_Events_Type = void(*)();
+
+		static void* Fire_Events = Byte_Manager::Find_Bytes(61442791308783, (unsigned __int8*)Engine_Module, 7283201772715103423);
+
+		Fire_Events_Type((unsigned __int64)Fire_Events)();
+
 		Update_Animation_Time = Get_Global_Variables()->Current_Time;
 
 		Update_Animation_Type = 1;
@@ -23,37 +29,6 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 		Update_Animations_Type((unsigned __int64)Update_Animations)();
 
 		Update_Animation_Type = 0;
-
-		using Fire_Events_Type = void(*)();
-
-		static void* Fire_Events = Byte_Manager::Find_Bytes(61442791308783, (unsigned __int8*)Engine_Module, 7283201772715103423);
-
-		Fire_Events_Type((unsigned __int64)Fire_Events)();
-
-		__int32 Entity_Number = 0;
-
-		Traverse_Players_Data_Label:
-		{
-			Player_Data_Structure* Player_Data = &Players_Data[Entity_Number];
-
-			void* Entity = *(void**)((unsigned __int64)Player_Data->Data + 32);
-
-			if (Entity != nullptr)
-			{
-				*(void**)((unsigned __int64)Entity + 32) = nullptr;
-
-				Byte_Manager::Copy_Bytes(1, Player_Data->Data, sizeof(Player_Data->Data), Entity);
-
-				Byte_Manager::Copy_Bytes(1, Player_Data->Animation_State, sizeof(Player_Data->Animation_State), *(void**)((unsigned __int64)Entity + 13856));
-			}
-
-			Entity_Number += 1;
-
-			if (Entity_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
-			{
-				goto Traverse_Players_Data_Label;
-			}
-		}
 	}
 
 	(decltype(&Redirected_Move)(Move_Manager.Caller))(Unknown_Parameter, Final);

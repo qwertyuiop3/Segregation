@@ -14,6 +14,10 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 
 		Update_Animations_Type(604212176)();
 
+		using Fire_Events_Type = void(__cdecl*)();
+
+		Fire_Events_Type(537149456)();
+
 		Update_Animation_Time = (*(Global_Variables_Structure**)607726732)->Current_Time;
 
 		Update_Animation_Type = 1;
@@ -21,10 +25,6 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 		Update_Animations_Type(604212176)();
 
 		Update_Animation_Type = 0;
-
-		using Fire_Events_Type = void(__cdecl*)();
-
-		Fire_Events_Type(537149456)();
 	}
 
 	(decltype(&Redirected_Move)(Original_Move_Caller))(Unknown_Parameter, Final);

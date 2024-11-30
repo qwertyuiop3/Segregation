@@ -120,7 +120,7 @@ void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2
 
 		static std::unordered_map<void*, __int32> Flat_Offsets;
 
-		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Get_Local_Player()  + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int64)Predicton_Copy.Source + Field->Flat_Offset[1]));
+		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Get_Local_Player() + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int64)Predicton_Copy.Source + Field->Flat_Offset[1]));
 	}
 }
 

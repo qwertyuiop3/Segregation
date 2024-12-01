@@ -44,8 +44,6 @@ void* Client_Module;
 
 #include "Restart_Gesture.hpp"
 
-#include "Setup_Move.hpp"
-
 #include <algorithm>
 
 #include "Finish_Move.hpp"
@@ -243,8 +241,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 				_putws(L"[ + ] Prediction");
 				{
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(33348587037, (unsigned __int8*)Client_Module, 15603247578755587463ull), 1, 235);
-
-					Setup_Move_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(255, (unsigned __int8*)Client_Module, 14902868146442072631ull), (void*)Redirected_Setup_Move);
 
 					Finish_Move_Manager.Redirect_Function(4, Byte_Manager::Find_Bytes(502775279, (unsigned __int8*)Client_Module, 1688265399167102076), (void*)Redirected_Finish_Move);
 

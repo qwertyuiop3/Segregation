@@ -316,6 +316,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Suppress_Events(1);
 
+		__int32 Previous_Model = *(__int32*)((unsigned __int64)Local_Player + 11680);
+
 		*(__int32*)((unsigned __int64)Local_Player + 11680) = -1;
 
 		float Local_Previous_Origin[3];
@@ -330,6 +332,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 		static void* Move_Helper = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(28807, (unsigned __int8*)Client_Module, 2332256697955850039), 3);
 
 		Redirected_Run_Command(Prediction, Local_Player, Command, Move_Helper);
+
+		*(__int32*)((unsigned __int64)Local_Player + 11680) = Previous_Model;
 
 		Suppress_Events(0);
 
@@ -696,43 +700,15 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 													Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Flags & 1) == 1 ? *(void**)Entity_List : nullptr);
 
-													*(__int32*)((unsigned __int64)Target->Self + 188) = -1;
-
-													Byte_Manager::Set_Bytes(1, (float*)((unsigned __int64)Target->Self + 464), sizeof(float[3]), 0);
-
-													*(float*)((unsigned __int64)Target->Self + 772) = 1.f;
-
-													*(__int8*)((unsigned __int64)Target->Self + 6616) = 1;
-
-													Byte_Manager::Set_Bytes(1, (__int32*)((unsigned __int64)Target->Self + 9536), sizeof(__int32[256]), 255);
-
-													*(__int32*)((unsigned __int64)Target->Self + 10560) = -1;
-
 													*(__int8*)((unsigned __int64)Target->Self + 10720) = (Flags & 2) == 2;
 
-													*(__int16*)((unsigned __int64)Target->Self + 10721) = 0;
-
-													Byte_Manager::Set_Bytes(1, (float*)((unsigned __int64)Target->Self + 10724), sizeof(float[3]), 0);
-
-													Command_Structure Target_Command;
-
-													Byte_Manager::Set_Bytes(1, &Target_Command, sizeof(Target_Command), 0);
+													Command_Structure Target_Command = { };
 
 													Target_Command.Buttons |= 4 * ((Flags & 2) == 2);
 
 													*(__int32*)((unsigned __int64)Target->Self + 10744) = Target_Command.Buttons;
 
-													*(__int8*)((unsigned __int64)Target->Self + 10960) = 1;
-
 													*(float*)((unsigned __int64)Target->Self + 11240) = *(float*)((unsigned __int64)Target->Self + 11464);
-
-													*(__int32*)((unsigned __int64)Target->Self + 11376) = -1;
-
-													Byte_Manager::Set_Bytes(1, (float*)((unsigned __int64)Target->Self + 11380), sizeof(float[3]), 0);
-
-													*(float*)((unsigned __int64)Target->Self + 11392) = 0.f;
-
-													*(float*)((unsigned __int64)Target->Self + 11564) = 0.f;
 
 													if (*(__int8*)((unsigned __int64)Target->Self + 500) == 9)
 													{
@@ -784,18 +760,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 															Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 11576), sizeof(Trace.Normal), Trace.Normal);
 														}
 													}
-
-													Byte_Manager::Set_Bytes(1, (__int32*)((unsigned __int64)Target->Self + 11680), sizeof(__int32[3]), 255);
-
-													Byte_Manager::Set_Bytes(1, (void*)((unsigned __int64)Target->Self + 13188), 12, 0);
-
-													*(float*)((unsigned __int64)Target->Self + 13200) = 1.f;
-
-													*(__int8*)((unsigned __int64)Target->Self + 13204) = 0;
-
-													*(__int32*)((unsigned __int64)Target->Self + 13764) = -1;
-
-													*(__int8*)((unsigned __int64)Target->Self + 13768) = 0;
 
 													Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13864));
 

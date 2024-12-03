@@ -673,7 +673,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 											if (Exponent > 0)
 											{
-												__int32 Extrapolation_Ticks = (__int32)(Latency / Global_Variables->Interval_Per_Tick + 0.5f + max(0, Global_Variables->Tick_Number - Player_Data->Tick_Number[1]) + (Interface_Alternative.Get_Integer() ^ 1)) / Exponent * Exponent;
+												__int32 Extrapolation_Ticks = (__int32)(max(0, Global_Variables->Tick_Number - Player_Data->Tick_Number[1]) + (Interface_Alternative.Get_Integer() ^ 1) + Latency / Global_Variables->Interval_Per_Tick + 0.5f) / Exponent * Exponent;
 
 												if ((Extrapolation_Ticks - Exponent | (__int32)(1.f / Global_Variables->Interval_Per_Tick + 0.5f) - Extrapolation_Ticks) >= 0)
 												{

@@ -154,14 +154,14 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 			if (Command->Move[0] != 0)
 			{
-				Command->Buttons |= 8 * ((Command->Move[0] < 0) + 1);
+				Command->Buttons |= 8 * (__builtin_signbitf(Command->Move[0]) + 1);
 			}
 
 			Command->Move[1] = (__int16)((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider);
 
 			if (Command->Move[1] != 0)
 			{
-				Command->Buttons |= 512 * ((Command->Move[1] > 0) + 1);
+				Command->Buttons |= 512 * ((__builtin_signbitf(Command->Move[1]) ^ 1) + 1);
 			}
 		};
 
@@ -408,7 +408,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 							{
 								if (*(float*)((unsigned __int32)Local_Player + 2544) <= Global_Variables->Current_Time)
 								{
-									void* Weapon = *(void**)((unsigned __int32)607973860 + (((*(unsigned __int32*)((unsigned __int32)Local_Player + 2872) & 4095) - 4097) << 4));
+									using Get_Weapon_Type = void*(__thiscall*)(void* Entity);
+
+									void* Weapon = Get_Weapon_Type(604036352)(Local_Player);
 
 									if (Weapon != nullptr)
 									{

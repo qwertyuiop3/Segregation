@@ -119,29 +119,11 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				HANDLE Standard_Output_Handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
-				CONSOLE_FONT_INFOEX Console_Font_Information;
-
-				Console_Font_Information.cbSize = sizeof(CONSOLE_FONT_INFOEX);
-
-				Console_Font_Information.nFont = 0;
-
-				Console_Font_Information.dwFontSize.X = 0;
-
-				Console_Font_Information.dwFontSize.Y = 12;
-
-				Console_Font_Information.FontFamily = FF_DONTCARE;
-
-				Console_Font_Information.FontWeight = FW_NORMAL;
-
-				wcscpy(Console_Font_Information.FaceName, L"Terminal");
+				CONSOLE_FONT_INFOEX Console_Font_Information = { sizeof(CONSOLE_FONT_INFOEX), 0, { 0, 12 }, FF_DONTCARE, FW_NORMAL, { L"Terminal" } };
 
 				SetCurrentConsoleFontEx(Standard_Output_Handle, 0, &Console_Font_Information);
 
-				CONSOLE_CURSOR_INFO Console_Cursor_Information;
-
-				Console_Cursor_Information.bVisible = 0;
-
-				Console_Cursor_Information.dwSize = sizeof(Console_Cursor_Information);
+				CONSOLE_CURSOR_INFO Console_Cursor_Information = { sizeof(Console_Cursor_Information) };
 
 				SetConsoleTextAttribute(Standard_Output_Handle, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_RED);
 
@@ -181,9 +163,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)537149578, 1, 235);
 
-					void* Event_Listener = (void*)malloc(sizeof(void*));
+					void* Event_Listener = (void*)__builtin_malloc(sizeof(void*));
 
-					void* Event_Listener_Table = malloc(sizeof(void*) * 2);
+					void* Event_Listener_Table = __builtin_malloc(sizeof(void*) * 2);
 
 					*(void**)((unsigned __int32)Event_Listener_Table + 4) = (void*)Event_Processor;
 
@@ -228,7 +210,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 				{
 					auto Add_Prediction_Fields = [](Prediction_Descriptor_Structure* Descriptor, Prediction_Field_Structure* Fields, __int32 Size) -> void
 					{
-						Prediction_Descriptor_Structure* Original_Descriptor = (Prediction_Descriptor_Structure*)malloc(sizeof(Prediction_Descriptor_Structure));
+						Prediction_Descriptor_Structure* Original_Descriptor = (Prediction_Descriptor_Structure*)__builtin_malloc(sizeof(Prediction_Descriptor_Structure));
 
 						Byte_Manager::Copy_Bytes(1, Original_Descriptor, sizeof(Prediction_Descriptor_Structure), Descriptor);
 
@@ -239,19 +221,19 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 						Descriptor->Parent = Original_Descriptor;
 					};
 
-					static Prediction_Field_Structure Player_Fields = { 1, (char*)"m_surfaceFriction", { 3936 }, 1, { }, nullptr, sizeof(float), { } };
+					static Prediction_Field_Structure Player_Fields = { 1, (char*)"m_surfaceFriction", { 3936 }, 1, { }, nullptr, sizeof(float) };
 
 					Add_Prediction_Fields((Prediction_Descriptor_Structure*)607768164, &Player_Fields, sizeof(Player_Fields) / sizeof(Prediction_Field_Structure));
 
 					static Prediction_Field_Structure Weapon_Fields[4] = 
 					{ 
-						{ 1, (char*)"m_bDelayFire", { 1884 }, 1, { }, nullptr, sizeof(__int8), { } },
+						{ 1, (char*)"m_bDelayFire", { 1884 }, 1, { }, nullptr, sizeof(__int8) },
 
-						{ 1, (char*)"m_flAccuracy", { 1888 }, 1, { }, nullptr, sizeof(float), { } },
+						{ 1, (char*)"m_flAccuracy", { 1888 }, 1, { }, nullptr, sizeof(float) },
 
-						{ 1, (char*)"m_flDecreaseShotsFired", { 1892 }, 1, { }, nullptr, sizeof(float), { } },
+						{ 1, (char*)"m_flDecreaseShotsFired", { 1892 }, 1, { }, nullptr, sizeof(float) },
 
-						{ 1, (char*)"m_flLastFire", { 1912 }, 1, { }, nullptr, sizeof(float), { } }
+						{ 1, (char*)"m_flLastFire", { 1912 }, 1, { }, nullptr, sizeof(float) }
 					};
 
 					Add_Prediction_Fields((Prediction_Descriptor_Structure*)607772016, Weapon_Fields, sizeof(Weapon_Fields) / sizeof(Prediction_Field_Structure));

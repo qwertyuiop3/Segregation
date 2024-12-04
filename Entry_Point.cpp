@@ -185,9 +185,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Engine_Module + 785516), 1, 235);
 
-					void* Event_Listener = (void*)malloc(sizeof(void*));
+					void* Event_Listener = (void*)__builtin_malloc(sizeof(void*));
 
-					void* Event_Listener_Table = malloc(sizeof(void*) * 2);
+					void* Event_Listener_Table = __builtin_malloc(sizeof(void*) * 2);
 
 					*(void**)((unsigned __int32)Event_Listener_Table + 4) = (void*)Event_Processor;
 
@@ -228,7 +228,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 				{
 					auto Add_Prediction_Fields = [](Prediction_Descriptor_Structure* Descriptor, Prediction_Field_Structure* Fields, __int32 Size) -> void
 					{
-						Prediction_Descriptor_Structure* Original_Descriptor = (Prediction_Descriptor_Structure*)malloc(sizeof(Prediction_Descriptor_Structure));
+						Prediction_Descriptor_Structure* Original_Descriptor = (Prediction_Descriptor_Structure*)__builtin_malloc(sizeof(Prediction_Descriptor_Structure));
 
 						Byte_Manager::Copy_Bytes(1, Original_Descriptor, sizeof(Prediction_Descriptor_Structure), Descriptor);
 

@@ -253,10 +253,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 						}
 					}
 
-					if (Solution_Number != 8)
-					{
-						Solution_Number += 1;
+					Solution_Number += 1;
 
+					if (Solution_Number != sizeof(Solutions) / sizeof(Solutions[0]))
+					{
 						goto Traverse_Solutions_Label;
 					}
 				}
@@ -749,10 +749,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 															if ((*On_Ladder_Type(*(unsigned __int64*)Movement + 280))(Movement, &Trace) == 0)
 															{
-																if (Trace_Number != 7)
-																{
-																	Trace_Number += 1;
+																Trace_Number += 1;
 
+																if (Trace_Number != sizeof(Directions) / sizeof(Directions[0]))
+																{
 																	goto Perform_Trace_Label;
 																}
 															}

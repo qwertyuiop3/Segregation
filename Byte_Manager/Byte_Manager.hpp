@@ -44,15 +44,15 @@ namespace Byte_Manager
 
 		Traverse_Bits_Label:
 		{
+			if ((Mask & (1ull << Bit_Number)) == 1ull << Bit_Number)
+			{
+				Hash = (Bytes[Bit_Number] ^ Hash) * 1099511628211;
+			}
+
+			Bit_Number += 1;
+
 			if (Bit_Number != sizeof(Mask) * 8)
 			{
-				if ((Mask & (1ull << Bit_Number)) == 1ull << Bit_Number)
-				{
-					Hash = (Bytes[Bit_Number] ^ Hash) * 1099511628211;
-				}
-
-				Bit_Number += 1;
-
 				goto Traverse_Bits_Label;
 			}
 		}

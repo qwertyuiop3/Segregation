@@ -245,10 +245,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 							Solution = Solution_Number;
 						}
 
+						Rotation += 1.f;
+
 						if (Rotation != 180.f)
 						{
-							Rotation += 1.f;
-
 							goto Rotate_Solution_Label;
 						}
 					}
@@ -272,12 +272,12 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 			if (__builtin_truncf(Move[0]) != 0.f)
 			{
-				*Buttons |= 8 * ((Move[0] < 0.f) + 1);
+				*Buttons |= 8 * (__builtin_signbitf(Move[0]) + 1);
 			}
 
 			if (__builtin_truncf(Move[1]) != 0.f)
 			{
-				*Buttons |= 512 * ((Move[1] > 0.f) + 1);
+				*Buttons |= 512 * ((__builtin_signbitf(Move[1]) ^ 1) + 1);
 			}
 		};
 
@@ -1066,6 +1066,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 						if ((Command->Buttons & 1) == 1)
 						{
+							float Forward[3];
+
+							Angle_Vectors(Command->Angles, Forward, nullptr, nullptr);
+
 							auto Compute_Spread = [&](float* Spread) -> void
 							{
 								using Random_Seed_Type = void(*)(__int32 Seed);
@@ -1094,11 +1098,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									Random[1] = Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * (1.f - Flatness);
 
-									if (Shot_Bias < 0.f)
+									if (__builtin_signbitf(Shot_Bias) == 1)
 									{
-										Random[0] = (Random[0] >= 0.f) ? 1.f - Random[0] : -1.f - Random[0];
+										Random[0] = __builtin_copysignf(1.f, Random[0]) - Random[0];
 
-										Random[1] = (Random[1] >= 0.f) ? 1.f - Random[1] : -1.f - Random[1];
+										Random[1] = __builtin_copysignf(1.f, Random[1]) - Random[1];
 									}
 
 									if (__builtin_powf(Random[0], 2.f) + __builtin_powf(Random[1], 2.f) > 1.f)
@@ -1109,16 +1113,12 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								Spread[0] = 1.f;
 
-								Spread[1] = Weapon_Spread[0] * Random[0];
+								Spread[1] = Random[0] * Weapon_Spread[0];
 
-								Spread[2] = Weapon_Spread[1] * Random[1];
+								Spread[2] = Random[1] * Weapon_Spread[1];
 
 								Vector_Normalize(Spread);
 							};
-
-							float Forward[3];
-
-							Angle_Vectors(Command->Angles, Forward, nullptr, nullptr);
 
 							Command->Command_Number = -98069271;
 
@@ -1128,11 +1128,18 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 							Compute_Spread(Spread);
 
-							float Length = __builtin_sqrtf(1.f - __builtin_powf(Spread[1] * Spread[1], 2.f));
+							float Length = 1.f - __builtin_powf(Spread[1], 2.f);
 
-							Command->Angles[0] = 180.f + (__builtin_asinf(Forward[2] / Length) - __builtin_atanf(Spread[2])) * 180.f / 3.1415927f - Weapon_Recoil[0];
+							float Rotation[2] =
+							{
+								max(1e-45f, __builtin_sqrtf(Length - __builtin_powf(Forward[2], 2.f))),
 
-							Command->Angles[1] += 180.f + __builtin_atan2f(Spread[1], __builtin_sqrtf(__builtin_powf(Length, 2.f) - __builtin_powf(Forward[2], 2.f))) * 180.f / 3.1415927f - Weapon_Recoil[1];
+								Forward[2] - (Forward[2] - __builtin_copysignf(__builtin_sqrtf(Length), Forward[2])) * (Rotation[0] == 1e-45f)
+							};
+
+							Command->Angles[0] = 180.f - __builtin_atan2f(-Spread[0] * Rotation[1] + Spread[2] * Rotation[0], Spread[0] * Rotation[0] + Spread[2] * Rotation[1]) * 180.f / 3.1415927f - Weapon_Recoil[0];
+
+							Command->Angles[1] = 180.f + __builtin_atan2f(Forward[0] * Spread[1] + Forward[1] * Rotation[0], Forward[0] * Rotation[0] + Forward[1] * -Spread[1]) * 180.f / 3.1415927f - Weapon_Recoil[1];
 
 							In_Attack = 1;
 

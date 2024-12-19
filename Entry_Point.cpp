@@ -119,29 +119,11 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				HANDLE Standard_Output_Handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
-				CONSOLE_FONT_INFOEX Console_Font_Information;
-
-				Console_Font_Information.cbSize = sizeof(CONSOLE_FONT_INFOEX);
-
-				Console_Font_Information.nFont = 0;
-
-				Console_Font_Information.dwFontSize.X = 0;
-
-				Console_Font_Information.dwFontSize.Y = 12;
-
-				Console_Font_Information.FontFamily = FF_DONTCARE;
-
-				Console_Font_Information.FontWeight = FW_NORMAL;
-
-				wcscpy(Console_Font_Information.FaceName, L"Terminal");
+				CONSOLE_FONT_INFOEX Console_Font_Information = { sizeof(CONSOLE_FONT_INFOEX), 0, { 0, 12 }, FF_DONTCARE, FW_NORMAL, { L"Terminal" } };
 
 				SetCurrentConsoleFontEx(Standard_Output_Handle, 0, &Console_Font_Information);
 
-				CONSOLE_CURSOR_INFO Console_Cursor_Information;
-
-				Console_Cursor_Information.bVisible = 0;
-
-				Console_Cursor_Information.dwSize = sizeof(Console_Cursor_Information);
+				CONSOLE_CURSOR_INFO Console_Cursor_Information = { sizeof(Console_Cursor_Information) };
 
 				SetConsoleTextAttribute(Standard_Output_Handle, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_RED);
 
@@ -245,9 +227,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					static Prediction_Field_Structure Weapon_Fields[4] = 
 					{ 
-						{ 1, (char*)"m_bDelayFire", { 2340 }, 1, 0, { }, nullptr, sizeof(__int8), { }, 0},
+						{ 1, (char*)"m_bDelayFire", { 2340 }, 1, 0, { }, nullptr, sizeof(__int8) },
 
-						{ 1, (char*)"m_flDecreaseShotsFired", { 2356 }, 1, 0, { }, nullptr, sizeof(float), { }, 0 }
+						{ 1, (char*)"m_flDecreaseShotsFired", { 2356 }, 1, 0, { }, nullptr, sizeof(float) }
 					};
 
 					Add_Prediction_Fields((Prediction_Descriptor_Structure*)((unsigned __int32)Client_Module + 4867964), Weapon_Fields, sizeof(Weapon_Fields) / sizeof(Prediction_Field_Structure));
@@ -269,7 +251,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Original_Move_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Engine_Module + 770528), (void*)Redirected_Move);
 
-					Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Engine_Module + 772928), (void*)Redirected_Send_Move);
+					Redirection_Manager::Redirect_Function((void*)((unsigned __int32)Engine_Module + 772928), (void*)Redirected_Send_Move);
 
 					Original_Send_Datagram_Caller = Redirection_Manager::Redirect_Function(2, (void*)((unsigned __int32)Engine_Module + 1880960), (void*)Redirected_Send_Datagram);
 
@@ -290,14 +272,14 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Crosshair");
 				{
-					Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Client_Module + 2156016), (void*)Redirected_Draw_Crosshair);
+					Redirection_Manager::Redirect_Function((void*)((unsigned __int32)Client_Module + 2156016), (void*)Redirected_Draw_Crosshair);
 				}
 
 				_putws(L"[ + ] Materials");
 				{
 					Original_Precache_Caller = Redirection_Manager::Redirect_Function(5, (void*)((unsigned __int32)GetModuleHandleW(L"MaterialSystem.dll") + 239552), (void*)Redirected_Precache);
 
-					Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Client_Module + 582800), (void*)Redirected_Calculate_Override_Model);
+					Redirection_Manager::Redirect_Function((void*)((unsigned __int32)Client_Module + 582800), (void*)Redirected_Calculate_Override_Model);
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 1743076), 1, 0);
 

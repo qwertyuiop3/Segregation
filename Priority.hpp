@@ -62,5 +62,5 @@ void Set_Priority(Interface_Structure* Interface)
 
 	__int32 Entity_Number = atoi(Interface->String);
 
-	Players_Data[Entity_Number].Priority = atoi((char*)((unsigned __int32)Interface->String + 3 - (Entity_Number < 10)));
+	Players_Data[Entity_Number].Priority = atoi(__builtin_strchr(Interface->String, ' '));
 }

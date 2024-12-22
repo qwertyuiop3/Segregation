@@ -493,7 +493,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 					{
 						if (*(__int8*)((unsigned __int64)Entity + 199) == 0)
 						{
-							if ((Interface_Team_Check.Get_Integer() ^ 1) + (*(__int32*)((unsigned __int64)Entity + 212) != *(__int32*)((unsigned __int64)Local_Player + 212)) != 0)
+							if (Interface_Aim_Team.Get_Integer() + (*(__int32*)((unsigned __int64)Entity + 212) != *(__int32*)((unsigned __int64)Local_Player + 212)) != 0)
 							{
 								if (*(__int8*)((unsigned __int64)Entity + 506) == 0)
 								{
@@ -604,13 +604,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								auto Find_Hitbox_By_Group = [&](__int32 Group) -> void*
 								{
-									void* Hitbox;
-
 									__int32 Hitbox_Number = 0;
 
 									Traverse_Hitboxes_Label:
 									{
-										Hitbox = nullptr;
+										void* Hitbox = nullptr;
 
 										if (Hitbox_Number != *(__int32*)((unsigned __int64)Hitbox_Set + 4))
 										{
@@ -623,12 +621,12 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 												goto Traverse_Hitboxes_Label;
 											}
 										}
-									}
 
-									return Hitbox;
+										return Hitbox;
+									}
 								};
 
-								void* Hitbox = Find_Hitbox_By_Group(Interface_Aim_Hitgroup.Get_Integer());
+								void* Hitbox = Find_Hitbox_By_Group(Interface_Aim_Group.Get_Integer());
 
 								if (Hitbox != nullptr)
 								{
@@ -911,7 +909,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 											{
 												if (Interface_Aim_Intersection.Get_Integer() == 0)
 												{
-													return Trace.Group == Interface_Aim_Hitgroup.Get_Integer();
+													return Trace.Group == Interface_Aim_Group.Get_Integer();
 												}
 
 												return 1;

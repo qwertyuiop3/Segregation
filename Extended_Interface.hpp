@@ -22,11 +22,13 @@ Interface_Structure Interface_Minimum_Choked_Commands;
 
 Interface_Structure Interface_Maximum_Choked_Commands;
 
+Interface_Structure Interface_Aim_Team;
+
 Interface_Structure Interface_Aim_Intersection;
 
 Interface_Structure Interface_Aim_Height;
 
-Interface_Structure Interface_Aim_Hitgroup;
+Interface_Structure Interface_Aim_Group;
 
 Interface_Structure Interface_Angle_X;
 
@@ -37,8 +39,6 @@ Interface_Structure Interface_First_Choked_Angle_Y;
 Interface_Structure Interface_Second_Choked_Angle_Y;
 
 Interface_Structure Interface_Angle_Y;
-
-Interface_Structure Interface_Team_Check;
 
 Interface_Structure Interface_Uber_Alles_Scale;
 
@@ -82,33 +82,33 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Bruteforce), (char*)"1", (void*)Bruteforce_Reset);
 
-	Create_Interface(Pointer_Name(Interface_Bruteforce_Angles), (char*)"0, -30, 30, -60, 60, -90, 90, -120, 120, -150, 150, -179, 179", (void*)Bruteforce_Set_Angles);
+	Create_Interface(Pointer_Name(Interface_Bruteforce_Angles), (char*)"0, -90, 90", (void*)Bruteforce_Set_Angles);
 
 	Bruteforce_Set_Angles((Interface_Structure*)((unsigned __int64)&Interface_Bruteforce_Angles + 48));
 
 	Create_Interface(Pointer_Name(Interface_Alternative), (char*)"1", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Minimum_Choked_Commands), (char*)"2", nullptr);
+	Create_Interface(Pointer_Name(Interface_Minimum_Choked_Commands), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Maximum_Choked_Commands), (char*)"21", nullptr);
+
+	Create_Interface(Pointer_Name(Interface_Aim_Team), (char*)"0", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Aim_Intersection), (char*)"0", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Aim_Height), (char*)"0.9", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Aim_Hitgroup), (char*)"1", nullptr);
+	Create_Interface(Pointer_Name(Interface_Aim_Group), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Extrapolation), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Angle_X), (char*)"180", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_First_Choked_Angle_Y), (char*)"-130", nullptr);
+	Create_Interface(Pointer_Name(Interface_First_Choked_Angle_Y), (char*)"180", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Second_Choked_Angle_Y), (char*)"-130", nullptr);
+	Create_Interface(Pointer_Name(Interface_Second_Choked_Angle_Y), (char*)"180", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Angle_Y), (char*)"80", nullptr);
-
-	Create_Interface(Pointer_Name(Interface_Team_Check), (char*)"1", nullptr);
+	Create_Interface(Pointer_Name(Interface_Angle_Y), (char*)"180", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Uber_Alles_Scale), (char*)"16", nullptr);
 

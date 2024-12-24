@@ -6,18 +6,18 @@ struct Interface_Structure
 
 	__int8 Additional_Bytes_2[64];
 
-	__int32 Get_Integer()
-	{
-		using Get_Interface_Integer_Type = __int32(**)(Interface_Structure* Interface);
-
-		return (*Get_Interface_Integer_Type(*(unsigned __int64*)this + 104))(this);
-	}
-
 	float Get_Floating_Point()
 	{
-		using Get_Interface_Floating_Point_Type = float(**)(Interface_Structure* Interface);
+		using Get_Floating_Point_Type = float(**)(Interface_Structure* Interface);
 
-		return (*Get_Interface_Floating_Point_Type(*(unsigned __int64*)this + 96))(this);
+		return (*Get_Floating_Point_Type(*(unsigned __int64*)this + 96))(this);
+	}
+
+	__int32 Get_Integer()
+	{
+		using Get_Integer_Type = __int32(**)(Interface_Structure* Interface);
+
+		return (*Get_Integer_Type(*(unsigned __int64*)this + 104))(this);
 	}
 
 	void Set_Integer(__int32 Integer)

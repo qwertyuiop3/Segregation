@@ -197,15 +197,15 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				static float Solutions[9][3] =
 				{
+					{ -10000.f },
+
+					{ 0.f, -10000.f },
+
 					{ },
 
 					{ 10000.f },
 
 					{ 0.f, 10000.f },
-
-					{ -10000.f },
-
-					{ 0.f, -10000.f },
 
 					{ -10000.f, -10000.f },
 
@@ -1090,7 +1090,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								float Flatness = __builtin_fabsf(Shot_Bias) * 0.5f;
 
-								Calculate_Random_Label:
+								Compute_Random_Label:
 								{
 									Random[0] = Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * (1.f - Flatness);
 
@@ -1105,7 +1105,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									if (__builtin_powf(Random[0], 2.f) + __builtin_powf(Random[1], 2.f) > 1.f)
 									{
-										goto Calculate_Random_Label;
+										goto Compute_Random_Label;
 									}
 								}
 

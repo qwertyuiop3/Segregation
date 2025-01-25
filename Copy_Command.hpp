@@ -470,7 +470,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 			__int32 Tick_Number;
 
-			__int32 Valid;
+			__int8 Valid;
 
 			float Distance;
 		};
@@ -1072,13 +1072,17 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 							{
 								using Random_Seed_Type = void(*)(__int32 Seed);
 
-								static void* Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
+								static HMODULE Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
 
-								Random_Seed_Type((unsigned __int64)Standard_Library_Module + 77536)(Command->Random_Seed & 255);
+								static void* Random_Seed = (void*)GetProcAddress(Standard_Library_Module, "RandomSeed");
+
+								Random_Seed_Type((unsigned __int64)Random_Seed)(Command->Random_Seed & 255);
 
 								float Random[2];
 
-								using Random_Type = float(*)(float Minimum, float Maximum);
+								using Random_Float_Type = float(*)(float Minimum, float Maximum);
+
+								static void* Random_Float = (void*)GetProcAddress(Standard_Library_Module, "RandomFloat");
 
 								static Interface_Structure* Interface_Bias_Minimum = Find_Interface((char*)"ai_shot_bias_min");
 
@@ -1092,9 +1096,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								Compute_Random_Label:
 								{
-									Random[0] = Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * (1.f - Flatness);
+									Random[0] = Random_Float_Type((unsigned __int64)Random_Float)(-1.f, 1.f) * Flatness + Random_Float_Type((unsigned __int64)Random_Float)(-1.f, 1.f) * (1.f - Flatness);
 
-									Random[1] = Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Standard_Library_Module + 77408)(-1.f, 1.f) * (1.f - Flatness);
+									Random[1] = Random_Float_Type((unsigned __int64)Random_Float)(-1.f, 1.f) * Flatness + Random_Float_Type((unsigned __int64)Random_Float)(-1.f, 1.f) * (1.f - Flatness);
 
 									if (__builtin_signbitf(Shot_Bias) == 1)
 									{

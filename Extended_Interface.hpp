@@ -1,5 +1,7 @@
 Interface_Structure Interface_Commentator;
 
+void* Client_Module;
+
 Interface_Structure Interface_Get_Priorities;
 
 #include "Priority.hpp"
@@ -46,6 +48,8 @@ Interface_Structure Interface_Uber_Alles_Speed;
 
 void Implement_Extended_Interface()
 {
+	Client_Module = GetModuleHandleW(L"client.dll");
+
 	auto Create_Interface = [](Interface_Structure* Interface, char* Name, char* Value, void* Handler) -> void
 	{
 		if (Value == nullptr)

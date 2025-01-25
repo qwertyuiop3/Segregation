@@ -8,8 +8,6 @@
 
 void* Engine_Module;
 
-void* Client_Module;
-
 #include "Delimited_Interface.hpp"
 
 #include "Extended_Interface.hpp"
@@ -155,8 +153,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				Engine_Module = GetModuleHandleW(L"engine.dll");
 
-				Client_Module = GetModuleHandleW(L"client.dll");
-
 				_putws(L"[ + ] Delimit Interface");
 				{
 					using Install_Interface_Handler_Type = void(*)(Interface_Structure* Interface, void* Handler, __int8 Invoke);
@@ -285,7 +281,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Materials");
 				{
-					Precache_Manager.Redirect_Function(0, (void*)((unsigned __int64)GetModuleHandleW(L"materialsystem.dll") + 64576), (void*)Redirected_Precache);
+					Precache_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(12844527, (unsigned __int8*)GetModuleHandleW(L"materialsystem.dll"), 2598717569647867724), (void*)Redirected_Precache);
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(445, (unsigned __int8*)Client_Module, 16324833799701554475ull), 1, 116);
 

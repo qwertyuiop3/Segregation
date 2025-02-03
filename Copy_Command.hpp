@@ -297,7 +297,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		auto Suppress_Events = [](__int8 State) -> void
 		{
-			static void* Prediction_System_Reference = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(259975, (unsigned __int8*)Client_Module, 884688427179076367), 3);
+			static void* Prediction_System_Reference = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(903, (unsigned __int8*)Client_Module, 16784221226330041059ull), 3);
 
 			void* Prediction_System = *(void**)Prediction_System_Reference;
 
@@ -556,7 +556,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		if (Bullets_Fired == 0)
 		{
-			void* Weapon = *(void**)((unsigned __int64)Entity_List + ((*(unsigned __int32*)((unsigned __int64)Local_Player + 10560) & 16383) << 5));
+			using Get_Weapon_Type = void*(__thiscall*)(void* Entity);
+
+			static void* Get_Weapon = Byte_Manager::Find_Bytes(2157215077193497283, (unsigned __int8*)Client_Module, 16457719395962935568ull);
+
+			void* Weapon = Get_Weapon_Type((unsigned __int64)Get_Weapon)(Local_Player);
 
 			if (Weapon != nullptr)
 			{
@@ -596,7 +600,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								using Get_Studio_Header_Type = void*(*)(void* Entity);
 
-								static void* Get_Studio_Header = Byte_Manager::Find_Bytes(528343263, (unsigned __int8*)Client_Module, 15539617736627983104ull);;
+								static void* Get_Studio_Header = Byte_Manager::Find_Bytes(528343263, (unsigned __int8*)Client_Module, 15539617736627983104ull);
 
 								void* Studio_Header = Get_Studio_Header_Type((unsigned __int64)Get_Studio_Header)(Target->Self);
 
@@ -1072,17 +1076,17 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 							{
 								using Random_Seed_Type = void(*)(__int32 Seed);
 
-								static HMODULE Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
+								static void* Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
 
-								static void* Random_Seed = (void*)GetProcAddress(Standard_Library_Module, "RandomSeed");
+								static void* Random_Seed = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomSeed");
 
 								Random_Seed_Type((unsigned __int64)Random_Seed)(Command->Random_Seed & 255);
 
-								float Random[2];
+								float Shot_Random[2];
 
-								using Random_Float_Type = float(*)(float Minimum, float Maximum);
+								using Random_Type = float(*)(float Minimum, float Maximum);
 
-								static void* Random_Float = (void*)GetProcAddress(Standard_Library_Module, "RandomFloat");
+								static void* Random = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomFloat");
 
 								static Interface_Structure* Interface_Bias_Minimum = Find_Interface((char*)"ai_shot_bias_min");
 
@@ -1096,18 +1100,18 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								Compute_Random_Label:
 								{
-									Random[0] = Random_Float_Type((unsigned __int64)Random_Float)(-1.f, 1.f) * Flatness + Random_Float_Type((unsigned __int64)Random_Float)(-1.f, 1.f) * (1.f - Flatness);
+									Shot_Random[0] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness);
 
-									Random[1] = Random_Float_Type((unsigned __int64)Random_Float)(-1.f, 1.f) * Flatness + Random_Float_Type((unsigned __int64)Random_Float)(-1.f, 1.f) * (1.f - Flatness);
+									Shot_Random[1] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness);
 
 									if (__builtin_signbitf(Shot_Bias) == 1)
 									{
-										Random[0] = __builtin_copysignf(1.f, Random[0]) - Random[0];
+										Shot_Random[0] = __builtin_copysignf(1.f, Shot_Random[0]) - Shot_Random[0];
 
-										Random[1] = __builtin_copysignf(1.f, Random[1]) - Random[1];
+										Shot_Random[1] = __builtin_copysignf(1.f, Shot_Random[1]) - Shot_Random[1];
 									}
 
-									if (__builtin_powf(Random[0], 2.f) + __builtin_powf(Random[1], 2.f) > 1.f)
+									if (__builtin_powf(Shot_Random[0], 2.f) + __builtin_powf(Shot_Random[1], 2.f) > 1.f)
 									{
 										goto Compute_Random_Label;
 									}
@@ -1115,9 +1119,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								Spread[0] = 1.f;
 
-								Spread[1] = Random[0] * Weapon_Spread[0];
+								Spread[1] = Shot_Random[0] * Weapon_Spread[0];
 
-								Spread[2] = Random[1] * Weapon_Spread[1];
+								Spread[2] = Shot_Random[1] * Weapon_Spread[1];
 
 								Vector_Normalize(Spread);
 							};

@@ -59,7 +59,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			}
 			else
 			{
-				Command->Buttons &= ~(*(__int32*)((unsigned __int64)Local_Player + 11364) & 2);
+				Command->Buttons &= ~(*(__int32*)((unsigned __int64)Local_Player + 11380) & 2);
 			}
 
 			float* Velocity = (float*)((unsigned __int64)Local_Player + 328);
@@ -146,7 +146,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Move[2] = (Forward[2] * Forward_Move + Right[2] * Side_Move) - (__builtin_powf(Ladder_Normal[0], 2.f) + __builtin_powf(Ladder_Normal[1], 2.f)) * Normal - Ladder_Normal[2] * Normal;
 		};
 
-		float* Ladder_Normal = (float*)((unsigned __int64)Local_Player + 11576);
+		float* Ladder_Normal = (float*)((unsigned __int64)Local_Player + 11592);
 
 		if (Move_Type == 2)
 		{
@@ -187,9 +187,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-				Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
+				Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -10000.f, 10000.f);
 
-				Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
+				Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -10000.f, 10000.f);
 			}
 			else
 			{
@@ -316,9 +316,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Suppress_Events(1);
 
-		__int32 Previous_Model = *(__int32*)((unsigned __int64)Local_Player + 11680);
+		__int32 Previous_Model = *(__int32*)((unsigned __int64)Local_Player + 11696);
 
-		*(__int32*)((unsigned __int64)Local_Player + 11680) = -1;
+		*(__int32*)((unsigned __int64)Local_Player + 11696) = -1;
 
 		float Local_Previous_Origin[3];
 
@@ -333,7 +333,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Redirected_Run_Command(Prediction, Local_Player, Command, Move_Helper);
 
-		*(__int32*)((unsigned __int64)Local_Player + 11680) = Previous_Model;
+		*(__int32*)((unsigned __int64)Local_Player + 11696) = Previous_Model;
 
 		Suppress_Events(0);
 
@@ -497,7 +497,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 							{
 								if (*(__int8*)((unsigned __int64)Entity + 506) == 0)
 								{
-									if (*(__int32*)((unsigned __int64)Entity + 11452) == -1)
+									if (*(__int32*)((unsigned __int64)Entity + 11468) == -1)
 									{
 										float Entity_Time = *(float*)((unsigned __int64)Player_Data->Data + 160);
 
@@ -569,7 +569,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 		}
 		else
 		{
-			if (__builtin_abs(*(__int32*)((unsigned __int64)Local_Player + 11608) - Shot_Tick_Number) * Global_Variables->Interval_Per_Tick > 0.5f)
+			if (__builtin_abs(*(__int32*)((unsigned __int64)Local_Player + 11624) - Shot_Tick_Number) * Global_Variables->Interval_Per_Tick > 0.5f)
 			{
 				if ((Command->Buttons & 2048) == 0)
 				{
@@ -642,7 +642,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									__int8 Animation_State_Data[320];
 
-									void* Animation_State = *(void**)((unsigned __int64)Target->Self + 13856);
+									void* Animation_State = *(void**)((unsigned __int64)Target->Self + 13872);
 
 									Byte_Manager::Copy_Bytes(1, Animation_State_Data, sizeof(Animation_State_Data), Animation_State);
 
@@ -702,15 +702,15 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 													Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Flags & 1) == 1 ? *(void**)Entity_List : nullptr);
 
-													*(__int8*)((unsigned __int64)Target->Self + 10720) = (Flags & 2) == 2;
+													*(__int8*)((unsigned __int64)Target->Self + 10736) = (Flags & 2) == 2;
 
 													Command_Structure Target_Command = { };
 
 													Target_Command.Buttons |= 4 * ((Flags & 2) == 2);
 
-													*(__int32*)((unsigned __int64)Target->Self + 10744) = Target_Command.Buttons;
+													*(__int32*)((unsigned __int64)Target->Self + 10760) = Target_Command.Buttons;
 
-													*(float*)((unsigned __int64)Target->Self + 11240) = *(float*)((unsigned __int64)Target->Self + 11464);
+													*(float*)((unsigned __int64)Target->Self + 11256) = *(float*)((unsigned __int64)Target->Self + 11480);
 
 													if (*(__int8*)((unsigned __int64)Target->Self + 500) == 9)
 													{
@@ -759,11 +759,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 																}
 															}
 
-															Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 11576), sizeof(Trace.Normal), Trace.Normal);
+															Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 11592), sizeof(Trace.Normal), Trace.Normal);
 														}
 													}
 
-													Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13864));
+													Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13880));
 
 													*(__int16*)((unsigned __int64)Prediction + 12) = 1;
 
@@ -771,7 +771,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 													Extrapolate_Target_Label:
 													{
-														Correct_Movement(Target_Command.Angles, *(__int8*)((unsigned __int64)Target->Self + 500), Target_Command.Move, (float*)((unsigned __int64)Target->Self + 328), (float*)((unsigned __int64)Target->Self + 11576), &Target_Command.Buttons);
+														Correct_Movement(Target_Command.Angles, *(__int8*)((unsigned __int64)Target->Self + 500), Target_Command.Move, (float*)((unsigned __int64)Target->Self + 328), (float*)((unsigned __int64)Target->Self + 11592), &Target_Command.Buttons);
 
 														Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
 
@@ -993,7 +993,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 												{
 													using Construct_Type = void(*)(void* Message, char* Name, char* Value);
 
-													static void* Construct = Byte_Manager::Find_Bytes(3791403135, (unsigned __int8*)Engine_Module, 7502040751902263868);
+													static void* Construct = Byte_Manager::Find_Bytes(60662450159, (unsigned __int8*)Engine_Module, 6942253986675982385);
 
 													Construct_Type((unsigned __int64)Construct)(this, Name, Value);
 												}
@@ -1151,7 +1151,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 							Send_Packet = Interface_Alternative.Get_Integer() * 2;
 
-							Shot_Tick_Number = *(__int32*)((unsigned __int64)Local_Player + 11608);
+							Shot_Tick_Number = *(__int32*)((unsigned __int64)Local_Player + 11624);
 						}
 					}
 				}

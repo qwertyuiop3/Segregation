@@ -30,6 +30,6 @@ void Redirected_Update_Animation(void* Player)
 	{
 		Byte_Manager::Copy_Bytes(1, Player_Data->Data, sizeof(Player_Data->Data), Player);
 
-		Byte_Manager::Copy_Bytes(1, Player_Data->Animation_State, sizeof(Player_Data->Animation_State), *(void**)((unsigned __int64)Player + 13856));
+		Byte_Manager::Copy_Bytes(1, Player_Data->Animation_State, sizeof(Player_Data->Animation_State), *(void**)((unsigned __int64)Player + 13872));
 	}
 }

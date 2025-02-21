@@ -54,7 +54,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <AdditionalOptions>/Zc:threadSafeInit- /clang:-fno-unwind-tables -Wno-multichar -Wno-microsoft-goto %(AdditionalOptions)</AdditionalOptions>
       <StringPooling>true</StringPooling>

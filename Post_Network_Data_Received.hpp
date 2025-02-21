@@ -77,7 +77,7 @@ __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* De
 {
 	if (*Offset == 0)
 	{
-		if (Descriptor->Parent)
+		if (Descriptor->Parent != nullptr)
 		{
 			Compute_Flat_Offset(Offset, Descriptor->Parent, Search_Field, Base_Offset);
 		}
@@ -132,11 +132,11 @@ void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Comm
 
 	Commands_Acknowledged = max(0, Commands_Acknowledged);
 
-	void* Result = *(void**)((unsigned __int64)Local_Player + 1096 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 8);
+	void* Prediction_Frame = *(void**)((unsigned __int64)Local_Player + 1096 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 8);
 
-	if (Result != nullptr)
+	if (Prediction_Frame != nullptr)
 	{
-		Predicton_Copy.Construct(Local_Player, Result, (void*)Predicton_Copy_Compare);
+		Predicton_Copy.Construct(Local_Player, Prediction_Frame, (void*)Predicton_Copy_Compare);
 
 		using Transfer_Data_Type = __int32(*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
 

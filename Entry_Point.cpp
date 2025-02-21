@@ -238,6 +238,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Add_Prediction_Fields((Prediction_Descriptor_Structure*)607772016, Weapon_Fields, sizeof(Weapon_Fields) / sizeof(Prediction_Field_Structure));
 
+					Byte_Manager::Set_Bytes(0, (void*)537128048, 13, 144);
+
 					Byte_Manager::Set_Bytes(0, (void*)537158868, 5, 144);
 
 					Byte_Manager::Set_Bytes(0, (void*)605209595, 1, 235);

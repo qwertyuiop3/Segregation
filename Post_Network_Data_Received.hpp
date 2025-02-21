@@ -60,7 +60,7 @@ __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* De
 {
 	if (*Offset == 0)
 	{
-		if (Descriptor->Parent)
+		if (Descriptor->Parent != nullptr)
 		{
 			Compute_Flat_Offset(Offset, Descriptor->Parent, Search_Field, Base_Offset);
 		}

@@ -1,6 +1,6 @@
 namespace Byte_Manager
 {
-	void Set_Bytes(__int8 Writeable, void* Address, unsigned __int32 Size, unsigned __int8 Byte)
+	void Set_Bytes(__int8 Writeable, void* Address, unsigned __int64 Size, unsigned __int8 Byte)
 	{
 		if (Writeable == 0)
 		{
@@ -18,7 +18,7 @@ namespace Byte_Manager
 		}
 	}
 
-	void Copy_Bytes(__int8 Writeable, void* Address, unsigned __int32 Size, void* Bytes)
+	void Copy_Bytes(__int8 Writeable, void* Address, unsigned __int64 Size, void* Bytes)
 	{
 		if (Writeable == 0)
 		{

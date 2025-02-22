@@ -4,28 +4,28 @@ float Update_Animation_Angles[2];
 
 __int8 Update_Animation_Type;
 
-void* Original_Update_Animation_Caller;
+Redirection_Manager::Manager_Structure Update_Animation_Manager;
 
-void __thiscall Redirected_Update_Animation(void* Player)
+void Redirected_Update_Animation(void* Player)
 {
-	Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)((unsigned __int32)Client_Module + 4825720);
+	Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)((unsigned __int64)Client_Module + 5956224);
 
 	float Previous_Current_Time = Global_Variables->Current_Time;
 
 	Global_Variables->Current_Time = Update_Animation_Time;
 
-	if (Player == *(void**)((unsigned __int32)Client_Module + 5015784))
+	if (Player == *(void**)((unsigned __int64)Client_Module + 6245224))
 	{
-		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Player + 5276), sizeof(Update_Animation_Angles), Update_Animation_Angles);
+		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Player + 6824), sizeof(Update_Animation_Angles), Update_Animation_Angles);
 	}
 
 	float Previous_Frame_Time = Global_Variables->Frame_Time;
 
 	Global_Variables->Frame_Time = Global_Variables->Interval_Per_Tick * Update_Animation_Type;
 
-	*(float*)((unsigned __int32)Player + 100) = Update_Animation_Time - Global_Variables->Frame_Time;
+	*(float*)((unsigned __int64)Player + 160) = Update_Animation_Time - Global_Variables->Frame_Time;
 
-	(decltype(&Redirected_Update_Animation)(Original_Update_Animation_Caller))(Player);
+	(decltype(&Redirected_Update_Animation)(Update_Animation_Manager.Caller))(Player);
 
 	Global_Variables->Frame_Time = Previous_Frame_Time;
 

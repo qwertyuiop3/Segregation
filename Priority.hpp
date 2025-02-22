@@ -36,18 +36,18 @@ void Get_Priorities()
 
 	Traverse_Entity_List_Label:
 	{
-		using Get_Name_Type = void(__thiscall*)(void* Engine, __int32 Number, char* Name);
+		using Get_Name_Type = void(*)(void* Engine, __int32 Number, char* Name);
 
 		char Name[132];
 
-		Get_Name_Type((unsigned __int32)Engine_Module + 675408)((void*)((unsigned __int32)Engine_Module + 3928612), Entity_Number, Name);
+		Get_Name_Type((unsigned __int64)Engine_Module + 459536)((void*)((unsigned __int64)Engine_Module + 4588960), Entity_Number, Name);
 
 		if (Name[0] != 0)
 		{
 			wprintf(L"[ ? ] \"%hs\" %i %i\n", Name, Entity_Number, Players_Data[Entity_Number].Priority);
 		}
 
-		if (Entity_Number < (*(Global_Variables_Structure**)((unsigned __int32)Client_Module + 4825720))->Maximum_Clients)
+		if (Entity_Number < (*(Global_Variables_Structure**)((unsigned __int64)Client_Module + 5956224))->Maximum_Clients)
 		{
 			Entity_Number += 1;
 
@@ -58,7 +58,7 @@ void Get_Priorities()
 
 void Set_Priority(Interface_Structure* Interface)
 {
-	Interface = (Interface_Structure*)((unsigned __int32)Interface - 24);
+	Interface = (Interface_Structure*)((unsigned __int64)Interface - 48);
 
 	__int32 Entity_Number = atoi(Interface->String);
 

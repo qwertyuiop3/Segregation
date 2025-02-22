@@ -55,25 +55,16 @@
     <ClInclude Include="Write_Events.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Setup_Move.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Finish_Move.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Precache.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Player_Move.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Calculate_Override_Model.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Packet_Start.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
-    <ClInclude Include="Run_Simulation.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Bruteforce.hpp">

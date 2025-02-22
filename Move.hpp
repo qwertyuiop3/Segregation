@@ -1,31 +1,31 @@
-void* Original_Move_Caller;
+Redirection_Manager::Manager_Structure Move_Manager;
 
 void Redirected_Move(float Unknown_Parameter, __int8 Final)
 {
-	if (*(void**)((unsigned __int32)Client_Module + 5015784) != nullptr)
+	if (*(void**)((unsigned __int64)Client_Module + 6245224) != nullptr)
 	{
 		Redirected_Read_Packets(Final);
 
-		using Run_Prediction_Type = void(__cdecl*)();
+		using Run_Prediction_Type = void(*)();
 
-		Run_Prediction_Type((unsigned __int32)Engine_Module + 792144)();
+		Run_Prediction_Type((unsigned __int64)Engine_Module + 599696)();
 
-		using Update_Animations_Type = void(__cdecl*)();
+		using Update_Animations_Type = void(*)();
 
-		Update_Animations_Type((unsigned __int32)Client_Module + 566576)();
+		Update_Animations_Type((unsigned __int64)Client_Module + 512112)();
 
-		using Fire_Events_Type = void(__cdecl*)();
+		using Fire_Events_Type = void(*)();
 
-		Fire_Events_Type((unsigned __int32)Engine_Module + 785424)();
+		Fire_Events_Type((unsigned __int64)Engine_Module + 591184)();
 
-		Update_Animation_Time = (*(Global_Variables_Structure**)((unsigned __int32)Client_Module + 4825720))->Current_Time;
+		Update_Animation_Time = (*(Global_Variables_Structure**)((unsigned __int64)Client_Module + 5956224))->Current_Time;
 
 		Update_Animation_Type = 1;
 
-		Update_Animations_Type((unsigned __int32)Client_Module + 566576)();
+		Update_Animations_Type((unsigned __int64)Client_Module + 512112)();
 
 		Update_Animation_Type = 0;
 	}
 
-	(decltype(&Redirected_Move)(Original_Move_Caller))(Unknown_Parameter, Final);
+	(decltype(&Redirected_Move)(Move_Manager.Caller))(Unknown_Parameter, Final);
 }

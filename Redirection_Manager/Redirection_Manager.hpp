@@ -1,30 +1,62 @@
 namespace Redirection_Manager
 {
-	void Redirect_Function(void* Original_Function, void* Redirected_Function)
+	struct Manager_Structure
 	{
-		DWORD Previous_Access_Rights;
+		void* Original_Function;
 
-		VirtualProtect(Original_Function, 6, PAGE_EXECUTE_READWRITE, &Previous_Access_Rights);
+		void* Redirected_Function;
 
-		*(__int8*)Original_Function = 104;
+		void Redirect_Function(void* Original_Function, void* Redirected_Function)
+		{
+			this->Original_Function = Original_Function;
 
-		*(void**)((unsigned __int32)Original_Function + 1) = Redirected_Function;
+			this->Redirected_Function = Redirected_Function;
 
-		*(unsigned __int8*)((unsigned __int32)Original_Function + 5) = 195;
+			DWORD Previous_Access_Rights;
 
-		VirtualProtect(Original_Function, 6, Previous_Access_Rights, &Previous_Access_Rights);
-	}
+			VirtualProtect(Original_Function, 16, PAGE_EXECUTE_READWRITE, &Previous_Access_Rights);
 
-	void* Redirect_Function(unsigned __int32 Offset, void* Original_Function, void* Redirected_Function)
-	{
-		void* Original_Function_Caller = VirtualAlloc(nullptr, 12 + Offset, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+			*(__int8*)Original_Function = 80;
 
-		__builtin_memcpy(Original_Function_Caller, Original_Function, 6 + Offset);
+			*(unsigned __int16*)((unsigned __int64)Original_Function + 1) = 47176;
 
-		Redirect_Function((void*)((unsigned __int32)Original_Function_Caller + 6 + Offset), (void*)((unsigned __int32)Original_Function + 6 + Offset));
+			*(void**)((unsigned __int64)Original_Function + 3) = Redirected_Function;
 
-		Redirect_Function(Original_Function, Redirected_Function);
+			*(__int32*)((unsigned __int64)Original_Function + 11) = 604276552;
 
-		return Original_Function_Caller;
-	}
-};
+			*(unsigned __int8*)((unsigned __int64)Original_Function + 15) = 195;
+
+			VirtualProtect(Original_Function, 16, Previous_Access_Rights, &Previous_Access_Rights);
+		}
+
+		void* Caller;
+
+		void Redirect_Function(unsigned __int32 Offset, void* Original_Function, void* Redirected_Function)
+		{
+			Caller = VirtualAlloc(nullptr, 32 + Offset, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+
+			__builtin_memcpy(Caller, Original_Function, 16 + Offset);
+
+			Redirect_Function((void*)((unsigned __int64)Caller + 16 + Offset), (void*)((unsigned __int64)Original_Function + 16 + Offset));
+
+			Redirect_Function(Original_Function, Redirected_Function);
+		}
+
+		template<typename... Parameters_Type> void Special_Call(Parameters_Type... Parameters)
+		{
+			DWORD Previous_Access_Rights;
+
+			VirtualProtect(Original_Function, 16, PAGE_EXECUTE_READWRITE, &Previous_Access_Rights);
+
+			__builtin_memcpy(Original_Function, Caller, 16);
+
+			VirtualProtect(Original_Function, 16, Previous_Access_Rights, &Previous_Access_Rights);
+
+			using Variadic_Type = void(*)(...);
+
+			Variadic_Type((unsigned __int64)Original_Function)(Parameters...);
+
+			Redirect_Function(Original_Function, Redirected_Function);
+		}
+	};
+}

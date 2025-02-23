@@ -199,9 +199,14 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 						Descriptor->Parent = Original_Descriptor;
 					};
 
-					static Prediction_Field_Structure Player_Fields = { 1, (char*)"m_flVelocityModifier", { 6716 }, 1, 256, { }, nullptr, sizeof(float), { }, 0.005f };
+					static Prediction_Field_Structure Player_Fields[2] =
+					{
+						{ 1, (char*)"m_flVelocityModifier", { 6716 }, 1, 256, { }, nullptr, sizeof(float), { }, 0.005f },
 
-					Add_Prediction_Fields((Prediction_Descriptor_Structure*)((unsigned __int64)Client_Module + 6021096), &Player_Fields, sizeof(Player_Fields) / sizeof(Prediction_Field_Structure));
+						{ 3, (char*)"m_vecPreviouslyPredictedOrigin", { 6204 }, 1, 0, { }, nullptr, sizeof(float) }
+					};
+
+					Add_Prediction_Fields((Prediction_Descriptor_Structure*)((unsigned __int64)Client_Module + 6021096), Player_Fields, sizeof(Player_Fields) / sizeof(Prediction_Field_Structure));
 
 					static Prediction_Field_Structure Weapon_Fields = { 1, (char*)"m_flDecreaseShotsFired", { 3252 }, 1, 0, { }, nullptr, sizeof(float) };
 

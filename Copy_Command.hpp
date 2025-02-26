@@ -148,7 +148,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 			float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-			Command->Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
+			Command->Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -1000.f, 1000.f);
 
 			Command->Buttons &= ~1560;
 
@@ -157,7 +157,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 				Command->Buttons |= 8 * (__builtin_signbitf(Command->Move[0]) + 1);
 			}
 
-			Command->Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
+			Command->Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -1000.f, 1000.f);
 
 			if (__builtin_truncf(Command->Move[1]) != 0.f)
 			{

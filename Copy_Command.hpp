@@ -38,6 +38,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Angle_Vectors_Type((unsigned __int64)Client_Module + 2812512)(Angles, Forward, Right, Up);
 		};
 
+		__int32 Jump_State = (Command->Buttons & 2) + *(__int8*)((unsigned __int64)Local_Player + 500);
+
 		float Move_Angles[3] =
 		{
 			Command->Angles[0],
@@ -47,7 +49,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		static float Previous_Move_Angle_Y;
 
-		if ((Command->Buttons & 2) + *(__int8*)((unsigned __int64)Local_Player + 500) == 4)
+		float* Velocity = (float*)((unsigned __int64)Local_Player + 328);
+
+		if (Jump_State == 4)
 		{
 			Command->Move[0] = 0;
 
@@ -63,8 +67,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			float Difference = __builtin_remainderf(Move_Angles[1] - Previous_Move_Angle_Y, 360.f);
 
 			Previous_Move_Angle_Y = Move_Angles[1];
-
-			float* Velocity = (float*)((unsigned __int64)Local_Player + 328);
 
 			if (__builtin_fabsf(Difference) < __builtin_atan2f(30.f, __builtin_hypotf(Velocity[0], Velocity[1])) * 180.f / 3.1415927f)
 			{
@@ -180,15 +182,57 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Byte_Manager::Copy_Bytes(1, Local_Previous_Origin, sizeof(Local_Previous_Origin), Local_Origin);
 		}
 
-		using Set_Host_Type = void(__thiscall*)(void* Move_Helper, void* Player);
+		auto Predict = [&](__int8 Duck) -> void
+		{
+			Command->Buttons |= 4 * Duck;
 
-		Set_Host_Type((unsigned __int64)Client_Module + 1439184)((void*)((unsigned __int64)Client_Module + 5984240), Local_Player);
+			using Set_Host_Type = void(__thiscall*)(void* Move_Helper, void* Player);
 
-		using Run_Command_Type = void(*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
+			Set_Host_Type((unsigned __int64)Client_Module + 1439184)((void*)((unsigned __int64)Client_Module + 5984240), Local_Player);
 
-		Run_Command_Type((unsigned __int64)Client_Module + 1602624)((void*)((unsigned __int64)Client_Module + 6889744), Local_Player, Command, (void*)((unsigned __int64)Client_Module + 5984240));
+			using Run_Command_Type = void(*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
 
-		Set_Host_Type((unsigned __int64)Client_Module + 1439184)((void*)((unsigned __int64)Client_Module + 5984240), nullptr);
+			Run_Command_Type((unsigned __int64)Client_Module + 1602624)((void*)((unsigned __int64)Client_Module + 6889744), Local_Player, Command, (void*)((unsigned __int64)Client_Module + 5984240));
+
+			Set_Host_Type((unsigned __int64)Client_Module + 1439184)((void*)((unsigned __int64)Client_Module + 5984240), nullptr);
+		};
+
+		if (Jump_State * (Interface_Duck_Advantage.Floating_Point != 0.f) == 4)
+		{
+			Predict(0);
+
+			auto Restore = [&]() -> float
+			{
+				Command->Buttons &= ~4;
+
+				float Speed = __builtin_hypotf(Velocity[0], Velocity[1]);
+
+				using Run_Prediction_Type = void(*)();
+
+				Run_Prediction_Type((unsigned __int64)Engine_Module + 599696)();
+
+				return Speed;
+			};
+
+			if (*(float*)((unsigned __int64)Local_Player + 324) == 64.f)
+			{
+				float Normal_Speed = Restore();
+
+				Predict(1);
+
+				float Duck_Speed = Restore();
+
+				Command->Buttons |= 4 * (Normal_Speed < Duck_Speed - Interface_Duck_Advantage.Floating_Point);
+			}
+			else
+			{
+				Restore();
+
+				Command->Buttons |= 4;
+			}
+		}
+
+		Predict(0);
 
 		*(void**)((unsigned __int64)Engine_Module + 5141912) = Previous_Audio_Device;
 

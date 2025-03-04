@@ -35,6 +35,8 @@ Interface_Structure Interface_Bruteforce_Angles;
 
 Interface_Structure Interface_Alternative;
 
+Interface_Structure Interface_Duck_Advantage;
+
 Interface_Structure Interface_Minimum_Choked_Commands;
 
 Interface_Structure Interface_Maximum_Choked_Commands;
@@ -96,6 +98,8 @@ void Implement_Extended_Interface()
 	Bruteforce_Set_Angles((Interface_Structure*)((unsigned __int64)&Interface_Bruteforce_Angles + 48));
 
 	Create_Interface(Pointer_Name(Interface_Alternative), (char*)"1", nullptr);
+
+	Create_Interface(Pointer_Name(Interface_Duck_Advantage), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Minimum_Choked_Commands), (char*)"1", nullptr);
 

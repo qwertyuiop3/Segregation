@@ -38,6 +38,8 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Angle_Vectors_Type(606384752)(Angles, Forward, Right, Up);
 		};
 
+		__int32 Jump_State = (Command->Buttons & 2) + *(__int8*)((unsigned __int32)Local_Player + 308);
+
 		float Move_Angles[3] =
 		{
 			Command->Angles[0],
@@ -47,7 +49,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		static float Previous_Move_Angle_Y;
 
-		if ((Command->Buttons & 2) + *(__int8*)((unsigned __int32)Local_Player + 308) == 4)
+		float* Velocity = (float*)((unsigned __int32)Local_Player + 224);
+
+		if (Jump_State == 4)
 		{
 			Command->Move[0] = 0;
 
@@ -63,8 +67,6 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			float Difference = __builtin_remainderf(Move_Angles[1] - Previous_Move_Angle_Y, 360.f);
 
 			Previous_Move_Angle_Y = Move_Angles[1];
-
-			float* Velocity = (float*)((unsigned __int32)Local_Player + 224);
 
 			if (__builtin_fabsf(Difference) < __builtin_atan2f(30.f, __builtin_hypotf(Velocity[0], Velocity[1])) * 180.f / 3.1415927f)
 			{
@@ -180,9 +182,51 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Byte_Manager::Copy_Bytes(1, Local_Previous_Origin, sizeof(Local_Previous_Origin), Local_Origin);
 		}
 
-		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
+		auto Predict = [&](__int8 Duck) -> void
+		{
+			Command->Buttons |= 4 * Duck;
 
-		Run_Command_Type(605207600)((void*)608163016, Local_Player, Command, (void*)607735532);
+			using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
+
+			Run_Command_Type(605207600)((void*)608163016, Local_Player, Command, (void*)607735532);
+		};
+
+		if (Jump_State * (Interface_Duck_Advantage.Floating_Point != 0.f) == 4)
+		{
+			Predict(0);
+
+			auto Restore = [&]() -> float
+			{
+				Command->Buttons &= ~4;
+
+				float Speed = __builtin_hypotf(Velocity[0], Velocity[1]);
+
+				using Run_Prediction_Type = void(__cdecl*)();
+
+				Run_Prediction_Type(537158848)();
+
+				return Speed;
+			};
+
+			if (*(float*)((unsigned __int32)Local_Player + 220) == 64.f)
+			{
+				float Normal_Speed = Restore();
+
+				Predict(1);
+
+				float Duck_Speed = Restore();
+
+				Command->Buttons |= 4 * (Normal_Speed < Duck_Speed - Interface_Duck_Advantage.Floating_Point);
+			}
+			else
+			{
+				Restore();
+
+				Command->Buttons |= 4;
+			}
+		}
+
+		Predict(0);
 
 		*(void**)542589456 = Previous_Audio_Device;
 

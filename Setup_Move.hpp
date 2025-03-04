@@ -4,7 +4,9 @@ void __thiscall Redirected_Setup_Move(void* Unknown_Parameter_1, void* Player, v
 {
 	Byte_Manager::Set_Bytes(1, (float*)((unsigned __int32)Player + 276), sizeof(float[3]), 0);
 
-	void* Weapon = *(void**)((unsigned __int32)607973860 + (((*(unsigned __int32*)((unsigned __int32)Player + 2872) & 4095) - 4097) << 4));
+	using Get_Weapon_Type = void* (__thiscall*)(void* Entity);
+
+	void* Weapon = Get_Weapon_Type(604036352)(Player);
 
 	if (Weapon != nullptr)
 	{

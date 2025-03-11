@@ -177,10 +177,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		float* Local_Origin = (float*)((unsigned __int64)Local_Player + 1064);
 
-		if (Interface_Alternative.Integer == 0)
-		{
-			Byte_Manager::Copy_Bytes(1, Local_Previous_Origin, sizeof(Local_Previous_Origin), Local_Origin);
-		}
+		Byte_Manager::Copy_Bytes(1, Local_Previous_Origin, sizeof(Local_Previous_Origin), Local_Origin);
 
 		auto Predict = [&](__int8 Duck) -> void
 		{
@@ -240,7 +237,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		static __int8 Send_Packet;
 
-		__int32 Choked_Commands_Count = *(__int32*)((unsigned __int64)Engine_Module + 5497992);
+		__int32 Choked_Commands = *(__int32*)((unsigned __int64)Engine_Module + 5497992);
 
 		__int8 Predicted_Send_Packet = 0;
 
@@ -248,61 +245,48 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		if (Interface_Alternative.Integer == 0)
 		{
-			__int32 Predicted_Choked_Commands_Count = Choked_Commands_Count + 1;
+			__int32 Predicted_Choked_Commands = Choked_Commands + 1;
 
-			if (Choked_Commands_Count < Interface_Minimum_Choked_Commands.Integer)
+			if (Choked_Commands < Interface_Minimum_Choked_Commands.Integer)
 			{
 				Send_Packet = 0;
 
-				if (Predicted_Choked_Commands_Count == Interface_Minimum_Choked_Commands.Integer)
+				if (Predicted_Choked_Commands == Interface_Minimum_Choked_Commands.Integer)
 				{
-					if (Predicted_Choked_Commands_Count < Interface_Maximum_Choked_Commands.Integer)
+					Predicted_Send_Packet = 1;
+
+					if (Predicted_Choked_Commands < Interface_Maximum_Choked_Commands.Integer)
 					{
-						goto Predict_Dynamic_Send_Packet_Label;
-					}
-					else
-					{
-						Predicted_Send_Packet = 1;
+						Predicted_Send_Packet = __builtin_hypotf(Local_Networked_Origin[0] - Local_Origin[0], Local_Networked_Origin[1] - Local_Origin[1]) > 64.f;
 					}
 				}
 			}
 			else
 			{
-				if (Choked_Commands_Count < Interface_Maximum_Choked_Commands.Integer)
+				if (Choked_Commands >= Interface_Maximum_Choked_Commands.Integer)
 				{
-					if (__builtin_hypotf(Local_Networked_Origin[0] - Local_Previous_Origin[0], Local_Networked_Origin[1] - Local_Previous_Origin[1]) <= 64.f)
+					goto Send_Packet_Label;
+				}
+
+				Send_Packet = __builtin_hypotf(Local_Networked_Origin[0] - Local_Previous_Origin[0], Local_Networked_Origin[1] - Local_Previous_Origin[1]) > 64.f;
+
+				if (Send_Packet == 0)
+				{
+					Predicted_Send_Packet = __builtin_hypotf(Local_Networked_Origin[0] - Local_Origin[0], Local_Networked_Origin[1] - Local_Origin[1]) > 64.f;
+
+					if (Predicted_Choked_Commands == Interface_Maximum_Choked_Commands.Integer)
 					{
-						Send_Packet = 0;
-
-						Predict_Dynamic_Send_Packet_Label:
-						{
-							if (Predicted_Choked_Commands_Count == Interface_Maximum_Choked_Commands.Integer)
-							{
-								Predicted_Send_Packet = 1;
-							}
-							else
-							{
-								if (__builtin_hypotf(Local_Networked_Origin[0] - Local_Origin[0], Local_Networked_Origin[1] - Local_Origin[1]) > 64.f)
-								{
-									Predicted_Send_Packet = 1;
-								}
-							}
-						}
-
-					}
-					else
-					{
-						Send_Packet_Label:
-						{
-							Byte_Manager::Copy_Bytes(1, Local_Networked_Origin, sizeof(Local_Networked_Origin), Local_Origin);
-
-							Send_Packet = 1;
-						}
+						Predicted_Send_Packet = 1;
 					}
 				}
 				else
 				{
-					goto Send_Packet_Label;
+					Send_Packet_Label:
+					{
+						Byte_Manager::Copy_Bytes(1, Local_Networked_Origin, sizeof(Local_Networked_Origin), Local_Origin);
+
+						Send_Packet = 1;
+					}
 				}
 			}
 		}
@@ -313,28 +297,20 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 				goto Send_Packet_Label;
 			}
 
-			if (Choked_Commands_Count < Interface_Minimum_Choked_Commands.Integer)
+			if (Choked_Commands >= Interface_Minimum_Choked_Commands.Integer)
 			{
-				Send_Packet = 0;
-			}
-			else
-			{
-				if (Choked_Commands_Count < Interface_Maximum_Choked_Commands.Integer)
+				if (Choked_Commands >= Interface_Maximum_Choked_Commands.Integer)
 				{
-					if (__builtin_hypotf(Local_Networked_Origin[0] - Local_Origin[0], Local_Networked_Origin[1] - Local_Origin[1]) <= 64.f)
-					{
-						Send_Packet = 0;
-					}
-					else
-					{
-						goto Send_Packet_Label;
-					}
+					goto Send_Packet_Label;
 				}
-				else
+
+				if (__builtin_hypotf(Local_Networked_Origin[0] - Local_Origin[0], Local_Networked_Origin[1] - Local_Origin[1]) > 64.f)
 				{
 					goto Send_Packet_Label;
 				}
 			}
+
+			Send_Packet = 0;
 		}
 
 		__int32 Entity_Number = 1;
@@ -903,6 +879,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 					{
 						goto Passed_Shot_Time_Check_Label;
 					}
+
+					Previous_Recent_Player_Data.Priority = Players_Data[Recent_Player_Data_Number].Priority;
 
 					Byte_Manager::Copy_Bytes(1, &Players_Data[Recent_Player_Data_Number], sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
 

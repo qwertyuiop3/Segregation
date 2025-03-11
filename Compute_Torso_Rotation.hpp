@@ -2,6 +2,11 @@ Redirection_Manager::Manager_Structure Compute_Torso_Rotation_Manager;
 
 void Redirected_Compute_Torso_Rotation(void* Animation_State)
 {
+	if (__builtin_return_address(0) == (void*)((unsigned __int64)Client_Module + 299907))
+	{
+		(decltype(&Redirected_Compute_Torso_Rotation)(Compute_Torso_Rotation_Manager.Caller))(Animation_State);
+	}
+
 	if (Interface_Bruteforce.Integer == 1)
 	{
 		void* Entity = *(void**)((unsigned __int64)Animation_State + 32);
@@ -14,7 +19,7 @@ void Redirected_Compute_Torso_Rotation(void* Animation_State)
 
 				if (Player_Data->Priority != -2)
 				{
-					using Set_Pose_Parameter_Type = float(*)(void* Entity, void* Studio_Header, __int32 Parameter, float Value);
+					using Set_Pose_Parameter_Type = void(*)(void* Entity, void* Studio_Header, __int32 Parameter, float Value);
 
 					using Get_Studio_Header_Type = void*(*)(void* Entity);
 
@@ -35,15 +40,8 @@ void Redirected_Compute_Torso_Rotation(void* Animation_State)
 					}
 
 					Set_Pose_Parameter_Type((unsigned __int64)Client_Module + 504592)(Entity, Studio_Header, 2, __builtin_remainderf(*(float*)((unsigned __int64)Animation_State + 40) - *(float*)((unsigned __int64)Animation_State + 80), 360.f));
-
-					return;
 				}
 			}
 		}
-	}
-
-	if (__builtin_return_address(0) == (void*)((unsigned __int64)Client_Module + 299907))
-	{
-		(decltype(&Redirected_Compute_Torso_Rotation)(Compute_Torso_Rotation_Manager.Caller))(Animation_State);
 	}
 }

@@ -1,5 +1,3 @@
-__int32 Recent_Player_Data_Number;
-
 float Shot_Time;
 
 void Event_Processor(void* Unknown_Parameter, void* Event)

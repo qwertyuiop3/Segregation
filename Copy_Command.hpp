@@ -29,7 +29,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 	if (*(__int8*)((unsigned __int64)Local_Player + 199) == 0)
 	{
-		__int32 Move_Type = *(__int8*)((unsigned __int64)Local_Player + 500);
+		__int8 Move_Type = *(__int8*)((unsigned __int64)Local_Player + 500);
 
 		auto Angle_Vectors = [](float* Angles, float* Forward, float* Right, float* Up) -> void
 		{
@@ -193,7 +193,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			}
 			else
 			{
-				unsigned __int8 Solution_Number = 0;
+				__int8 Solution_Number = 0;
 
 				static float Solutions[9][3] =
 				{
@@ -218,7 +218,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				float Least_Deviation = __builtin_inff();
 
-				unsigned __int8 Solution;
+				__int8 Solution;
 
 				Traverse_Solutions_Label:
 				{
@@ -324,10 +324,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		float* Local_Origin = (float*)((unsigned __int64)Local_Player + 1064);
 
-		if (Interface_Alternative.Get_Integer() == 0)
-		{
-			Byte_Manager::Copy_Bytes(1, Local_Previous_Origin, sizeof(Local_Previous_Origin), Local_Origin);
-		}
+		Byte_Manager::Copy_Bytes(1, Local_Previous_Origin, sizeof(Local_Previous_Origin), Local_Origin);
 
 		static void* Move_Helper = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(28807, (unsigned __int8*)Client_Module, 2332256697955850039), 3);
 
@@ -361,53 +358,40 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				if (Predicted_Choked_Commands == Interface_Minimum_Choked_Commands.Get_Integer())
 				{
+					Predicted_Send_Packet = 1;
+
 					if (Predicted_Choked_Commands < Interface_Maximum_Choked_Commands.Get_Integer())
 					{
-						goto Predict_Dynamic_Send_Packet_Label;
-					}
-					else
-					{
-						Predicted_Send_Packet = 1;
+						Predicted_Send_Packet = __builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) > 4096.f;
 					}
 				}
 			}
 			else
 			{
-				if (Choked_Commands < Interface_Maximum_Choked_Commands.Get_Integer())
+				if (Choked_Commands >= Interface_Maximum_Choked_Commands.Get_Integer())
 				{
-					if (__builtin_powf(Local_Networked_Origin[0] - Local_Previous_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Previous_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Previous_Origin[2], 2.f) <= 4096.f)
+					goto Send_Packet_Label;
+				}
+
+				Send_Packet = __builtin_powf(Local_Networked_Origin[0] - Local_Previous_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Previous_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Previous_Origin[2], 2.f) > 4096.f;
+
+				if (Send_Packet == 0)
+				{
+					Predicted_Send_Packet = __builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) > 4096.f;
+
+					if (Predicted_Choked_Commands == Interface_Maximum_Choked_Commands.Get_Integer())
 					{
-						Send_Packet = 0;
-
-						Predict_Dynamic_Send_Packet_Label:
-						{
-							if (Predicted_Choked_Commands == Interface_Maximum_Choked_Commands.Get_Integer())
-							{
-								Predicted_Send_Packet = 1;
-							}
-							else
-							{
-								if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) > 4096.f)
-								{
-									Predicted_Send_Packet = 1;
-								}
-							}
-						}
-
-					}
-					else
-					{
-						Send_Packet_Label:
-						{
-							Byte_Manager::Copy_Bytes(1, Local_Networked_Origin, sizeof(Local_Networked_Origin), Local_Origin);
-
-							Send_Packet = 1;
-						}
+						Predicted_Send_Packet = 1;
 					}
 				}
 				else
 				{
-					goto Send_Packet_Label;
+					Send_Packet_Label:
+					{
+						Byte_Manager::Copy_Bytes(1, Local_Networked_Origin, sizeof(Local_Networked_Origin), Local_Origin);
+
+						Send_Packet = 1;
+					}
 				}
 			}
 		}
@@ -418,28 +402,20 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 				goto Send_Packet_Label;
 			}
 
-			if (Choked_Commands < Interface_Minimum_Choked_Commands.Get_Integer())
+			if (Choked_Commands >= Interface_Minimum_Choked_Commands.Get_Integer())
 			{
-				Send_Packet = 0;
-			}
-			else
-			{
-				if (Choked_Commands < Interface_Maximum_Choked_Commands.Get_Integer())
+				if (Choked_Commands >= Interface_Maximum_Choked_Commands.Get_Integer())
 				{
-					if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) <= 4096.f)
-					{
-						Send_Packet = 0;
-					}
-					else
-					{
-						goto Send_Packet_Label;
-					}
+					goto Send_Packet_Label;
 				}
-				else
+
+				if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) > 4096.f)
 				{
 					goto Send_Packet_Label;
 				}
 			}
+
+			Send_Packet = 0;
 		}
 
 		__int32 Entity_Number = 1;
@@ -833,7 +809,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 										Byte_Manager::Copy_Bytes(1, Animation_State, sizeof(Animation_State_Data), Animation_State_Data);
 									};
 
-									if ((*Setup_Bones_Type(*(unsigned __int64*)((unsigned __int64)Target->Self + 8) + 128))((void*)((unsigned __int64)Target->Self + 8), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
+									if ((*Setup_Bones_Type(*(unsigned __int64*)((unsigned __int64)Target->Self + 8) + 128))((void*)((unsigned __int64)Target->Self + 8), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Current_Time) == 1)
 									{
 										auto Perform_Trace = [&](float Direction[3]) -> __int8
 										{
@@ -966,7 +942,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 											Bones[Bone][1][0] * Hitbox_Center[0] + Bones[Bone][1][1] * Hitbox_Center[1] + Bones[Bone][1][2] * Hitbox_Center[2] + Bones[Bone][1][3],
 
-											Hitbox_Z_Extremes[0][0] + (Hitbox_Z_Extremes[1][0] - Hitbox_Z_Extremes[0][0]) * Interface_Aim_Height.Get_Floating_Point() + Bones[Bone][2][3]
+											*Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * Interface_Aim_Height.Get_Floating_Point() + Bones[Bone][2][3]
 										};
 
 										float Direction[3] =

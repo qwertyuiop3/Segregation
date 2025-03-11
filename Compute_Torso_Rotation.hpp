@@ -14,7 +14,7 @@ __int8 Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 
 				if (Player_Data->Priority != -2)
 				{
-					using Set_Pose_Parameter_Type = float(*)(void* Entity, void* Studio_Header, __int32 Parameter, float Value);
+					using Set_Pose_Parameter_Type = void(*)(void* Entity, void* Studio_Header, __int32 Parameter, float Value);
 
 					static void* Set_Pose_Parameter = Byte_Manager::Find_Bytes(1007, (unsigned __int8*)Client_Module, 12382850545958547287ull);
 

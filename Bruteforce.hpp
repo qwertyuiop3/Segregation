@@ -1,3 +1,5 @@
+__int32 Recent_Player_Data_Number;
+
 void Bruteforce_Reset_Memory_Tolerance()
 {
 	__int32 Entity_Number = 0;
@@ -18,6 +20,8 @@ void Bruteforce_Reset_Memory_Tolerance()
 			goto Traverse_Players_Data_Label;
 		}
 	}
+
+	Recent_Player_Data_Number = 0;
 }
 
 void Bruteforce_Reset_Tolerance()
@@ -40,6 +44,8 @@ void Bruteforce_Reset_Tolerance()
 			goto Traverse_Players_Data_Label;
 		}
 	}
+
+	Recent_Player_Data_Number = 0;
 }
 
 void Bruteforce_Reset()
@@ -63,6 +69,8 @@ void Bruteforce_Reset()
 			goto Traverse_Players_Data_Label;
 		}
 	}
+
+	Recent_Player_Data_Number = 0;
 }
 
 __int8 Bruteforce_Angles_Count;

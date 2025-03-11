@@ -2,6 +2,11 @@ void* Original_Compute_Torso_Rotation_Caller;
 
 void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 {
+	if (__builtin_return_address(0) == (void*)604026641)
+	{
+		(decltype(&Redirected_Compute_Torso_Rotation)(Original_Compute_Torso_Rotation_Caller))(Animation_State);
+	}
+
 	if (Interface_Bruteforce.Integer == 1)
 	{
 		void* Entity = *(void**)((unsigned __int32)Animation_State + 20);
@@ -26,15 +31,8 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 					}
 
 					Set_Torso_Rotation_Type(604022992)(Animation_State, __builtin_remainderf(*(float*)((unsigned __int32)Animation_State + 24) - *(float*)((unsigned __int32)Animation_State + 64), 360.f));
-
-					return;
 				}
 			}
 		}
-	}
-
-	if (__builtin_return_address(0) == (void*)604026641)
-	{
-		(decltype(&Redirected_Compute_Torso_Rotation)(Original_Compute_Torso_Rotation_Caller))(Animation_State);
 	}
 }

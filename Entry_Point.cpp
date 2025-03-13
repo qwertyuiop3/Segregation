@@ -24,6 +24,8 @@
 
 #include "Shutdown.hpp"
 
+#include "Post_Data_Update.hpp"
+
 #include "Interpolate.hpp"
 
 #include "Update_Animation.hpp"
@@ -182,6 +184,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Original_Write_Events_Caller = Redirection_Manager::Redirect_Function(2, (void*)537582208, (void*)Redirected_Write_Events);
 
 					Original_Shutdown_Caller = Redirection_Manager::Redirect_Function(0, (void*)537926128, (void*)Redirected_Shutdown);
+
+					Original_Post_Data_Update_Caller = Redirection_Manager::Redirect_Function(1, (void*)605796576, (void*)Redirected_Post_Data_Update);
 				}
 
 				_putws(L"[ + ] Interpolation");

@@ -31,6 +31,8 @@ Interface_Structure Interface_Bruteforce;
 
 Interface_Structure Interface_Bruteforce_Angles;
 
+Interface_Structure Interface_Target_On_Simulation;
+
 Interface_Structure Interface_Alternative;
 
 Interface_Structure Interface_Duck_Advantage;
@@ -92,6 +94,8 @@ void Implement_Extended_Interface()
 	Create_Interface(Pointer_Name(Interface_Bruteforce_Angles), (char*)"0, -90, 90", (void*)Bruteforce_Set_Angles);
 
 	Bruteforce_Set_Angles(&Interface_Bruteforce_Angles);
+
+	Create_Interface(Pointer_Name(Interface_Target_On_Simulation), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Alternative), (char*)"1", nullptr);
 

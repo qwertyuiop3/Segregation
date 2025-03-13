@@ -379,6 +379,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 									__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
 								};
 
+								if (Interface_Target_On_Simulation.Integer != 0)
+								{
+									Target.Valid *= Player_Data->Simulated;
+								}
+
 								Sorted_Target_List.push_back(Target);
 							}
 						}
@@ -476,7 +481,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																float Bones[128][3][4];
 
-																if (Setup_Bones_Type((unsigned __int64)Client_Module + 504992)((void*)((unsigned __int64)Target->Self + 8), Bones, 128, 524032, Global_Variables->Current_Time) == 1)
+																if (Setup_Bones_Type((unsigned __int64)Client_Module + 504992)((void*)((unsigned __int64)Target->Self + 8), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Current_Time) == 1)
 																{
 																	auto Perform_Trace = [&](float Direction[3]) -> __int8
 																	{
@@ -623,7 +628,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																		Bones[14][1][0] * Hitbox_Center[0] + Bones[14][1][1] * Hitbox_Center[1] + Bones[14][1][2] * Hitbox_Center[2] + Bones[14][1][3],
 
-																		Hitbox_Z_Extremes[0][0] + (Hitbox_Z_Extremes[1][0] - Hitbox_Z_Extremes[0][0]) * Interface_Aim_Height.Floating_Point + Bones[14][2][3]
+																		*Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * Interface_Aim_Height.Floating_Point + Bones[14][2][3]
 																	};
 
 																	float Direction[3] =
@@ -880,9 +885,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 						goto Passed_Shot_Time_Check_Label;
 					}
 
-					Previous_Recent_Player_Data.Priority = Players_Data[Recent_Player_Data_Number].Priority;
+					Player_Data_Structure* Player_Data = &Players_Data[Recent_Player_Data_Number];
 
-					Byte_Manager::Copy_Bytes(1, &Players_Data[Recent_Player_Data_Number], sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
+					Previous_Recent_Player_Data.Priority = Player_Data->Priority;
+
+					Previous_Recent_Player_Data.Simulated = Player_Data->Simulated;
+
+					Byte_Manager::Copy_Bytes(1, Player_Data, sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
 
 					goto Passed_Shot_Time_Check_Label;
 				}

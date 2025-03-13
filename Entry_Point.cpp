@@ -24,6 +24,8 @@ void* Engine_Module;
 
 #include "Write_Events.hpp"
 
+#include "Post_Data_Update.hpp"
+
 #include "Interpolate.hpp"
 
 #include "Update_Animation.hpp"
@@ -164,6 +166,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Add_Listener_Type((unsigned __int64)Engine_Module + 1649792)((void*)((unsigned __int64)Engine_Module + 4692032), Event_Listener, (char*)"bullet_impact", nullptr);
 
 					Write_Events_Manager.Redirect_Function(3, (void*)((unsigned __int64)Engine_Module + 1659120), (void*)Redirected_Write_Events);
+
+					Post_Data_Update_Manager.Redirect_Function(2, (void*)((unsigned __int64)Client_Module + 2019872), (void*)Redirected_Post_Data_Update);
 				}
 
 				_putws(L"[ + ] Interpolation");

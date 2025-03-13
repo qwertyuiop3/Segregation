@@ -17,6 +17,8 @@ struct Player_Data_Structure
 {
 	__int32 Priority;
 
+	__int8 Simulated;
+
 	__int32 Memory_Tolerance;
 
 	__int32 Tolerance;

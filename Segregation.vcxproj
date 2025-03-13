@@ -92,6 +92,7 @@
     <ClInclude Include="Interpolate.hpp" />
     <ClInclude Include="Move.hpp" />
     <ClInclude Include="Packet_Start.hpp" />
+    <ClInclude Include="Post_Data_Update.hpp" />
     <ClInclude Include="Precache.hpp" />
     <ClInclude Include="Copy_Command.hpp" />
     <ClInclude Include="Post_Network_Data_Received.hpp" />

@@ -30,8 +30,6 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 						Set_Pose_Parameter_Type((unsigned __int32)Client_Module + 1676480)(Entity, (char*)"body_pitch", Angles[Player_Data->Switch_X % max(1, 1 + (Angles[0] != Angles[2]) + (Angles[1] != Angles[2]) - Interface_Bruteforce_Perpendicular.Get_Integer())]);
 					}
 
-					Pose_Parameters[Entity_Number][12] = *(float*)((unsigned __int32)Entity + 10132);
-
 					if (Player_Data->Memory_Tolerance == 0)
 					{
 						Animation_Angle[Entity_Number] = *(float*)((unsigned __int32)Animation_State + 128) = *(float*)((unsigned __int32)Animation_State + 120) - Bruteforce_Angles[Player_Data->Shots_Fired];
@@ -42,8 +40,6 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 					}
 
 					Set_Pose_Parameter_Type((unsigned __int32)Client_Module + 1676480)(Entity, (char*)"body_yaw", __builtin_remainderf(*(float*)((unsigned __int32)Animation_State + 120) - *(float*)((unsigned __int32)Animation_State + 128), 360.f) * Interface_Bruteforce_Relative.Get_Floating_Point());
-
-					Pose_Parameters[Entity_Number][11] = *(float*)((unsigned __int32)Entity + 10128);
 				}
 			}
 		}

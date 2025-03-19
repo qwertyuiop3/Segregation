@@ -205,11 +205,15 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3620513), 6, 144);
 
+					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3618054), 162, 144);
+
 					Original_Update_Animation_Caller = Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Client_Module + 3617984), (void*)Redirected_Update_Animation);
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3880672), 1, 195);
 
 					Original_Update_Animation_State_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 3882176), (void*)Redirected_Update_Animation_State);
+
+					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3882372), 18, 144);
 
 					Original_Compute_Torso_Rotation_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 3900384), (void*)Redirected_Compute_Torso_Rotation);
 

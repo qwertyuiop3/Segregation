@@ -31,10 +31,14 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 	Update_Animations_Type((unsigned __int32)Client_Module + 1715328)();
 
+	Update_Animation_Type = 0;
+
 	void* Local_Player = *(void**)((unsigned __int32)Client_Module + 82926756);
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 603) == 0)
 	{
+		Command->Buttons |= 4194304;
+
 		__int8 Move_Type = *(__int8*)((unsigned __int32)Local_Player + 600);
 
 		if (*(void**)((unsigned __int32)Local_Player + 332) != INVALID_HANDLE_VALUE)
@@ -307,6 +311,8 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		Update_Animation_Type = (Choked_Commands == 0) * 2;
 
 		Redirected_Update_Animation(Local_Player);
+
+		Update_Animation_Type = 0;
 
 		float* Local_Origin = (float*)((unsigned __int32)Local_Player + 308);
 
@@ -637,11 +643,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																*(__int32*)((unsigned __int32)Local_Player + 9856) = *(__int32*)((unsigned __int32)Client_Module + 83358788) - 1;
 
-																float* Incline = &Pose_Parameters[*(__int32*)((unsigned __int32)Local_Player + 100)][12];
+																float Previous_Incline = Pose_Parameters[12];
 
-																float Previous_Incline = *Incline;
-
-																*Incline = Local_Origin[2] + *(float*)((unsigned __int32)Local_Player + 268) >= Target_Origin[2] ? 1.f : 0.f;
+																Pose_Parameters[12] = Local_Origin[2] + *(float*)((unsigned __int32)Local_Player + 268) >= Target_Origin[2] ? 1.f : 0.f;
 
 																*(__int32*)((unsigned __int32)Local_Player + 10516) = -8388609;
 
@@ -651,7 +655,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																Get_Eye_Position_Type((unsigned __int32)Client_Module + 3820128)(Local_Player, Eye_Position);
 
-																*Incline = Previous_Incline;
+																Pose_Parameters[12] = Previous_Incline;
 
 																float Direction[3] =
 																{
@@ -821,6 +825,10 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 			Sequences[Sequence_Number % 150] = *(__int32*)((unsigned __int32)Client + 19628);
 		}
+		else
+		{
+			Update_Animation_Delta[1] = Choked_Commands + 1;
+		}
 
 		Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
 
@@ -831,8 +839,12 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Send_Packet = 2;
 		}
 	}
+	else
+	{
+		*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 20) = 1;
 
-	Update_Animation_Type = 0;
+		Update_Animation_Delta[1] = 0;
+	}
 
 	(decltype(&Redirected_Copy_Command)(Original_Copy_Command_Caller))(Unknown_Parameter, Command);
 }

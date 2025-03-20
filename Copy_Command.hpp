@@ -132,11 +132,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			return Vector_Normalize_Type((unsigned __int32)Client_Module + 6688448)(Vector);
 		};
 
-		auto Get_Ladder_Move = [](float* Move, float* Forward, float Forward_Move, float* Right, float Side_Move, float* Ladder_Normal) -> void
+		auto Get_Ladder_Move = [&](float* Move, float* Forward, float Forward_Move, float* Right, float Side_Move) -> void
 		{
 			Move[0] = Forward[0] * Forward_Move + Right[0] * Side_Move;
 
 			Move[1] = Forward[1] * Forward_Move + Right[1] * Side_Move;
+
+			float* Ladder_Normal = (float*)((unsigned __int32)Local_Player + 12820);
 
 			float Normal = Move[0] * Ladder_Normal[0] + Move[1] * Ladder_Normal[1];
 
@@ -146,8 +148,6 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 			Move[2] = (Forward[2] * Forward_Move + Right[2] * Side_Move) - (__builtin_powf(Ladder_Normal[0], 2.f) + __builtin_powf(Ladder_Normal[1], 2.f)) * Normal - Ladder_Normal[2] * Normal;
 		};
-
-		float* Ladder_Normal = (float*)((unsigned __int32)Local_Player + 12820);
 
 		if (Move_Type == 2)
 		{
@@ -165,7 +165,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		}
 		else
 		{
-			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, Command->Move[0], Desired_Move_Right, Command->Move[1], Ladder_Normal);
+			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, Command->Move[0], Desired_Move_Right, Command->Move[1]);
 		}
 
 		auto Correct_Movement = [&]() -> void
@@ -233,7 +233,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 						Angle_Vectors(Command->Angles, Move_Forward, Move_Right, nullptr);
 
-						Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
+						Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1]);
 
 						float Deviation = __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
 
@@ -828,9 +828,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		else
 		{
 			Update_Animation_Delta[1] = Choked_Commands + 1;
-		}
 
-		Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
+			Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
+		}
 
 		*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 20) = Send_Packet;
 

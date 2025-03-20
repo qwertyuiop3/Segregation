@@ -139,7 +139,7 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Aim_Height), (char*)"0.9", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Angle_X), (char*)"1080", nullptr);
+	Create_Interface(Pointer_Name(Interface_Angle_X), (char*)"540", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Animated_Angle_Y), (char*)"135", nullptr);
 

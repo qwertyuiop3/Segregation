@@ -12,22 +12,22 @@ float Animation_Layers[210];
 
 void __thiscall Redirected_Update_Animation(void* Player)
 {
-	if (Player == *(void**)((unsigned __int32)Client_Module + 82926756))
-	{
-		if (Update_Animation_Type == 1)
-		{
-			return;
-		}
+	*(__int8*)((unsigned __int32)Player + 14817) = Update_Animation_Type;
 
-		*(__int8*)((unsigned __int32)Player + 14817) = Update_Animation_Type;
-	}
-
-	if (Update_Animation_Type * *(__int8*)((unsigned __int32)Player + 14817) == 0)
+	if (*(__int8*)((unsigned __int32)Player + 14817) == 0)
 	{
 		(decltype(&Redirected_Update_Animation)(Original_Update_Animation_Caller))(Player);
 	}
 	else
 	{
+		if (Player == *(void**)((unsigned __int32)Client_Module + 82926756))
+		{
+			if (Update_Animation_Type == 1)
+			{
+				return;
+			}
+		}
+
 		Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)((unsigned __int32)Client_Module + 10871344);
 
 		*(float*)(*(unsigned __int32*)((unsigned __int32)Player + 14452) + 108) = Global_Variables->Current_Time - Global_Variables->Interval_Per_Tick * max(1, Update_Animation_Delta[Update_Animation_Type - 1]);

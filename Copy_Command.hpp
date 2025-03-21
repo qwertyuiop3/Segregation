@@ -636,84 +636,96 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																{
 																	Bones[8][0][0] * Hitbox_Center[0] + Bones[8][0][1] * Hitbox_Center[1] + Bones[8][0][2] * Hitbox_Center[2] + Bones[8][0][3],
 
-																	Bones[8][1][0] * Hitbox_Center[0] + Bones[8][1][1] * Hitbox_Center[1] + Bones[8][1][2] * Hitbox_Center[2] + Bones[8][1][3],
-
-																	*Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * Interface_Aim_Height.Get_Floating_Point() + Bones[8][2][3]
+																	Bones[8][1][0] * Hitbox_Center[0] + Bones[8][1][1] * Hitbox_Center[1] + Bones[8][1][2] * Hitbox_Center[2] + Bones[8][1][3]
 																};
 
-																*(__int32*)((unsigned __int32)Local_Player + 9856) = *(__int32*)((unsigned __int32)Client_Module + 83358788) - 1;
+																float Aim_Height = Interface_Aim_Height_Step.Get_Floating_Point() > 0.f ? min(0.5f, Interface_Aim_Height.Get_Floating_Point()) : Interface_Aim_Height.Get_Floating_Point();
 
-																float Previous_Incline = Pose_Parameters[12];
-
-																Pose_Parameters[12] = Local_Origin[2] + *(float*)((unsigned __int32)Local_Player + 268) >= Target_Origin[2] ? 1.f : 0.f;
-
-																*(__int32*)((unsigned __int32)Local_Player + 10516) = -8388609;
-
-																using Get_Eye_Position_Type = void(__thiscall*)(void* Entity, float* Eye_Position);
-
-																float Eye_Position[3];
-
-																Get_Eye_Position_Type((unsigned __int32)Client_Module + 3820128)(Local_Player, Eye_Position);
-
-																Pose_Parameters[12] = Previous_Incline;
-
-																float Direction[3] =
+																Adjust_Height_Label:
 																{
-																	Target_Origin[0] - Eye_Position[0],
+																	Target_Origin[2] = *Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * Aim_Height + Bones[8][2][3];
 
-																	Target_Origin[1] - Eye_Position[1],
+																	*(__int32*)((unsigned __int32)Local_Player + 9856) = *(__int32*)((unsigned __int32)Client_Module + 83358788) - 1;
 
-																	Target_Origin[2] - Eye_Position[2]
-																};
+																	float Previous_Incline = Pose_Parameters[12];
 
-																if (Perform_Trace(Eye_Position, Direction) == 1)
-																{
-																	Command->Tick_Number = Target->Tick_Number;
+																	Pose_Parameters[12] = Local_Origin[2] + *(float*)((unsigned __int32)Local_Player + 268) >= Target_Origin[2] ? 1.f : 0.f;
 
-																	Command->Angles[0] = __builtin_atan2f(-Direction[2], __builtin_hypotf(Direction[0], Direction[1])) * 180.f / 3.1415927f;
+																	*(__int32*)((unsigned __int32)Local_Player + 10516) = -8388609;
 
-																	Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f;
+																	using Get_Eye_Position_Type = void(__thiscall*)(void* Entity, float* Eye_Position);
 
-																	Command->Buttons |= 1;
+																	float Eye_Position[3];
 
-																	if (Interface_Bruteforce.Get_Integer() == 1)
+																	Get_Eye_Position_Type((unsigned __int32)Client_Module + 3820128)(Local_Player, Eye_Position);
+
+																	Pose_Parameters[12] = Previous_Incline;
+
+																	float Direction[3] =
 																	{
-																		__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 100);
+																		Target_Origin[0] - Eye_Position[0],
 
-																		Player_Data_Structure* Player_Data = &Players_Data[Target_Number];
+																		Target_Origin[1] - Eye_Position[1],
 
-																		if (Player_Data->Priority != -2)
+																		Target_Origin[2] - Eye_Position[2]
+																	};
+
+																	if (Perform_Trace(Eye_Position, Direction) == 1)
+																	{
+																		Command->Tick_Number = Target->Tick_Number;
+
+																		Command->Angles[0] = __builtin_atan2f(-Direction[2], __builtin_hypotf(Direction[0], Direction[1])) * 180.f / 3.1415927f;
+
+																		Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f;
+
+																		Command->Buttons |= 1;
+
+																		if (Interface_Bruteforce.Get_Integer() == 1)
 																		{
-																			Recent_Player_Data_Number = Target_Number;
+																			__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 100);
 
-																			Byte_Manager::Copy_Bytes(1, &Previous_Recent_Player_Data, sizeof(Previous_Recent_Player_Data), Player_Data);
+																			Player_Data_Structure* Player_Data = &Players_Data[Target_Number];
 
-																			if (Player_Data->Memory_Tolerance == 0)
+																			if (Player_Data->Priority != -2)
 																			{
-																				if (Player_Data->Tolerance == 0)
+																				Recent_Player_Data_Number = Target_Number;
+
+																				Byte_Manager::Copy_Bytes(1, &Previous_Recent_Player_Data, sizeof(Previous_Recent_Player_Data), Player_Data);
+
+																				if (Player_Data->Memory_Tolerance == 0)
 																				{
-																					Player_Data->Shots_Fired = (Player_Data->Shots_Fired + 1) % Bruteforce_Angles_Count;
-
-																					if (Player_Data->Shots_Fired == 0)
+																					if (Player_Data->Tolerance == 0)
 																					{
-																						Player_Data->Switch_X = (Player_Data->Switch_X + 1) % 3;
-																					}
+																						Player_Data->Shots_Fired = (Player_Data->Shots_Fired + 1) % Bruteforce_Angles_Count;
 
-																					Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Get_Integer();
+																						if (Player_Data->Shots_Fired == 0)
+																						{
+																							Player_Data->Switch_X = (Player_Data->Switch_X + 1) % 3;
+																						}
+
+																						Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Get_Integer();
+																					}
+																					else
+																					{
+																						Player_Data->Tolerance -= 1;
+																					}
 																				}
 																				else
 																				{
-																					Player_Data->Tolerance -= 1;
+																					Player_Data->Memory_Tolerance -= 1;
 																				}
 																			}
-																			else
-																			{
-																				Player_Data->Memory_Tolerance -= 1;
-																			}
 																		}
+
+																		goto Found_Target_Label;
 																	}
 
-																	goto Found_Target_Label;
+																	Aim_Height += Interface_Aim_Height_Step.Get_Floating_Point();
+
+																	if (Interface_Aim_Height_Step.Get_Floating_Point() > 0.f ? Aim_Height <= max(0.5f, Interface_Aim_Height.Get_Floating_Point()) : 0)
+																	{
+																		goto Adjust_Height_Label;
+																	}
 																}
 															}
 														}
@@ -765,6 +777,8 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 				Previous_Recent_Player_Data.Simulated = Player_Data->Simulated;
 
+				Previous_Recent_Player_Data.Angle = Player_Data->Angle;
+
 				Byte_Manager::Copy_Bytes(1, Player_Data, sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
 
 				goto Passed_Shot_Time_Check_Label;
@@ -805,7 +819,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 				{
 					if ((Command->Buttons & 2) + (Choked_Commands <= Interface_Maximum_Choked_Commands.Get_Integer()) == 3)
 					{
-						Send_Packet = 0;
+						Send_Packet = -1 * Interface_Body_Update.Get_Integer();
 
 						Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f + Interface_Body_Angle_Y.Get_Floating_Point();
 					}
@@ -819,7 +833,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		Correct_Movement();
 
-		if (Send_Packet == 0)
+		if (Send_Packet <= 0)
 		{
 			__int32 Sequence_Number = *(__int32*)((unsigned __int32)Network_Channel + 24) = Redirected_Send_Datagram(Network_Channel, nullptr);
 
@@ -832,9 +846,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
 		}
 
-		*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 20) = Send_Packet;
+		*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 20) = max(0, Send_Packet);
 
-		if (In_Attack * (Interface_Alternative.Get_Integer() ^ 1) == 1)
+		if (In_Attack * (Interface_Alternative.Get_Integer() ^ 1) + (Send_Packet == -1) == 1)
 		{
 			Send_Packet = 2;
 		}

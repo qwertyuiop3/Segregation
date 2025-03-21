@@ -23,6 +23,8 @@ struct Player_Data_Structure
 
 	__int8 Simulated;
 
+	float Angle;
+
 	__int32 Memory_Tolerance;
 
 	__int32 Tolerance;

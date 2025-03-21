@@ -59,11 +59,15 @@ Interface_Structure Interface_Aim_Intersection;
 
 Interface_Structure Interface_Aim_Height;
 
+Interface_Structure Interface_Aim_Height_Step;
+
 Interface_Structure Interface_Angle_X;
 
 Interface_Structure Interface_Animated_Angle_Y;
 
 Interface_Structure Interface_Angle_Y;
+
+Interface_Structure Interface_Body_Update;
 
 Interface_Structure Interface_Body_Angle_Y;
 
@@ -137,13 +141,17 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Aim_Intersection), (char*)"0", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Aim_Height), (char*)"0.9", nullptr);
+	Create_Interface(Pointer_Name(Interface_Aim_Height), (char*)"0.95", nullptr);
+
+	Create_Interface(Pointer_Name(Interface_Aim_Height_Step), (char*)"0.05", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Angle_X), (char*)"540", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Animated_Angle_Y), (char*)"135", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Angle_Y), (char*)"-45", nullptr);
+
+	Create_Interface(Pointer_Name(Interface_Body_Update), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Body_Angle_Y), (char*)"180", nullptr);
 

@@ -43,4 +43,6 @@ void __thiscall Redirected_Update_Animation(void* Player)
 			Byte_Manager::Copy_Bytes(1, Animation_Layers, sizeof(Animation_Layers), *(void**)((unsigned __int32)Player + 10608));
 		}
 	}
+
+	*(__int8*)((unsigned __int32)Player + 14817) = 1;
 }

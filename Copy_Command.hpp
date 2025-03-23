@@ -304,6 +304,8 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		static __int8 Send_Packet;
 
+		__int8 Animation_Ground = *(__int8*)(*(unsigned __int32*)((unsigned __int32)Local_Player + 14452) + 264);
+
 		void* Client = *(void**)((unsigned __int32)Engine_Module + 5757076);
 
 		__int32 Choked_Commands = *(__int32*)((unsigned __int32)Client + 19632);
@@ -804,7 +806,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 					Target_Origin[1] - Local_Origin[1]
 				};
 
-				if (*(void**)((unsigned __int32)Local_Player + 332) == INVALID_HANDLE_VALUE)
+				if (Animation_Ground == 0)
 				{
 					if (Choked_Commands == 0)
 					{

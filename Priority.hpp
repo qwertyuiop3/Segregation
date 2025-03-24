@@ -1,10 +1,6 @@
 struct Global_Variables_Structure
 {
-	__int8 Additional_Bytes_1[4];
-
-	__int32 Frame;
-
-	__int8 Additional_Bytes[8];
+	__int8 Additional_Bytes[16];
 
 	float Current_Time;
 

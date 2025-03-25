@@ -27,7 +27,7 @@ void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Paramete
 	{
 		if (Player_Data->Priority != -2)
 		{
-			if ((*(float*)((unsigned __int32)Entity + 604) != *(float*)((unsigned __int32)Entity + 608)) + (*(float*)((unsigned __int32)Entity + 45624) != Player_Data->Angle) + (__builtin_memcmp(Origin, Previous_Origin, sizeof(float[3])) != 0) != 0)
+			if ((*(float*)((unsigned __int32)Entity + 604) != *(float*)((unsigned __int32)Entity + 608)) + (*(float*)((unsigned __int32)Entity + 45624) != Player_Data->Networked_Angle) + (__builtin_memcmp(Origin, Previous_Origin, sizeof(float[3])) != 0) != 0)
 			{
 				float* Target_Origin = (float*)((unsigned __int32)Entity + 300);
 
@@ -43,7 +43,7 @@ void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Paramete
 		}
 	}
 
-	Player_Data->Angle = *(float*)((unsigned __int32)Entity + 45624);
+	Player_Data->Networked_Angle = *(float*)((unsigned __int32)Entity + 45624);
 
 	(decltype(&Redirected_Post_Data_Update)(Original_Post_Data_Update_Caller))(Entity, Unknown_Parameter);
 }

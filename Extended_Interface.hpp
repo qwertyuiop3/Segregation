@@ -57,9 +57,9 @@ Interface_Structure Interface_Maximum_Choked_Commands;
 
 Interface_Structure Interface_Aim_Intersection;
 
-Interface_Structure Interface_Aim_Height;
+Interface_Structure Interface_Aim_Heights;
 
-Interface_Structure Interface_Aim_Height_Step;
+#include "Aim.hpp"
 
 Interface_Structure Interface_Angle_X;
 
@@ -123,11 +123,11 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Bruteforce_Angles), (char*)"0, -60, 60", (void*)Bruteforce_Set_Angles);
 
-	Create_Interface(Pointer_Name(Interface_Bruteforce_Relative), (char*)"0", nullptr);
-
-	Create_Interface(Pointer_Name(Interface_Bruteforce_Perpendicular), (char*)"2", nullptr);
-
 	Bruteforce_Set_Angles((Interface_Structure*)((unsigned __int32)&Interface_Bruteforce_Angles + 24));
+
+	Create_Interface(Pointer_Name(Interface_Bruteforce_Relative), (char*)"0", (void*)Bruteforce_Reset);
+
+	Create_Interface(Pointer_Name(Interface_Bruteforce_Perpendicular), (char*)"2", (void*)Bruteforce_Reset);
 
 	Create_Interface(Pointer_Name(Interface_Target_On_Simulation), (char*)"0", nullptr);
 
@@ -137,13 +137,13 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Minimum_Choked_Commands), (char*)"2", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Maximum_Choked_Commands), (char*)"14", nullptr);
+	Create_Interface(Pointer_Name(Interface_Maximum_Choked_Commands), (char*)"15", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Aim_Intersection), (char*)"0", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Aim_Height), (char*)"0.95", nullptr);
+	Create_Interface(Pointer_Name(Interface_Aim_Heights), (char*)"0.5, 0.7, 0.9", (void*)Aim_Set_Heights);
 
-	Create_Interface(Pointer_Name(Interface_Aim_Height_Step), (char*)"0.05", nullptr);
+	Aim_Set_Heights((Interface_Structure*)((unsigned __int32)&Interface_Aim_Heights + 24));
 
 	Create_Interface(Pointer_Name(Interface_Angle_X), (char*)"540", nullptr);
 

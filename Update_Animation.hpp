@@ -4,8 +4,6 @@ void* Original_Update_Animation_Caller;
 
 __int32 Update_Animation_Delta[2];
 
-float Animation_Angle[65];
-
 float Pose_Parameters[24];
 
 float Animation_Layers[210];
@@ -34,7 +32,7 @@ void __thiscall Redirected_Update_Animation(void* Player)
 
 		(decltype(&Redirected_Update_Animation)(Original_Update_Animation_Caller))(Player);
 
-		Animation_Angle[*(__int32*)((unsigned __int32)Player + 100)] = *(float*)((unsigned __int32)Player + 200);
+		Players_Data[*(__int32*)((unsigned __int32)Player + 100)].Animation_Angle = *(float*)((unsigned __int32)Player + 200);
 
 		if (Update_Animation_Type == 2)
 		{

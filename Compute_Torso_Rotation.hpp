@@ -15,9 +15,7 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 		{
 			if (*(void**)Entity == (void*)((unsigned __int32)Client_Module + 9483064))
 			{
-				__int32 Entity_Number = *(__int32*)((unsigned __int32)Entity + 100);
-
-				Player_Data_Structure* Player_Data = &Players_Data[Entity_Number];
+				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 100)];
 
 				if (Player_Data->Priority != -2)
 				{
@@ -27,16 +25,16 @@ void __thiscall Redirected_Compute_Torso_Rotation(void* Animation_State)
 					{
 						float Angles[3] = { 90.f, -90.f, *(float*)((unsigned __int32)Animation_State + 124) };
 
-						Set_Pose_Parameter_Type((unsigned __int32)Client_Module + 1676480)(Entity, (char*)"body_pitch", Angles[Player_Data->Switch_X % max(1, 1 + (Angles[0] != Angles[2]) + (Angles[1] != Angles[2]) - Interface_Bruteforce_Perpendicular.Get_Integer())]);
+						Set_Pose_Parameter_Type((unsigned __int32)Client_Module + 1676480)(Entity, (char*)"body_pitch", Angles[Player_Data->Switch_X % max(1, 3 - Interface_Bruteforce_Perpendicular.Get_Integer())]);
 					}
 
 					if (Player_Data->Memory_Tolerance == 0)
 					{
-						Animation_Angle[Entity_Number] = *(float*)((unsigned __int32)Animation_State + 128) = *(float*)((unsigned __int32)Animation_State + 120) - Bruteforce_Angles[Player_Data->Shots_Fired];
+						Player_Data->Animation_Angle = *(float*)((unsigned __int32)Animation_State + 128) = *(float*)((unsigned __int32)Animation_State + 120) - Bruteforce_Angles[Player_Data->Shots_Fired];
 					}
 					else
 					{
-						Animation_Angle[Entity_Number] = *(float*)((unsigned __int32)Animation_State + 128) = *(float*)((unsigned __int32)Animation_State + 120) - Player_Data->Memorized_Y;
+						Player_Data->Animation_Angle = *(float*)((unsigned __int32)Animation_State + 128) = *(float*)((unsigned __int32)Animation_State + 120) - Player_Data->Memorized_Y;
 					}
 
 					Set_Pose_Parameter_Type((unsigned __int32)Client_Module + 1676480)(Entity, (char*)"body_yaw", __builtin_remainderf(*(float*)((unsigned __int32)Animation_State + 120) - *(float*)((unsigned __int32)Animation_State + 128), 360.f) * Interface_Bruteforce_Relative.Get_Floating_Point());

@@ -19,7 +19,7 @@ struct Player_Data_Structure
 
 	__int8 Simulated;
 
-	float Angle;
+	float Networked_Angle;
 
 	__int32 Memory_Tolerance;
 
@@ -27,9 +27,11 @@ struct Player_Data_Structure
 
 	__int32 Shots_Fired;
 
-	unsigned __int8 Switch_X;
+	__int32 Switch_X;
 
 	float Memorized_Y;
+
+	float Animation_Angle;
 };
 
 Player_Data_Structure Players_Data[65];

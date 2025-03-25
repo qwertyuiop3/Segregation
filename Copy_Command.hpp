@@ -194,7 +194,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			}
 			else
 			{
-				unsigned __int8 Solution_Number = 0;
+				__int8 Solution_Number = 0;
 
 				static float Solutions[9][3] =
 				{
@@ -219,7 +219,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 				float Least_Deviation = __builtin_inff();
 
-				unsigned __int8 Solution;
+				__int8 Solution;
 
 				Traverse_Solutions_Label:
 				{
@@ -641,27 +641,29 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																	Bones[8][1][0] * Hitbox_Center[0] + Bones[8][1][1] * Hitbox_Center[1] + Bones[8][1][2] * Hitbox_Center[2] + Bones[8][1][3]
 																};
 
-																float Aim_Height = Interface_Aim_Height_Step.Get_Floating_Point() > 0.f ? min(0.5f, Interface_Aim_Height.Get_Floating_Point()) : Interface_Aim_Height.Get_Floating_Point();
+																*(__int32*)((unsigned __int32)Local_Player + 9856) = *(__int32*)((unsigned __int32)Client_Module + 83358788) - 1;
 
-																Adjust_Height_Label:
+																float Previous_Incline = Pose_Parameters[12];
+
+																Pose_Parameters[12] = Local_Origin[2] + *(float*)((unsigned __int32)Local_Player + 268) >= *Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * 0.5f + Bones[8][2][3];
+
+																*(__int32*)((unsigned __int32)Local_Player + 10516) = -8388609;
+
+																using Get_Eye_Position_Type = void(__thiscall*)(void* Entity, float* Eye_Position);
+
+																float Eye_Position[3];
+
+																Get_Eye_Position_Type((unsigned __int32)Client_Module + 3820128)(Local_Player, Eye_Position);
+
+																Pose_Parameters[12] = Previous_Incline;
+
+																__int8 Aim_Height_Number = 0;
+
+																Traverse_Aim_Heights_Label:
 																{
+																	float Aim_Height = Aim_Heights[Aim_Height_Number];
+
 																	Target_Origin[2] = *Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * Aim_Height + Bones[8][2][3];
-
-																	*(__int32*)((unsigned __int32)Local_Player + 9856) = *(__int32*)((unsigned __int32)Client_Module + 83358788) - 1;
-
-																	float Previous_Incline = Pose_Parameters[12];
-
-																	Pose_Parameters[12] = Local_Origin[2] + *(float*)((unsigned __int32)Local_Player + 268) >= Target_Origin[2] ? 1.f : 0.f;
-
-																	*(__int32*)((unsigned __int32)Local_Player + 10516) = -8388609;
-
-																	using Get_Eye_Position_Type = void(__thiscall*)(void* Entity, float* Eye_Position);
-
-																	float Eye_Position[3];
-
-																	Get_Eye_Position_Type((unsigned __int32)Client_Module + 3820128)(Local_Player, Eye_Position);
-
-																	Pose_Parameters[12] = Previous_Incline;
 
 																	float Direction[3] =
 																	{
@@ -700,10 +702,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																					{
 																						Player_Data->Shots_Fired = (Player_Data->Shots_Fired + 1) % Bruteforce_Angles_Count;
 
-																						if (Player_Data->Shots_Fired == 0)
-																						{
-																							Player_Data->Switch_X = (Player_Data->Switch_X + 1) % 3;
-																						}
+																						Player_Data->Switch_X += (Player_Data->Shots_Fired == 0);
 
 																						Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Get_Integer();
 																					}
@@ -722,11 +721,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																		goto Found_Target_Label;
 																	}
 
-																	Aim_Height += Interface_Aim_Height_Step.Get_Floating_Point();
+																	Aim_Height_Number += 1;
 
-																	if (Interface_Aim_Height_Step.Get_Floating_Point() > 0.f ? Aim_Height <= max(0.5f, Interface_Aim_Height.Get_Floating_Point()) : 0)
+																	if (Aim_Height_Number != Aim_Heights_Count)
 																	{
-																		goto Adjust_Height_Label;
+																		goto Traverse_Aim_Heights_Label;
 																	}
 																}
 															}
@@ -819,9 +818,12 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 				}
 				else
 				{
-					if ((Command->Buttons & 2) + (Choked_Commands <= Interface_Maximum_Choked_Commands.Get_Integer()) == 3)
+					if ((Command->Buttons & 2) == 2)
 					{
-						Send_Packet = -1 * Interface_Body_Update.Get_Integer();
+						if (Interface_Body_Update.Get_Integer() == 1)
+						{
+							Send_Packet = -1;
+						}
 
 						Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f + Interface_Body_Angle_Y.Get_Floating_Point();
 					}

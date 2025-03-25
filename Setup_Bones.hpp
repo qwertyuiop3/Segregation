@@ -6,7 +6,7 @@ __int8 __thiscall Redirected_Setup_Bones(void* Entity, void* Bones, __int32 Maxi
 	{
 		*(float*)((unsigned __int32)Entity + 192) = 0.f;
 
-		*(float*)((unsigned __int32)Entity + 196) = Animation_Angle[*(__int32*)((unsigned __int32)Entity + 96)];
+		*(float*)((unsigned __int32)Entity + 196) = Players_Data[*(__int32*)((unsigned __int32)Entity + 96)].Animation_Angle;
 
 		*(float*)((unsigned __int32)Entity + 200) = 0.f;
 

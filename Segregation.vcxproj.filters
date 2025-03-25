@@ -85,5 +85,8 @@
     <ClInclude Include="Reset_Animation_State.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
+    <ClInclude Include="Aim.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

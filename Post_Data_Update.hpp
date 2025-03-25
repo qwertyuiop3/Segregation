@@ -1,10 +1,10 @@
 Redirection_Manager::Manager_Structure Post_Data_Update_Manager;
 
-void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
+void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 {
 	if (*(float*)((unsigned __int64)Entity + 152) != *(float*)((unsigned __int64)Entity + 156))
 	{
-		Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 240)];
+		Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 120)];
 
 		Player_Data->Simulated = 1;
 

@@ -14,7 +14,7 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 
 		using Get_Integer_Type = __int32(*)(void* Event, char* Key, void* Unknown_Parameter);
 
-		__int32 Local_Number = *(__int32*)((unsigned __int64)Local_Player + 256);
+		__int32 Local_Number = *(__int32*)((unsigned __int64)Local_Player + 136);
 
 		if (Name[0] == 'p')
 		{
@@ -63,10 +63,7 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 										{
 											if (Player_Data->Tolerance == Interface_Bruteforce_Tolerance.Integer)
 											{
-												if (Player_Data->Shots_Fired == 0)
-												{
-													Player_Data->Switch_X ^= 1;
-												}
+												Player_Data->Switch_X ^= Player_Data->Shots_Fired == 0;
 
 												Player_Data->Shots_Fired = ((Player_Data->Shots_Fired - 1) % Bruteforce_Angles_Count + Bruteforce_Angles_Count) % Bruteforce_Angles_Count;
 											}

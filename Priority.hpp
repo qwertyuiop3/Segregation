@@ -2,7 +2,7 @@ struct Global_Variables_Structure
 {
 	__int8 Additional_Bytes[12];
 
-	float Current_Time;
+	float Time;
 
 	float Frame_Time;
 

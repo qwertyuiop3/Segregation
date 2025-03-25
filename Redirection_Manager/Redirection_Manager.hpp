@@ -31,7 +31,7 @@ namespace Redirection_Manager
 
 		void* Caller;
 
-		void Redirect_Function(unsigned __int32 Offset, void* Original_Function, void* Redirected_Function)
+		void Redirect_Function(unsigned __int64 Offset, void* Original_Function, void* Redirected_Function)
 		{
 			Caller = VirtualAlloc(nullptr, 32 + Offset, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 

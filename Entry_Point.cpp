@@ -2,8 +2,6 @@
 
 #include <TlHelp32.h>
 
-#include <cstdio>
-
 #include "Byte_Manager/Byte_Manager.hpp"
 
 #include "Redirection_Manager/Redirection_Manager.hpp"
@@ -12,11 +10,7 @@ void* Engine_Module;
 
 #include "Extended_Interface.hpp"
 
-#include <unordered_map>
-
 #include "Post_Network_Data_Received.hpp"
-
-#pragma comment(lib, "WinMM.Lib")
 
 #include "Sounds.hpp"
 
@@ -32,8 +26,6 @@ void* Engine_Module;
 
 #include "Compute_Torso_Rotation.hpp"
 
-#include <algorithm>
-
 #include "Finish_Move.hpp"
 
 #include "Item_Post_Frame.hpp"
@@ -47,8 +39,6 @@ void* Engine_Module;
 #include "Send_Datagram.hpp"
 
 #include "Packet_Start.hpp"
-
-#include <vector>
 
 #include "Copy_Command.hpp"
 

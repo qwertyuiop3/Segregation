@@ -15,7 +15,7 @@ void Redirected_Compute_Torso_Rotation(void* Animation_State)
 		{
 			if (*(void**)Entity == (void*)((unsigned __int64)Client_Module + 4657304))
 			{
-				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 256)];
+				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 136)];
 
 				if (Player_Data->Priority != -2)
 				{

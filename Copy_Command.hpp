@@ -31,6 +31,8 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 	if (*(__int8*)((unsigned __int32)Local_Player + 135) == 0)
 	{
+		__int8 Move_Type = *(__int8*)((unsigned __int32)Local_Player + 308);
+
 		auto Angle_Vectors = [](float* Angles, float* Forward, float* Right, float* Up) -> void
 		{
 			using Angle_Vectors_Type = void(__cdecl*)(float* Angles, float* Forward, float* Right, float* Up);
@@ -38,7 +40,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Angle_Vectors_Type(606384752)(Angles, Forward, Right, Up);
 		};
 
-		__int32 Jump_State = (Command->Buttons & 2) + *(__int8*)((unsigned __int32)Local_Player + 308);
+		__int32 Jump_State = (Command->Buttons & 2) + Move_Type;
 
 		float Move_Angles[3] =
 		{
@@ -53,7 +55,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		if (Jump_State == 4)
 		{
-			Command->Move[0] = 0;
+			Command->Move[0] = 0.f;
 
 			if (*(void**)((unsigned __int32)Local_Player + 456) == INVALID_HANDLE_VALUE)
 			{
@@ -104,13 +106,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		Byte_Manager::Copy_Bytes(1, Previous_Move, sizeof(Previous_Move), Command->Move);
 
+		float Desired_Move[3];
+
 		float Desired_Move_Forward[3];
 
 		float Desired_Move_Right[3];
 
 		Angle_Vectors(Move_Angles, Desired_Move_Forward, Desired_Move_Right, nullptr);
-
-		Desired_Move_Forward[2] = 0.f;
 
 		auto Vector_Normalize = [](float* Vector) -> float
 		{
@@ -119,18 +121,50 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			return Vector_Normalize_Type(606378096)(Vector);
 		};
 
-		Vector_Normalize(Desired_Move_Forward);
-
-		Desired_Move_Right[2] = 0.f;
-
-		Vector_Normalize(Desired_Move_Right);
-
-		float Desired_Move[2] =
+		auto Get_Ladder_Move = [&](float* Move, float* Forward, float Forward_Move, float* Right, float Side_Move) -> void
 		{
-			Desired_Move_Forward[0] * Command->Move[0] + Desired_Move_Right[0] * Command->Move[1],
+			Move[0] = Forward[0] * Forward_Move + Right[0] * Side_Move;
 
-			Desired_Move_Forward[1] * Command->Move[0] + Desired_Move_Right[1] * Command->Move[1]
+			Move[1] = Forward[1] * Forward_Move + Right[1] * Side_Move;
+
+			float* Ladder_Normal = (float*)((unsigned __int32)Local_Player + 3560);
+
+			float Normal_Move = Move[0] * Ladder_Normal[0] + Move[1] * Ladder_Normal[1];
+
+			Move[0] -= Ladder_Normal[0] * Normal_Move;
+
+			Move[1] -= Ladder_Normal[1] * Normal_Move;
+
+			float Cross[3] =
+			{
+				-Ladder_Normal[1],
+
+				Ladder_Normal[0]
+			};
+
+			Vector_Normalize(Cross);
+
+			Move[2] = (Forward[2] * Forward_Move + Right[2] * Side_Move) - (Ladder_Normal[0] * Cross[1] - Ladder_Normal[1] * Cross[0]) * Normal_Move;
 		};
+
+		if (Move_Type == 2)
+		{
+			Desired_Move_Forward[2] = 0.f;
+
+			Vector_Normalize(Desired_Move_Forward);
+
+			Desired_Move_Right[2] = 0.f;
+
+			Vector_Normalize(Desired_Move_Right);
+
+			Desired_Move[0] = Desired_Move_Forward[0] * Command->Move[0] + Desired_Move_Right[0] * Command->Move[1];
+
+			Desired_Move[1] = Desired_Move_Forward[1] * Command->Move[0] + Desired_Move_Right[1] * Command->Move[1];
+		}
+		else
+		{
+			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, std::clamp(Command->Move[0], -1.f, 1.f), Desired_Move_Right, std::clamp(Command->Move[1], -1.f, 1.f));
+		}
 
 		auto Correct_Movement = [&]() -> void
 		{
@@ -140,28 +174,87 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 			Angle_Vectors(Command->Angles, Move_Forward, Move_Right, nullptr);
 
-			Move_Forward[2] = 0.f;
+			if (Move_Type == 2)
+			{
+				Move_Forward[2] = 0.f;
 
-			Vector_Normalize(Move_Forward);
+				Vector_Normalize(Move_Forward);
 
-			Move_Right[2] = 0.f;
+				Move_Right[2] = 0.f;
 
-			Vector_Normalize(Move_Right);
+				Vector_Normalize(Move_Right);
 
-			float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
+				float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-			Command->Move[0] = (__int16)((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider);
+				Command->Move[0] = (__int16)((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider);
+
+				Command->Move[1] = (__int16)((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider);
+			}
+			else
+			{
+				static float Solutions[9][2] =
+				{
+					{ -1.f },
+
+					{ 0.f, -1.f },
+
+					{ },
+
+					{ 1.f },
+
+					{ 0.f, 1.f },
+
+					{ -1.f, -1.f },
+
+					{ -1.f, 1.f },
+
+					{ 1.f, -1.f },
+
+					{ 1.f, 1.f }
+				};
+
+				__int8 Solution_Number = 0;
+
+				float Least_Deviation = __builtin_inff();
+
+				__int8 Solution;
+
+				Traverse_Solutions_Label:
+				{
+					float Move[3];
+
+					Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1]);
+
+					float Deviation = __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
+
+					if (Deviation < Least_Deviation)
+					{
+						Least_Deviation = Deviation;
+
+						Solution = Solution_Number;
+					}
+
+					Solution_Number += 1;
+
+					if (Solution_Number != sizeof(Solutions) / sizeof(Solutions[0]))
+					{
+						goto Traverse_Solutions_Label;
+					}
+				}
+
+				Command->Move[0] = Solutions[Solution][0];
+
+				Command->Move[1] = Solutions[Solution][1];
+			}
 
 			Command->Buttons &= ~1560;
 
-			if (Command->Move[0] != 0)
+			if (Command->Move[0] != 0.f)
 			{
 				Command->Buttons |= 8 * (__builtin_signbitf(Command->Move[0]) + 1);
 			}
 
-			Command->Move[1] = (__int16)((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider);
-
-			if (Command->Move[1] != 0)
+			if (Command->Move[1] != 0.f)
 			{
 				Command->Buttons |= 512 * ((__builtin_signbitf(Command->Move[1]) ^ 1) + 1);
 			}
@@ -391,32 +484,25 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			}
 		}
 
-		auto Target_List_Sort_Prepare = [](Target_Structure& X, Target_Structure& Y) -> __int8
+		auto Target_List_Sort = [](Target_Structure& X, Target_Structure& Y) -> __int8
 		{
-			return X.Priority < Y.Priority;
-		};
-
-		std::sort(Sorted_Target_List.begin(), Sorted_Target_List.end(), Target_List_Sort_Prepare);
-
-		auto Target_List_Sort_Finish = [](Target_Structure& X, Target_Structure& Y) -> __int8
-		{
-			if (X.Priority > Y.Priority)
+			if (X.Priority == Y.Priority)
 			{
-				return 1;
+				return X.Distance < Y.Distance;
 			}
 
-			return X.Distance < Y.Distance;
+			return X.Priority > Y.Priority;
 		};
 
-		std::sort(Sorted_Target_List.begin(), Sorted_Target_List.end(), Target_List_Sort_Finish);
+		std::sort(Sorted_Target_List.begin(), Sorted_Target_List.end(), Target_List_Sort);
 
 		__int8 In_Attack = 0;
 
 		if (Command->Select == 0)
 		{
-			if (__builtin_fabsf(Global_Variables->Current_Time - Shot_Time) > 0.5f)
+			if (__builtin_fabsf(Global_Variables->Time - Shot_Time) > 0.5f)
 			{
-				if (Shot_Time == 0)
+				if (Shot_Time == 0.f)
 				{
 					Passed_Shot_Time_Check_Label:
 					{
@@ -431,7 +517,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 							if (Send_Packet_Sequence == 2)
 							{
-								if (*(float*)((unsigned __int32)Local_Player + 2544) <= Global_Variables->Current_Time)
+								if (*(float*)((unsigned __int32)Local_Player + 2544) <= Global_Variables->Time)
 								{
 									using Get_Weapon_Type = void*(__thiscall*)(void* Entity);
 
@@ -443,7 +529,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 										{
 											if (*(__int32*)((unsigned __int32)Weapon + 1788) > 0)
 											{
-												if (*(float*)((unsigned __int32)Weapon + 1720) <= Global_Variables->Current_Time)
+												if (*(float*)((unsigned __int32)Weapon + 1720) <= Global_Variables->Time)
 												{
 													size_t Target_Number = 0;
 
@@ -469,13 +555,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 															{
 																Redirected_Compute_Torso_Rotation((void*)(*(unsigned __int32*)((unsigned __int32)Target->Self + 3968) - 148));
 
-																using Setup_Bones_Type = __int8(__thiscall*)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time);
+																using Setup_Bones_Type = __int8(__thiscall*)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Time);
 
 																float Bones[128][3][4];
 
-																if (Setup_Bones_Type(604209888)((void*)((unsigned __int32)Target->Self + 4), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Current_Time) == 1)
+																if (Setup_Bones_Type(604209888)((void*)((unsigned __int32)Target->Self + 4), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Time) == 1)
 																{
-																	auto Perform_Trace = [&](float Direction[3]) -> __int8
+																	auto Perform_Trace = [&](float* Direction) -> __int8
 																	{
 																		struct alignas(4) Ray_Structure
 																		{
@@ -674,7 +760,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 													{
 														float Rotations[2][3][3];
 
-														unsigned __int8 Calculation_Number = 0;
+														__int8 Calculation_Number = 0;
 
 														float Forward[3];
 
@@ -820,7 +906,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														Send_Packet = Interface_Alternative.Integer * 2;
 
-														Shot_Time = Global_Variables->Current_Time;
+														Shot_Time = Global_Variables->Time;
 													}
 												}
 											}
@@ -833,7 +919,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 				}
 				else
 				{
-					Shot_Time = 0;
+					Shot_Time = 0.f;
 
 					if (Recent_Player_Data_Number == 0)
 					{

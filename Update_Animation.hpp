@@ -10,9 +10,9 @@ void __thiscall Redirected_Update_Animation(void* Player)
 {
 	Global_Variables_Structure* Global_Variables = *(Global_Variables_Structure**)607726732;
 
-	float Previous_Current_Time = Global_Variables->Current_Time;
+	float Previous_Time = Global_Variables->Time;
 
-	Global_Variables->Current_Time = Update_Animation_Time;
+	Global_Variables->Time = Update_Animation_Time;
 
 	if (Player == *(void**)607867332)
 	{
@@ -29,5 +29,5 @@ void __thiscall Redirected_Update_Animation(void* Player)
 
 	Global_Variables->Frame_Time = Previous_Frame_Time;
 
-	Global_Variables->Current_Time = Previous_Current_Time;
+	Global_Variables->Time = Previous_Time;
 }

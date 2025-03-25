@@ -1,6 +1,6 @@
 void* Original_Precache_Caller;
 
-void __thiscall Redirected_Precache(void* Material)
+__int8 __thiscall Redirected_Precache(void* Material)
 {
 	if ((*(unsigned __int16*)((unsigned __int32)Material + 32) & 2) == 0)
 	{
@@ -27,5 +27,5 @@ void __thiscall Redirected_Precache(void* Material)
 		}
 	}
 
-	(decltype(&Redirected_Precache)(Original_Precache_Caller))(Material);
+	return (decltype(&Redirected_Precache)(Original_Precache_Caller))(Material);
 }

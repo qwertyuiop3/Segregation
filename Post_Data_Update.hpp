@@ -12,7 +12,7 @@ void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Paramete
 		{
 			float* Origin = (float*)((unsigned __int32)Entity + 660);
 
-			float* Previous_Origin = (float*)((unsigned __int32)Entity + 624);
+			float* Previous_Origin = (float*)((unsigned __int32)Entity + 484);
 
 			if (__builtin_powf(Origin[0] - Previous_Origin[0], 2.f) + __builtin_powf(Origin[1] - Previous_Origin[1], 2.f) + __builtin_powf(Origin[2] - Previous_Origin[2], 2.f) > 4096.f)
 			{

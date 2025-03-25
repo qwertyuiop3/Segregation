@@ -2,19 +2,13 @@
 
 #include <TlHelp32.h>
 
-#include <cstdio>
-
 #include "Byte_Manager/Byte_Manager.hpp"
 
 #include "Redirection_Manager/Redirection_Manager.hpp"
 
 #include "Extended_Interface.hpp"
 
-#include <unordered_map>
-
 #include "Post_Network_Data_Received.hpp"
-
-#pragma comment(lib, "WinMM.Lib")
 
 #include "Sounds.hpp"
 
@@ -36,8 +30,6 @@
 
 #include "Fall_Damage.hpp"
 
-#include <algorithm>
-
 #include "Finish_Move.hpp"
 
 #include "Item_Post_Frame.hpp"
@@ -53,8 +45,6 @@
 #include "Send_Datagram.hpp"
 
 #include "Packet_Start.hpp"
-
-#include <vector>
 
 #include "Copy_Command.hpp"
 
@@ -295,7 +285,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Materials");
 				{
-					Original_Precache_Caller = Redirection_Manager::Redirect_Function(5, (void*)((unsigned __int32)GetModuleHandleW(L"MaterialSystem.dll") + 21984), (void*)Redirected_Precache);
+					Original_Precache_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)GetModuleHandleW(L"MaterialSystem.dll") + 26832), (void*)Redirected_Precache);
 
 					Byte_Manager::Set_Bytes(0, (void*)605462216, 2, 144);
 

@@ -778,7 +778,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 				Previous_Recent_Player_Data.Simulated = Player_Data->Simulated;
 
-				Previous_Recent_Player_Data.Angle = Player_Data->Angle;
+				Previous_Recent_Player_Data.Networked_Angle = Player_Data->Networked_Angle;
+
+				Previous_Recent_Player_Data.Animation_Angle = Player_Data->Animation_Angle;
 
 				Byte_Manager::Copy_Bytes(1, Player_Data, sizeof(Previous_Recent_Player_Data), &Previous_Recent_Player_Data);
 
@@ -860,8 +862,6 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 	else
 	{
 		*(__int8*)((unsigned __int32)__builtin_frame_address(0) + 20) = 1;
-
-		Update_Animation_Delta[1] = 0;
 	}
 
 	(decltype(&Redirected_Copy_Command)(Original_Copy_Command_Caller))(Unknown_Parameter, Command);

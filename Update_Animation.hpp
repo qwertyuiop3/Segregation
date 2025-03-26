@@ -30,19 +30,11 @@ void __thiscall Redirected_Update_Animation(void* Player)
 
 		*(float*)(*(unsigned __int32*)((unsigned __int32)Player + 14452) + 108) = Global_Variables->Current_Time - Global_Variables->Interval_Per_Tick * max(1, Update_Animation_Delta[Update_Animation_Type - 1]);
 
-		float Initial_Animation_Layers[210];
-
-		Byte_Manager::Copy_Bytes(1, Initial_Animation_Layers, sizeof(Initial_Animation_Layers), *(void**)((unsigned __int32)Player + 10608));
-
 		(decltype(&Redirected_Update_Animation)(Original_Update_Animation_Caller))(Player);
 
 		Players_Data[*(__int32*)((unsigned __int32)Player + 100)].Animation_Angle = *(float*)((unsigned __int32)Player + 200);
 
-		if (Update_Animation_Type == 1)
-		{
-			Byte_Manager::Copy_Bytes(1, *(void**)((unsigned __int32)Player + 10608), sizeof(Initial_Animation_Layers), Initial_Animation_Layers);
-		}
-		else
+		if (Update_Animation_Type == 2)
 		{
 			Byte_Manager::Copy_Bytes(1, Pose_Parameters, sizeof(Pose_Parameters), (void*)((unsigned __int32)Player + 10084));
 

@@ -34,6 +34,8 @@ void* Engine_Module;
 
 #include "Compute_Torso_Rotation.hpp"
 
+#include "Check_Jump.hpp"
+
 #include "Setup_Bones.hpp"
 
 #include "Setup_Move.hpp"
@@ -208,6 +210,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3618054), 162, 144);
 
 					Original_Update_Animation_Caller = Redirection_Manager::Redirect_Function(1, (void*)((unsigned __int32)Client_Module + 3617984), (void*)Redirected_Update_Animation);
+
+					Original_Check_Jump_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 3736752), (void*)Redirected_Check_Jump);
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3880672), 1, 195);
 

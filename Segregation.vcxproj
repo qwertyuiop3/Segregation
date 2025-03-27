@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="Aim.hpp" />
     <ClInclude Include="Bruteforce.hpp" />
+    <ClInclude Include="Check_Jump.hpp" />
     <ClInclude Include="Extended_Interface.hpp" />
     <ClInclude Include="Compute_Torso_Rotation.hpp" />
     <ClInclude Include="Draw_Crosshair.hpp" />

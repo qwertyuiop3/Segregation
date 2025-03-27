@@ -6,7 +6,20 @@ __int32 Update_Animation_Delta[2];
 
 float Pose_Parameters[24];
 
-float Animation_Layers[210];
+struct Animation_Layer_Structure
+{
+	__int8 Additional_Bytes_1[32];
+
+	float Weight;
+
+	__int8 Additional_Bytes_2[8];
+
+	float Cycle;
+
+	__int8 Additional_Bytes_3[8];
+};
+
+Animation_Layer_Structure Animation_Layers[15];
 
 void __thiscall Redirected_Update_Animation(void* Player)
 {

@@ -88,5 +88,8 @@
     <ClInclude Include="Aim.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
+    <ClInclude Include="Check_Jump.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

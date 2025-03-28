@@ -824,7 +824,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 					{
 						if (Interface_Body_Update.Get_Integer() == 1)
 						{
-							Send_Packet = -1;
+							Send_Packet = -(Choked_Commands <= Interface_Maximum_Choked_Commands.Get_Integer());
 						}
 
 						Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f + Interface_Body_Angle_Y.Get_Floating_Point();

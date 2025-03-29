@@ -8,15 +8,19 @@ float Pose_Parameters[24];
 
 struct Animation_Layer_Structure
 {
-	__int8 Additional_Bytes_1[32];
+	__int8 Additional_Bytes_1[24];
+
+	__int32 Sequence;
+
+	__int8 Additional_Bytes_2[4];
 
 	float Weight;
 
-	__int8 Additional_Bytes_2[8];
+	__int8 Additional_Bytes_3[8];
 
 	float Cycle;
 
-	__int8 Additional_Bytes_3[8];
+	__int8 Additional_Bytes_4[8];
 };
 
 Animation_Layer_Structure Animation_Layers[15];

@@ -1,8 +1,6 @@
 struct Command_Structure
 {
-	__int8 Additional_Bytes_1[4];
-
-	__int32 Command_Number;
+	__int8 Additional_Bytes_1[8];
 
 	__int32 Tick_Number;
 

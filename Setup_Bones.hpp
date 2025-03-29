@@ -14,7 +14,23 @@ __int8 __thiscall Redirected_Setup_Bones(void* Entity, void* Bones, __int32 Maxi
 		{
 			Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)Entity + 10080), sizeof(Pose_Parameters), Pose_Parameters);
 
-			Byte_Manager::Copy_Bytes(1, *(void**)((unsigned __int32)Entity + 10604), sizeof(Animation_Layers), Animation_Layers);
+			__int32 Layer_Number = 0;
+
+			Animation_Layer_Structure* Frame_Animation_Layers = *(Animation_Layer_Structure**)((unsigned __int32)Entity + 10604);
+
+			Traverse_Layers_Label:
+			{
+				Animation_Layers[Layer_Number].Sequence = Frame_Animation_Layers[Layer_Number].Sequence;
+				
+				Layer_Number += 1;
+
+				if (Layer_Number != sizeof(Animation_Layers) / sizeof(Animation_Layer_Structure))
+				{
+					goto Traverse_Layers_Label;
+				}
+			}
+
+			Byte_Manager::Copy_Bytes(1, Frame_Animation_Layers, sizeof(Animation_Layers), Animation_Layers);
 		}
 		else
 		{

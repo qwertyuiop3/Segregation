@@ -4,7 +4,7 @@ __int8 Compute_Torso_Rotation(void* Animation_State, void* Studio_Header)
 	{
 		void* Local_Player = Get_Local_Player();
 
-		if (*(void**)Animation_State == **(void***)((unsigned __int64)Local_Player + 13872))
+		if (*(void**)Animation_State == **(void***)((unsigned __int64)Local_Player + 13920))
 		{
 			void* Entity = *(void**)((unsigned __int64)Animation_State + 304);
 

@@ -31,7 +31,7 @@ void Redirected_Fire_Bullets(void* Player, Bullet_Structure* Bullet)
 	}
 	else
 	{
-		Byte_Manager::Copy_Bytes(1, Weapon_Recoil, sizeof(Weapon_Recoil), (float*)((unsigned __int64)Player + 10776));
+		Byte_Manager::Copy_Bytes(1, Weapon_Recoil, sizeof(Weapon_Recoil), (float*)((unsigned __int64)Player + 10784));
 	}
 
 	Byte_Manager::Copy_Bytes(1, Weapon_Spread, sizeof(Weapon_Spread), Bullet->Spread);

@@ -18,7 +18,7 @@ void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Paramete
 		{
 			if (__builtin_powf(Origin[0] - Previous_Origin[0], 2.f) + __builtin_powf(Origin[1] - Previous_Origin[1], 2.f) + __builtin_powf(Origin[2] - Previous_Origin[2], 2.f) > 4096.f)
 			{
-				Player_Data->Simulated = 2;
+				Player_Data->Simulated = 0;
 			}
 		}
 	}

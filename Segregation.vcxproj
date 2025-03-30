@@ -99,10 +99,10 @@
     <ClInclude Include="Item_Post_Frame.hpp" />
     <ClInclude Include="Priority.hpp" />
     <ClInclude Include="Read_Packets.hpp" />
-    <ClInclude Include="Reset_Animation_State.hpp" />
     <ClInclude Include="Send_Datagram.hpp" />
     <ClInclude Include="Setup_Bones.hpp" />
     <ClInclude Include="Setup_Move.hpp" />
+    <ClInclude Include="Set_Animation_Layer.hpp" />
     <ClInclude Include="Update_Animation.hpp" />
     <ClInclude Include="Sounds.hpp" />
     <ClInclude Include="Update_Animation_State.hpp" />

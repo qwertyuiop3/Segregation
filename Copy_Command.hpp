@@ -19,10 +19,6 @@ void* Original_Copy_Command_Caller;
 
 void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structure* Command)
 {
-	using Fire_Events_Type = void(__cdecl*)();
-
-	Fire_Events_Type((unsigned __int32)Engine_Module + 851744)();
-
 	Update_Animation_Type = 1;
 
 	using Update_Animations_Type = void(__cdecl*)();
@@ -641,9 +637,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																*(__int32*)((unsigned __int32)Local_Player + 9856) = *(__int32*)((unsigned __int32)Client_Module + 83358788) - 1;
 
-																float Previous_Incline = Pose_Parameters[12];
+																float Previous_Incline = *(float*)((unsigned __int32)Local_Player + 10132);
 
-																Pose_Parameters[12] = Local_Origin[2] + *(float*)((unsigned __int32)Local_Player + 268) >= *Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * 0.5f + Bones[8][2][3];
+																*(float*)((unsigned __int32)Local_Player + 10132) = Local_Origin[2] + *(float*)((unsigned __int32)Local_Player + 268) >= *Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * 0.5f + Bones[8][2][3];
 
 																*(__int32*)((unsigned __int32)Local_Player + 10516) = -8388609;
 
@@ -653,7 +649,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																Get_Eye_Position_Type((unsigned __int32)Client_Module + 3820128)(Local_Player, Eye_Position);
 
-																Pose_Parameters[12] = Previous_Incline;
+																*(float*)((unsigned __int32)Local_Player + 10132) = Previous_Incline;
 
 																__int8 Aim_Height_Number = 0;
 

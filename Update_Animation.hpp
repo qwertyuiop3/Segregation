@@ -2,28 +2,24 @@ __int8 Update_Animation_Type;
 
 void* Original_Update_Animation_Caller;
 
-__int32 Update_Animation_Delta[2];
-
-float Pose_Parameters[24];
-
 struct Animation_Layer_Structure
 {
-	__int8 Additional_Bytes_1[24];
-
-	__int32 Sequence;
-
-	__int8 Additional_Bytes_2[4];
+	__int8 Additional_Bytes_1[32];
 
 	float Weight;
 
-	__int8 Additional_Bytes_3[8];
+	__int8 Additional_Bytes_2[8];
 
 	float Cycle;
 
-	__int8 Additional_Bytes_4[8];
+	void* Owner;
+
+	__int8 Additional_Bytes_3[4];
 };
 
-Animation_Layer_Structure Animation_Layers[15];
+Animation_Layer_Structure Networked_Animation_Layers[15];
+
+__int32 Update_Animation_Delta[2];
 
 void __thiscall Redirected_Update_Animation(void* Player)
 {
@@ -35,17 +31,31 @@ void __thiscall Redirected_Update_Animation(void* Player)
 	}
 	else
 	{
+		Animation_Layer_Structure* Frame_Animation_Layers = *(Animation_Layer_Structure**)((unsigned __int32)Player + 10608);
+
 		if (Player == *(void**)((unsigned __int32)Client_Module + 82926756))
 		{
 			if (Update_Animation_Type == 1)
 			{
 				return;
 			}
+
+			__int32 Layer_Number = 0;
+
+			Traverse_Layers_Label:
+			{
+				Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int32)&Frame_Animation_Layers[Layer_Number] + 20), 28, (void*)((unsigned __int32)&Networked_Animation_Layers[Layer_Number] + 20));
+
+				Layer_Number += 1;
+
+				if (Layer_Number != sizeof(Networked_Animation_Layers) / sizeof(Animation_Layer_Structure))
+				{
+					goto Traverse_Layers_Label;
+				}
+			}
 		}
 
 		Animation_Layer_Structure Initial_Animation_Layers[15];
-
-		Animation_Layer_Structure* Frame_Animation_Layers = *(Animation_Layer_Structure**)((unsigned __int32)Player + 10608);
 
 		Byte_Manager::Copy_Bytes(1, Initial_Animation_Layers, sizeof(Initial_Animation_Layers), Frame_Animation_Layers);
 
@@ -62,12 +72,6 @@ void __thiscall Redirected_Update_Animation(void* Player)
 			Initial_Animation_Layers[12].Weight = Frame_Animation_Layers[12].Weight;
 
 			Byte_Manager::Copy_Bytes(1, Frame_Animation_Layers, sizeof(Initial_Animation_Layers), Initial_Animation_Layers);
-		}
-		else
-		{
-			Byte_Manager::Copy_Bytes(1, Pose_Parameters, sizeof(Pose_Parameters), (void*)((unsigned __int32)Player + 10084));
-
-			Byte_Manager::Copy_Bytes(1, Animation_Layers, sizeof(Animation_Layers), Frame_Animation_Layers);
 		}
 	}
 

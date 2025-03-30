@@ -82,13 +82,13 @@
     <ClInclude Include="Setup_Bones.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Reset_Animation_State.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Aim.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
     <ClInclude Include="Check_Jump.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
+    <ClInclude Include="Set_Animation_Layer.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
   </ItemGroup>

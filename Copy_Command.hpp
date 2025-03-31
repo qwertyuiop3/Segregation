@@ -471,7 +471,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 								{
 									using Get_Weapon_Information_Type = void*(__thiscall*)(void* Weapon);
 
-									void* Weapon_Information = Get_Weapon_Information_Type((unsigned __int32)Client_Module + 5347152)(Weapon);
+									void* Weapon_Information = Get_Weapon_Information_Type((unsigned __int32)Client_Module + 5306512)(Weapon);
 
 									if (*(__int32*)((unsigned __int32)Weapon + 12796) * (*(__int32*)((unsigned __int32)Weapon_Information + 20) != 1) * (*(__int32*)((unsigned __int32)Weapon_Information + 20) != 8) > 0)
 									{

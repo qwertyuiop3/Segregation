@@ -73,6 +73,10 @@ void __thiscall Redirected_Update_Animation(void* Player)
 
 			Byte_Manager::Copy_Bytes(1, Frame_Animation_Layers, sizeof(Initial_Animation_Layers), Initial_Animation_Layers);
 		}
+		else
+		{
+			Byte_Manager::Copy_Bytes(1, Networked_Animation_Layers, sizeof(Networked_Animation_Layers), Frame_Animation_Layers);
+		}
 	}
 
 	*(__int8*)((unsigned __int32)Player + 14817) = 1;

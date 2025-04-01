@@ -182,34 +182,36 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 				float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-				Command->Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -16383.999f, 16383.999f);
+				Command->Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -1000.f, 1000.f);
 
-				Command->Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -16383.999f, 16383.999f);
+				Command->Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -1000.f, 1000.f);
 			}
 			else
 			{
-				__int8 Solution_Number = 0;
+				float Speed = max(Command->Move[0], Command->Move[1]);
 
-				static float Solutions[9][3] =
+				float Solutions[9][3] =
 				{
-					{ -450.f },
+					{ Speed },
 
-					{ 0.f, -450.f },
+					{ 0.f, -Speed },
 
 					{ },
 
-					{ 450.f },
+					{ Speed },
 
-					{ 0.f, 450.f },
+					{ 0.f, Speed },
 
-					{ -450.f, -450.f },
+					{ -Speed, -Speed },
 
-					{ -450.f, 450.f },
+					{ -Speed, Speed },
 
-					{ 450.f, -450.f },
+					{ Speed, -Speed },
 
-					{ 450.f, 450.f }
+					{ Speed, Speed }
 				};
+
+				__int8 Solution_Number = 0;
 
 				float Least_Deviation = __builtin_inff();
 

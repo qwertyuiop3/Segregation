@@ -10,14 +10,11 @@ __int8 __thiscall Redirected_Setup_Bones(void* Entity, void* Bones, __int32 Maxi
 
 		*(float*)((unsigned __int32)Entity + 200) = 0.f;
 
-		if (*(void**)((unsigned __int32)__builtin_frame_address(0) + 52) == (void*)((unsigned __int32)Client_Module + 1683349))
+		if (*(void**)((unsigned __int32)Engine_Module + 8406032) == Bones)
 		{
-			if (*(__int32*)((unsigned __int32)__builtin_frame_address(0) + 72) == 6)
-			{
-				*(__int32*)((unsigned __int32)Entity + 9852) = *(__int32*)((unsigned __int32)Client_Module + 83358788) - 1;
+			*(__int32*)((unsigned __int32)Entity + 9852) = *(__int32*)((unsigned __int32)Client_Module + 83358788) - 1;
 
-				*(__int32*)((unsigned __int32)Entity + 10512) = -8388609;
-			}
+			*(__int32*)((unsigned __int32)Entity + 10512) = -8388609;
 		}
 	}
 

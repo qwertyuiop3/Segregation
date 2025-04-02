@@ -26,6 +26,8 @@ void* Engine_Module;
 
 #include "Post_Data_Update.hpp"
 
+#include "Setup_Bones.hpp"
+
 #include "Update_Animation.hpp"
 
 #include "Check_Jump.hpp"
@@ -33,8 +35,6 @@ void* Engine_Module;
 #include "Update_Animation_State.hpp"
 
 #include "Compute_Torso_Rotation.hpp"
-
-#include "Setup_Bones.hpp"
 
 #include "Set_Animation_Layer.hpp"
 
@@ -203,6 +203,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 1687371), 1, 88);
 
+					Original_Setup_Bones_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 1687584), (void*)Redirected_Setup_Bones);
+
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 1690337), 1, 235);
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 1789484), 29, 144);
@@ -222,8 +224,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3882372), 18, 144);
 
 					Original_Compute_Torso_Rotation_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 3900384), (void*)Redirected_Compute_Torso_Rotation);
-
-					Original_Setup_Bones_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 1687584), (void*)Redirected_Setup_Bones);
 
 					void* Animation_Proxy = (void*)((unsigned __int32)Client_Module + 83422148);
 

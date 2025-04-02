@@ -188,7 +188,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			}
 			else
 			{
-				float Speed = max(Command->Move[0], Command->Move[1]);
+				float Speed = max(__builtin_fabsf(Command->Move[0]), __builtin_fabsf(Command->Move[1]));
 
 				float Solutions[9][3] =
 				{

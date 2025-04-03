@@ -207,7 +207,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 1690337), 1, 235);
 
-					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 1789484), 29, 144);
+					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 1789484), 30, 144);
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3620513), 6, 144);
 
@@ -224,6 +224,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3882372), 18, 144);
 
 					Original_Compute_Torso_Rotation_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 3900384), (void*)Redirected_Compute_Torso_Rotation);
+
+					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3900610), 1, 139);
 
 					void* Animation_Proxy = (void*)((unsigned __int32)Client_Module + 83422148);
 
@@ -257,7 +259,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Copy_Bytes(0, &Original_Prediction_Descriptor, sizeof(Prediction_Descriptor_Structure), Prediction_Descriptor);
 
-					static Prediction_Field_Structure Prediction_Fields = { 1, (char*)"m_flVelocityModifier", 41660, 1, 256, { }, nullptr, sizeof(float), { }, 0.005f };
+					static Prediction_Field_Structure Prediction_Fields = { 1, (char*)"m_flVelocityModifier", 41660, 1, 256, { }, sizeof(float), { }, 0.005f };
 
 					Prediction_Descriptor->Fields = &Prediction_Fields;
 

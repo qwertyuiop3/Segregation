@@ -8,9 +8,9 @@ struct Prediction_Copy_Structure
 
 	void* Source;
 
-	__int32 Packed[2];
+	__int32 Packed;
 
-	__int8 Additional_Bytes_1[8];
+	__int8 Additional_Bytes_1[12];
 
 	void* Handler;
 
@@ -26,9 +26,7 @@ struct Prediction_Copy_Structure
 
 		this->Source = Source;
 
-		Packed[0] = 1;
-
-		Packed[1] = 0;
+		Packed = 1;
 
 		this->Handler = Handler;
 	}
@@ -48,9 +46,7 @@ struct Prediction_Field_Structure
 
 	__int16 Flags;
 
-	__int8 Additional_Bytes_1[10];
-
-	struct Prediction_Descriptor_Structure* Descriptor;
+	__int8 Additional_Bytes_1[14];
 
 	__int32 Bytes;
 
@@ -94,16 +90,13 @@ void __thiscall Redirected_Post_Network_Data_Received(void* Unknown_Parameter, _
 
 	Commands_Acknowledged = max(0, Commands_Acknowledged);
 
-	void* Result = *(void**)((unsigned __int32)Local_Player + 1140 + (150 - ((Commands_Acknowledged - 1) % 150 + 1) * 150 % -~150) * 4);
+	void* Prediction_Frame = (void*)((unsigned __int32)Local_Player + 1140 + (150 - ((Commands_Acknowledged - 1) % 150 + 1) * 150 % -~150) * 4);
 
-	if (Result == *(void**)((unsigned __int32)Local_Player + 1740))
-	{
-		Result = *(void**)((unsigned __int32)Local_Player + 2344);
-	}
+	Prediction_Frame = *(void**)((unsigned __int32)Prediction_Frame + 604 * (Prediction_Frame == (void*)((unsigned __int32)Local_Player + 1740)));
 
-	if (Result != nullptr)
+	if (Prediction_Frame != nullptr)
 	{
-		Predicton_Copy.Construct(Local_Player, Result, (void*)Predicton_Copy_Compare);
+		Predicton_Copy.Construct(Local_Player, Prediction_Frame, (void*)Predicton_Copy_Compare);
 
 		using Transfer_Data_Type = __int32(__thiscall*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
 

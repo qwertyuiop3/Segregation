@@ -132,15 +132,48 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 			Move[1] = Forward[1] * Forward_Move + Right[1] * Side_Move;
 
+			Move[2] = Forward[2] * Forward_Move + Right[2] * Side_Move;
+
 			float* Ladder_Normal = (float*)((unsigned __int32)Local_Player + 12820);
 
-			float Normal = Move[0] * Ladder_Normal[0] + Move[1] * Ladder_Normal[1];
+			float Normal_Move = Move[0] * Ladder_Normal[0] + Move[1] * Ladder_Normal[1];
 
-			Move[0] -= Ladder_Normal[0] * Normal;
+			Move[0] -= Ladder_Normal[0] * Normal_Move;
 
-			Move[1] -= Ladder_Normal[1] * Normal;
+			Move[1] -= Ladder_Normal[1] * Normal_Move;
 
-			Move[2] = (Forward[2] * Forward_Move + Right[2] * Side_Move) - (__builtin_powf(Ladder_Normal[0], 2.f) + __builtin_powf(Ladder_Normal[1], 2.f)) * Normal - Ladder_Normal[2] * Normal;
+			float Cross[3] =
+			{
+				-Ladder_Normal[1],
+
+				Ladder_Normal[0]
+			};
+
+			Vector_Normalize(Cross);
+
+			float Cross_Move = Move[0] * Cross[0] + Move[1] * Cross[1];
+
+			float Direction[3] =
+			{
+				Cross[0] * Cross_Move + Ladder_Normal[0] * Normal_Move,
+
+				Cross[1] * Cross_Move + Ladder_Normal[1] * Normal_Move
+			};
+
+			Vector_Normalize(Direction);
+
+			Cross[2] = Ladder_Normal[0] * Cross[1] - Ladder_Normal[1] * Cross[0];
+
+			if (Direction[0] * Ladder_Normal[0] + Direction[1] * Ladder_Normal[1] < -0.707f)
+			{
+				Move[0] = Cross[0] * Cross_Move * 0.2f;
+
+				Move[1] = Cross[1] * Cross_Move * 0.2f;
+
+				Move[2] = Cross[2] * (Move[2] * Cross[2]);
+			}
+
+			Move[2] -= Cross[2] * Normal_Move;
 		};
 
 		if (Move_Type == 2)

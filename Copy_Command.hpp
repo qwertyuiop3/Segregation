@@ -51,7 +51,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		if ((Command->Buttons & 2) + Move_Type == 4)
 		{
-			Command->Move[0] = 0;
+			Command->Move[0] = 0.f;
 
 			if (*(__int32*)((unsigned __int64)Local_Player + 764) == -1)
 			{
@@ -131,19 +131,28 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			return Vector_Normalize_Type((unsigned __int64)Vector_Normalize)(Vector);
 		};
 
-		auto Get_Ladder_Move = [](float* Move, float* Forward, float Forward_Move, float* Right, float Side_Move, float* Ladder_Normal) -> void
+		auto Get_Ladder_Move = [&](float* Move, float* Forward, float Forward_Move, float* Right, float Side_Move, float* Ladder_Normal) -> void
 		{
 			Move[0] = Forward[0] * Forward_Move + Right[0] * Side_Move;
 
 			Move[1] = Forward[1] * Forward_Move + Right[1] * Side_Move;
 
-			float Normal = Move[0] * Ladder_Normal[0] + Move[1] * Ladder_Normal[1];
+			float Normal_Move = Move[0] * Ladder_Normal[0] + Move[1] * Ladder_Normal[1];
 
-			Move[0] -= Ladder_Normal[0] * Normal;
+			Move[0] -= Ladder_Normal[0] * Normal_Move;
 
-			Move[1] -= Ladder_Normal[1] * Normal;
+			Move[1] -= Ladder_Normal[1] * Normal_Move;
 
-			Move[2] = (Forward[2] * Forward_Move + Right[2] * Side_Move) - (__builtin_powf(Ladder_Normal[0], 2.f) + __builtin_powf(Ladder_Normal[1], 2.f)) * Normal - Ladder_Normal[2] * Normal;
+			float Cross[3] =
+			{
+				-Ladder_Normal[1],
+
+				Ladder_Normal[0]
+			};
+
+			Vector_Normalize(Cross);
+
+			Move[2] = (Forward[2] * Forward_Move + Right[2] * Side_Move) - (Ladder_Normal[0] * Cross[1] - Ladder_Normal[1] * Cross[0]) * Normal_Move;
 		};
 
 		float* Ladder_Normal = (float*)((unsigned __int64)Local_Player + 11632);
@@ -164,7 +173,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 		}
 		else
 		{
-			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, Command->Move[0], Desired_Move_Right, Command->Move[1], Ladder_Normal);
+			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, std::clamp(Command->Move[0], -200.f, 200.f), Desired_Move_Right, std::clamp(Command->Move[1], -200.f, 200.f), Ladder_Normal);
 		}
 
 		auto Correct_Movement = [&](float* Angles, __int32 Move_Type, float* Move, float* Desired_Move, float* Ladder_Normal, __int32* Buttons) -> void
@@ -193,28 +202,28 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			}
 			else
 			{
-				__int8 Solution_Number = 0;
-
 				static float Solutions[9][3] =
 				{
-					{ -10000.f },
+					{ -200.f },
 
-					{ 0.f, -10000.f },
+					{ 0.f, -200.f },
 
 					{ },
 
-					{ 10000.f },
+					{ 200.f },
 
-					{ 0.f, 10000.f },
+					{ 0.f, 200.f },
 
-					{ -10000.f, -10000.f },
+					{ -200.f, -200.f },
 
-					{ -10000.f, 10000.f },
+					{ -200.f, 200.f },
 
-					{ 10000.f, -10000.f },
+					{ 200.f, -200.f },
 
-					{ 10000.f, 10000.f }
+					{ 200.f, 200.f }
 				};
+
+				__int8 Solution_Number = 0;
 
 				float Least_Deviation = __builtin_inff();
 
@@ -1058,13 +1067,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 								static void* Random = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomFloat");
 
-								static Interface_Structure* Interface_Bias_Minimum = Find_Interface((char*)"ai_shot_bias_min");
-
 								static Interface_Structure* Interface_Bias_Maximum = Find_Interface((char*)"ai_shot_bias_max");
 
-								float Shot_Bias_Minimum = Interface_Bias_Minimum->Get_Floating_Point();
-
-								float Shot_Bias = (Interface_Bias_Maximum->Get_Floating_Point() - Shot_Bias_Minimum) + Shot_Bias_Minimum;
+								float Shot_Bias = Interface_Bias_Maximum->Get_Floating_Point();
 
 								float Flatness = __builtin_fabsf(Shot_Bias) * 0.5f;
 

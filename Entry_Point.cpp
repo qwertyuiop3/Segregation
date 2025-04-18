@@ -2,8 +2,6 @@
 
 #include <TlHelp32.h>
 
-#include <cstdio>
-
 #include "Byte_Manager/Byte_Manager.hpp"
 
 #include "Redirection_Manager/Redirection_Manager.hpp"
@@ -15,8 +13,6 @@ void* Engine_Module;
 #include <unordered_map>
 
 #include "Post_Network_Data_Received.hpp"
-
-#pragma comment(lib, "WinMM.Lib")
 
 #include "Sounds.hpp"
 

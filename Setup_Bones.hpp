@@ -1,6 +1,6 @@
 void* Original_Setup_Bones_Caller;
 
-__int8 __thiscall Redirected_Setup_Bones(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time)
+__int8 __thiscall Redirected_Setup_Bones(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Time)
 {
 	if (*(void**)Entity == (void*)((unsigned __int32)Client_Module + 9482876))
 	{
@@ -18,5 +18,5 @@ __int8 __thiscall Redirected_Setup_Bones(void* Entity, void* Bones, __int32 Maxi
 		}
 	}
 
-	return (decltype(&Redirected_Setup_Bones)(Original_Setup_Bones_Caller))(Entity, Bones, Maximum_Bones, Mask, Current_Time);
+	return (decltype(&Redirected_Setup_Bones)(Original_Setup_Bones_Caller))(Entity, Bones, Maximum_Bones, Mask, Time);
 }

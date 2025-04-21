@@ -207,7 +207,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Update_Animation_State_Manager.Redirect_Function(1, Byte_Manager::Find_Bytes(16653807, (unsigned __int8*)Client_Module, 11528163788009019714ull), (void*)Redirected_Update_Animation_State);
 
-					Compute_Torso_Rotation_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(66567663, (unsigned __int8*)Client_Module, 5523300960910562887), (void*)Redirected_Compute_Torso_Rotation);
+					Compute_Torso_Rotation_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(2138553279, (unsigned __int8*)Client_Module, 1594227410962117498), (void*)Redirected_Compute_Torso_Rotation);
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(2031, (unsigned __int8*)Client_Module, 12095624162194331321ull), 1, 195);
 

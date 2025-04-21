@@ -26,15 +26,15 @@ Interface_Structure Interface_Maximum_Choked_Commands;
 
 Interface_Structure Interface_Aim_Team;
 
+Interface_Structure Interface_Aim_Group;
+
+Interface_Structure Interface_Extrapolation;
+
 Interface_Structure Interface_Aim_Intersection;
 
 Interface_Structure Interface_Aim_Height;
 
-Interface_Structure Interface_Aim_Group;
-
 Interface_Structure Interface_Angle_X;
-
-Interface_Structure Interface_Extrapolation;
 
 Interface_Structure Interface_First_Choked_Angle_Y;
 
@@ -98,13 +98,13 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Aim_Team), (char*)"0", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Aim_Intersection), (char*)"0", nullptr);
-
-	Create_Interface(Pointer_Name(Interface_Aim_Height), (char*)"0.9", nullptr);
-
 	Create_Interface(Pointer_Name(Interface_Aim_Group), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Extrapolation), (char*)"1", nullptr);
+
+	Create_Interface(Pointer_Name(Interface_Aim_Intersection), (char*)"0", nullptr);
+
+	Create_Interface(Pointer_Name(Interface_Aim_Height), (char*)"0.9", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Angle_X), (char*)"180", nullptr);
 

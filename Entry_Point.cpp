@@ -258,6 +258,10 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Crosshair");
 				{
+					unsigned __int8 Draw_Crosshair_Bytes[3] = { 176, 1, 195 };
+
+					Byte_Manager::Copy_Bytes(0, Byte_Manager::Find_Bytes(71175663, (unsigned __int8*)Client_Module, 13304841159004331597ull), sizeof(Draw_Crosshair_Bytes), Draw_Crosshair_Bytes);
+
 					Draw_Crosshair_Manager.Redirect_Function(Byte_Manager::Find_Bytes(31, (unsigned __int8*)Client_Module, 15200820684421834831ull), (void*)Redirected_Draw_Crosshair);
 				}
 

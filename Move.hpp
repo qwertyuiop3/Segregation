@@ -18,7 +18,7 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 
 		Fire_Events_Type((unsigned __int64)Fire_Events)();
 
-		Update_Animation_Time = Get_Global_Variables()->Current_Time;
+		Update_Animation_Time = Get_Global_Variables()->Time;
 
 		Update_Animation_Type = 1;
 

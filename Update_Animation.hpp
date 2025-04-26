@@ -8,9 +8,9 @@ void Redirected_Update_Animation(void* Player)
 {
 	Global_Variables_Structure* Global_Variables = Get_Global_Variables();
 
-	float Previous_Current_Time = Global_Variables->Current_Time;
+	float Previous_Time = Global_Variables->Time;
 
-	Global_Variables->Current_Time = Update_Animation_Time;
+	Global_Variables->Time = Update_Animation_Time;
 
 	float Previous_Frame_Time = Global_Variables->Frame_Time;
 
@@ -22,7 +22,7 @@ void Redirected_Update_Animation(void* Player)
 
 	Global_Variables->Frame_Time = Previous_Frame_Time;
 
-	Global_Variables->Current_Time = Previous_Current_Time;
+	Global_Variables->Time = Previous_Time;
 
 	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Player + 128)];
 

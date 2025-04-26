@@ -476,26 +476,29 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 							{
 								if (*(__int8*)((unsigned __int64)Entity + 506) == 0)
 								{
-									if (*(__int32*)((unsigned __int64)Entity + 11508) == -1)
+									if ((*(__int32*)((unsigned __int64)Entity + 1088) & 32768) == 0)
 									{
-										float Entity_Time = *(float*)((unsigned __int64)Player_Data->Data + 160);
-
-										float* Entity_Origin = (float*)((unsigned __int64)Entity + 1064);
-
-										Target_Structure Target =
+										if (*(__int32*)((unsigned __int64)Entity + 11508) == -1)
 										{
-											Player_Data->Priority == -2 ? 0 : Player_Data->Priority,
+											float Entity_Time = *(float*)((unsigned __int64)Player_Data->Data + 160);
 
-											Entity,
+											float* Entity_Origin = (float*)((unsigned __int64)Entity + 1064);
 
-											(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f),
+											Target_Structure Target =
+											{
+												Player_Data->Priority == -2 ? 0 : Player_Data->Priority,
 
-											__builtin_fabsf(Corrected_Latency - ((Global_Variables->Tick_Number + (Interface_Alternative.Get_Integer() ^ 1)) * Global_Variables->Interval_Per_Tick + Latency - Entity_Time)) <= 0.2f,
+												Entity,
 
-											__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
-										};
+												(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f),
 
-										Sorted_Target_List.push_back(Target);
+												__builtin_fabsf(Corrected_Latency - ((Global_Variables->Tick_Number + (Interface_Alternative.Get_Integer() ^ 1)) * Global_Variables->Interval_Per_Tick + Latency - Entity_Time)) <= 0.2f,
+
+												__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
+											};
+
+											Sorted_Target_List.push_back(Target);
+										}
 									}
 								}
 							}
@@ -747,7 +750,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 														Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
 
-														Update_Animation_Time = Global_Variables->Current_Time;
+														Update_Animation_Time = Global_Variables->Time;
 
 														Update_Animation_Type = 1;
 
@@ -790,7 +793,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									Invalidate_Cache_Type((unsigned __int64)Invalidate_Cache)(Target->Self);
 
-									using Setup_Bones_Type = __int8(**)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Current_Time);
+									using Setup_Bones_Type = __int8(**)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, float Time);
 
 									float Bones[128][3][4];
 
@@ -805,9 +808,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 										Byte_Manager::Copy_Bytes(1, Animation_State, sizeof(Animation_State_Data), Animation_State_Data);
 									};
 
-									if ((*Setup_Bones_Type(*(unsigned __int64*)((unsigned __int64)Target->Self + 8) + 128))((void*)((unsigned __int64)Target->Self + 8), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Current_Time) == 1)
+									if ((*Setup_Bones_Type(*(unsigned __int64*)((unsigned __int64)Target->Self + 8) + 128))((void*)((unsigned __int64)Target->Self + 8), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Time) == 1)
 									{
-										auto Perform_Trace = [&](float Direction[3]) -> __int8
+										auto Perform_Trace = [&](float* Direction) -> __int8
 										{
 											struct alignas(16) Ray_Structure
 											{
@@ -999,10 +1002,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 														{
 															Player_Data->Shots_Fired = (Player_Data->Shots_Fired + 1) % Bruteforce_Angles_Count;
 
-															if (Player_Data->Shots_Fired == 0)
-															{
-																Player_Data->Switch_X ^= 1;
-															}
+															Player_Data->Switch_X ^= Player_Data->Shots_Fired == 0;
 
 															Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Get_Integer();
 														}

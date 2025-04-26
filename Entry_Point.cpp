@@ -1,7 +1,5 @@
 #include <Windows.h>
 
-#include <cstdio>
-
 #include "Byte_Manager/Byte_Manager.hpp"
 
 #include "Redirection_Manager/Redirection_Manager.hpp"
@@ -12,11 +10,7 @@ void* Engine_Module;
 
 #include "Extended_Interface.hpp"
 
-#include <unordered_map>
-
 #include "Post_Network_Data_Received.hpp"
-
-#pragma comment(lib, "WinMM.Lib")
 
 #include "Sounds.hpp"
 
@@ -42,8 +36,6 @@ void* Engine_Module;
 
 #include "Restart_Gesture.hpp"
 
-#include <algorithm>
-
 #include "Finish_Move.hpp"
 
 #include "Fire_Bullets.hpp"
@@ -59,8 +51,6 @@ void* Engine_Module;
 #include "Packet_Start.hpp"
 
 #include "Run_Command.hpp"
-
-#include <vector>
 
 #include "Copy_Command.hpp"
 

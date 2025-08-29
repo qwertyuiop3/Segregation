@@ -563,7 +563,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 						float Eye_Position[3];
 
-						(*Get_Eye_Position_Type(*(unsigned __int64*)Local_Player + 1112))(Local_Player, Eye_Position);
+						(*Get_Eye_Position_Type(*(unsigned __int64*)Local_Player + 1120))(Local_Player, Eye_Position);
 
 						Recent_Player_Data_Number = 0;
 

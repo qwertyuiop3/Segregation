@@ -40,6 +40,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Angle_Vectors_Type((unsigned __int64)Angle_Vectors)(Angles, Forward, Right, Up);
 		};
 
+		__int32 Jump_State = (Command->Buttons & 2) + Move_Type;
+
 		float Move_Angles[3] =
 		{
 			Command->Angles[0],
@@ -49,7 +51,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		static float Previous_Move_Angle_Y;
 
-		if ((Command->Buttons & 2) + Move_Type == 4)
+		float* Velocity = (float*)((unsigned __int64)Local_Player + 328);
+
+		if (Jump_State == 4)
 		{
 			Command->Move[0] = 0.f;
 
@@ -61,8 +65,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			{
 				Command->Buttons &= ~(*(__int32*)((unsigned __int64)Local_Player + 11420) & 2);
 			}
-
-			float* Velocity = (float*)((unsigned __int64)Local_Player + 328);
 
 			if ((Command->Buttons & 262144) == 262144)
 			{
@@ -332,6 +334,51 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 		Byte_Manager::Copy_Bytes(1, Local_Previous_Origin, sizeof(Local_Previous_Origin), Local_Origin);
 
 		static void* Move_Helper = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(28807, (unsigned __int8*)Client_Module, 2332256697955850039), 3);
+
+		if (Jump_State * ((Command->Buttons & 262144) == 0) * (Interface_Duck_Advantage.Get_Floating_Point() != 0.f) == 4)
+		{
+			Command->Buttons &= ~1;
+
+			Redirected_Run_Command(Prediction, Local_Player, Command, Move_Helper);
+
+			auto Restore = [&]() -> float
+			{
+				float Speed = __builtin_hypotf(Velocity[0], Velocity[1]);
+
+				Run_Prediction();
+
+				*(__int16*)((unsigned __int64)Prediction + 12) = 1;
+
+				Suppress_Events(1);
+
+				return Speed;
+			};
+
+			if (*(float*)((unsigned __int64)Local_Player + 324) == 64.f)
+			{
+				float Normal_Speed = Restore();
+
+				Command->Buttons |= 4;
+
+				Redirected_Run_Command(Prediction, Local_Player, Command, Move_Helper);
+
+				Command->Buttons &= ~4;
+
+				float Duck_Speed = Restore();
+
+				Command->Buttons |= 4 * (Normal_Speed < Duck_Speed - Interface_Duck_Advantage.Get_Floating_Point());
+			}
+			else
+			{
+				Restore();
+
+				Command->Buttons |= 4;
+			}
+
+			Command->Buttons |= 1;
+
+			Previous_Buttons |= Command->Buttons & 4;
+		}
 
 		Redirected_Run_Command(Prediction, Local_Player, Command, Move_Helper);
 

@@ -19,7 +19,7 @@ void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 		Player_Data->Teleported = __builtin_powf(Origin[0] - Previous_Origin[0], 2.f) + __builtin_powf(Origin[1] - Previous_Origin[1], 2.f) + __builtin_powf(Origin[2] - Previous_Origin[2], 2.f) > 4096.f;
 	};
 
-	if ((Origin[0] != Previous_Origin[0]) + (Origin[1] != Previous_Origin[1]) + (Origin[2] != Previous_Origin[2]) != 0)
+	if (__builtin_memcmp(Origin, Previous_Origin, sizeof(float[3])) != 0)
 	{
 		Update_Data(Player_Data->Tick_Number[1]);
 	}

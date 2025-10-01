@@ -184,10 +184,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 			float Move_Right[3];
 
-			Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
-
 			if (Move_Type == 2)
 			{
+				Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
+
 				Move_Forward[2] = 0.f;
 
 				Vector_Normalize(Move_Forward);
@@ -658,13 +658,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 								{
 									Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Target->Self + 128)];
 
-									static __int8 Target_Data[14936];
+									static __int8 Target_Data[14944];
 
 									Byte_Manager::Copy_Bytes(1, Target_Data, sizeof(Target_Data), Target->Self);
 
 									__int8 Animation_State_Data[320];
 
-									void* Animation_State = *(void**)((unsigned __int64)Target->Self + 13920);
+									void* Animation_State = *(void**)((unsigned __int64)Target->Self + 13928);
 
 									Byte_Manager::Copy_Bytes(1, Animation_State_Data, sizeof(Animation_State_Data), Animation_State);
 
@@ -738,21 +738,21 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 													{
 														float Directions[8][3] =
 														{
-															{ Target_Origin[0] - 2, Target_Origin[1], Target_Origin[2] },
+															{ Target_Origin[0] - 2.f, Target_Origin[1], Target_Origin[2] },
 
-															{ Target_Origin[0], Target_Origin[1] - 2, Target_Origin[2] },
+															{ Target_Origin[0], Target_Origin[1] - 2.f, Target_Origin[2] },
 
-															{ Target_Origin[0] + 2, Target_Origin[1], Target_Origin[2] },
+															{ Target_Origin[0] + 2.f, Target_Origin[1], Target_Origin[2] },
 
-															{ Target_Origin[0], Target_Origin[1] + 2, Target_Origin[2] },
+															{ Target_Origin[0], Target_Origin[1] + 2.f, Target_Origin[2] },
 
-															{ Target_Origin[0] - 2, Target_Origin[1] - 2, Target_Origin[2] },
+															{ Target_Origin[0] - 2.f, Target_Origin[1] - 2.f, Target_Origin[2] },
 
-															{ Target_Origin[0] + 2, Target_Origin[1] - 2, Target_Origin[2] },
+															{ Target_Origin[0] + 2.f, Target_Origin[1] - 2.f, Target_Origin[2] },
 
-															{ Target_Origin[0] - 2, Target_Origin[1] + 2, Target_Origin[2] },
+															{ Target_Origin[0] - 2.f, Target_Origin[1] + 2.f, Target_Origin[2] },
 
-															{ Target_Origin[0] + 2, Target_Origin[1] + 2, Target_Origin[2] }
+															{ Target_Origin[0] + 2.f, Target_Origin[1] + 2.f, Target_Origin[2] }
 														};
 
 														unsigned __int8 Trace_Number = 0;
@@ -785,7 +785,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 														}
 													}
 
-													Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13928));
+													Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13936));
 
 													*(__int16*)((unsigned __int64)Prediction + 12) = 1;
 

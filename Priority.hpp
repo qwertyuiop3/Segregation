@@ -33,7 +33,7 @@ struct Player_Data_Structure
 
 	__int8 Teleported;
 
-	__int8 Data[14944];
+	__int8 Data[14952];
 
 	__int8 Animation_State[320];
 

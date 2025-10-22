@@ -658,7 +658,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 								{
 									Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Target->Self + 128)];
 
-									static __int8 Target_Data[14944];
+									static __int8 Target_Data[14952];
 
 									Byte_Manager::Copy_Bytes(1, Target_Data, sizeof(Target_Data), Target->Self);
 

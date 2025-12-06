@@ -1087,80 +1087,127 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 						if ((Command->Buttons & 1) == 1)
 						{
-							float Forward[3];
-
-							Angle_Vectors(Command->Angles, Forward, nullptr, nullptr);
-
-							auto Compute_Spread = [&](float* Spread) -> void
+							auto Compensate_Angles = [&](float* Angles) -> void
 							{
-								using Random_Seed_Type = void(*)(__int32 Seed);
+								float Forward[3];
 
-								static void* Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
+								Angle_Vectors(Angles, Forward, nullptr, nullptr);
 
-								static void* Random_Seed = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomSeed");
-
-								Random_Seed_Type((unsigned __int64)Random_Seed)(Command->Random_Seed & 255);
-
-								float Shot_Random[2];
-
-								using Random_Type = float(*)(float Minimum, float Maximum);
-
-								static void* Random = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomFloat");
-
-								static Interface_Structure* Interface_Bias_Maximum = Find_Interface((char*)"ai_shot_bias_max");
-
-								float Shot_Bias = Interface_Bias_Maximum->Get_Floating_Point();
-
-								float Flatness = __builtin_fabsf(Shot_Bias) * 0.5f;
-
-								Compute_Random_Label:
+								auto Compute_Spread = [&](float* Spread) -> void
 								{
-									Shot_Random[0] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness);
+									using Random_Seed_Type = void(*)(__int32 Seed);
 
-									Shot_Random[1] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness);
+									static void* Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
 
-									if (__builtin_signbitf(Shot_Bias) == 1)
+									static void* Random_Seed = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomSeed");
+
+									Random_Seed_Type((unsigned __int64)Random_Seed)(Command->Random_Seed & 255);
+
+									float Shot_Random[2];
+
+									using Random_Type = float(*)(float Minimum, float Maximum);
+
+									static void* Random = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomFloat");
+
+									static Interface_Structure* Interface_Bias_Maximum = Find_Interface((char*)"ai_shot_bias_max");
+
+									float Shot_Bias = Interface_Bias_Maximum->Get_Floating_Point();
+
+									float Flatness = __builtin_fabsf(Shot_Bias) * 0.5f;
+
+									Compute_Random_Label:
 									{
-										Shot_Random[0] = __builtin_copysignf(1.f, Shot_Random[0]) - Shot_Random[0];
+										Shot_Random[0] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness);
 
-										Shot_Random[1] = __builtin_copysignf(1.f, Shot_Random[1]) - Shot_Random[1];
+										Shot_Random[1] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness);
+
+										if (__builtin_signbitf(Shot_Bias) == 1)
+										{
+											Shot_Random[0] = __builtin_copysignf(1.f, Shot_Random[0]) - Shot_Random[0];
+
+											Shot_Random[1] = __builtin_copysignf(1.f, Shot_Random[1]) - Shot_Random[1];
+										}
+
+										if (__builtin_powf(Shot_Random[0], 2.f) + __builtin_powf(Shot_Random[1], 2.f) > 1.f)
+										{
+											goto Compute_Random_Label;
+										}
 									}
 
-									if (__builtin_powf(Shot_Random[0], 2.f) + __builtin_powf(Shot_Random[1], 2.f) > 1.f)
-									{
-										goto Compute_Random_Label;
-									}
-								}
+									Spread[0] = 1.f;
 
-								Spread[0] = 1.f;
+									Spread[1] = Shot_Random[0] * Weapon_Spread[0];
 
-								Spread[1] = Shot_Random[0] * Weapon_Spread[0];
+									Spread[2] = Shot_Random[1] * Weapon_Spread[1];
 
-								Spread[2] = Shot_Random[1] * Weapon_Spread[1];
+									Vector_Normalize(Spread);
+								};
 
-								Vector_Normalize(Spread);
+								float Spread[3];
+
+								Compute_Spread(Spread);
+
+								float Length = 1.f - __builtin_powf(Spread[1], 2.f);
+
+								float Rotation[2] =
+								{
+									max(1e-45f, __builtin_sqrtf(Length - __builtin_powf(Forward[2], 2.f))),
+
+									Forward[2] - (Forward[2] - __builtin_copysignf(__builtin_sqrtf(Length), Forward[2])) * (Rotation[0] == 1e-45f)
+								};
+
+								Angles[0] = 180.f - __builtin_atan2f(-Spread[0] * Rotation[1] + Spread[2] * Rotation[0], Spread[0] * Rotation[0] + Spread[2] * Rotation[1]) * 180.f / 3.1415927f - Weapon_Recoil[0];
+
+								Angles[1] = 180.f + __builtin_atan2f(Forward[0] * Spread[1] + Forward[1] * Rotation[0], Forward[0] * Rotation[0] + Forward[1] * -Spread[1]) * 180.f / 3.1415927f - Weapon_Recoil[1];
 							};
 
-							Command->Command_Number = -98069271;
+							float Angles[2][3];
+
+							Byte_Manager::Copy_Bytes(1, Angles[0], sizeof(Angles[0]), Command->Angles);
 
 							Command->Random_Seed = 33;
 
-							float Spread[3];
+							Compensate_Angles(Angles[0]);
 
-							Compute_Spread(Spread);
-
-							float Length = 1.f - __builtin_powf(Spread[1], 2.f);
-
-							float Rotation[2] =
+							if (Angles[0][0] <= 180.f)
 							{
-								max(1e-45f, __builtin_sqrtf(Length - __builtin_powf(Forward[2], 2.f))),
+								Byte_Manager::Copy_Bytes(1, Command->Angles, sizeof(Command->Angles), Angles[0]);
+							}
+							else
+							{
+								__int32 Seed = 34;
 
-								Forward[2] - (Forward[2] - __builtin_copysignf(__builtin_sqrtf(Length), Forward[2])) * (Rotation[0] == 1e-45f)
-							};
+								Recompensate_Angles_Label:
+								{
+									Byte_Manager::Copy_Bytes(1, Angles[1], sizeof(Angles[1]), Command->Angles);
 
-							Command->Angles[0] = 180.f - __builtin_atan2f(-Spread[0] * Rotation[1] + Spread[2] * Rotation[0], Spread[0] * Rotation[0] + Spread[2] * Rotation[1]) * 180.f / 3.1415927f - Weapon_Recoil[0];
+									Command->Random_Seed = Seed;
 
-							Command->Angles[1] = 180.f + __builtin_atan2f(Forward[0] * Spread[1] + Forward[1] * Rotation[0], Forward[0] * Rotation[0] + Forward[1] * -Spread[1]) * 180.f / 3.1415927f - Weapon_Recoil[1];
+									Compensate_Angles(Angles[1]);
+
+									if (Angles[1][0] <= 180.f)
+									{
+										Byte_Manager::Copy_Bytes(1, Command->Angles, sizeof(Command->Angles), Angles[1]);
+									}
+									else
+									{
+										if (Seed != 288)
+										{
+											Seed += 1;
+
+											goto Recompensate_Angles_Label;
+										}
+
+										Command->Random_Seed = 33;
+
+										Byte_Manager::Copy_Bytes(1, Command->Angles, sizeof(Command->Angles), Angles[0]);
+									}
+								}
+							}
+
+							static __int32 Seed_Table[256] = { 31, 319, 853, 80, 236, 391, 276, 112, 577, 111, 494, 92, 28, 99, 322, 207, 178, 475, 665, 85, 30, 656, 420, 396, 107, 35, 215, 8, 84, 343, 69, 10, 280, 142, 761, 597, 337, 141, 371, 188, 54, 401, 351, 367, 195, 225, 226, 331, 553, 16, 62, 200, 268, 50, 108, 216, 286, 1, 445, 515, 37, 358, 229, 227, 151, 1212, 979, 545, 70, 326, 15, 46, 162, 140, 89, 520, 134, 18, 9, 224, 278, 124, 941, 60, 49, 104, 244, 97, 146, 281, 58, 332, 11, 360, 477, 13, 2, 52, 344, 253, 33, 132, 201, 47, 441, 385, 277, 27, 160, 143, 23, 368, 438, 414, 82, 118, 176, 106, 17, 0, 689, 478, 307, 44, 42, 680, 148, 29, 12, 103, 484, 718, 197, 338, 74, 77, 53, 19, 32, 219, 335, 138, 760, 257, 175, 133, 430, 24, 102, 599, 664, 86, 228, 303, 308, 240, 94, 57, 206, 7, 595, 88, 890, 20, 4, 189, 105, 988, 672, 398, 113, 292, 1317, 65, 115, 293, 91, 41, 95, 90, 36, 512, 613, 182, 465, 145, 246, 64, 509, 63, 255, 523, 187, 745, 154, 109, 87, 123, 34, 25, 14, 6, 114, 399, 295, 5, 1098, 66, 209, 68, 657, 324, 336, 508, 21, 231, 289, 51, 394, 1410, 170, 71, 185, 839, 67, 194, 763, 116, 61, 120, 453, 439, 22, 347, 39, 76, 56, 55, 568, 156, 137, 213, 59, 127, 306, 163, 100, 38, 699, 703, 525, 254, 26, 3, 242, 183 };
+
+							Command->Command_Number = Seed_Table[Command->Random_Seed & 255];
 
 							In_Attack = 1;
 

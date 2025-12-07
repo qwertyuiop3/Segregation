@@ -1117,9 +1117,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									Compute_Random_Label:
 									{
-										Shot_Random[0] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness);
+										Shot_Random[0] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness) + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness;
 
-										Shot_Random[1] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness);
+										Shot_Random[1] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness) + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness;
 
 										if (__builtin_signbitf(Shot_Bias) == 1)
 										{

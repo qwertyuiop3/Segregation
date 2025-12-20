@@ -23,7 +23,7 @@ bind space +conditional_jump
 # Игровая конфигурация (в процессе написания)
 |Переменная|Описание|Рабочий диапазон|
 |:-:|:-:|:-:|
-|`Commentator`|Воспроизведение событийного звука: `player_hurt`, `player_death`|[0, 1]|
+|`Commentator`|Воспроизведение событийного звука `player_death` ("Ленин в Октябре" 1937-го).<br>Самоубийство не учитывается.|[0, 1]|
 |`Bruteforce_Memory_Tolerance`|Требуемое количество промахов для инициации цикла "грубой силы"|[0, 2147483647]|
 |`Bruteforce_Tolerance`|Требуемое количество выстрелов для последующей итерации "грубой силы"|[0, 2147483647]|
 |`Bruteforce`|Подбор `m_flGoalFeetYaw` методом "грубой силы"|[0, 1]|
@@ -38,7 +38,7 @@ bind space +conditional_jump
 |`Angle_X`|Угол вертикального наклона головы.<br>Ограничивается диапазоном [-90.0, 90.0] в серверном [`FinishMove`](https://github.com/rom4s/hl2sdk-ep1c/blob/game-cstrike-1/game/server/player_command.cpp#L208-L222), но искажается перед этим нормализацией клиентской интерполяции.<br>Компрессия чисел на `Windows` отличается, тем самым искажая значение с `180.0` до `180.08794` при получении клиентом.|[-180.0, 180.0]|
 |`First_Choked_Angle_Y`|Первый задушенный угол горизонтального вращения тела относительно цели.<br>Последующая движимая разница ограничивается диапазоном [`m_flMaxBodyYawDegrees`](https://github.com/rom4s/hl2sdk-ep1c/blob/game-cstrike-1/game/shared/sdk/sdk_playeranimstate.cpp#L146); недвижимая же разница ограничивается рабочим диапазоном.|[-180.0, 180.0]|
 |`Second_Choked_Angle_Y`|Второй задушенный угол горизонтального вращения тела относительно цели.<br>Используется для поддержания разницы ([`m_flLastTurnTime`](https://github.com/rom4s/hl2sdk-ep1c/blob/game-cstrike-1/game/shared/base_playeranimstate.cpp#L833-L837)) во время душения.|[-180.0, 180.0]|
-|`Angle_Y`|Передаваемый угол горизонтального вращения тела относительно цели, используемый клиентом для [вычисления](https://github.com/rom4s/hl2sdk-ep1c/blob/game-cstrike-1/game/shared/base_playeranimstate.cpp#L854-L860) `m_flGoalFeetYaw`.<br>Отсутствие промежуточных углов результируется десинхронизацией `m_flGoalFeetYaw`.|[-180.0, 180.0]|
+|`Angle_Y`|Передаваемый угол горизонтального вращения тела относительно цели, используемый клиентом для [вычисления](https://github.com/rom4s/hl2sdk-ep1c/blob/game-cstrike-1/game/shared/base_playeranimstate.cpp#L854-L860) `m_flGoalFeetYaw`.<br>Визуализировать десинхронизацию можно через `thirdperson;sv_showhitboxes I`, где `I` подразумевает собственный индекс, либо `sv_showanimstate I`, где `body_yaw` исчисляет отклонение.|[-180.0, 180.0]|
 |`Uber_Alles_Scale`|Отображаемая величина символического верховенства, заменяющего собой внутриигровой прицел.|[0, min(Width, Height) / 2 - 1]|
 |`Uber_Alles_Speed`|Скорость развёртывания символического верховенства, по сути - прибавочный угол по истечению секунды.|[0, 360 * FPS]|
 

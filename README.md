@@ -21,7 +21,7 @@ alias -conditional_jump "exec unjump_condition;-jump"
 bind space +conditional_jump
 ```
 # Игровая конфигурация (в процессе коррекции)
-|Переменная|Описание|Рабочий диапазон|
+|Переменная|Описание|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Рабочий диапазон &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
 |:-:|:-:|:-:|
 |`Commentator`|Воспроизведение событийного звука `player_death` ("Ленин в Октябре" 1937-го).<br>Самоубийство не учитывается.|[0, 1]|
 |`Bruteforce_Memory_Tolerance`|Допустимое количество промахов по креплению `m_flGoalFeetYaw`, восстанавливается через `player_death`, индивидуально аннулируется в локальном `player_death`.|[0, 2147483647]|

@@ -53,7 +53,15 @@ Interface_Structure Interface_Second_Choked_Angle_Y;
 
 Interface_Structure Interface_Angle_Y;
 
+Interface_Structure Interface_Uber_Alles_Multiplicative;
+
+Interface_Structure Interface_Uber_Alles_Multiplicative_Interval;
+
 Interface_Structure Interface_Uber_Alles_Scale;
+
+Interface_Structure Interface_Uber_Alles_Multiplicative_Radius;
+
+Interface_Structure Interface_Uber_Alles_Multiplicative_Scale;
 
 Interface_Structure Interface_Uber_Alles_Speed;
 
@@ -117,7 +125,15 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Angle_Y), (char*)"180", nullptr);
 
+	Create_Interface(Pointer_Name(Interface_Uber_Alles_Multiplicative), (char*)"0", nullptr);
+
+	Create_Interface(Pointer_Name(Interface_Uber_Alles_Multiplicative_Interval), (char*)"22.5", nullptr);
+
 	Create_Interface(Pointer_Name(Interface_Uber_Alles_Scale), (char*)"16", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Uber_Alles_Speed), (char*)"192", nullptr);
+	Create_Interface(Pointer_Name(Interface_Uber_Alles_Multiplicative_Radius), (char*)"24", nullptr);
+
+	Create_Interface(Pointer_Name(Interface_Uber_Alles_Multiplicative_Scale), (char*)"8", nullptr);
+
+	Create_Interface(Pointer_Name(Interface_Uber_Alles_Speed), (char*)"180", nullptr);
 }

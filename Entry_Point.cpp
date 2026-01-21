@@ -177,7 +177,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					*(void**)((unsigned __int64)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(7918423844548743, (unsigned __int8*)Client_Module, 15881718154251215618ull), 3) + 48) = (void*)Redirected_Set_Tick_Number;
 
-					Write_Events_Manager.Redirect_Function(3, Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Engine_Module, 14568127874725401427ull), (void*)Redirected_Write_Events);
+					Write_Events_Manager.Redirect_Function(4, Byte_Manager::Find_Bytes(490991, (unsigned __int8*)Engine_Module, 15776377068302235188ull), (void*)Redirected_Write_Events);
 
 					Shutdown_Manager.Redirect_Function(1, Byte_Manager::Find_Bytes(3567, (unsigned __int8*)Engine_Module, 15346061040490566347ull), (void*)Redirected_Shutdown);
 

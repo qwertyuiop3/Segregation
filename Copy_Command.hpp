@@ -670,23 +670,29 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									struct Trace_Structure
 									{
-										__int8 Additional_Bytes_1[24];
+										__int8 Additional_Bytes_1[12];
+
+										float End[3];
 
 										float Normal[3];
 
-										__int8 Additional_Bytes_2[19];
+										__int8 Additional_Bytes_2[8];
+
+										float Fraction;
+
+										__int8 Additional_Bytes_3[7];
 
 										__int8 Solid;
 
-										__int8 Additional_Bytes_3[24];
+										__int8 Additional_Bytes_4[24];
 
 										__int32 Group;
 
-										__int8 Additional_Bytes_4[4];
+										__int8 Additional_Bytes_5[4];
 
 										void* Entity;
 
-										__int8 Additional_Bytes_5[4];
+										__int8 Additional_Bytes_6[4];
 									};
 
 									if (Interface_Extrapolation.Get_Integer() == 1)
@@ -703,24 +709,72 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 												{
 													Target->Valid = 0;
 
-													__int32 Flags = *(__int32*)((unsigned __int64)Target->Self + 1088);
+													using Perform_Trace_Type = void(**)(void* Movement, float* Start, float* End, __int32 Mask, __int32 Group, Trace_Structure* Trace);
 
+													static void* Movement = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31394695, (unsigned __int8*)Client_Module, 17805682010550749776ull), 3);
+
+													*(__int32*)(*(unsigned __int64*)((unsigned __int64)Movement + 16) + 4) = *(__int32*)((unsigned __int64)Target->Self + 240);
+																
 													float* Target_Origin = (float*)((unsigned __int64)Target->Self + 1064);
 
-													if ((Flags & 1) == 1)
+													Trace_Structure Trace;
+
+													(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Target_Origin, Target_Origin, 33636363, 8, &Trace);
+
+													if (Trace.Fraction == 0.f)
 													{
-														using Set_Origin_Type = void(*)(void* Entity, float* Origin);
+														float Directions[8][3] =
+														{
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + 0.1f },
 
-														static void* Set_Origin = Byte_Manager::Find_Bytes(129892351, (unsigned __int8*)Client_Module, 5578744413008397460);
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + 0.1f },
 
-														Target_Origin[2] += 0.03125f;
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + 0.1f },
 
-														Set_Origin_Type((unsigned __int64)Set_Origin + 13)(Target->Self, Target_Origin);
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + 0.1f },
+
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] },
+
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] },
+
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] },
+
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] }
+														};
+
+														__int8 Trace_Number = 0;
+
+														Decollision_Perform_Trace_Label:
+														{
+															(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Directions[Trace_Number], Target_Origin, 33636363, 8, &Trace);
+
+															if (Trace.Fraction == 0.f)
+															{
+																Trace_Number += 1;
+
+																if (Trace_Number != sizeof(Directions) / sizeof(Directions[0]))
+																{
+																	goto Decollision_Perform_Trace_Label;
+																}
+															}
+															else
+															{
+																using Set_Origin_Type = void(*)(void* Entity, float* Origin);
+
+																static void* Set_Origin = Byte_Manager::Find_Bytes(129892351, (unsigned __int8*)Client_Module, 5578744413008397460);
+
+																Byte_Manager::Copy_Bytes(1, Target_Origin, sizeof(Trace.End), Trace.End);
+
+																Set_Origin_Type((unsigned __int64)Set_Origin + 13)(Target->Self, Target_Origin);
+															}
+														}
 													}
 
 													using Set_Ground_Entity_Type = void(*)(void* Entity, void* Ground_Entity);
 
 													static void* Set_Ground_Entity = Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Client_Module, 6146399131556111791);
+
+													__int32 Flags = *(__int32*)((unsigned __int64)Target->Self + 1088);
 
 													Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Flags & 1) == 1 ? *(void**)Entity_List : nullptr);
 
@@ -755,18 +809,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 															{ Target_Origin[0] + 2.f, Target_Origin[1] + 2.f, Target_Origin[2] }
 														};
 
-														unsigned __int8 Trace_Number = 0;
+														__int8 Trace_Number = 0;
 
-														Perform_Trace_Label:
+														Ladder_Perform_Trace_Label:
 														{
-															using Perform_Trace_Type = void(**)(void* Movement, float* Start, float* End, __int32 Mask, __int32 Group, Trace_Structure* Trace);
-
-															static void* Movement = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31394695, (unsigned __int8*)Client_Module, 17805682010550749776ull), 3);
-
-															*(__int32*)(*(unsigned __int64*)((unsigned __int64)Movement + 16) + 4) = *(__int32*)((unsigned __int64)Target->Self + 240);
-
-															Trace_Structure Trace;
-
 															(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Target_Origin, Directions[Trace_Number], 33636363, 8, &Trace);
 
 															using On_Ladder_Type = __int8(**)(void* Movement, Trace_Structure* Trace);
@@ -777,7 +823,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																if (Trace_Number != sizeof(Directions) / sizeof(Directions[0]))
 																{
-																	goto Perform_Trace_Label;
+																	goto Ladder_Perform_Trace_Label;
 																}
 															}
 

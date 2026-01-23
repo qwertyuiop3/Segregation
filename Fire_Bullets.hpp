@@ -23,7 +23,7 @@ void Redirected_Fire_Bullets(void* Player, Bullet_Structure* Bullet)
 {
 	Bullets_Fired = 1;
 
-	static void* Fire_Bullets_Return = Byte_Manager::Find_Bytes(16756291412291719, (unsigned __int8*)Client_Module, 15018819949705402409ull);
+	static void* Fire_Bullets_Return = Byte_Manager::Find_Bytes(31584391, (unsigned __int8*)Client_Module, 4143659588161189767);
 
 	if (__builtin_return_address(0) == Fire_Bullets_Return)
 	{

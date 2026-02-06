@@ -104,7 +104,6 @@
     <ClInclude Include="Fire_Bullets.hpp" />
     <ClInclude Include="Priority.hpp" />
     <ClInclude Include="Read_Packets.hpp" />
-    <ClInclude Include="Restart_Gesture.hpp" />
     <ClInclude Include="Run_Command.hpp" />
     <ClInclude Include="Shutdown.hpp" />
     <ClInclude Include="Update_Animation.hpp" />

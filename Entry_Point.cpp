@@ -34,8 +34,6 @@ void* Engine_Module;
 
 #include "Compute_Torso_Rotation.hpp"
 
-#include "Restart_Gesture.hpp"
-
 #include "Finish_Move.hpp"
 
 #include "Fire_Bullets.hpp"
@@ -177,7 +175,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					*(void**)((unsigned __int64)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(7918423844548743, (unsigned __int8*)Client_Module, 15881718154251215618ull), 3) + 48) = (void*)Redirected_Set_Tick_Number;
 
-					Write_Events_Manager.Redirect_Function(4, Byte_Manager::Find_Bytes(490991, (unsigned __int8*)Engine_Module, 15776377068302235188ull), (void*)Redirected_Write_Events);
+					Write_Events_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(490991, (unsigned __int8*)Engine_Module, 15776377068302235188ull), (void*)Redirected_Write_Events);
 
 					Shutdown_Manager.Redirect_Function(1, Byte_Manager::Find_Bytes(3567, (unsigned __int8*)Engine_Module, 15346061040490566347ull), (void*)Redirected_Shutdown);
 
@@ -202,8 +200,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(2031, (unsigned __int8*)Client_Module, 12095624162194331321ull), 1, 195);
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(6927, (unsigned __int8*)Client_Module, 4463870537877969387), 17, 144);
-
-					Restart_Gesture_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(4079, (unsigned __int8*)Client_Module, 10267512153074347694ull), (void*)Redirected_Restart_Gesture);
 				}
 
 				_putws(L"[ + ] Prediction");
@@ -261,7 +257,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(445, (unsigned __int8*)Client_Module, 16324833799701554475ull), 1, 116);
 
-					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(377783, (unsigned __int8*)Client_Module, 7897095185544665575), 4, 144);
+					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(8766391, (unsigned __int8*)Client_Module, 15975356392803301949ull), 4, 144);
 				}
 			}
 		}

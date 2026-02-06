@@ -294,7 +294,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Correct_Movement(Command->Angles, Move_Type, Command->Move, Desired_Move, Ladder_Normal, &Command->Buttons);
 
-		Command->Typing = 1;
+		Command->Typing = 0;
 
 		Bullets_Fired = 0;
 
@@ -714,7 +714,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 													static void* Movement = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31394695, (unsigned __int8*)Client_Module, 17805682010550749776ull), 3);
 
 													*(__int32*)(*(unsigned __int64*)((unsigned __int64)Movement + 16) + 4) = *(__int32*)((unsigned __int64)Target->Self + 240);
-																
+
 													float* Target_Origin = (float*)((unsigned __int64)Target->Self + 1064);
 
 													Trace_Structure Trace;
@@ -1316,7 +1316,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Byte_Manager::Copy_Bytes(1, Update_Animation_Angles, sizeof(Update_Animation_Angles), Command->Angles);
 		}
 
-		*(__int8*)((unsigned __int64)Stack + 296) = Send_Packet;
+		*(__int8*)((unsigned __int64)Stack + 312) = Send_Packet;
 	}
 
 	Copy_Command_Manager.Special_Call(Unknown_Parameter, Command);

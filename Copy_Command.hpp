@@ -192,7 +192,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		}
 		else
 		{
-			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, std::clamp(Command->Move[0], -1.f, 1.f), Desired_Move_Right, std::clamp(Command->Move[0], -1.f, 1.f));
+			Get_Ladder_Move(Desired_Move, Desired_Move_Forward, std::clamp(Command->Move[0], -1.f, 1.f), Desired_Move_Right, std::clamp(Command->Move[1], -1.f, 1.f));
 		}
 
 		auto Correct_Movement = [&]() -> void

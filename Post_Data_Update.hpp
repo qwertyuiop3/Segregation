@@ -4,14 +4,21 @@ void* Original_Post_Data_Update_Caller;
 
 void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 {
-	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 92)];
-
 	float* Origin = (float*)((unsigned __int32)Entity + 300);
 
 	float* Previous_Origin = (float*)((unsigned __int32)Entity + 164);
 
-	if (*(float*)((unsigned __int32)Entity + 604) != *(float*)((unsigned __int32)Entity + 608))
+	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 92)];
+
+	__int8 Update = (__builtin_memcmp(Origin, Previous_Origin, sizeof(float[3])) != 0) + (*(float*)((unsigned __int32)Entity + 604) != *(float*)((unsigned __int32)Entity + 608)) + (*(float*)((unsigned __int32)Entity + 45624) != Player_Data->Networked_Angle) != 0;
+
+	if (Update == 1)
 	{
+		if (*(float*)((unsigned __int32)Entity + 604) == *(float*)((unsigned __int32)Entity + 608))
+		{
+			*(float*)((unsigned __int32)Entity + 604) = (*(Global_Variables_Structure**)((unsigned __int32)Client_Module + 10871344))->Time;
+		}
+
 		Player_Data->Simulated = 1;
 
 		if (Interface_Target_On_Simulation.Get_Integer() == 2)
@@ -21,13 +28,10 @@ void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Paramete
 				Player_Data->Simulated = 0;
 			}
 		}
-	}
 
-	if (Interface_Bruteforce.Get_Integer() * (Interface_Bruteforce_Relative.Get_Integer() ^ 1) == 1)
-	{
-		if (Player_Data->Priority != -2)
+		if (Interface_Bruteforce.Get_Integer() * (Interface_Bruteforce_Relative.Get_Integer() ^ 1) == 1)
 		{
-			if ((*(float*)((unsigned __int32)Entity + 604) != *(float*)((unsigned __int32)Entity + 608)) + (*(float*)((unsigned __int32)Entity + 45624) != Player_Data->Networked_Angle) + (__builtin_memcmp(Origin, Previous_Origin, sizeof(float[3])) != 0) != 0)
+			if (Player_Data->Priority != -2)
 			{
 				float* Target_Origin = (float*)((unsigned __int32)Entity + 300);
 

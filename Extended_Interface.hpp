@@ -137,7 +137,7 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Bruteforce_Perpendicular), (char*)"2", (void*)Bruteforce_Reset);
 
-	Create_Interface(Pointer_Name(Interface_Target_On_Simulation), (char*)"0", nullptr);
+	Create_Interface(Pointer_Name(Interface_Target_On_Simulation), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_High_Jump), (char*)"1", nullptr);
 

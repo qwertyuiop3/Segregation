@@ -32,7 +32,7 @@ Player_Data_Structure Players_Data[65];
 
 void Get_Priorities()
 {
-	__int32 Entity_Number = 1;
+	__int32 Player_Number = 1;
 
 	Traverse_Entity_List_Label:
 	{
@@ -40,16 +40,16 @@ void Get_Priorities()
 
 		char Name[132];
 
-		Get_Name_Type(537018208)((void*)540435380, Entity_Number, Name);
+		Get_Name_Type(537018208)((void*)540435380, Player_Number, Name);
 
 		if (Name[0] != 0)
 		{
-			wprintf(L"[ ? ] \"%hs\" %i %i\n", Name, Entity_Number, Players_Data[Entity_Number].Priority);
+			wprintf(L"[ ? ] \"%hs\" %i %i\n", Name, Player_Number, Players_Data[Player_Number].Priority);
 		}
 
-		if (Entity_Number < (*(Global_Variables_Structure**)607726732)->Maximum_Clients)
+		if (Player_Number < (*(Global_Variables_Structure**)607726732)->Maximum_Clients)
 		{
-			Entity_Number += 1;
+			Player_Number += 1;
 
 			goto Traverse_Entity_List_Label;
 		}
@@ -58,7 +58,7 @@ void Get_Priorities()
 
 void Set_Priority(Interface_Structure* Interface)
 {
-	__int32 Entity_Number = atoi(Interface->String);
+	__int32 Player_Number = atoi(Interface->String);
 
-	Players_Data[Entity_Number].Priority = atoi(__builtin_strchr(Interface->String, ' '));
+	Players_Data[Player_Number].Priority = atoi(__builtin_strchr(Interface->String, ' '));
 }

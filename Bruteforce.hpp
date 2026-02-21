@@ -2,20 +2,20 @@ __int32 Recent_Player_Data_Number;
 
 void Bruteforce_Reset_Memory_Tolerance()
 {
-	__int32 Entity_Number = 0;
+	__int32 Player_Number = 0;
 
 	Traverse_Players_Data_Label:
 	{
-		Player_Data_Structure* Player_Data = &Players_Data[Entity_Number];
+		Player_Data_Structure* Player_Data = &Players_Data[Player_Number];
 
 		if (Player_Data->Memory_Tolerance != 0)
 		{
 			Player_Data->Memory_Tolerance = Interface_Bruteforce_Memory_Tolerance.Integer;
 		}
 
-		Entity_Number += 1;
+		Player_Number += 1;
 
-		if (Entity_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
+		if (Player_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
 		{
 			goto Traverse_Players_Data_Label;
 		}
@@ -26,20 +26,20 @@ void Bruteforce_Reset_Memory_Tolerance()
 
 void Bruteforce_Reset_Tolerance()
 {
-	__int32 Entity_Number = 0;
+	__int32 Player_Number = 0;
 
 	Traverse_Players_Data_Label:
 	{
-		Player_Data_Structure* Player_Data = &Players_Data[Entity_Number];
+		Player_Data_Structure* Player_Data = &Players_Data[Player_Number];
 
 		if (Player_Data->Memory_Tolerance == 0)
 		{
 			Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Integer;
 		}
 
-		Entity_Number += 1;
+		Player_Number += 1;
 
-		if (Entity_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
+		if (Player_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
 		{
 			goto Traverse_Players_Data_Label;
 		}
@@ -50,11 +50,11 @@ void Bruteforce_Reset_Tolerance()
 
 void Bruteforce_Reset()
 {
-	__int32 Entity_Number = 0;
+	__int32 Player_Number = 0;
 
 	Traverse_Players_Data_Label:
 	{
-		Player_Data_Structure* Player_Data = &Players_Data[Entity_Number];
+		Player_Data_Structure* Player_Data = &Players_Data[Player_Number];
 
 		Player_Data->Memory_Tolerance = 0;
 
@@ -62,9 +62,9 @@ void Bruteforce_Reset()
 
 		Player_Data->Shots_Fired = 0;
 
-		Entity_Number += 1;
+		Player_Number += 1;
 
-		if (Entity_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
+		if (Player_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
 		{
 			goto Traverse_Players_Data_Label;
 		}

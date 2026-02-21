@@ -102,10 +102,6 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Previous_Move_Angle_Y = Move_Angles[1];
 		}
 
-		float Previous_Move[2];
-
-		Byte_Manager::Copy_Bytes(1, Previous_Move, sizeof(Previous_Move), Command->Move);
-
 		float Desired_Move[3];
 
 		float Desired_Move_Forward[3];
@@ -184,11 +180,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 				Vector_Normalize(Move_Right);
 
-				float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
+				float Divisor = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-				Command->Move[0] = (__int16)((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider);
+				Command->Move[0] = (__int16)((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divisor);
 
-				Command->Move[1] = (__int16)((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider);
+				Command->Move[1] = (__int16)((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divisor);
 			}
 			else
 			{
@@ -221,11 +217,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 				Traverse_Solutions_Label:
 				{
-					float Move[3];
+					Get_Ladder_Move(Command->Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1]);
 
-					Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1]);
-
-					float Deviation = __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
+					float Deviation = __builtin_powf(Command->Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Command->Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Command->Move[2] - Desired_Move[2], 2.f);
 
 					if (Deviation < Least_Deviation)
 					{
@@ -319,8 +313,6 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		Predict(0);
 
 		*(void**)542589456 = Previous_Audio_Device;
-
-		Byte_Manager::Copy_Bytes(1, Command->Move, sizeof(Previous_Move), Previous_Move);
 
 		static __int8 Send_Packet;
 
@@ -710,13 +702,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																		if (Interface_Bruteforce.Integer == 1)
 																		{
-																			__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 80);
+																			__int32 Player_Data_Number = *(__int32*)((unsigned __int32)Target->Self + 80);
 
-																			Player_Data_Structure* Player_Data = &Players_Data[Target_Number];
+																			Player_Data_Structure* Player_Data = &Players_Data[Player_Data_Number];
 
 																			if (Player_Data->Priority != -2)
 																			{
-																				Recent_Player_Data_Number = Target_Number;
+																				Recent_Player_Data_Number = Player_Data_Number;
 
 																				Byte_Manager::Copy_Bytes(1, &Previous_Recent_Player_Data, sizeof(Previous_Recent_Player_Data), Player_Data);
 
@@ -760,15 +752,15 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 													{
 														float Rotations[2][3][3];
 
-														__int8 Calculation_Number = 0;
+														__int8 Rotation_Number = 0;
 
-														float Forward[3];
+														float Forward[2][3];
 
 														float Right[3];
 
 														float Up[3];
 
-														Angle_Vectors(Command->Angles, Forward, Right, Up);
+														Angle_Vectors(Command->Angles, Forward[0], Right, Up);
 
 														Command->Command_Number = -2076434770;
 
@@ -794,56 +786,43 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														float Random_Y = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
 
-														float Directions[2][3] =
-														{
-															{
-																Forward[0],
+														Forward[1][0] = Forward[0][0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0];
 
-																Forward[1],
+														Forward[1][1] = Forward[0][1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1];
 
-																Forward[2]
-															},
-
-															{
-																Forward[0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0],
-
-																Forward[1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1],
-
-																Forward[2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2]
-															}
-														};
+														Forward[1][2] = Forward[0][2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2];
 
 														Weapon_Spread = 0.f;
 
 														Calculate_Rotation_Label:
 														{
-															Rotations[Calculation_Number][0][0] = Directions[Calculation_Number][0];
+															Rotations[Rotation_Number][0][0] = Forward[Rotation_Number][0];
 
-															Rotations[Calculation_Number][0][1] = Directions[Calculation_Number][1];
+															Rotations[Rotation_Number][0][1] = Forward[Rotation_Number][1];
 
-															Rotations[Calculation_Number][0][2] = Directions[Calculation_Number][2];
+															Rotations[Rotation_Number][0][2] = Forward[Rotation_Number][2];
 
-															Vector_Normalize(Rotations[Calculation_Number][0]);
+															Vector_Normalize(Rotations[Rotation_Number][0]);
 
-															Rotations[Calculation_Number][1][0] = Directions[Calculation_Number][1] - Directions[Calculation_Number][2];
+															Rotations[Rotation_Number][1][0] = Forward[Rotation_Number][1] - Forward[Rotation_Number][2];
 
-															Rotations[Calculation_Number][1][1] = Directions[Calculation_Number][2] - Directions[Calculation_Number][0];
+															Rotations[Rotation_Number][1][1] = Forward[Rotation_Number][2] - Forward[Rotation_Number][0];
 
-															Rotations[Calculation_Number][1][2] = Directions[Calculation_Number][0] - Directions[Calculation_Number][1];
+															Rotations[Rotation_Number][1][2] = Forward[Rotation_Number][0] - Forward[Rotation_Number][1];
 
-															Vector_Normalize(Rotations[Calculation_Number][1]);
+															Vector_Normalize(Rotations[Rotation_Number][1]);
 
-															Rotations[Calculation_Number][2][0] = Directions[Calculation_Number][1] * Rotations[Calculation_Number][1][2] - Directions[Calculation_Number][2] * Rotations[Calculation_Number][1][1];
+															Rotations[Rotation_Number][2][0] = Forward[Rotation_Number][1] * Rotations[Rotation_Number][1][2] - Forward[Rotation_Number][2] * Rotations[Rotation_Number][1][1];
 
-															Rotations[Calculation_Number][2][1] = Directions[Calculation_Number][2] * Rotations[Calculation_Number][1][0] - Directions[Calculation_Number][0] * Rotations[Calculation_Number][1][2];
+															Rotations[Rotation_Number][2][1] = Forward[Rotation_Number][2] * Rotations[Rotation_Number][1][0] - Forward[Rotation_Number][0] * Rotations[Rotation_Number][1][2];
 
-															Rotations[Calculation_Number][2][2] = Directions[Calculation_Number][0] * Rotations[Calculation_Number][1][1] - Directions[Calculation_Number][1] * Rotations[Calculation_Number][1][0];
+															Rotations[Rotation_Number][2][2] = Forward[Rotation_Number][0] * Rotations[Rotation_Number][1][1] - Forward[Rotation_Number][1] * Rotations[Rotation_Number][1][0];
 
-															Vector_Normalize(Rotations[Calculation_Number][2]);
+															Vector_Normalize(Rotations[Rotation_Number][2]);
 
-															if (Calculation_Number != 1)
+															if (Rotation_Number != 1)
 															{
-																Calculation_Number = 1;
+																Rotation_Number = 1;
 
 																goto Calculate_Rotation_Label;
 															}
@@ -878,11 +857,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 														float Rotated_Forward[3] =
 														{
-															Forward[0] * Rotation[0][0] + Forward[1] * Rotation[0][1] + Forward[2] * Rotation[0][2],
+															Forward[0][0] * Rotation[0][0] + Forward[0][1] * Rotation[0][1] + Forward[0][2] * Rotation[0][2],
 
-															Forward[0] * Rotation[1][0] + Forward[1] * Rotation[1][1] + Forward[2] * Rotation[1][2],
+															Forward[0][0] * Rotation[1][0] + Forward[0][1] * Rotation[1][1] + Forward[0][2] * Rotation[1][2],
 
-															Forward[0] * Rotation[2][0] + Forward[1] * Rotation[2][1] + Forward[2] * Rotation[2][2]
+															Forward[0][0] * Rotation[2][0] + Forward[0][1] * Rotation[2][1] + Forward[0][2] * Rotation[2][2]
 														};
 
 														float* Recoil = (float*)((unsigned __int32)Local_Player + 2992);

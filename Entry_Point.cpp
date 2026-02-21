@@ -264,7 +264,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Prediction_Descriptor->Parent = &Original_Prediction_Descriptor;
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3041517), 1, 235);
-					
+
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3884193), 1, 160);
 
 					Original_Setup_Move_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 3035696), (void*)Redirected_Setup_Move);

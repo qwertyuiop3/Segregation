@@ -582,7 +582,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																	Trace_Structure Trace;
 
 																	Perform_Trace_Type((unsigned __int32)Engine_Module + 2031072)((void*)((unsigned __int32)Engine_Module + 5799956), &Ray, 1174421515, &Filter, &Trace);
-																	
+
 																	using Clip_Trace_Type = __attribute__((regparm(3))) void(*)(void* Unknown_Parameter_1, float* End, float* Start, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace, void* Unknown_Parameter_2);
 
 																	End[0] += Direction[0] * 40.f;
@@ -706,13 +706,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																		if (Interface_Bruteforce.Get_Integer() == 1)
 																		{
-																			__int32 Target_Number = *(__int32*)((unsigned __int32)Target->Self + 100);
+																			__int32 Player_Data_Number = *(__int32*)((unsigned __int32)Target->Self + 100);
 
-																			Player_Data_Structure* Player_Data = &Players_Data[Target_Number];
+																			Player_Data_Structure* Player_Data = &Players_Data[Player_Data_Number];
 
 																			if (Player_Data->Priority != -2)
 																			{
-																				Recent_Player_Data_Number = Target_Number;
+																				Recent_Player_Data_Number = Player_Data_Number;
 
 																				Byte_Manager::Copy_Bytes(1, &Previous_Recent_Player_Data, sizeof(Previous_Recent_Player_Data), Player_Data);
 

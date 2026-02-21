@@ -56,7 +56,7 @@ struct Prediction_Field_Structure
 
 	__int32 Flat_Offset[2];
 
-	__int8 Additionals_Bytes_3[2];
+	__int8 Additional_Bytes_3[4];
 };
 
 void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, void* Unknown_Parameter_6, __int8 Within_Tolerance, void* Unknown_Parameter_7)

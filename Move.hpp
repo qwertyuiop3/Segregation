@@ -18,8 +18,6 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 
 		Fire_Events_Type((unsigned __int64)Engine_Module + 591184)();
 
-		Update_Animation_Time = (*(Global_Variables_Structure**)((unsigned __int64)Client_Module + 5956224))->Time;
-
 		Update_Animation_Type = 1;
 
 		Update_Animations_Type((unsigned __int64)Client_Module + 512112)();
@@ -29,15 +27,15 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 
 	(decltype(&Redirected_Move)(Move_Manager.Caller))(Unknown_Parameter, Final);
 
-	__int32 Entity_Number = 0;
+	__int32 Player_Number = 0;
 
 	Traverse_Players_Data_Label:
 	{
-		Players_Data[Entity_Number].Simulated = 0;
+		Players_Data[Player_Number].Simulated = 0;
 
-		Entity_Number += 1;
+		Player_Number += 1;
 
-		if (Entity_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
+		if (Player_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
 		{
 			goto Traverse_Players_Data_Label;
 		}

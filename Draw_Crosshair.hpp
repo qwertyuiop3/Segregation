@@ -82,7 +82,7 @@ void Redirected_Draw_Crosshair()
 
 		Draw(X + 1, Y + 1);
 
-		(*Set_Color_Type(*(unsigned __int64*)Surface + 120))(Surface, 255, 0, 0, 255);
+		(*Set_Color_Type(*(unsigned __int64*)Surface + 88))(Surface, 255, 0, 0, 255);
 
 		Draw(X, Y);
 	};

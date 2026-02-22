@@ -709,9 +709,21 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 												{
 													Target->Valid = 0;
 
+													using Set_Ground_Entity_Type = void(*)(void* Entity, void* Ground_Entity);
+
+													static void* Set_Ground_Entity = Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Client_Module, 6146399131556111791);
+
+													__int32 Flags = *(__int32*)((unsigned __int64)Target->Self + 1088);
+
+													Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Flags & 1) == 1 ? *(void**)Entity_List : nullptr);
+
+													*(__int8*)((unsigned __int64)Target->Self + 10744) = (Flags & 2) == 2;
+
 													using Perform_Trace_Type = void(**)(void* Movement, float* Start, float* End, __int32 Mask, __int32 Group, Trace_Structure* Trace);
 
 													static void* Movement = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31394695, (unsigned __int8*)Client_Module, 17805682010550749776ull), 3);
+
+													*(void**)((unsigned __int64)Movement + 8) = Target->Self;
 
 													*(__int32*)(*(unsigned __int64*)((unsigned __int64)Movement + 16) + 4) = *(__int32*)((unsigned __int64)Target->Self + 240);
 
@@ -769,16 +781,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 															}
 														}
 													}
-
-													using Set_Ground_Entity_Type = void(*)(void* Entity, void* Ground_Entity);
-
-													static void* Set_Ground_Entity = Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Client_Module, 6146399131556111791);
-
-													__int32 Flags = *(__int32*)((unsigned __int64)Target->Self + 1088);
-
-													Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Flags & 1) == 1 ? *(void**)Entity_List : nullptr);
-
-													*(__int8*)((unsigned __int64)Target->Self + 10744) = (Flags & 2) == 2;
 
 													Command_Structure Target_Command = { };
 

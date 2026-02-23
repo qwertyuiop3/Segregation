@@ -10,7 +10,7 @@ void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Paramete
 
 	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 92)];
 
-	__int8 Update = (__builtin_memcmp(Origin, Previous_Origin, sizeof(float[3])) != 0) + (*(float*)((unsigned __int32)Entity + 604) != *(float*)((unsigned __int32)Entity + 608)) + (*(float*)((unsigned __int32)Entity + 45624) != Player_Data->Networked_Angle) != 0;
+	__int8 Update = (__builtin_memcmp(Origin, Previous_Origin, sizeof(float[3])) != 0) + (*(float*)((unsigned __int32)Entity + 604) != *(float*)((unsigned __int32)Entity + 608)) + (*(float*)((unsigned __int32)Entity + 45624) != Player_Data->Networked_Angle[0]) != 0;
 
 	if (Update == 1)
 	{
@@ -42,12 +42,14 @@ void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Paramete
 					Target_Origin[1] - Local_Networked_Origin[1]
 				};
 
-				*(float*)((unsigned __int32)Entity + 45624) = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f;
+				Player_Data->Networked_Angle[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f;
 			}
 		}
 	}
 
-	Player_Data->Networked_Angle = *(float*)((unsigned __int32)Entity + 45624);
+	Player_Data->Networked_Angle[0] = *(float*)((unsigned __int32)Entity + 45624);
+
+	*(float*)((unsigned __int32)Entity + 45624) = Player_Data->Networked_Angle[1];
 
 	(decltype(&Redirected_Post_Data_Update)(Original_Post_Data_Update_Caller))(Entity, Unknown_Parameter);
 }

@@ -798,7 +798,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 				Previous_Recent_Player_Data.Simulated = Player_Data->Simulated;
 
-				Previous_Recent_Player_Data.Networked_Angle = Player_Data->Networked_Angle;
+				Byte_Manager::Copy_Bytes(1, Previous_Recent_Player_Data.Networked_Angle, sizeof(Previous_Recent_Player_Data.Networked_Angle), Player_Data->Networked_Angle);
 
 				Previous_Recent_Player_Data.Animation_Angle = Player_Data->Animation_Angle;
 

@@ -19,7 +19,7 @@ struct Player_Data_Structure
 
 	__int8 Simulated;
 
-	float Networked_Angle;
+	float Networked_Angle[2];
 
 	__int32 Memory_Tolerance;
 

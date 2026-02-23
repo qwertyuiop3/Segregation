@@ -141,7 +141,7 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_High_Jump), (char*)"1", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Alternative), (char*)"0", nullptr);
+	Create_Interface(Pointer_Name(Interface_Alternative), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Minimum_Choked_Commands), (char*)"2", nullptr);
 

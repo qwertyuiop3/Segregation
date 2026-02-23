@@ -665,7 +665,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 																float Previous_Incline = *(float*)((unsigned __int32)Local_Player + 10132);
 
-																*(float*)((unsigned __int32)Local_Player + 10132) = Local_Origin[2] + *(float*)((unsigned __int32)Local_Player + 268) >= *Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * 0.5f + Bones[8][2][3];
+																*(float*)((unsigned __int32)Local_Player + 10132) = 1.f;
 
 																*(__int32*)((unsigned __int32)Local_Player + 10516) = -8388609;
 
@@ -764,7 +764,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 												if ((Command->Buttons & 1) == 1)
 												{
-													Command->Angles[0] = -Command->Angles[0] + 180.f;
+													Command->Angles[0] = -Command->Angles[0] + 540.f;
 
 													Command->Angles[1] += 180.f;
 

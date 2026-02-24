@@ -10,9 +10,7 @@ void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Paramete
 
 	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int32)Entity + 92)];
 
-	__int8 Update = (__builtin_memcmp(Origin, Previous_Origin, sizeof(float[3])) != 0) + (*(float*)((unsigned __int32)Entity + 604) != *(float*)((unsigned __int32)Entity + 608)) + (*(float*)((unsigned __int32)Entity + 45624) != Player_Data->Networked_Angle[0]) != 0;
-
-	if (Update == 1)
+	if ((__builtin_memcmp(Origin, Previous_Origin, sizeof(float[3])) != 0) + (*(float*)((unsigned __int32)Entity + 604) != *(float*)((unsigned __int32)Entity + 608)) + (*(float*)((unsigned __int32)Entity + 45624) != Player_Data->Networked_Angle[0]) != 0)
 	{
 		if (*(float*)((unsigned __int32)Entity + 604) == *(float*)((unsigned __int32)Entity + 608))
 		{

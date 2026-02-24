@@ -143,7 +143,7 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Alternative), (char*)"1", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Minimum_Choked_Commands), (char*)"2", nullptr);
+	Create_Interface(Pointer_Name(Interface_Minimum_Choked_Commands), (char*)"1", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Maximum_Choked_Commands), (char*)"14", nullptr);
 
@@ -155,9 +155,9 @@ void Implement_Extended_Interface()
 
 	Create_Interface(Pointer_Name(Interface_Angle_X), (char*)"540", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Animated_Angle_Y), (char*)"135", nullptr);
+	Create_Interface(Pointer_Name(Interface_Animated_Angle_Y), (char*)"180", nullptr);
 
-	Create_Interface(Pointer_Name(Interface_Angle_Y), (char*)"-45", nullptr);
+	Create_Interface(Pointer_Name(Interface_Angle_Y), (char*)"180", nullptr);
 
 	Create_Interface(Pointer_Name(Interface_Body_Update), (char*)"1", nullptr);
 

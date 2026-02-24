@@ -29,6 +29,8 @@ void __thiscall Redirected_Post_Data_Update(void* Entity, void* Unknown_Paramete
 			}
 		}
 
+		Player_Data->Networked_Angle[1] = *(float*)((unsigned __int32)Entity + 45624);
+
 		if (Interface_Bruteforce.Get_Integer() * (Interface_Bruteforce_Relative.Get_Integer() ^ 1) == 1)
 		{
 			if (Player_Data->Priority != -2)

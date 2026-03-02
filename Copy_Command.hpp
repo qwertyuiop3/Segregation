@@ -196,11 +196,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				Vector_Normalize(Move_Right);
 
-				float Divider = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
+				float Divisor = Move_Forward[0] * Move_Right[1] - Move_Right[0] * Move_Forward[1];
 
-				Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divider, -10000.f, 10000.f);
+				Move[0] = std::clamp((Desired_Move[0] * Move_Right[1] - Move_Right[0] * Desired_Move[1]) / Divisor, -10000.f, 10000.f);
 
-				Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divider, -10000.f, 10000.f);
+				Move[1] = std::clamp((Move_Forward[0] * Desired_Move[1] - Desired_Move[0] * Move_Forward[1]) / Divisor, -10000.f, 10000.f);
 			}
 			else
 			{
@@ -237,6 +237,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 					Rotate_Solution_Label:
 					{
+						__int8 Approximated = Solution_Number == 2;
+
 						float Iterative_Rotation[2] = { Initial_Rotation };
 
 						auto Calculate_Deviation = [&](float Offset) -> float
@@ -250,18 +252,14 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 							return __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
 						};
 
-						float Iterative_Deviation = __builtin_inff();
+						if (Approximated == 0)
+						{
+							float Deviations[3];
 
-						if (Solution_Number == 2)
-						{
-							Iterative_Deviation = Calculate_Deviation(0.f);
-						}
-						else
-						{
+							float Iterative_Deviation = __builtin_inff();
+
 							Approximate_Rotation_Label:
 							{
-								float Deviations[3];
-
 								Deviations[0] = Calculate_Deviation(0.125f);
 
 								Deviations[1] = Calculate_Deviation(0.f);
@@ -278,25 +276,45 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									Iterative_Deviation = Deviations[1];
 
+									Approximated = 1;
+
 									goto Approximate_Rotation_Label;
 								}
+
+								if (Approximated == 0)
+								{
+									Iterative_Rotation[1] = Iterative_Rotation[0];
+
+									Iterative_Deviation = Deviations[1];
+								}
+							}
+
+							if (Iterative_Deviation < Least_Deviation)
+							{
+								Least_Deviation = Iterative_Deviation;
+
+								Solutions[Solution_Number][2] = Iterative_Rotation[1];
+
+								Solution = Solution_Number;
+							}
+
+							if (Initial_Rotation != 180.f)
+							{
+								Initial_Rotation += 60.f;
+
+								goto Rotate_Solution_Label;
 							}
 						}
-
-						if (Iterative_Deviation < Least_Deviation)
+						else
 						{
-							Least_Deviation = Iterative_Deviation;
+							float Deviation = Calculate_Deviation(0.f);
 
-							Solutions[Solution_Number][2] = Iterative_Rotation[1];
+							if (Deviation < Least_Deviation)
+							{
+								Least_Deviation = Deviation;
 
-							Solution = Solution_Number;
-						}
-
-						if (Initial_Rotation != 180.f)
-						{
-							Initial_Rotation += 60.f;
-
-							goto Rotate_Solution_Label;
+								Solution = Solution_Number;
+							}
 						}
 					}
 

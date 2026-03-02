@@ -35,7 +35,7 @@ struct Player_Data_Structure
 
 	__int8 Data[14952];
 
-	__int8 Animation_State[320];
+	__int8 Animation_State[304];
 
 	__int32 Priority;
 

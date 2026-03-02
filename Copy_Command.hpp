@@ -698,7 +698,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 									Byte_Manager::Copy_Bytes(1, Target_Data, sizeof(Target_Data), Target->Self);
 
-									__int8 Animation_State_Data[320];
+									__int8 Animation_State_Data[304];
 
 									void* Animation_State = *(void**)((unsigned __int64)Target->Self + 13928);
 

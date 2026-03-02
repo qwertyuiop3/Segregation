@@ -4,7 +4,7 @@ Redirection_Manager::Manager_Structure Update_Animation_State_Manager;
 
 void Redirected_Update_Animation_State(void* Animation_State, float Yaw, float Pitch)
 {
-	if (*(void**)((unsigned __int64)Animation_State + 304) == Get_Local_Player())
+	if (*(void**)((unsigned __int64)Animation_State + 288) == Get_Local_Player())
 	{
 		Pitch = Update_Animation_Angles[0];
 

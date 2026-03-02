@@ -73,9 +73,6 @@
     <ClInclude Include="Fire_Bullets.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
-    <ClInclude Include="Restart_Gesture.hpp">
-      <Filter>Header++</Filter>
-    </ClInclude>
     <ClInclude Include="Run_Command.hpp">
       <Filter>Header++</Filter>
     </ClInclude>

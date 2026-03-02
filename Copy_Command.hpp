@@ -184,10 +184,10 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 			float Move_Right[3];
 
+			Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
+
 			if (Move_Type == 2)
 			{
-				Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
-
 				Move_Forward[2] = 0.f;
 
 				Vector_Normalize(Move_Forward);
@@ -233,33 +233,69 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				Traverse_Solutions_Label:
 				{
-					float Rotation = 0.f;
+					float Initial_Rotation = 0.f;
 
 					Rotate_Solution_Label:
 					{
-						float Move[3];
+						float Iterative_Rotation[2] = { Initial_Rotation };
 
-						Angles[2] = Rotation;
-
-						Angle_Vectors(Angles, Move_Forward, Move_Right, nullptr);
-
-						Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
-
-						float Deviation = __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
-
-						if (Deviation < Least_Deviation)
+						auto Calculate_Deviation = [&](float Offset) -> float
 						{
-							Least_Deviation = Deviation;
+							Angles[2] = Iterative_Rotation[0] + Offset;
 
-							Solutions[Solution_Number][2] = Rotation;
+							Angle_Vectors(Angles, nullptr, Move_Right, nullptr);
+
+							Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
+
+							return __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
+						};
+
+						float Iterative_Deviation = __builtin_inff();
+
+						if (Solution_Number == 2)
+						{
+							Iterative_Deviation = Calculate_Deviation(0.f);
+						}
+						else
+						{
+							Approximate_Rotation_Label:
+							{
+								float Deviations[3];
+
+								Deviations[0] = Calculate_Deviation(0.125f);
+
+								Deviations[1] = Calculate_Deviation(0.f);
+
+								Deviations[2] = Calculate_Deviation(-0.125f);
+
+								float Derivative = (Deviations[0] - Deviations[1] * 2.f + Deviations[2]) * 16.f;
+
+								if (Derivative * (Deviations[1] < Iterative_Deviation) > 0.f)
+								{
+									Iterative_Rotation[1] = Iterative_Rotation[0];
+
+									Iterative_Rotation[0] -= (Deviations[0] - Deviations[2]) / Derivative;
+
+									Iterative_Deviation = Deviations[1];
+
+									goto Approximate_Rotation_Label;
+								}
+							}
+						}
+
+						if (Iterative_Deviation < Least_Deviation)
+						{
+							Least_Deviation = Iterative_Deviation;
+
+							Solutions[Solution_Number][2] = Iterative_Rotation[1];
 
 							Solution = Solution_Number;
 						}
 
-						Rotation += 1.f;
-
-						if (Rotation != 180.f)
+						if (Initial_Rotation != 180.f)
 						{
+							Initial_Rotation += 60.f;
+
 							goto Rotate_Solution_Label;
 						}
 					}

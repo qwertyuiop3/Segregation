@@ -244,9 +244,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 						return __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
 					};
 
-					float Rotations[4] = { 0.f, 16.f };
+					float Rotations[3] = { 0.f, 15.875f };
 
-					float Deviations[4] = { Calculate_Deviation(Rotations[0]) };
+					float Deviations[3] = { Calculate_Deviation(Rotations[0]) };
 
 					if (Solution_Number != 2)
 					{
@@ -254,36 +254,36 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 						Approximate_Rotation_Label:
 						{
+							if (Deviations[0] > Deviations[1])
+							{
+								std::swap(Deviations[0], Deviations[1]);
+
+								std::swap(Rotations[0], Rotations[1]);
+							}
+
+							Rotations[2] = Rotations[0] + (Rotations[0] - Rotations[1]);
+
+							Deviations[2] = Calculate_Deviation(Rotations[2]);
+							
+							if (Deviations[0] > Deviations[2])
+							{
+								Rotations[1] = Rotations[0] + (Rotations[0] - Rotations[1]) * 0.875f;
+
+								Deviations[1] = Calculate_Deviation(Rotations[1]);
+
+								Rotations[1] = Rotations[2 - (Deviations[1] < Deviations[2])];
+
+								Deviations[1] = Deviations[2 - (Deviations[1] < Deviations[2])];
+							}
+							else
+							{
+								Rotations[1] = Rotations[0] - (Rotations[0] - Rotations[1]) * 0.125f * __builtin_copysignf(1.f, Deviations[2] - Deviations[1]);
+
+								Deviations[1] = Calculate_Deviation(Rotations[1]);
+							}
+
 							if (Deviations[0] != Deviations[1])
 							{
-								if (Deviations[0] > Deviations[1])
-								{
-									std::swap(Deviations[0], Deviations[1]);
-
-									std::swap(Rotations[0], Rotations[1]);
-								}
-								
-								Rotations[2] = Rotations[0] + (Rotations[0] - Rotations[1]);
-
-								Deviations[2] = Calculate_Deviation(Rotations[2]);
-								
-								if (Deviations[0] > Deviations[2])
-								{
-									Rotations[3] = Rotations[0] + (Rotations[2] - Rotations[0]) * 3.f;
-
-									Deviations[3] = Calculate_Deviation(Rotations[3]);
-
-									Rotations[1] = Rotations[2 + (Deviations[3] < Deviations[2])];
-
-									Deviations[1] = Deviations[2 + (Deviations[3] < Deviations[2])];
-								}
-								else
-								{
-									Rotations[1] = Rotations[0] + (Rotations[1] - Rotations[0]) * 0.125f * __builtin_copysignf(1.f, Deviations[3] - Deviations[2]);
-
-									Deviations[1] = Calculate_Deviation(Rotations[1]);
-								}
-
 								goto Approximate_Rotation_Label;
 							}
 						}

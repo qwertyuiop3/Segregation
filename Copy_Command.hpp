@@ -250,89 +250,69 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 				Traverse_Solutions_Label:
 				{
-					float Initial_Rotation = 0.f;
-
-					Rotate_Solution_Label:
+					auto Calculate_Deviation = [&](float Rotation) -> float
 					{
-						__int8 Approximated = Solution_Number == 2;
+						Command->Angles[2] = Rotation;
 
-						float Iterative_Rotation[2] = { Initial_Rotation };
+						Angle_Vectors(Command->Angles, nullptr, Move_Right, nullptr);
 
-						auto Calculate_Deviation = [&](float Offset) -> float
+						Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
+
+						return __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
+					};
+
+					float Rotations[4] = { 0.f, 16.f };
+
+					float Deviations[4] = { Calculate_Deviation(Rotations[0]) };
+
+					if (Solution_Number != 2)
+					{
+						Deviations[1] = Calculate_Deviation(Rotations[1]);
+
+						Approximate_Rotation_Label:
 						{
-							Command->Angles[2] = Iterative_Rotation[0] + Offset;
-
-							Angle_Vectors(Command->Angles, nullptr, Move_Right, nullptr);
-
-							Get_Ladder_Move(Command->Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1]);
-
-							return __builtin_powf(Command->Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Command->Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Command->Move[2] - Desired_Move[2], 2.f);
-						};
-
-						if (Approximated == 0)
-						{
-							float Deviations[3];
-
-							float Iterative_Deviation = __builtin_inff();
-
-							Approximate_Rotation_Label:
+							if (Deviations[0] != Deviations[1])
 							{
-								Deviations[0] = Calculate_Deviation(0.125f);
-
-								Deviations[1] = Calculate_Deviation(0.f);
-
-								Deviations[2] = Calculate_Deviation(-0.125f);
-
-								float Derivative = (Deviations[0] - Deviations[1] * 2.f + Deviations[2]) * 16.f;
-
-								if (Derivative * (Deviations[1] < Iterative_Deviation) > 0.f)
+								if (Deviations[0] > Deviations[1])
 								{
-									Iterative_Rotation[1] = Iterative_Rotation[0];
+									std::swap(Deviations[0], Deviations[1]);
 
-									Iterative_Rotation[0] -= (Deviations[0] - Deviations[2]) / Derivative;
+									std::swap(Rotations[0], Rotations[1]);
+								}
+								
+								Rotations[2] = Rotations[0] + (Rotations[0] - Rotations[1]);
 
-									Iterative_Deviation = Deviations[1];
+								Deviations[2] = Calculate_Deviation(Rotations[2]);
+								
+								if (Deviations[0] > Deviations[2])
+								{
+									Rotations[3] = Rotations[0] + 3.f * (Rotations[2] - Rotations[0]);
 
-									Approximated = 1;
+									Deviations[3] = Calculate_Deviation(Rotations[3]);
 
-									goto Approximate_Rotation_Label;
+									Rotations[1] = Rotations[2 + (Deviations[3] < Deviations[2])];
+
+									Deviations[1] = Deviations[2 + (Deviations[3] < Deviations[2])];
+								}
+								else
+								{
+									Rotations[1] = Rotations[0] + 0.125f * (Rotations[1] - Rotations[0]) * __builtin_copysignf(1.f, Deviations[3] - Deviations[2]);
+
+									Deviations[1] = Calculate_Deviation(Rotations[1]);
 								}
 
-								if (Approximated == 0)
-								{
-									Iterative_Rotation[1] = Iterative_Rotation[0];
-
-									Iterative_Deviation = Deviations[1];
-								}
-							}
-
-							if (Iterative_Deviation < Least_Deviation)
-							{
-								Least_Deviation = Iterative_Deviation;
-
-								Solutions[Solution_Number][2] = Iterative_Rotation[1];
-
-								Solution = Solution_Number;
-							}
-
-							if (Initial_Rotation != 180.f)
-							{
-								Initial_Rotation += 60.f;
-
-								goto Rotate_Solution_Label;
+								goto Approximate_Rotation_Label;
 							}
 						}
-						else
-						{
-							float Deviation = Calculate_Deviation(0.f);
+					}
 
-							if (Deviation < Least_Deviation)
-							{
-								Least_Deviation = Deviation;
+					if (Deviations[0] < Least_Deviation)
+					{
+						Least_Deviation = Deviations[0];
 
-								Solution = Solution_Number;
-							}
-						}
+						Solutions[Solution_Number][2] = Rotations[0];
+
+						Solution = Solution_Number;
 					}
 
 					Solution_Number += 1;
@@ -363,85 +343,85 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			}
 		};
 
-		Correct_Movement();
+			Correct_Movement();
 
-		void* Previous_Audio_Device = *(void**)((unsigned __int32)Engine_Module + 8406032);
+			void* Previous_Audio_Device = *(void**)((unsigned __int32)Engine_Module + 8406032);
 
-		*(void**)((unsigned __int32)Engine_Module + 8406032) = nullptr;
+			*(void**)((unsigned __int32)Engine_Module + 8406032) = nullptr;
 
-		using Set_Host_Type = void(__thiscall*)(void* Move_Helper, void* Player);
+			using Set_Host_Type = void(__thiscall*)(void* Move_Helper, void* Player);
 
-		Set_Host_Type((unsigned __int32)Client_Module + 2894464)((void*)((unsigned __int32)Client_Module + 11177912), Local_Player);
+			Set_Host_Type((unsigned __int32)Client_Module + 2894464)((void*)((unsigned __int32)Client_Module + 11177912), Local_Player);
 
-		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
+			using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
 
-		Run_Command_Type((unsigned __int32)Client_Module + 3037136)((void*)((unsigned __int32)Client_Module + 82620920), Local_Player, Command, (void*)((unsigned __int32)Client_Module + 11177912));
+			Run_Command_Type((unsigned __int32)Client_Module + 3037136)((void*)((unsigned __int32)Client_Module + 82620920), Local_Player, Command, (void*)((unsigned __int32)Client_Module + 11177912));
 
-		Set_Host_Type((unsigned __int32)Client_Module + 2894464)((void*)((unsigned __int32)Client_Module + 11177912), nullptr);
+			Set_Host_Type((unsigned __int32)Client_Module + 2894464)((void*)((unsigned __int32)Client_Module + 11177912), nullptr);
 
-		*(void**)((unsigned __int32)Engine_Module + 8406032) = Previous_Audio_Device;
+			*(void**)((unsigned __int32)Engine_Module + 8406032) = Previous_Audio_Device;
 
-		Byte_Manager::Copy_Bytes(1, Command->Move, sizeof(Previous_Move), Previous_Move);
+			Byte_Manager::Copy_Bytes(1, Command->Move, sizeof(Previous_Move), Previous_Move);
 
-		static __int8 Send_Packet;
+			static __int8 Send_Packet;
 
-		__int8 Animation_Ground = *(__int8*)(*(unsigned __int32*)((unsigned __int32)Local_Player + 14452) + 264);
+			__int8 Animation_Ground = *(__int8*)(*(unsigned __int32*)((unsigned __int32)Local_Player + 14452) + 264);
 
-		void* Client = *(void**)((unsigned __int32)Engine_Module + 5757076);
+			void* Client = *(void**)((unsigned __int32)Engine_Module + 5757076);
 
-		__int32 Choked_Commands = *(__int32*)((unsigned __int32)Client + 19632);
+			__int32 Choked_Commands = *(__int32*)((unsigned __int32)Client + 19632);
 
-		Update_Animation_Type = (Choked_Commands == 0) * 2;
+			Update_Animation_Type = (Choked_Commands == 0) * 2;
 
-		Redirected_Update_Animation(Local_Player);
+			Redirected_Update_Animation(Local_Player);
 
-		Update_Animation_Type = 0;
+			Update_Animation_Type = 0;
 
-		float* Local_Origin = (float*)((unsigned __int32)Local_Player + 308);
+			float* Local_Origin = (float*)((unsigned __int32)Local_Player + 308);
 
-		if (0)
-		{
-			Send_Packet_Label:
+			if (0)
 			{
-				Byte_Manager::Copy_Bytes(1, Local_Networked_Origin, sizeof(Local_Networked_Origin), Local_Origin);
+				Send_Packet_Label:
+				{
+					Byte_Manager::Copy_Bytes(1, Local_Networked_Origin, sizeof(Local_Networked_Origin), Local_Origin);
 
-				Send_Packet = 1;
+					Send_Packet = 1;
+				}
 			}
-		}
-		else
-		{
-			if (Send_Packet == 2)
+			else
 			{
-				goto Send_Packet_Label;
-			}
-
-			if (Choked_Commands >= Interface_Minimum_Choked_Commands.Get_Integer())
-			{
-				if (Choked_Commands >= Interface_Maximum_Choked_Commands.Get_Integer())
+				if (Send_Packet == 2)
 				{
 					goto Send_Packet_Label;
 				}
 
-				if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) > 4096.f)
+				if (Choked_Commands >= Interface_Minimum_Choked_Commands.Get_Integer())
 				{
-					goto Send_Packet_Label;
+					if (Choked_Commands >= Interface_Maximum_Choked_Commands.Get_Integer())
+					{
+						goto Send_Packet_Label;
+					}
+
+					if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) > 4096.f)
+					{
+						goto Send_Packet_Label;
+					}
 				}
+
+				Send_Packet = 0;
 			}
 
-			Send_Packet = 0;
-		}
+			__int32 Entity_Number = 1;
 
-		__int32 Entity_Number = 1;
+			using Get_Latency_Type = float(__thiscall*)(void* Network_Channel, __int32 Type);
 
-		using Get_Latency_Type = float(__thiscall*)(void* Network_Channel, __int32 Type);
+			void* Network_Channel = *(void**)((unsigned __int32)Client + 156);
 
-		void* Network_Channel = *(void**)((unsigned __int32)Client + 156);
+			float Latency = Get_Latency_Type((unsigned __int32)Engine_Module + 2299408)(Network_Channel, 0);
 
-		float Latency = Get_Latency_Type((unsigned __int32)Engine_Module + 2299408)(Network_Channel, 0);
+			using Get_Interpolation_Time_Type = float(__vectorcall*)();
 
-		using Get_Interpolation_Time_Type = float(__vectorcall*)();
-
-		float Interpolation_Time = Get_Interpolation_Time_Type((unsigned __int32)Engine_Module + 918912)();
+			float Interpolation_Time = Get_Interpolation_Time_Type((unsigned __int32)Engine_Module + 918912)();
 
 		float Corrected_Latency = std::clamp(Latency + Interpolation_Time, 0.f, 1.f);
 

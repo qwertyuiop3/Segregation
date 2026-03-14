@@ -56,7 +56,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalOptions>/Zc:threadSafeInit- /clang:-fno-unwind-tables -Wno-multichar -Wno-microsoft-goto -Wno-char-subscripts %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:threadSafeInit- /clang:-fno-unwind-tables -Wno-multichar -Wno-microsoft-goto -Wno-char-subscripts /clang:-fsigned-zeros %(AdditionalOptions)</AdditionalOptions>
       <StringPooling>true</StringPooling>
       <ControlFlowGuard>false</ControlFlowGuard>
       <FloatingPointExceptions>false</FloatingPointExceptions>

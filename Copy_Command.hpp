@@ -233,89 +233,69 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				Traverse_Solutions_Label:
 				{
-					float Initial_Rotation = 0.f;
-
-					Rotate_Solution_Label:
+					auto Calculate_Deviation = [&](float Rotation) -> float
 					{
-						__int8 Approximated = Solution_Number == 2;
+						Angles[2] = Rotation;
 
-						float Iterative_Rotation[2] = { Initial_Rotation };
+						Angle_Vectors(Angles, nullptr, Move_Right, nullptr);
 
-						auto Calculate_Deviation = [&](float Offset) -> float
+						Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
+
+						return __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
+					};
+
+					float Rotations[4] = { 0.f, 16.f };
+
+					float Deviations[4] = { Calculate_Deviation(Rotations[0]) };
+
+					if (Solution_Number != 2)
+					{
+						Deviations[1] = Calculate_Deviation(Rotations[1]);
+
+						Approximate_Rotation_Label:
 						{
-							Angles[2] = Iterative_Rotation[0] + Offset;
-
-							Angle_Vectors(Angles, nullptr, Move_Right, nullptr);
-
-							Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
-
-							return __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
-						};
-
-						if (Approximated == 0)
-						{
-							float Deviations[3];
-
-							float Iterative_Deviation = __builtin_inff();
-
-							Approximate_Rotation_Label:
+							if (Deviations[0] != Deviations[1])
 							{
-								Deviations[0] = Calculate_Deviation(0.125f);
-
-								Deviations[1] = Calculate_Deviation(0.f);
-
-								Deviations[2] = Calculate_Deviation(-0.125f);
-
-								float Derivative = (Deviations[0] - Deviations[1] * 2.f + Deviations[2]) * 16.f;
-
-								if (Derivative * (Deviations[1] < Iterative_Deviation) > 0.f)
+								if (Deviations[0] > Deviations[1])
 								{
-									Iterative_Rotation[1] = Iterative_Rotation[0];
+									std::swap(Deviations[0], Deviations[1]);
 
-									Iterative_Rotation[0] -= (Deviations[0] - Deviations[2]) / Derivative;
+									std::swap(Rotations[0], Rotations[1]);
+								}
+								
+								Rotations[2] = Rotations[0] + (Rotations[0] - Rotations[1]);
 
-									Iterative_Deviation = Deviations[1];
+								Deviations[2] = Calculate_Deviation(Rotations[2]);
+								
+								if (Deviations[0] > Deviations[2])
+								{
+									Rotations[3] = Rotations[0] + (Rotations[2] - Rotations[0]) * 3.f;
 
-									Approximated = 1;
+									Deviations[3] = Calculate_Deviation(Rotations[3]);
 
-									goto Approximate_Rotation_Label;
+									Rotations[1] = Rotations[2 + (Deviations[3] < Deviations[2])];
+
+									Deviations[1] = Deviations[2 + (Deviations[3] < Deviations[2])];
+								}
+								else
+								{
+									Rotations[1] = Rotations[0] + (Rotations[1] - Rotations[0]) * 0.125f * __builtin_copysignf(1.f, Deviations[3] - Deviations[2]);
+
+									Deviations[1] = Calculate_Deviation(Rotations[1]);
 								}
 
-								if (Approximated == 0)
-								{
-									Iterative_Rotation[1] = Iterative_Rotation[0];
-
-									Iterative_Deviation = Deviations[1];
-								}
-							}
-
-							if (Iterative_Deviation < Least_Deviation)
-							{
-								Least_Deviation = Iterative_Deviation;
-
-								Solutions[Solution_Number][2] = Iterative_Rotation[1];
-
-								Solution = Solution_Number;
-							}
-
-							if (Initial_Rotation != 180.f)
-							{
-								Initial_Rotation += 60.f;
-
-								goto Rotate_Solution_Label;
+								goto Approximate_Rotation_Label;
 							}
 						}
-						else
-						{
-							float Deviation = Calculate_Deviation(0.f);
+					}
 
-							if (Deviation < Least_Deviation)
-							{
-								Least_Deviation = Deviation;
+					if (Deviations[0] < Least_Deviation)
+					{
+						Least_Deviation = Deviations[0];
 
-								Solution = Solution_Number;
-							}
-						}
+						Solutions[Solution_Number][2] = Rotations[0];
+
+						Solution = Solution_Number;
 					}
 
 					Solution_Number += 1;

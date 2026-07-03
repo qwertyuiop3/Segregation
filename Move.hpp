@@ -1,12 +1,3 @@
-void Run_Prediction()
-{
-	using Run_Prediction_Type = void(*)();
-
-	static void* Run_Prediction = Byte_Manager::Find_Bytes(26679, (unsigned __int8*)Engine_Module, 14835849722720403839ull);
-
-	Run_Prediction_Type((unsigned __int64)Run_Prediction)();
-}
-
 Redirection_Manager::Manager_Structure Move_Manager;
 
 void Redirected_Move(float Unknown_Parameter, __int8 Final)
@@ -15,7 +6,11 @@ void Redirected_Move(float Unknown_Parameter, __int8 Final)
 	{
 		Redirected_Read_Packets(Final);
 
-		Run_Prediction();
+		using Run_Prediction_Type = void(*)();
+
+		static void* Run_Prediction = Byte_Manager::Find_Bytes(26679, (unsigned __int8*)Engine_Module, 14835849722720403839ull);
+
+		Run_Prediction_Type((unsigned __int64)Run_Prediction)();
 
 		using Fire_Events_Type = void(*)();
 

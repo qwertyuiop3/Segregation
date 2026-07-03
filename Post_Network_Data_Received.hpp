@@ -9,23 +9,13 @@ struct Prediction_Field_Structure
 {
 	__int32 Type;
 
-	char* Name;
-
-	__int32 Offset;
-
-	unsigned __int16 Size;
-
-	__int16 Flags;
-
-	__int8 Additional_Bytes_1[24];
+	__int8 Additional_Bytes_1[40];
 
 	struct Prediction_Descriptor_Structure* Descriptor;
 
 	__int32 Bytes;
 
-	__int8 Additional_Bytes_2[16];
-
-	float Tolerance;
+	__int8 Additional_Bytes_2[20];
 
 	__int32 Flat_Offset[2];
 
@@ -41,8 +31,6 @@ struct Prediction_Descriptor_Structure
 	__int8 Additional_Bytes_1[12];
 
 	Prediction_Descriptor_Structure* Parent;
-
-	__int8 Additional_Bytes_2[8];
 };
 
 struct Prediction_Copy_Structure
@@ -132,7 +120,7 @@ void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Comm
 
 	Commands_Acknowledged = max(0, Commands_Acknowledged);
 
-	void* Prediction_Frame = *(void**)((unsigned __int64)Local_Player + 1096 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 8);
+	void* Prediction_Frame = *(void**)((unsigned __int64)Local_Player + 1112 + (90 - ((Commands_Acknowledged - 1) % 90 + 1) * 90 % -~90) * 8);
 
 	if (Prediction_Frame != nullptr)
 	{

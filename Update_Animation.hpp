@@ -8,28 +8,22 @@ void Redirected_Update_Animation(void* Player)
 {
 	Global_Variables_Structure* Global_Variables = Get_Global_Variables();
 
-	float Previous_Time = Global_Variables->Time;
-
-	Global_Variables->Time = Update_Animation_Time;
-
 	float Previous_Frame_Time = Global_Variables->Frame_Time;
 
 	Global_Variables->Frame_Time = Global_Variables->Interval_Per_Tick * Update_Animation_Type;
 
-	*(float*)((unsigned __int64)Player + 152) = Update_Animation_Time - Global_Variables->Frame_Time;
+	*(double*)((unsigned __int64)Player + 160) = Global_Variables->Time - Global_Variables->Frame_Time;
 
 	(decltype(&Redirected_Update_Animation)(Update_Animation_Manager.Caller))(Player);
 
 	Global_Variables->Frame_Time = Previous_Frame_Time;
 
-	Global_Variables->Time = Previous_Time;
+	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Player + 136)];
 
-	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Player + 128)];
-
-	if (Player_Data->Data[6176] == -1)
+	if (Player_Data->Data[6148] == -1)
 	{
 		Byte_Manager::Copy_Bytes(1, Player_Data->Data, sizeof(Player_Data->Data), Player);
 
-		Byte_Manager::Copy_Bytes(1, Player_Data->Animation_State, sizeof(Player_Data->Animation_State), *(void**)((unsigned __int64)Player + 13928));
+		Byte_Manager::Copy_Bytes(1, Player_Data->Animation_State, sizeof(Player_Data->Animation_State), *(void**)((unsigned __int64)Player + 13768));
 	}
 }

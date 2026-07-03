@@ -70,7 +70,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 			{
 				DWORD Identifier;
 
-				if (GetWindowThreadProcessId(FindWindowW(nullptr, L"Garry's Mod (x64)"), &Identifier) != 0)
+				if (GetWindowThreadProcessId(FindWindowW(nullptr, L"Garry's Mod (64-bit)"), &Identifier) != 0)
 				{
 					void* Process = OpenProcess(PROCESS_ALL_ACCESS, 0, Identifier);
 
@@ -145,9 +145,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 				{
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(16777185, (unsigned __int8*)Client_Module, 12126569767325379908ull), 1, 195);
 
-					Post_Network_Data_Received_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(6575677951, (unsigned __int8*)Client_Module, 18094813591132311429ull), (void*)Redirected_Post_Network_Data_Received);
+					Post_Network_Data_Received_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(2047, (unsigned __int8*)Client_Module, 5509070456773632119), (void*)Redirected_Post_Network_Data_Received);
 
-					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(246301, (unsigned __int8*)Engine_Module, 10737773099336612120ull), 1, 235);
+					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(508445, (unsigned __int8*)Engine_Module, 15315303757620206820ull), 1, 235);
 
 					void* Event_Listener = (void*)__builtin_malloc(sizeof(void*));
 
@@ -184,7 +184,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 				_putws(L"[ + ] Interpolation");
 				{
-					Interpolate_Manager.Redirect_Function(1, Byte_Manager::Find_Bytes(1983, (unsigned __int8*)Client_Module, 15847880666414787410ull), (void*)Redirected_Interpolate);
+					Interpolate_Manager.Redirect_Function(1, Byte_Manager::Find_Bytes(1983, (unsigned __int8*)Client_Module, 5185632773183495347), (void*)Redirected_Interpolate);
 				}
 
 				_putws(L"[ + ] Animations");
@@ -195,7 +195,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Update_Animation_State_Manager.Redirect_Function(1, Byte_Manager::Find_Bytes(16653807, (unsigned __int8*)Client_Module, 11528163788009019714ull), (void*)Redirected_Update_Animation_State);
 
-					Compute_Torso_Rotation_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(2138553279, (unsigned __int8*)Client_Module, 1594227410962117498), (void*)Redirected_Compute_Torso_Rotation);
+					Compute_Torso_Rotation_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(2138553279, (unsigned __int8*)Client_Module, 1594218614869091810), (void*)Redirected_Compute_Torso_Rotation);
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(2031, (unsigned __int8*)Client_Module, 12095624162194331321ull), 1, 195);
 
@@ -217,7 +217,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Move_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(266406015, (unsigned __int8*)Engine_Module, 3194732367554632559), (void*)Redirected_Move);
 
-					unsigned __int8 Send_Move_Bytes[5] = { 233, 220 };
+					unsigned __int8 Send_Move_Bytes[5] = { 233, 210 };
 
 					Byte_Manager::Copy_Bytes(0, Byte_Manager::Find_Bytes(895, (unsigned __int8*)Engine_Module, 14445930051567068677ull), sizeof(Send_Move_Bytes), Send_Move_Bytes);
 
@@ -239,7 +239,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 				{
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(255, (unsigned __int8*)Client_Module, 15837355970143546918ull), 52, 144);
 
-					Run_Command_Manager.Redirect_Function(4, Byte_Manager::Find_Bytes(16642457071, (unsigned __int8*)Client_Module, 4919264149733177098), (void*)Redirected_Run_Command);
+					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(536865293, (unsigned __int8*)Client_Module, 9147949097379576542), 1, 235);
+
+					Run_Command_Manager.Redirect_Function(4, Byte_Manager::Find_Bytes(8052522479, (unsigned __int8*)Client_Module, 11309921798514847033ull), (void*)Redirected_Run_Command);
 				}
 
 				_putws(L"[ + ] Crosshair");
@@ -248,7 +250,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Copy_Bytes(0, Byte_Manager::Find_Bytes(71175663, (unsigned __int8*)Client_Module, 13304841159004331597ull), sizeof(Draw_Crosshair_Bytes), Draw_Crosshair_Bytes);
 
-					Draw_Crosshair_Manager.Redirect_Function(Byte_Manager::Find_Bytes(31, (unsigned __int8*)Client_Module, 15200820684421834831ull), (void*)Redirected_Draw_Crosshair);
+					Draw_Crosshair_Manager.Redirect_Function(Byte_Manager::Find_Bytes(71175711, (unsigned __int8*)Client_Module, 5329515198923994150), (void*)Redirected_Draw_Crosshair);
 				}
 
 				_putws(L"[ + ] Materials");
@@ -257,7 +259,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(445, (unsigned __int8*)Client_Module, 16324833799701554475ull), 1, 116);
 
-					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(8766391, (unsigned __int8*)Client_Module, 15975356392803301949ull), 4, 144);
+					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(377783, (unsigned __int8*)Client_Module, 7897095185544665575), 4, 144);
 				}
 			}
 		}

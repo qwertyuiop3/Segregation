@@ -7,9 +7,9 @@ void* Get_Engine()
 
 struct Global_Variables_Structure
 {
-	__int8 Additional_Bytes[12];
+	__int8 Additional_Bytes_1[16];
 
-	float Time;
+	double Time;
 
 	float Frame_Time;
 
@@ -17,7 +17,9 @@ struct Global_Variables_Structure
 
 	__int32 Tick_Number;
 
-	float Interval_Per_Tick;
+	__int8 Additional_Bytes_2[4];
+
+	double Interval_Per_Tick;
 };
 
 Global_Variables_Structure* Get_Global_Variables()
@@ -33,9 +35,9 @@ struct Player_Data_Structure
 
 	__int8 Teleported;
 
-	__int8 Data[14952];
+	__int8 Data[14784];
 
-	__int8 Animation_State[304];
+	__int8 Animation_State[336];
 
 	__int32 Priority;
 

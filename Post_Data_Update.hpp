@@ -2,11 +2,11 @@ Redirection_Manager::Manager_Structure Post_Data_Update_Manager;
 
 void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 {
-	float* Origin = (float*)((unsigned __int64)Entity + 1048);
+	float* Origin = (float*)((unsigned __int64)Entity + 1064);
 
-	float* Previous_Origin = (float*)((unsigned __int64)Entity + 784);
+	float* Previous_Origin = (float*)((unsigned __int64)Entity + 804);
 
-	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 112)];
+	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 120)];
 
 	Global_Variables_Structure* Global_Variables = Get_Global_Variables();
 
@@ -24,18 +24,15 @@ void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 		Update_Data(Player_Data->Tick_Number[1]);
 	}
 
-	float Simulation_Time = *(float*)((unsigned __int64)Entity + 144);
+	double Simulation_Time = *(double*)((unsigned __int64)Entity + 160);
 
-	float Previous_Simulation_Time = *(float*)((unsigned __int64)Entity + 148);
+	double Previous_Simulation_Time = *(double*)((unsigned __int64)Entity + 168);
 
-	if (Simulation_Time != Previous_Simulation_Time)
+	if (Simulation_Time > Previous_Simulation_Time)
 	{
-		if (__builtin_signbitf(Simulation_Time - Previous_Simulation_Time) == 0)
-		{
-			Update_Data(Global_Variables->Tick_Number - (__int32)((Simulation_Time - Previous_Simulation_Time) / Global_Variables->Interval_Per_Tick + 0.5f));
+		Update_Data(Global_Variables->Tick_Number - (__int32)((Simulation_Time - Previous_Simulation_Time) / Global_Variables->Interval_Per_Tick + 0.5f));
 
-			Player_Data->Data[6176] = -1;
-		}
+		Player_Data->Data[6148] = -1;
 	}
 
 	Post_Data_Update_Manager.Special_Call(Entity, Unknown_Parameter);

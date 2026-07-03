@@ -1,5 +1,3 @@
-float Update_Animation_Time;
-
 __int8 Update_Animation_Type;
 
 Redirection_Manager::Manager_Structure Update_Animation_Manager;

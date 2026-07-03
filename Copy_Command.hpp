@@ -387,13 +387,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		__int8 Send_Packet = 0;
 
-		if (Send_Packet == 2)
-		{
-			goto Send_Packet_Label;
-		}
-
-		Send_Packet = 0;
-
 		__int32 Choked_Commands = Get_Choked_Commands();
 
 		if (Choked_Commands >= Interface_Minimum_Choked_Commands.Get_Integer())
@@ -485,7 +478,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 												Entity,
 
-												(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5f),
+												(__int32)((Entity_Time + Interpolation_Time) / Global_Variables->Interval_Per_Tick + 0.5),
 
 												__builtin_fabs(Corrected_Latency - (Global_Variables->Tick_Number * Global_Variables->Interval_Per_Tick + Latency - Entity_Time)) <= 0.2f,
 
@@ -539,7 +532,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 		}
 		else
 		{
-			if (__builtin_abs(*(__int32*)((unsigned __int64)Local_Player + 11552) - Shot_Tick_Number) * Global_Variables->Interval_Per_Tick > 0.5f)
+			if (__builtin_abs(*(__int32*)((unsigned __int64)Local_Player + 11552) - Shot_Tick_Number) * Global_Variables->Interval_Per_Tick > 0.5)
 			{
 				if ((Command->Buttons & 2048) == 0)
 				{
@@ -642,9 +635,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 										if (Exponent > 0)
 										{
-											__int32 Extrapolation_Ticks = (__int32)(max(0, Global_Variables->Tick_Number - Player_Data->Tick_Number[1]) + Latency / Global_Variables->Interval_Per_Tick + 0.5f) / Exponent * Exponent;
+											__int32 Extrapolation_Ticks = (__int32)(max(0, Global_Variables->Tick_Number - Player_Data->Tick_Number[1]) + Latency / Global_Variables->Interval_Per_Tick + 0.5) / Exponent * Exponent;
 
-											if ((Extrapolation_Ticks - Exponent | (__int32)(1.f / Global_Variables->Interval_Per_Tick + 0.5f) - Extrapolation_Ticks) >= 0)
+											if ((Extrapolation_Ticks - Exponent | (__int32)(1.f / Global_Variables->Interval_Per_Tick + 0.5) - Extrapolation_Ticks) >= 0)
 											{
 												Target->Valid = 0;
 
@@ -783,8 +776,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 													Correct_Movement(Target_Command.Angles, *(__int8*)((unsigned __int64)Target->Self + 508), Target_Command.Move, (float*)((unsigned __int64)Target->Self + 336), (float*)((unsigned __int64)Target->Self + 11528), &Target_Command.Buttons);
 
 													Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
-
-													Update_Animation_Time = Global_Variables->Time;
 
 													Update_Animation_Type = 1;
 
@@ -1146,9 +1137,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 						float Angles[3] =
 						{
-							__builtin_atan2f(-Spread[0] * Rotation[1] + Spread[2] * Rotation[0], Spread[0] * Rotation[0] + Spread[2] * Rotation[1]) * 180.f / 3.1415927f - Weapon_Recoil[0],
+							__builtin_atan2f(-Spread[0] * Rotation[1] + Spread[2] * Rotation[0], Spread[0] * Rotation[0] + Spread[2] * Rotation[1]) * 180.f / 3.1415927f,
 
-							__builtin_atan2f(Command->Forward[0] * Spread[1] + Command->Forward[1] * Rotation[0], Command->Forward[0] * Rotation[0] + Command->Forward[1] * -Spread[1]) * 180.f / 3.1415927f - Weapon_Recoil[1]
+							__builtin_atan2f(Command->Forward[0] * Spread[1] + Command->Forward[1] * Rotation[0], Command->Forward[0] * Rotation[0] + Command->Forward[1] * -Spread[1]) * 180.f / 3.1415927f
 						};
 
 						Angle_Vectors(Angles, Command->Forward, nullptr, nullptr);

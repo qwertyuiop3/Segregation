@@ -30,7 +30,7 @@ void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 
 	if (Simulation_Time > Previous_Simulation_Time)
 	{
-		Update_Data(Global_Variables->Tick_Number - (__int32)((Simulation_Time - Previous_Simulation_Time) / Global_Variables->Interval_Per_Tick + 0.5f));
+		Update_Data(Global_Variables->Tick_Number - (__int32)((Simulation_Time - Previous_Simulation_Time) / Global_Variables->Interval_Per_Tick + 0.5));
 
 		Player_Data->Data[6148] = -1;
 	}

@@ -47,12 +47,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			Angle_Vectors_Type((unsigned __int32)Client_Module + 6691376)(nullptr, Forward, Angles, Right, Up);
 		};
 
-		float Move_Angles[3] =
-		{
-			Command->Angles[0],
-
-			Command->Angles[1]
-		};
+		float Move_Angles[3] = { Command->Angles[0], Command->Angles[1] };
 
 		static float Previous_Move_Angle_Y;
 
@@ -106,10 +101,6 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 		{
 			Previous_Move_Angle_Y = Move_Angles[1];
 		}
-
-		float Previous_Move[2];
-
-		Byte_Manager::Copy_Bytes(1, Previous_Move, sizeof(Previous_Move), Command->Move);
 
 		float Desired_Move[3];
 
@@ -256,7 +247,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 						Angle_Vectors(Command->Angles, nullptr, Move_Right, nullptr);
 
-						Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1], Ladder_Normal);
+						float Move[3];
+
+						Get_Ladder_Move(Move, Move_Forward, Solutions[Solution_Number][0], Move_Right, Solutions[Solution_Number][1]);
 
 						return __builtin_powf(Move[0] - Desired_Move[0], 2.f) + __builtin_powf(Move[1] - Desired_Move[1], 2.f) + __builtin_powf(Move[2] - Desired_Move[2], 2.f);
 					};
@@ -265,7 +258,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 					float Deviations[3] = { Calculate_Deviation(Rotations[0]) };
 
-					if (Solution_Number != 2)
+					if (Solutions[Solution_Number][1] != 0.f)
 					{
 						Deviations[1] = Calculate_Deviation(Rotations[1]);
 
@@ -343,85 +336,83 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 			}
 		};
 
-			Correct_Movement();
+		Correct_Movement();
 
-			void* Previous_Audio_Device = *(void**)((unsigned __int32)Engine_Module + 8406032);
+		void* Previous_Audio_Device = *(void**)((unsigned __int32)Engine_Module + 8406032);
 
-			*(void**)((unsigned __int32)Engine_Module + 8406032) = nullptr;
+		*(void**)((unsigned __int32)Engine_Module + 8406032) = nullptr;
 
-			using Set_Host_Type = void(__thiscall*)(void* Move_Helper, void* Player);
+		using Set_Host_Type = void(__thiscall*)(void* Move_Helper, void* Player);
 
-			Set_Host_Type((unsigned __int32)Client_Module + 2894464)((void*)((unsigned __int32)Client_Module + 11177912), Local_Player);
+		Set_Host_Type((unsigned __int32)Client_Module + 2894464)((void*)((unsigned __int32)Client_Module + 11177912), Local_Player);
 
-			using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
+		using Run_Command_Type = void(__thiscall*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
 
-			Run_Command_Type((unsigned __int32)Client_Module + 3037136)((void*)((unsigned __int32)Client_Module + 82620920), Local_Player, Command, (void*)((unsigned __int32)Client_Module + 11177912));
+		Run_Command_Type((unsigned __int32)Client_Module + 3037136)((void*)((unsigned __int32)Client_Module + 82620920), Local_Player, Command, (void*)((unsigned __int32)Client_Module + 11177912));
 
-			Set_Host_Type((unsigned __int32)Client_Module + 2894464)((void*)((unsigned __int32)Client_Module + 11177912), nullptr);
+		Set_Host_Type((unsigned __int32)Client_Module + 2894464)((void*)((unsigned __int32)Client_Module + 11177912), nullptr);
 
-			*(void**)((unsigned __int32)Engine_Module + 8406032) = Previous_Audio_Device;
+		*(void**)((unsigned __int32)Engine_Module + 8406032) = Previous_Audio_Device;
 
-			Byte_Manager::Copy_Bytes(1, Command->Move, sizeof(Previous_Move), Previous_Move);
+		static __int8 Send_Packet;
 
-			static __int8 Send_Packet;
+		__int8 Animation_Ground = *(__int8*)(*(unsigned __int32*)((unsigned __int32)Local_Player + 14452) + 264);
 
-			__int8 Animation_Ground = *(__int8*)(*(unsigned __int32*)((unsigned __int32)Local_Player + 14452) + 264);
+		void* Client = *(void**)((unsigned __int32)Engine_Module + 5757076);
 
-			void* Client = *(void**)((unsigned __int32)Engine_Module + 5757076);
+		__int32 Choked_Commands = *(__int32*)((unsigned __int32)Client + 19632);
 
-			__int32 Choked_Commands = *(__int32*)((unsigned __int32)Client + 19632);
+		Update_Animation_Type = (Choked_Commands == 0) * 2;
 
-			Update_Animation_Type = (Choked_Commands == 0) * 2;
+		Redirected_Update_Animation(Local_Player);
 
-			Redirected_Update_Animation(Local_Player);
+		Update_Animation_Type = 0;
 
-			Update_Animation_Type = 0;
+		float* Local_Origin = (float*)((unsigned __int32)Local_Player + 308);
 
-			float* Local_Origin = (float*)((unsigned __int32)Local_Player + 308);
-
-			if (0)
+		if (0)
+		{
+			Send_Packet_Label:
 			{
-				Send_Packet_Label:
-				{
-					Byte_Manager::Copy_Bytes(1, Local_Networked_Origin, sizeof(Local_Networked_Origin), Local_Origin);
+				Byte_Manager::Copy_Bytes(1, Local_Networked_Origin, sizeof(Local_Networked_Origin), Local_Origin);
 
-					Send_Packet = 1;
-				}
+				Send_Packet = 1;
 			}
-			else
+		}
+		else
+		{
+			if (Send_Packet == 2)
 			{
-				if (Send_Packet == 2)
+				goto Send_Packet_Label;
+			}
+
+			if (Choked_Commands >= Interface_Minimum_Choked_Commands.Get_Integer())
+			{
+				if (Choked_Commands >= Interface_Maximum_Choked_Commands.Get_Integer())
 				{
 					goto Send_Packet_Label;
 				}
 
-				if (Choked_Commands >= Interface_Minimum_Choked_Commands.Get_Integer())
+				if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) > 4096.f)
 				{
-					if (Choked_Commands >= Interface_Maximum_Choked_Commands.Get_Integer())
-					{
-						goto Send_Packet_Label;
-					}
-
-					if (__builtin_powf(Local_Networked_Origin[0] - Local_Origin[0], 2.f) + __builtin_powf(Local_Networked_Origin[1] - Local_Origin[1], 2.f) + __builtin_powf(Local_Networked_Origin[2] - Local_Origin[2], 2.f) > 4096.f)
-					{
-						goto Send_Packet_Label;
-					}
+					goto Send_Packet_Label;
 				}
-
-				Send_Packet = 0;
 			}
 
-			__int32 Entity_Number = 1;
+			Send_Packet = 0;
+		}
 
-			using Get_Latency_Type = float(__thiscall*)(void* Network_Channel, __int32 Type);
+		__int32 Entity_Number = 1;
 
-			void* Network_Channel = *(void**)((unsigned __int32)Client + 156);
+		using Get_Latency_Type = float(__thiscall*)(void* Network_Channel, __int32 Type);
 
-			float Latency = Get_Latency_Type((unsigned __int32)Engine_Module + 2299408)(Network_Channel, 0);
+		void* Network_Channel = *(void**)((unsigned __int32)Client + 156);
 
-			using Get_Interpolation_Time_Type = float(__vectorcall*)();
+		float Latency = Get_Latency_Type((unsigned __int32)Engine_Module + 2299408)(Network_Channel, 0);
 
-			float Interpolation_Time = Get_Interpolation_Time_Type((unsigned __int32)Engine_Module + 918912)();
+		using Get_Interpolation_Time_Type = float(__vectorcall*)();
+
+		float Interpolation_Time = Get_Interpolation_Time_Type((unsigned __int32)Engine_Module + 918912)();
 
 		float Corrected_Latency = std::clamp(Latency + Interpolation_Time, 0.f, 1.f);
 

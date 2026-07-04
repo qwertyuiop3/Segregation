@@ -38,8 +38,6 @@ void* Engine_Module;
 
 #include <algorithm>
 
-#include "Finish_Move.hpp"
-
 #include "Item_Post_Frame.hpp"
 
 #include "Read_Packets.hpp"
@@ -163,15 +161,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Engine_Module + 851852), 1, 235);
 
-					void* Event_Listener = (void*)__builtin_malloc(sizeof(void*));
+					static void* Event_Listener_Table[3] = { nullptr, (void*)Event_Processor, (void*)((unsigned __int32)GetModuleHandleW(L"server.dll") + 4607456) };
 
-					void* Event_Listener_Table = __builtin_malloc(sizeof(void*) * 3);
-
-					*(void**)((unsigned __int32)Event_Listener_Table + 4) = (void*)Event_Processor;
-
-					*(void**)((unsigned __int32)Event_Listener_Table + 8) = (void*)((unsigned __int32)GetModuleHandleW(L"server.dll") + 4607456);
-
-					*(void**)Event_Listener = Event_Listener_Table;
+					static void* Event_Listener = Event_Listener_Table;
 
 					using Add_Listener_Type = __int8(__thiscall*)(void* Event_Manager, void* Listener, char* Event, void* Unknown_Parameter);
 
@@ -268,8 +260,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int32)Client_Module + 3884193), 1, 160);
 
 					Original_Setup_Move_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 3035696), (void*)Redirected_Setup_Move);
-
-					Original_Finish_Move_Caller = Redirection_Manager::Redirect_Function(2, (void*)((unsigned __int32)Client_Module + 3036400), (void*)Redirected_Finish_Move);
 
 					Original_Item_Post_Frame_Caller = Redirection_Manager::Redirect_Function(0, (void*)((unsigned __int32)Client_Module + 1562720), (void*)Redirected_Item_Post_Frame);
 				}

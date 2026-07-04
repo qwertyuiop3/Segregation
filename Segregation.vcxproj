@@ -56,7 +56,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalOptions>/Zc:threadSafeInit- /clang:-fno-unwind-tables -Wno-multichar -Wno-microsoft-goto -Wno-char-subscripts /clang:-fsigned-zeros %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:threadSafeInit- /clang:-fno-unwind-tables -Wno-multichar -Wno-microsoft-goto -Wno-char-subscripts /clang:-fsigned-zeros -Wno-nan-infinity-disabled %(AdditionalOptions)</AdditionalOptions>
       <StringPooling>true</StringPooling>
       <ControlFlowGuard>false</ControlFlowGuard>
       <FloatingPointExceptions>false</FloatingPointExceptions>

@@ -20,17 +20,17 @@ void __stdcall Event_Processor(void* Event)
 		{
 			__int32 Victim_Number = Identifier_To_Number_Type((unsigned __int32)Engine_Module + 701152)((void*)((unsigned __int32)Engine_Module + 5749856), Get_Integer_Type((unsigned __int32)Engine_Module + 2042640)(Event, (char*)"userid", nullptr));
 
-			__int32 Killer_Number = Identifier_To_Number_Type((unsigned __int32)Engine_Module + 701152)((void*)((unsigned __int32)Engine_Module + 5749856), Get_Integer_Type((unsigned __int32)Engine_Module + 2042640)(Event, (char*)"attacker", nullptr));
+			__int32 Inflictor_Number = Identifier_To_Number_Type((unsigned __int32)Engine_Module + 701152)((void*)((unsigned __int32)Engine_Module + 5749856), Get_Integer_Type((unsigned __int32)Engine_Module + 2042640)(Event, (char*)"attacker", nullptr));
 
-			if (Victim_Number != Killer_Number)
+			if (Victim_Number != Inflictor_Number)
 			{
-				if (Killer_Number != 0)
+				if (Inflictor_Number != 0)
 				{
 					if (Victim_Number == Local_Number)
 					{
 						if (Name[7] == 'd')
 						{
-							Player_Data_Structure* Player_Data = &Players_Data[Killer_Number];
+							Player_Data_Structure* Player_Data = &Players_Data[Inflictor_Number];
 
 							Player_Data->Memory_Tolerance = 0;
 
@@ -42,7 +42,7 @@ void __stdcall Event_Processor(void* Event)
 					}
 					else
 					{
-						if (Killer_Number == Local_Number)
+						if (Inflictor_Number == Local_Number)
 						{
 							if (Victim_Number == Recent_Player_Data_Number)
 							{

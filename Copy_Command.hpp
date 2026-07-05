@@ -118,10 +118,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Previous_Move_Angle_Y = Move_Angles[1];
 		}
 
-		float Previous_Move[2];
-
-		Byte_Manager::Copy_Bytes(1, Previous_Move, sizeof(Previous_Move), Command->Move);
-
 		float Desired_Move[3];
 
 		float Desired_Move_Forward[3];
@@ -383,8 +379,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Command->Buttons = Previous_Buttons;
 
-		Byte_Manager::Copy_Bytes(1, Command->Move, sizeof(Previous_Move), Previous_Move);
-
 		__int8 Send_Packet = 0;
 
 		__int32 Choked_Commands = Get_Choked_Commands();
@@ -536,617 +530,620 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			{
 				if ((Command->Buttons & 2048) == 0)
 				{
-					size_t Target_Number = 0;
-
-					using Get_Eye_Position_Type = void(**)(void* Entity, float* Eye_Position);
-
-					float Eye_Position[3];
-
-					(*Get_Eye_Position_Type(*(unsigned __int64*)Local_Player + 1128))(Local_Player, Eye_Position);
-
-					Recent_Player_Data_Number = 0;
-
-					Traverse_Sorted_Target_List_Label:
+					if (Choked_Commands != 0)
 					{
-						if (Target_Number != Sorted_Target_List.size())
+						size_t Target_Number = 0;
+
+						using Get_Eye_Position_Type = void(**)(void* Entity, float* Eye_Position);
+
+						float Eye_Position[3];
+
+						(*Get_Eye_Position_Type(*(unsigned __int64*)Local_Player + 1128))(Local_Player, Eye_Position);
+
+						Recent_Player_Data_Number = 0;
+
+						Traverse_Sorted_Target_List_Label:
 						{
-							Target_Structure* Target = &Sorted_Target_List.at(Target_Number);
-
-							using Get_Studio_Header_Type = void*(*)(void* Entity);
-
-							static void* Get_Studio_Header = Byte_Manager::Find_Bytes(528343263, (unsigned __int8*)Client_Module, 15539617736627983104ull);
-
-							void* Studio_Header = Get_Studio_Header_Type((unsigned __int64)Get_Studio_Header)(Target->Self);
-
-							void* Hitbox_Set = (void*)(*(unsigned __int64*)Studio_Header + *(__int32*)(*(unsigned __int64*)Studio_Header + 176) + 12 * *(__int32*)((unsigned __int64)Target->Self + 5832));
-
-							auto Find_Hitbox_By_Group = [&](__int32 Group) -> void*
+							if (Target_Number != Sorted_Target_List.size())
 							{
-								__int32 Hitbox_Number = 0;
+								Target_Structure* Target = &Sorted_Target_List.at(Target_Number);
 
-								Traverse_Hitboxes_Label:
+								using Get_Studio_Header_Type = void*(*)(void* Entity);
+
+								static void* Get_Studio_Header = Byte_Manager::Find_Bytes(528343263, (unsigned __int8*)Client_Module, 15539617736627983104ull);
+
+								void* Studio_Header = Get_Studio_Header_Type((unsigned __int64)Get_Studio_Header)(Target->Self);
+
+								void* Hitbox_Set = (void*)(*(unsigned __int64*)Studio_Header + *(__int32*)(*(unsigned __int64*)Studio_Header + 176) + 12 * *(__int32*)((unsigned __int64)Target->Self + 5832));
+
+								auto Find_Hitbox_By_Group = [&](__int32 Group) -> void*
 								{
-									void* Hitbox = nullptr;
+									__int32 Hitbox_Number = 0;
 
-									if (Hitbox_Number != *(__int32*)((unsigned __int64)Hitbox_Set + 4))
+									Traverse_Hitboxes_Label:
 									{
-										Hitbox = (void*)((unsigned __int64)Hitbox_Set + *(__int32*)((unsigned __int64)Hitbox_Set + 8) + Hitbox_Number * 68);
+										void* Hitbox = nullptr;
 
-										if (*(__int32*)((unsigned __int64)Hitbox + 4) != Group)
+										if (Hitbox_Number != *(__int32*)((unsigned __int64)Hitbox_Set + 4))
 										{
-											Hitbox_Number += 1;
+											Hitbox = (void*)((unsigned __int64)Hitbox_Set + *(__int32*)((unsigned __int64)Hitbox_Set + 8) + Hitbox_Number * 68);
 
-											goto Traverse_Hitboxes_Label;
+											if (*(__int32*)((unsigned __int64)Hitbox + 4) != Group)
+											{
+												Hitbox_Number += 1;
+
+												goto Traverse_Hitboxes_Label;
+											}
+										}
+
+										return Hitbox;
+									}
+								};
+
+								void* Hitbox = Find_Hitbox_By_Group(Interface_Aim_Group.Get_Integer());
+
+								if (Hitbox != nullptr)
+								{
+									Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Target->Self + 136)];
+
+									static __int8 Target_Data[14784];
+
+									Byte_Manager::Copy_Bytes(1, Target_Data, sizeof(Target_Data), Target->Self);
+
+									__int8 Animation_State_Data[336];
+
+									void* Animation_State = *(void**)((unsigned __int64)Target->Self + 13768);
+
+									Byte_Manager::Copy_Bytes(1, Animation_State_Data, sizeof(Animation_State_Data), Animation_State);
+
+									struct Trace_Structure
+									{
+										__int8 Additional_Bytes_1[12];
+
+										float End[3];
+
+										float Normal[3];
+
+										__int8 Additional_Bytes_2[8];
+
+										float Fraction;
+
+										__int8 Additional_Bytes_3[7];
+
+										__int8 Solid;
+
+										__int8 Additional_Bytes_4[24];
+
+										__int32 Group;
+
+										__int8 Additional_Bytes_5[4];
+
+										void* Entity;
+
+										__int8 Additional_Bytes_6[4];
+									};
+
+									if (Interface_Extrapolation.Get_Integer() == 1)
+									{
+										if ((Target->Valid ^ 1) + Player_Data->Teleported != 0)
+										{
+											__int32 Exponent = Player_Data->Tick_Number[1] - Player_Data->Tick_Number[0];
+
+											if (Exponent > 0)
+											{
+												__int32 Extrapolation_Ticks = (__int32)(max(0, Global_Variables->Tick_Number - Player_Data->Tick_Number[1]) + Latency / Global_Variables->Interval_Per_Tick + 0.5) / Exponent * Exponent;
+
+												if ((Extrapolation_Ticks - Exponent | (__int32)(1.f / Global_Variables->Interval_Per_Tick + 0.5) - Extrapolation_Ticks) >= 0)
+												{
+													Target->Valid = 0;
+
+													using Set_Ground_Entity_Type = void(*)(void* Entity, void* Ground_Entity);
+
+													static void* Set_Ground_Entity = Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Client_Module, 6146399131556111791);
+
+													__int32 Flags = *(__int32*)((unsigned __int64)Target->Self + 1104);
+
+													Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Flags & 1) == 1 ? *(void**)Entity_List : nullptr);
+
+													*(__int8*)((unsigned __int64)Target->Self + 10696) = (Flags & 2) == 2;
+
+													using Perform_Trace_Type = void(**)(void* Movement, float* Start, float* End, __int32 Mask, __int32 Group, Trace_Structure* Trace);
+
+													static void* Movement = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31394695, (unsigned __int8*)Client_Module, 17805682010550749776ull), 3);
+
+													*(void**)((unsigned __int64)Movement + 8) = Target->Self;
+
+													*(__int32*)(*(unsigned __int64*)((unsigned __int64)Movement + 16) + 4) = *(__int32*)((unsigned __int64)Target->Self + 256);
+
+													float* Target_Origin = (float*)((unsigned __int64)Target->Self + 1080);
+
+													Trace_Structure Trace;
+
+													(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Target_Origin, Target_Origin, 33636363, 8, &Trace);
+
+													if (Trace.Fraction == 0.f)
+													{
+														float Directions[8][3] =
+														{
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + 0.1f },
+
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + 0.1f },
+
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + 0.1f },
+
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + 0.1f },
+
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] },
+
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] },
+
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] },
+
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] }
+														};
+
+														__int8 Trace_Number = 0;
+
+														Decollision_Perform_Trace_Label:
+														{
+															(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Directions[Trace_Number], Target_Origin, 33636363, 8, &Trace);
+
+															if (Trace.Fraction == 0.f)
+															{
+																Trace_Number += 1;
+
+																if (Trace_Number != sizeof(Directions) / sizeof(Directions[0]))
+																{
+																	goto Decollision_Perform_Trace_Label;
+																}
+															}
+															else
+															{
+																using Set_Origin_Type = void(*)(void* Entity, float* Origin);
+
+																static void* Set_Origin = Byte_Manager::Find_Bytes(129892351, (unsigned __int8*)Client_Module, 5578744413008397460);
+
+																Byte_Manager::Copy_Bytes(1, Target_Origin, sizeof(Trace.End), Trace.End);
+
+																Set_Origin_Type((unsigned __int64)Set_Origin + 13)(Target->Self, Target_Origin);
+															}
+														}
+													}
+
+													Command_Structure Target_Command = { };
+
+													Target_Command.Buttons |= 4 * ((Flags & 2) == 2);
+
+													*(__int32*)((unsigned __int64)Target->Self + 10720) = Target_Command.Buttons;
+
+													*(float*)((unsigned __int64)Target->Self + 11224) = *(float*)((unsigned __int64)Target->Self + 11420);
+
+													if (*(__int8*)((unsigned __int64)Target->Self + 508) == 9)
+													{
+														float Directions[8][3] =
+														{
+															{ Target_Origin[0] - 2.f, Target_Origin[1], Target_Origin[2] },
+
+															{ Target_Origin[0], Target_Origin[1] - 2.f, Target_Origin[2] },
+
+															{ Target_Origin[0] + 2.f, Target_Origin[1], Target_Origin[2] },
+
+															{ Target_Origin[0], Target_Origin[1] + 2.f, Target_Origin[2] },
+
+															{ Target_Origin[0] - 2.f, Target_Origin[1] - 2.f, Target_Origin[2] },
+
+															{ Target_Origin[0] + 2.f, Target_Origin[1] - 2.f, Target_Origin[2] },
+
+															{ Target_Origin[0] - 2.f, Target_Origin[1] + 2.f, Target_Origin[2] },
+
+															{ Target_Origin[0] + 2.f, Target_Origin[1] + 2.f, Target_Origin[2] }
+														};
+
+														__int8 Trace_Number = 0;
+
+														Ladder_Perform_Trace_Label:
+														{
+															(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Target_Origin, Directions[Trace_Number], 33636363, 8, &Trace);
+
+															using On_Ladder_Type = __int8(**)(void* Movement, Trace_Structure* Trace);
+
+															if ((*On_Ladder_Type(*(unsigned __int64*)Movement + 280))(Movement, &Trace) == 0)
+															{
+																Trace_Number += 1;
+
+																if (Trace_Number != sizeof(Directions) / sizeof(Directions[0]))
+																{
+																	goto Ladder_Perform_Trace_Label;
+																}
+															}
+
+															Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 11528), sizeof(Trace.Normal), Trace.Normal);
+														}
+													}
+
+													Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13776));
+
+													*(__int16*)((unsigned __int64)Prediction + 12) = 1;
+
+													Suppress_Events(1);
+
+													Extrapolate_Target_Label:
+													{
+														Correct_Movement(Target_Command.Angles, *(__int8*)((unsigned __int64)Target->Self + 508), Target_Command.Move, (float*)((unsigned __int64)Target->Self + 336), (float*)((unsigned __int64)Target->Self + 11528), &Target_Command.Buttons);
+
+														Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
+
+														Update_Animation_Type = 1;
+
+														Redirected_Update_Animation(Target->Self);
+
+														Update_Animation_Type = 0;
+
+														if (Extrapolation_Ticks != 0)
+														{
+															Extrapolation_Ticks -= 1;
+
+															goto Extrapolate_Target_Label;
+														}
+													}
+
+													Suppress_Events(0);
+
+													*(__int8*)((unsigned __int64)Prediction + 12) = 0;
+												}
+											}
 										}
 									}
 
-									return Hitbox;
-								}
-							};
-
-							void* Hitbox = Find_Hitbox_By_Group(Interface_Aim_Group.Get_Integer());
-
-							if (Hitbox != nullptr)
-							{
-								Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Target->Self + 136)];
-
-								static __int8 Target_Data[14784];
-
-								Byte_Manager::Copy_Bytes(1, Target_Data, sizeof(Target_Data), Target->Self);
-
-								__int8 Animation_State_Data[336];
-
-								void* Animation_State = *(void**)((unsigned __int64)Target->Self + 13768);
-
-								Byte_Manager::Copy_Bytes(1, Animation_State_Data, sizeof(Animation_State_Data), Animation_State);
-
-								struct Trace_Structure
-								{
-									__int8 Additional_Bytes_1[12];
-
-									float End[3];
-
-									float Normal[3];
-
-									__int8 Additional_Bytes_2[8];
-
-									float Fraction;
-
-									__int8 Additional_Bytes_3[7];
-
-									__int8 Solid;
-
-									__int8 Additional_Bytes_4[24];
-
-									__int32 Group;
-
-									__int8 Additional_Bytes_5[4];
-
-									void* Entity;
-
-									__int8 Additional_Bytes_6[4];
-								};
-
-								if (Interface_Extrapolation.Get_Integer() == 1)
-								{
-									if ((Target->Valid ^ 1) + Player_Data->Teleported != 0)
+									if (Target->Valid == 1)
 									{
-										__int32 Exponent = Player_Data->Tick_Number[1] - Player_Data->Tick_Number[0];
+										*(void**)((unsigned __int64)Player_Data->Data + 5872) = *(void**)((unsigned __int64)Target->Self + 5872);
 
-										if (Exponent > 0)
+										*(void**)((unsigned __int64)Player_Data->Data + 6800) = *(void**)((unsigned __int64)Target->Self + 6800);
+
+										Byte_Manager::Copy_Bytes(1, Target->Self, sizeof(Player_Data->Data), Player_Data->Data);
+
+										Byte_Manager::Copy_Bytes(1, Animation_State, sizeof(Player_Data->Animation_State), Player_Data->Animation_State);
+									}
+
+									Compute_Torso_Rotation(Animation_State, Studio_Header);
+
+									using Invalidate_Cache_Type = void(*)(void* Entity);
+
+									static void* Invalidate_Cache = Byte_Manager::Find_Bytes(963, (unsigned __int8*)Client_Module, 12943828360708440840ull);
+
+									Invalidate_Cache_Type((unsigned __int64)Invalidate_Cache)(Target->Self);
+
+									using Setup_Bones_Type = __int8(**)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, double Time);
+
+									float Bones[128][3][4];
+
+									auto Restore_Target_Data = [&]() -> void
+									{
+										*(void**)((unsigned __int64)Target_Data + 5872) = *(void**)((unsigned __int64)Target->Self + 5872);
+
+										*(void**)((unsigned __int64)Target_Data + 6800) = *(void**)((unsigned __int64)Target->Self + 6800);
+
+										Byte_Manager::Copy_Bytes(1, Target->Self, sizeof(Target_Data), Target_Data);
+
+										Byte_Manager::Copy_Bytes(1, Animation_State, sizeof(Animation_State_Data), Animation_State_Data);
+									};
+
+									if ((*Setup_Bones_Type(*(unsigned __int64*)((unsigned __int64)Target->Self + 8) + 128))((void*)((unsigned __int64)Target->Self + 8), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Time) == 1)
+									{
+										auto Perform_Trace = [&](float* Direction) -> __int8
 										{
-											__int32 Extrapolation_Ticks = (__int32)(max(0, Global_Variables->Tick_Number - Player_Data->Tick_Number[1]) + Latency / Global_Variables->Interval_Per_Tick + 0.5) / Exponent * Exponent;
-
-											if ((Extrapolation_Ticks - Exponent | (__int32)(1.f / Global_Variables->Interval_Per_Tick + 0.5) - Extrapolation_Ticks) >= 0)
+											struct alignas(16) Ray_Structure
 											{
-												Target->Valid = 0;
+												__int8 Ray[80];
 
-												using Set_Ground_Entity_Type = void(*)(void* Entity, void* Ground_Entity);
-
-												static void* Set_Ground_Entity = Byte_Manager::Find_Bytes(245231, (unsigned __int8*)Client_Module, 6146399131556111791);
-
-												__int32 Flags = *(__int32*)((unsigned __int64)Target->Self + 1104);
-
-												Set_Ground_Entity_Type((unsigned __int64)Set_Ground_Entity)(Target->Self, (Flags & 1) == 1 ? *(void**)Entity_List : nullptr);
-
-												*(__int8*)((unsigned __int64)Target->Self + 10696) = (Flags & 2) == 2;
-
-												using Perform_Trace_Type = void(**)(void* Movement, float* Start, float* End, __int32 Mask, __int32 Group, Trace_Structure* Trace);
-
-												static void* Movement = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31394695, (unsigned __int8*)Client_Module, 17805682010550749776ull), 3);
-
-												*(void**)((unsigned __int64)Movement + 8) = Target->Self;
-
-												*(__int32*)(*(unsigned __int64*)((unsigned __int64)Movement + 16) + 4) = *(__int32*)((unsigned __int64)Target->Self + 256);
-
-												float* Target_Origin = (float*)((unsigned __int64)Target->Self + 1080);
-
-												Trace_Structure Trace;
-
-												(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Target_Origin, Target_Origin, 33636363, 8, &Trace);
-
-												if (Trace.Fraction == 0.f)
+												void Initialize(float* Start, float* End)
 												{
-													float Directions[8][3] =
+													Byte_Manager::Set_Bytes(1, Ray, sizeof(Ray), 0);
+
+													Byte_Manager::Copy_Bytes(1, (float*)Ray, sizeof(float[3]), Start);
+
+													float Delta[3] =
 													{
-														{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + 0.1f },
+														End[0] - Start[0],
 
-														{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + 0.1f },
+														End[1] - Start[1],
 
-														{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + 0.1f },
-
-														{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + 0.1f },
-
-														{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] },
-
-														{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] },
-
-														{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] },
-
-														{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] }
+														End[2] - Start[2]
 													};
 
-													__int8 Trace_Number = 0;
+													Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Ray + 16), sizeof(Delta), Delta);
 
-													Decollision_Perform_Trace_Label:
+													*(__int8*)((unsigned __int64)Ray + 72) = 1;
+
+													*(__int8*)((unsigned __int64)Ray + 73) = __builtin_powf(Delta[0], 2.f) + __builtin_powf(Delta[1], 2.f) + __builtin_powf(Delta[2], 2.f) != 0.f;
+												}
+											};
+
+											struct Filter_Structure
+											{
+												void* Table;
+
+												void* Skip;
+
+												__int8 Additional_Bytes[16];
+											};
+
+											using Perform_Trace_Type = void(**)(void* Tracer, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
+
+											static void* Tracer = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(34351873927, (unsigned __int8*)Engine_Module, 2998748780310145851), 3);
+
+											Ray_Structure Ray;
+
+											Vector_Normalize(Direction);
+
+											float End[3]
+											{
+												Eye_Position[0] + Direction[0] * Weapon_Range,
+
+												Eye_Position[1] + Direction[1] * Weapon_Range,
+
+												Eye_Position[2] + Direction[2] * Weapon_Range
+											};
+
+											Ray.Initialize(Eye_Position, End);
+
+											static void* Filter_Table = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(1047431, (unsigned __int8*)Client_Module, 8162175928024734831), 3);
+
+											Filter_Structure Filter = { Filter_Table, Local_Player };
+
+											Trace_Structure Trace;
+
+											(*Perform_Trace_Type(*(unsigned __int64*)Tracer + 32))(Tracer, &Ray, 1174421507, &Filter, &Trace);
+
+											if (Trace.Solid == 0)
+											{
+												using Clip_Trace_Type = void(*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
+
+												static void* Clip_Trace = Byte_Manager::Find_Bytes(2047, (unsigned __int8*)Client_Module, 1493190178319228767);
+
+												Clip_Trace_Type((unsigned __int64)Clip_Trace)(Eye_Position, End, 1174421507, &Filter, &Trace);
+											}
+
+											if (Trace.Entity == Target->Self)
+											{
+												if (Interface_Aim_Intersection.Get_Integer() == 0)
+												{
+													return Trace.Group == Interface_Aim_Group.Get_Integer();
+												}
+
+												return 1;
+											}
+
+											return 0;
+										};
+
+										float* Hitbox_Minimum = (float*)((unsigned __int64)Hitbox + 8);
+
+										float* Hitbox_Maximum = (float*)((unsigned __int64)Hitbox + 20);
+
+										float Hitbox_Center[3]
+										{
+											(Hitbox_Minimum[0] + Hitbox_Maximum[0]) / 2.f,
+
+											(Hitbox_Minimum[1] + Hitbox_Maximum[1]) / 2.f,
+
+											(Hitbox_Minimum[2] + Hitbox_Maximum[2]) / 2.f
+										};
+
+										__int32 Bone = *(__int32*)Hitbox;
+
+										float Hitbox_Z_Vertices[8]
+										{
+											Bones[Bone][2][0] * Hitbox_Minimum[0] + Bones[Bone][2][1] * Hitbox_Minimum[1] + Bones[Bone][2][2] * Hitbox_Minimum[2],
+
+											Bones[Bone][2][0] * Hitbox_Maximum[0] + Bones[Bone][2][1] * Hitbox_Minimum[1] + Bones[Bone][2][2] * Hitbox_Minimum[2],
+
+											Bones[Bone][2][0] * Hitbox_Minimum[0] + Bones[Bone][2][1] * Hitbox_Maximum[1] + Bones[Bone][2][2] * Hitbox_Minimum[2],
+
+											Bones[Bone][2][0] * Hitbox_Minimum[0] + Bones[Bone][2][1] * Hitbox_Minimum[1] + Bones[Bone][2][2] * Hitbox_Maximum[2],
+
+											Bones[Bone][2][0] * Hitbox_Maximum[0] + Bones[Bone][2][1] * Hitbox_Maximum[1] + Bones[Bone][2][2] * Hitbox_Minimum[2],
+
+											Bones[Bone][2][0] * Hitbox_Maximum[0] + Bones[Bone][2][1] * Hitbox_Minimum[1] + Bones[Bone][2][2] * Hitbox_Maximum[2],
+
+											Bones[Bone][2][0] * Hitbox_Minimum[0] + Bones[Bone][2][1] * Hitbox_Maximum[1] + Bones[Bone][2][2] * Hitbox_Maximum[2],
+
+											Bones[Bone][2][0] * Hitbox_Maximum[0] + Bones[Bone][2][1] * Hitbox_Maximum[1] + Bones[Bone][2][2] * Hitbox_Maximum[2]
+										};
+
+										float* Hitbox_Z_Extremes[2];
+
+										std::tie(Hitbox_Z_Extremes[0], Hitbox_Z_Extremes[1]) = std::minmax_element(Hitbox_Z_Vertices, &Hitbox_Z_Vertices[sizeof(Hitbox_Z_Vertices) / sizeof(Hitbox_Z_Vertices[0])]);
+
+										float Target_Origin[3] =
+										{
+											Bones[Bone][0][0] * Hitbox_Center[0] + Bones[Bone][0][1] * Hitbox_Center[1] + Bones[Bone][0][2] * Hitbox_Center[2] + Bones[Bone][0][3],
+
+											Bones[Bone][1][0] * Hitbox_Center[0] + Bones[Bone][1][1] * Hitbox_Center[1] + Bones[Bone][1][2] * Hitbox_Center[2] + Bones[Bone][1][3],
+
+											*Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * Interface_Aim_Height.Get_Floating_Point() + Bones[Bone][2][3]
+										};
+
+										float Direction[3] =
+										{
+											Target_Origin[0] - Eye_Position[0],
+
+											Target_Origin[1] - Eye_Position[1],
+
+											Target_Origin[2] - Eye_Position[2]
+										};
+
+										if (Perform_Trace(Direction) == 1)
+										{
+											if (Target->Valid == 1)
+											{
+												Command->Tick_Number = Target->Tick_Number;
+											}
+
+											struct Message_Structure
+											{
+												__int8 Message[64];
+
+												void Construct(char* Name, char* Value)
+												{
+													using Construct_Type = void(*)(void* Message, char* Name, char* Value);
+
+													static void* Construct = Byte_Manager::Find_Bytes(60662450159, (unsigned __int8*)Engine_Module, 6942253986675982385);
+
+													Construct_Type((unsigned __int64)Construct)(this, Name, Value);
+												}
+											};
+
+											Message_Structure Message;
+
+											char Value[2] = { (char)('0' + Target->Valid) };
+
+											Message.Construct((char*)"cl_lagcompensation", Value);
+
+											using Write_Message_Type = __int8(**)(void* Message, void* Buffer);
+
+											(*Write_Message_Type(*(unsigned __int64*)&Message + 40))(&Message, (void*)((unsigned __int64)Network_Channel + 88));
+
+											Byte_Manager::Copy_Bytes(1, Command->Forward, sizeof(Command->Forward), Direction);
+
+											Command->Context = Command->Buttons |= 1;
+
+											if (Interface_Bruteforce.Get_Integer() == 1)
+											{
+												if (Player_Data->Priority != -2)
+												{
+													Recent_Player_Data_Number = *(__int32*)((unsigned __int64)Target->Self + 136);
+
+													if (Player_Data->Memory_Tolerance == 0)
 													{
-														(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Directions[Trace_Number], Target_Origin, 33636363, 8, &Trace);
-
-														if (Trace.Fraction == 0.f)
+														if (Player_Data->Tolerance == 0)
 														{
-															Trace_Number += 1;
+															Player_Data->Shots_Fired = (Player_Data->Shots_Fired + 1) % Bruteforce_Angles_Count;
 
-															if (Trace_Number != sizeof(Directions) / sizeof(Directions[0]))
-															{
-																goto Decollision_Perform_Trace_Label;
-															}
+															Player_Data->Switch_X ^= Player_Data->Shots_Fired == 0;
+
+															Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Get_Integer();
 														}
 														else
 														{
-															using Set_Origin_Type = void(*)(void* Entity, float* Origin);
-
-															static void* Set_Origin = Byte_Manager::Find_Bytes(129892351, (unsigned __int8*)Client_Module, 5578744413008397460);
-
-															Byte_Manager::Copy_Bytes(1, Target_Origin, sizeof(Trace.End), Trace.End);
-
-															Set_Origin_Type((unsigned __int64)Set_Origin + 13)(Target->Self, Target_Origin);
+															Player_Data->Tolerance -= 1;
 														}
-													}
-												}
-
-												Command_Structure Target_Command = { };
-
-												Target_Command.Buttons |= 4 * ((Flags & 2) == 2);
-
-												*(__int32*)((unsigned __int64)Target->Self + 10720) = Target_Command.Buttons;
-
-												*(float*)((unsigned __int64)Target->Self + 11224) = *(float*)((unsigned __int64)Target->Self + 11420);
-
-												if (*(__int8*)((unsigned __int64)Target->Self + 508) == 9)
-												{
-													float Directions[8][3] =
-													{
-														{ Target_Origin[0] - 2.f, Target_Origin[1], Target_Origin[2] },
-
-														{ Target_Origin[0], Target_Origin[1] - 2.f, Target_Origin[2] },
-
-														{ Target_Origin[0] + 2.f, Target_Origin[1], Target_Origin[2] },
-
-														{ Target_Origin[0], Target_Origin[1] + 2.f, Target_Origin[2] },
-
-														{ Target_Origin[0] - 2.f, Target_Origin[1] - 2.f, Target_Origin[2] },
-
-														{ Target_Origin[0] + 2.f, Target_Origin[1] - 2.f, Target_Origin[2] },
-
-														{ Target_Origin[0] - 2.f, Target_Origin[1] + 2.f, Target_Origin[2] },
-
-														{ Target_Origin[0] + 2.f, Target_Origin[1] + 2.f, Target_Origin[2] }
-													};
-
-													__int8 Trace_Number = 0;
-
-													Ladder_Perform_Trace_Label:
-													{
-														(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Target_Origin, Directions[Trace_Number], 33636363, 8, &Trace);
-
-														using On_Ladder_Type = __int8(**)(void* Movement, Trace_Structure* Trace);
-
-														if ((*On_Ladder_Type(*(unsigned __int64*)Movement + 280))(Movement, &Trace) == 0)
-														{
-															Trace_Number += 1;
-
-															if (Trace_Number != sizeof(Directions) / sizeof(Directions[0]))
-															{
-																goto Ladder_Perform_Trace_Label;
-															}
-														}
-
-														Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Target->Self + 11528), sizeof(Trace.Normal), Trace.Normal);
-													}
-												}
-
-												Byte_Manager::Copy_Bytes(1, Target_Command.Angles, sizeof(float[2]), (float*)((unsigned __int64)Target->Self + 13776));
-
-												*(__int16*)((unsigned __int64)Prediction + 12) = 1;
-
-												Suppress_Events(1);
-
-												Extrapolate_Target_Label:
-												{
-													Correct_Movement(Target_Command.Angles, *(__int8*)((unsigned __int64)Target->Self + 508), Target_Command.Move, (float*)((unsigned __int64)Target->Self + 336), (float*)((unsigned __int64)Target->Self + 11528), &Target_Command.Buttons);
-
-													Redirected_Run_Command(Prediction, Target->Self, &Target_Command, Move_Helper);
-
-													Update_Animation_Type = 1;
-
-													Redirected_Update_Animation(Target->Self);
-
-													Update_Animation_Type = 0;
-
-													if (Extrapolation_Ticks != 0)
-													{
-														Extrapolation_Ticks -= 1;
-
-														goto Extrapolate_Target_Label;
-													}
-												}
-
-												Suppress_Events(0);
-
-												*(__int8*)((unsigned __int64)Prediction + 12) = 0;
-											}
-										}
-									}
-								}
-
-								if (Target->Valid == 1)
-								{
-									*(void**)((unsigned __int64)Player_Data->Data + 5872) = *(void**)((unsigned __int64)Target->Self + 5872);
-
-									*(void**)((unsigned __int64)Player_Data->Data + 6800) = *(void**)((unsigned __int64)Target->Self + 6800);
-
-									Byte_Manager::Copy_Bytes(1, Target->Self, sizeof(Player_Data->Data), Player_Data->Data);
-
-									Byte_Manager::Copy_Bytes(1, Animation_State, sizeof(Player_Data->Animation_State), Player_Data->Animation_State);
-								}
-
-								Compute_Torso_Rotation(Animation_State, Studio_Header);
-
-								using Invalidate_Cache_Type = void(*)(void* Entity);
-
-								static void* Invalidate_Cache = Byte_Manager::Find_Bytes(963, (unsigned __int8*)Client_Module, 12943828360708440840ull);
-
-								Invalidate_Cache_Type((unsigned __int64)Invalidate_Cache)(Target->Self);
-
-								using Setup_Bones_Type = __int8(**)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, double Time);
-
-								float Bones[128][3][4];
-
-								auto Restore_Target_Data = [&]() -> void
-								{
-									*(void**)((unsigned __int64)Target_Data + 5872) = *(void**)((unsigned __int64)Target->Self + 5872);
-
-									*(void**)((unsigned __int64)Target_Data + 6800) = *(void**)((unsigned __int64)Target->Self + 6800);
-
-									Byte_Manager::Copy_Bytes(1, Target->Self, sizeof(Target_Data), Target_Data);
-
-									Byte_Manager::Copy_Bytes(1, Animation_State, sizeof(Animation_State_Data), Animation_State_Data);
-								};
-
-								if ((*Setup_Bones_Type(*(unsigned __int64*)((unsigned __int64)Target->Self + 8) + 128))((void*)((unsigned __int64)Target->Self + 8), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Time) == 1)
-								{
-									auto Perform_Trace = [&](float* Direction) -> __int8
-									{
-										struct alignas(16) Ray_Structure
-										{
-											__int8 Ray[80];
-
-											void Initialize(float* Start, float* End)
-											{
-												Byte_Manager::Set_Bytes(1, Ray, sizeof(Ray), 0);
-
-												Byte_Manager::Copy_Bytes(1, (float*)Ray, sizeof(float[3]), Start);
-
-												float Delta[3] =
-												{
-													End[0] - Start[0],
-
-													End[1] - Start[1],
-
-													End[2] - Start[2]
-												};
-
-												Byte_Manager::Copy_Bytes(1, (float*)((unsigned __int64)Ray + 16), sizeof(Delta), Delta);
-
-												*(__int8*)((unsigned __int64)Ray + 72) = 1;
-
-												*(__int8*)((unsigned __int64)Ray + 73) = __builtin_powf(Delta[0], 2.f) + __builtin_powf(Delta[1], 2.f) + __builtin_powf(Delta[2], 2.f) != 0.f;
-											}
-										};
-
-										struct Filter_Structure
-										{
-											void* Table;
-
-											void* Skip;
-
-											__int8 Additional_Bytes[16];
-										};
-
-										using Perform_Trace_Type = void(**)(void* Tracer, Ray_Structure* Ray, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
-
-										static void* Tracer = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(34351873927, (unsigned __int8*)Engine_Module, 2998748780310145851), 3);
-
-										Ray_Structure Ray;
-
-										Vector_Normalize(Direction);
-
-										float End[3]
-										{
-											Eye_Position[0] + Direction[0] * Weapon_Range,
-
-											Eye_Position[1] + Direction[1] * Weapon_Range,
-
-											Eye_Position[2] + Direction[2] * Weapon_Range
-										};
-
-										Ray.Initialize(Eye_Position, End);
-
-										static void* Filter_Table = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(1047431, (unsigned __int8*)Client_Module, 8162175928024734831), 3);
-
-										Filter_Structure Filter = { Filter_Table, Local_Player };
-
-										Trace_Structure Trace;
-
-										(*Perform_Trace_Type(*(unsigned __int64*)Tracer + 32))(Tracer, &Ray, 1174421507, &Filter, &Trace);
-
-										if (Trace.Solid == 0)
-										{
-											using Clip_Trace_Type = void(*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
-
-											static void* Clip_Trace = Byte_Manager::Find_Bytes(2047, (unsigned __int8*)Client_Module, 1493190178319228767);
-
-											Clip_Trace_Type((unsigned __int64)Clip_Trace)(Eye_Position, End, 1174421507, &Filter, &Trace);
-										}
-
-										if (Trace.Entity == Target->Self)
-										{
-											if (Interface_Aim_Intersection.Get_Integer() == 0)
-											{
-												return Trace.Group == Interface_Aim_Group.Get_Integer();
-											}
-
-											return 1;
-										}
-
-										return 0;
-									};
-
-									float* Hitbox_Minimum = (float*)((unsigned __int64)Hitbox + 8);
-
-									float* Hitbox_Maximum = (float*)((unsigned __int64)Hitbox + 20);
-
-									float Hitbox_Center[3]
-									{
-										(Hitbox_Minimum[0] + Hitbox_Maximum[0]) / 2.f,
-
-										(Hitbox_Minimum[1] + Hitbox_Maximum[1]) / 2.f,
-
-										(Hitbox_Minimum[2] + Hitbox_Maximum[2]) / 2.f
-									};
-
-									__int32 Bone = *(__int32*)Hitbox;
-
-									float Hitbox_Z_Vertices[8]
-									{
-										Bones[Bone][2][0] * Hitbox_Minimum[0] + Bones[Bone][2][1] * Hitbox_Minimum[1] + Bones[Bone][2][2] * Hitbox_Minimum[2],
-
-										Bones[Bone][2][0] * Hitbox_Maximum[0] + Bones[Bone][2][1] * Hitbox_Minimum[1] + Bones[Bone][2][2] * Hitbox_Minimum[2],
-
-										Bones[Bone][2][0] * Hitbox_Minimum[0] + Bones[Bone][2][1] * Hitbox_Maximum[1] + Bones[Bone][2][2] * Hitbox_Minimum[2],
-
-										Bones[Bone][2][0] * Hitbox_Minimum[0] + Bones[Bone][2][1] * Hitbox_Minimum[1] + Bones[Bone][2][2] * Hitbox_Maximum[2],
-
-										Bones[Bone][2][0] * Hitbox_Maximum[0] + Bones[Bone][2][1] * Hitbox_Maximum[1] + Bones[Bone][2][2] * Hitbox_Minimum[2],
-
-										Bones[Bone][2][0] * Hitbox_Maximum[0] + Bones[Bone][2][1] * Hitbox_Minimum[1] + Bones[Bone][2][2] * Hitbox_Maximum[2],
-
-										Bones[Bone][2][0] * Hitbox_Minimum[0] + Bones[Bone][2][1] * Hitbox_Maximum[1] + Bones[Bone][2][2] * Hitbox_Maximum[2],
-
-										Bones[Bone][2][0] * Hitbox_Maximum[0] + Bones[Bone][2][1] * Hitbox_Maximum[1] + Bones[Bone][2][2] * Hitbox_Maximum[2]
-									};
-
-									float* Hitbox_Z_Extremes[2];
-
-									std::tie(Hitbox_Z_Extremes[0], Hitbox_Z_Extremes[1]) = std::minmax_element(Hitbox_Z_Vertices, &Hitbox_Z_Vertices[sizeof(Hitbox_Z_Vertices) / sizeof(Hitbox_Z_Vertices[0])]);
-
-									float Target_Origin[3] =
-									{
-										Bones[Bone][0][0] * Hitbox_Center[0] + Bones[Bone][0][1] * Hitbox_Center[1] + Bones[Bone][0][2] * Hitbox_Center[2] + Bones[Bone][0][3],
-
-										Bones[Bone][1][0] * Hitbox_Center[0] + Bones[Bone][1][1] * Hitbox_Center[1] + Bones[Bone][1][2] * Hitbox_Center[2] + Bones[Bone][1][3],
-
-										*Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * Interface_Aim_Height.Get_Floating_Point() + Bones[Bone][2][3]
-									};
-
-									float Direction[3] =
-									{
-										Target_Origin[0] - Eye_Position[0],
-
-										Target_Origin[1] - Eye_Position[1],
-
-										Target_Origin[2] - Eye_Position[2]
-									};
-
-									if (Perform_Trace(Direction) == 1)
-									{
-										if (Target->Valid == 1)
-										{
-											Command->Tick_Number = Target->Tick_Number;
-										}
-
-										struct Message_Structure
-										{
-											__int8 Message[64];
-
-											void Construct(char* Name, char* Value)
-											{
-												using Construct_Type = void(*)(void* Message, char* Name, char* Value);
-
-												static void* Construct = Byte_Manager::Find_Bytes(60662450159, (unsigned __int8*)Engine_Module, 6942253986675982385);
-
-												Construct_Type((unsigned __int64)Construct)(this, Name, Value);
-											}
-										};
-
-										Message_Structure Message;
-
-										char Value[2] = { (char)('0' + Target->Valid) };
-
-										Message.Construct((char*)"cl_lagcompensation", Value);
-
-										using Write_Message_Type = __int8(**)(void* Message, void* Buffer);
-
-										(*Write_Message_Type(*(unsigned __int64*)&Message + 40))(&Message, (void*)((unsigned __int64)Network_Channel + 88));
-
-										Byte_Manager::Copy_Bytes(1, Command->Forward, sizeof(Command->Forward), Direction);
-
-										Command->Context = Command->Buttons |= 1;
-
-										if (Interface_Bruteforce.Get_Integer() == 1)
-										{
-											if (Player_Data->Priority != -2)
-											{
-												Recent_Player_Data_Number = *(__int32*)((unsigned __int64)Target->Self + 136);
-
-												if (Player_Data->Memory_Tolerance == 0)
-												{
-													if (Player_Data->Tolerance == 0)
-													{
-														Player_Data->Shots_Fired = (Player_Data->Shots_Fired + 1) % Bruteforce_Angles_Count;
-
-														Player_Data->Switch_X ^= Player_Data->Shots_Fired == 0;
-
-														Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Get_Integer();
 													}
 													else
 													{
-														Player_Data->Tolerance -= 1;
+														Player_Data->Memory_Tolerance -= 1;
 													}
 												}
-												else
-												{
-													Player_Data->Memory_Tolerance -= 1;
-												}
 											}
+
+											Restore_Target_Data();
+
+											goto Found_Target_Label;
 										}
+									}
 
-										Restore_Target_Data();
+									Restore_Target_Data();
+								}
 
-										goto Found_Target_Label;
+								Target_Number += 1;
+
+								goto Traverse_Sorted_Target_List_Label;
+
+								Found_Target_Label:
+								{
+
+								}
+							}
+						}
+
+						if ((Command->Buttons & 1) == 1)
+						{
+							auto Compute_Spread = [&](float* Spread) -> void
+							{
+								using Random_Seed_Type = void(*)(__int32 Seed);
+
+								static void* Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
+
+								static void* Random_Seed = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomSeed");
+
+								Random_Seed_Type((unsigned __int64)Random_Seed)(Command->Random_Seed & 255);
+
+								float Shot_Random[2];
+
+								using Random_Type = float(*)(float Minimum, float Maximum);
+
+								static void* Random = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomFloat");
+
+								static Interface_Structure* Interface_Bias_Maximum = Find_Interface((char*)"ai_shot_bias_max");
+
+								float Shot_Bias = Interface_Bias_Maximum->Get_Floating_Point();
+
+								float Flatness = __builtin_fabsf(Shot_Bias) * 0.5f;
+
+								Compute_Random_Label:
+								{
+									Shot_Random[0] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness) + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness;
+
+									Shot_Random[1] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness) + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness;
+
+									if (__builtin_signbitf(Shot_Bias) == 1)
+									{
+										Shot_Random[0] = __builtin_copysignf(1.f, Shot_Random[0]) - Shot_Random[0];
+
+										Shot_Random[1] = __builtin_copysignf(1.f, Shot_Random[1]) - Shot_Random[1];
+									}
+
+									if (__builtin_powf(Shot_Random[0], 2.f) + __builtin_powf(Shot_Random[1], 2.f) > 1.f)
+									{
+										goto Compute_Random_Label;
 									}
 								}
 
-								Restore_Target_Data();
-							}
+								Spread[0] = 1.f;
 
-							Target_Number += 1;
+								Spread[1] = Shot_Random[0] * Weapon_Spread[0];
 
-							goto Traverse_Sorted_Target_List_Label;
+								Spread[2] = Shot_Random[1] * Weapon_Spread[1];
 
-							Found_Target_Label:
+								Vector_Normalize(Spread);
+							};
+
+							Command->Command_Number = -98069271;
+
+							Command->Random_Seed = 33;
+
+							float Spread[3];
+
+							Compute_Spread(Spread);
+
+							float Length = 1.f - __builtin_powf(Spread[1], 2.f);
+
+							if (Command->Context == 0)
 							{
-
+								Angle_Vectors(Command->Angles, Command->Forward, nullptr, nullptr);
 							}
-						}
-					}
 
-					if ((Command->Buttons & 1) == 1)
-					{
-						auto Compute_Spread = [&](float* Spread) -> void
-						{
-							using Random_Seed_Type = void(*)(__int32 Seed);
-
-							static void* Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
-
-							static void* Random_Seed = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomSeed");
-
-							Random_Seed_Type((unsigned __int64)Random_Seed)(Command->Random_Seed & 255);
-
-							float Shot_Random[2];
-
-							using Random_Type = float(*)(float Minimum, float Maximum);
-
-							static void* Random = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomFloat");
-
-							static Interface_Structure* Interface_Bias_Maximum = Find_Interface((char*)"ai_shot_bias_max");
-
-							float Shot_Bias = Interface_Bias_Maximum->Get_Floating_Point();
-
-							float Flatness = __builtin_fabsf(Shot_Bias) * 0.5f;
-
-							Compute_Random_Label:
+							float Rotation[2] =
 							{
-								Shot_Random[0] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness) + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness;
+								max(1e-45f, __builtin_sqrtf(Length - __builtin_powf(Command->Forward[2], 2.f))),
 
-								Shot_Random[1] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness) + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness;
+								Command->Forward[2] - (Command->Forward[2] - __builtin_copysignf(__builtin_sqrtf(Length), Command->Forward[2])) * (Rotation[0] == 1e-45f)
+							};
 
-								if (__builtin_signbitf(Shot_Bias) == 1)
-								{
-									Shot_Random[0] = __builtin_copysignf(1.f, Shot_Random[0]) - Shot_Random[0];
+							float Angles[3] =
+							{
+								__builtin_atan2f(-Spread[0] * Rotation[1] + Spread[2] * Rotation[0], Spread[0] * Rotation[0] + Spread[2] * Rotation[1]) * 180.f / 3.1415927f,
 
-									Shot_Random[1] = __builtin_copysignf(1.f, Shot_Random[1]) - Shot_Random[1];
-								}
+								__builtin_atan2f(Command->Forward[0] * Spread[1] + Command->Forward[1] * Rotation[0], Command->Forward[0] * Rotation[0] + Command->Forward[1] * -Spread[1]) * 180.f / 3.1415927f
+							};
 
-								if (__builtin_powf(Shot_Random[0], 2.f) + __builtin_powf(Shot_Random[1], 2.f) > 1.f)
-								{
-									goto Compute_Random_Label;
-								}
-							}
+							Angle_Vectors(Angles, Command->Forward, nullptr, nullptr);
+		
+							Command->Context = In_Attack = Send_Packet = 1;
 
-							Spread[0] = 1.f;
-
-							Spread[1] = Shot_Random[0] * Weapon_Spread[0];
-
-							Spread[2] = Shot_Random[1] * Weapon_Spread[1];
-
-							Vector_Normalize(Spread);
-						};
-
-						Command->Command_Number = -98069271;
-
-						Command->Random_Seed = 33;
-
-						float Spread[3];
-
-						Compute_Spread(Spread);
-
-						float Length = 1.f - __builtin_powf(Spread[1], 2.f);
-
-						if (Command->Context == 0)
-						{
-							Angle_Vectors(Command->Angles, Command->Forward, nullptr, nullptr);
+							Shot_Tick_Number = *(__int32*)((unsigned __int64)Local_Player + 11552);
 						}
-
-						float Rotation[2] =
-						{
-							max(1e-45f, __builtin_sqrtf(Length - __builtin_powf(Command->Forward[2], 2.f))),
-
-							Command->Forward[2] - (Command->Forward[2] - __builtin_copysignf(__builtin_sqrtf(Length), Command->Forward[2])) * (Rotation[0] == 1e-45f)
-						};
-
-						float Angles[3] =
-						{
-							__builtin_atan2f(-Spread[0] * Rotation[1] + Spread[2] * Rotation[0], Spread[0] * Rotation[0] + Spread[2] * Rotation[1]) * 180.f / 3.1415927f,
-
-							__builtin_atan2f(Command->Forward[0] * Spread[1] + Command->Forward[1] * Rotation[0], Command->Forward[0] * Rotation[0] + Command->Forward[1] * -Spread[1]) * 180.f / 3.1415927f
-						};
-
-						Angle_Vectors(Angles, Command->Forward, nullptr, nullptr);
-	
-						Command->Context = In_Attack = Send_Packet = 1;
-
-						Shot_Tick_Number = *(__int32*)((unsigned __int64)Local_Player + 11552);
 					}
 				}
 			}

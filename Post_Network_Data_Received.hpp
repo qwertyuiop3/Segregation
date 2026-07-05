@@ -104,10 +104,10 @@ __int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* De
 
 void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, void* Unknown_Parameter_6, __int8 Within_Tolerance, void* Unknown_Parameter_7)
 {
-	if (Within_Tolerance == 1)
-	{
-		Prediction_Field_Structure* Field = Predicton_Copy.Field;
+	Prediction_Field_Structure* Field = Predicton_Copy.Field;
 
+	if (Within_Tolerance * (Field->Tolerance != 0.f) == 1)
+	{
 		static std::unordered_map<void*, __int32> Flat_Offsets;
 
 		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Get_Local_Player() + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int64)Predicton_Copy.Source + Field->Flat_Offset[1]));

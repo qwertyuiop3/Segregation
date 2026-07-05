@@ -15,7 +15,9 @@ struct Prediction_Field_Structure
 
 	__int32 Bytes;
 
-	__int8 Additional_Bytes_2[20];
+	__int8 Additional_Bytes_2[16];
+
+	float Tolerance;
 
 	__int32 Flat_Offset[2];
 
@@ -131,6 +133,8 @@ void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Comm
 		static void* Transfer_Data = Byte_Manager::Find_Bytes(3653103, (unsigned __int8*)Client_Module, 742330376693593246);
 
 		static Prediction_Descriptor_Structure* Descriptor = (Prediction_Descriptor_Structure*)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(502267783, (unsigned __int8*)Client_Module, 8622645398228305451), 3);
+
+		Descriptor->Parent->Parent->Parent->Fields[0].Descriptor->Fields[11].Tolerance = 0.5f;
 
 		Transfer_Data_Type((unsigned __int64)Transfer_Data)(&Predicton_Copy, nullptr, -1, Descriptor);
 	}

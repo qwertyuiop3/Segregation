@@ -3,7 +3,7 @@
 ~~3. add psilent & fix vm~~
 4. rewrite snapshot system
 5. debug extrapolation
-6. fix m_ducktime tolerance (?)
+~~6. fix m_ducktime tolerance~~
 ~~7. remove duck on advantage~~
 ~~8. debug spread~~
 ~~9. update clang~~

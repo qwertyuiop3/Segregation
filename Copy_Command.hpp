@@ -479,6 +479,8 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 												__builtin_powf(Local_Origin[0] - Entity_Origin[0], 2.f) + __builtin_powf(Local_Origin[1] - Entity_Origin[1], 2.f) + __builtin_powf(Local_Origin[2] - Entity_Origin[2], 2.f)
 											};
 
+											Target.Valid *= *(__int32*)((unsigned __int64)Entity + 256) == *(__int32*)((unsigned __int64)Player_Data->Data + 256);
+
 											Sorted_Target_List.push_back(Target);
 										}
 									}
@@ -586,15 +588,18 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 								{
 									Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Target->Self + 136)];
 
-									static __int8 Target_Data[14784];
+									struct Frame_Data_Structure
+									{
+										__int8 Data[14784];
 
-									Byte_Manager::Copy_Bytes(1, Target_Data, sizeof(Target_Data), Target->Self);
+										std::vector<Player_Data_Structure::Modification_Structure> Modifications_Data;
 
-									__int8 Animation_State_Data[336];
+										__int8 Animations_Data[336];
+									};
 
-									void* Animation_State = *(void**)((unsigned __int64)Target->Self + 13768);
+									static Frame_Data_Structure Frame_Data;
 
-									Byte_Manager::Copy_Bytes(1, Animation_State_Data, sizeof(Animation_State_Data), Animation_State);
+									Save_Player_Data(Frame_Data.Data, Target->Self, Frame_Data.Modifications_Data, Frame_Data.Animations_Data);
 
 									struct Trace_Structure
 									{
@@ -663,23 +668,17 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 													if (Trace.Fraction == 0.f)
 													{
-														float Directions[8][3] =
+														float Vertical_Offset = __builtin_copysignf(0.1f, -__builtin_signbit(Target_Origin[2]));
+
+														float Directions[4][3] =
 														{
-															{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + 0.1f },
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + Vertical_Offset },
 
-															{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + 0.1f },
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + Vertical_Offset },
 
-															{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + 0.1f },
+															{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + Vertical_Offset },
 
-															{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + 0.1f },
-
-															{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] },
-
-															{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] },
-
-															{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] },
-
-															{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] }
+															{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + Vertical_Offset }
 														};
 
 														__int8 Trace_Number = 0;
@@ -795,18 +794,84 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 										}
 									}
 
+									auto Restore_Player_Data = [&](void* Data, std::vector<Player_Data_Structure::Modification_Structure> Modifications_Data, void* Animations_Data) -> void
+									{
+										size_t Field_Number = 0;
+
+										Traverse_Fields_Label:
+										{
+											Minimal_Prediction_Field_Structure* Field = &Prediction_Fields.at(Field_Number);
+
+											if (Field->Type == 13)
+											{
+												__int32 Handle_Offset = 0;
+
+												Traverse_Handle_List_Label:
+												{
+													__int32 Handle = *(__int32*)((unsigned __int64)Data + Field->Offset + Handle_Offset);
+
+													if (Handle == *(__int32*)((unsigned __int64)Entity_List + 8 + ((Handle & 16383) << 5)))
+													{
+														Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Target->Self + Field->Offset + Handle_Offset), 4, &Handle);
+													}
+
+													Handle_Offset += 4;
+
+													if (Handle_Offset != Field->Size)
+													{
+														goto Traverse_Handle_List_Label;
+													}
+												}
+											}
+											else
+											{
+												Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Target->Self + Field->Offset), Field->Size, (void*)((unsigned __int64)Data + Field->Offset));
+											}
+
+											Field_Number += 1;
+
+											if (Field_Number != Prediction_Fields.size())
+											{
+												goto Traverse_Fields_Label;
+											}
+										}
+
+										size_t Modification_Number = 0;
+
+										Traverse_Modifications_Label:
+										{
+											if (Modification_Number != Modifications_Data.size())
+											{
+												Player_Data_Structure::Modification_Structure* Modification = &Modifications_Data.at(Modification_Number);
+
+												Modification_Number += 1;
+
+												if (Modification->Type != 7)
+												{
+													if (Modification->Type == 6)
+													{
+														if (Modification->Integer != *(__int32*)((unsigned __int64)Entity_List + 8 + ((Modification->Integer & 16383) << 5)))
+														{
+															goto Traverse_Modifications_Label;
+														}
+													}
+
+													Byte_Manager::Copy_Bytes(1, &((Player_Data_Structure::Modification_Structure*)(*(unsigned __int64*)(*(unsigned __int64*)((unsigned __int64)Target->Self + 5688) + 16) + 24))[Modification_Number - 1], sizeof(Player_Data_Structure::Modification_Structure), (void*)Modification);
+												}
+
+												goto Traverse_Modifications_Label;
+											}
+										}
+
+										Byte_Manager::Copy_Bytes(1, *(void**)((unsigned __int64)Target->Self + 13768), sizeof(Animations_Data), Animations_Data);
+									};
+
 									if (Target->Valid == 1)
 									{
-										*(void**)((unsigned __int64)Player_Data->Data + 5872) = *(void**)((unsigned __int64)Target->Self + 5872);
-
-										*(void**)((unsigned __int64)Player_Data->Data + 6800) = *(void**)((unsigned __int64)Target->Self + 6800);
-
-										Byte_Manager::Copy_Bytes(1, Target->Self, sizeof(Player_Data->Data), Player_Data->Data);
-
-										Byte_Manager::Copy_Bytes(1, Animation_State, sizeof(Player_Data->Animation_State), Player_Data->Animation_State);
+										Restore_Player_Data(Player_Data->Data, Player_Data->Modifications_Data, Player_Data->Animations_Data);
 									}
 
-									Compute_Torso_Rotation(Animation_State, Studio_Header);
+									Compute_Torso_Rotation(*(void**)((unsigned __int64)Target->Self + 13768), Studio_Header);
 
 									using Invalidate_Cache_Type = void(*)(void* Entity);
 
@@ -817,17 +882,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 									using Setup_Bones_Type = __int8(**)(void* Entity, void* Bones, __int32 Maximum_Bones, __int32 Mask, double Time);
 
 									float Bones[128][3][4];
-
-									auto Restore_Target_Data = [&]() -> void
-									{
-										*(void**)((unsigned __int64)Target_Data + 5872) = *(void**)((unsigned __int64)Target->Self + 5872);
-
-										*(void**)((unsigned __int64)Target_Data + 6800) = *(void**)((unsigned __int64)Target->Self + 6800);
-
-										Byte_Manager::Copy_Bytes(1, Target->Self, sizeof(Target_Data), Target_Data);
-
-										Byte_Manager::Copy_Bytes(1, Animation_State, sizeof(Animation_State_Data), Animation_State_Data);
-									};
 
 									if ((*Setup_Bones_Type(*(unsigned __int64*)((unsigned __int64)Target->Self + 8) + 128))((void*)((unsigned __int64)Target->Self + 8), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Time) == 1)
 									{
@@ -1037,13 +1091,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 												}
 											}
 
-											Restore_Target_Data();
+											Restore_Player_Data(Frame_Data.Data, Frame_Data.Modifications_Data, Frame_Data.Animations_Data);
 
 											goto Found_Target_Label;
 										}
 									}
 
-									Restore_Target_Data();
+									Restore_Player_Data(Frame_Data.Data, Frame_Data.Modifications_Data, Frame_Data.Animations_Data);
 								}
 
 								Target_Number += 1;

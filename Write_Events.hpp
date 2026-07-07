@@ -8,9 +8,31 @@ void Redirected_Write_Events(void* Unknown_Parameter_1, void* Unknown_Parameter_
 
 	if (*(__int32*)State != 6)
 	{
-		Byte_Manager::Set_Bytes(1, Players_Data, sizeof(Players_Data), 0);
+		__int32 Player_Number = 0;
 
-		Bruteforce_Reset_Tolerance();
+		Traverse_Players_Data_Label:
+		{
+			Player_Data_Structure* Player_Data = &Players_Data[Player_Number];
+
+			Player_Data->Modifications_Data.clear();
+
+			Player_Data->Priority = 0;
+
+			Player_Data->Memory_Tolerance = 0;
+
+			Player_Data->Tolerance = Interface_Bruteforce_Tolerance.Get_Integer();
+
+			Player_Data->Shots_Fired = 0;
+
+			Player_Data->Switch_X = 0;
+
+			Player_Number += 1;
+
+			if (Player_Number != sizeof(Players_Data) / sizeof(Player_Data_Structure))
+			{
+				goto Traverse_Players_Data_Label;
+			}
+		}
 
 		Recent_Player_Data_Number = 0;
 

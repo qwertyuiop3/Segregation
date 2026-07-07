@@ -63,44 +63,7 @@ struct Prediction_Copy_Structure
 
 Prediction_Copy_Structure Predicton_Copy;
 
-__int32 Compute_Flat_Offset(__int32* Offset, Prediction_Descriptor_Structure* Descriptor, void* Search_Field, __int32 Base_Offset)
-{
-	if (*Offset == 0)
-	{
-		if (Descriptor->Parent != nullptr)
-		{
-			Compute_Flat_Offset(Offset, Descriptor->Parent, Search_Field, Base_Offset);
-		}
-
-		__int32 Field_Number = 0;
-
-		Traverse_Fields_Label:
-		{
-			Prediction_Field_Structure* Field = &Descriptor->Fields[Field_Number];
-
-			if (Field == Search_Field)
-			{
-				*Offset = Base_Offset + Field->Flat_Offset[0];
-			}
-			else
-			{
-				if (Field->Type == 10)
-				{
-					Compute_Flat_Offset(Offset, Field->Descriptor, Search_Field, Base_Offset + Field->Flat_Offset[0]);
-				}
-
-				if (Field_Number != Descriptor->Size)
-				{
-					Field_Number += 1;
-
-					goto Traverse_Fields_Label;
-				}
-			}
-		}
-	}
-
-	return *Offset;
-}
+std::unordered_map<void*, __int32> Prediction_Flat_Offsets;
 
 void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3, void* Unknown_Parameter_4, void* Unknown_Parameter_5, void* Unknown_Parameter_6, __int8 Within_Tolerance, void* Unknown_Parameter_7)
 {
@@ -108,9 +71,59 @@ void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2
 
 	if (Within_Tolerance * (Field->Tolerance != 0.f) == 1)
 	{
-		static std::unordered_map<void*, __int32> Flat_Offsets;
+		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Get_Local_Player() + Prediction_Flat_Offsets[Field]), Field->Bytes, (void*)((unsigned __int64)Predicton_Copy.Source + Field->Flat_Offset[1]));
+	}
+}
 
-		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Get_Local_Player() + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int64)Predicton_Copy.Source + Field->Flat_Offset[1]));
+struct Minimal_Prediction_Field_Structure
+{
+	__int32 Type;
+
+	__int32 Offset;
+
+	__int32 Size;
+};
+
+std::vector<Minimal_Prediction_Field_Structure> Prediction_Fields;
+
+void Collect_Prediction_Fields(Prediction_Descriptor_Structure* Descriptor, __int32 Base_Offset)
+{
+	if (Descriptor->Parent != nullptr)
+	{
+		Collect_Prediction_Fields(Descriptor->Parent, Base_Offset);
+	}
+
+	__int32 Field_Number = 0;
+
+	Traverse_Fields_Label:
+	{
+		if (Field_Number != Descriptor->Size)
+		{
+			Prediction_Field_Structure* Field = &Descriptor->Fields[Field_Number];
+
+			__int32 Offset = Base_Offset + Field->Flat_Offset[0];
+
+			if (Offset * (Offset != 212) != 0)
+			{
+				if (Field->Type == 10)
+				{
+					Collect_Prediction_Fields(Field->Descriptor, Offset);
+				}
+				else
+				{
+					if (Field->Type != 30)
+					{
+						Prediction_Flat_Offsets[Field] = Offset;
+
+						Prediction_Fields.push_back({ Field->Type, Offset, Field->Bytes });
+					}
+				}
+			}
+
+			Field_Number += 1;
+
+			goto Traverse_Fields_Label;
+		}
 	}
 }
 
@@ -134,7 +147,12 @@ void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Comm
 
 		static Prediction_Descriptor_Structure* Descriptor = (Prediction_Descriptor_Structure*)Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(502267783, (unsigned __int8*)Client_Module, 8622645398228305451), 3);
 
-		Descriptor->Parent->Parent->Parent->Fields[0].Descriptor->Fields[11].Tolerance = 0.5f;
+		if (Prediction_Fields.size() == 0)
+		{
+			Descriptor->Parent->Parent->Parent->Fields[0].Descriptor->Fields[11].Tolerance = 0.5f;
+
+			Collect_Prediction_Fields(Descriptor, 0);
+		}
 
 		Transfer_Data_Type((unsigned __int64)Transfer_Data)(&Predicton_Copy, nullptr, -1, Descriptor);
 	}

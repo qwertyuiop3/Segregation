@@ -37,7 +37,20 @@ struct Player_Data_Structure
 
 	__int8 Data[14784];
 
-	__int8 Animation_State[336];
+	struct Modification_Structure
+	{
+		__int8 Type;
+
+		__int8 Additional_Bytes[7];
+
+		__int32 Integer;
+
+		__int8 Additional_Bytes_2[36];
+	};
+
+	std::vector<Modification_Structure> Modifications_Data;
+
+	__int8 Animations_Data[336];
 
 	__int32 Priority;
 
@@ -56,7 +69,7 @@ Player_Data_Structure Players_Data[129];
 
 void Get_Priorities()
 {
-	__int32 Entity_Number = 1;
+	__int32 Player_Number = 1;
 
 	Traverse_Entity_List_Label:
 	{
@@ -66,16 +79,16 @@ void Get_Priorities()
 
 		char Name[324];
 
-		(*Get_Name_Type(*(unsigned __int64*)Engine + 64))(Engine, Entity_Number, Name);
+		(*Get_Name_Type(*(unsigned __int64*)Engine + 64))(Engine, Player_Number, Name);
 
 		if (Name[0] != 0)
 		{
-			wprintf(L"[ ? ] \"%hs\" %i %i\n", Name, Entity_Number, Players_Data[Entity_Number].Priority);
+			wprintf(L"[ ? ] \"%hs\" %i %i\n", Name, Player_Number, Players_Data[Player_Number].Priority);
 		}
 
-		if (Entity_Number < Get_Global_Variables()->Maximum_Clients)
+		if (Player_Number < Get_Global_Variables()->Maximum_Clients)
 		{
-			Entity_Number += 1;
+			Player_Number += 1;
 
 			goto Traverse_Entity_List_Label;
 		}
@@ -86,7 +99,7 @@ void Set_Priority(Interface_Structure* Interface)
 {
 	Interface = (Interface_Structure*)((unsigned __int64)Interface - 48);
 
-	__int32 Entity_Number = atoi(Interface->String);
+	__int32 Player_Number = atoi(Interface->String);
 
-	Players_Data[Entity_Number].Priority = atoi(__builtin_strchr(Interface->String, ' '));
+	Players_Data[Player_Number].Priority = atoi(__builtin_strchr(Interface->String, ' '));
 }

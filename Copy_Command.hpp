@@ -488,6 +488,11 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		std::sort(Sorted_Target_List.begin(), Sorted_Target_List.end(), Target_List_Sort);
 
+		auto Compress_Angle = [](float Value, __int32 Shift) -> float
+		{
+			return ((__int32)(Value / 360.f * Shift) & Shift - 1) * (360.f / Shift);
+		};
+
 		__int8 In_Attack = 0;
 
 		if (Command->Select == 0)
@@ -530,6 +535,158 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 													float Eye_Position[3];
 
 													Get_Eye_Position_Type(604058320)(Local_Player, Eye_Position);
+
+													auto Compensate_Angles = [&](float* Angles, float* Direction) -> void
+													{
+														float Rotations[2][3][3];
+
+														__int8 Rotation_Number = 0;
+
+														float Forward[2][3];
+
+														float Right[3];
+
+														float Up[3];
+
+														Angle_Vectors(Angles, Forward[0], Right, Up);
+
+														Command->Random_Seed = 32;
+
+														using Random_Seed_Type = void(__cdecl*)(__int32 Seed);
+
+														static void* Random_Seed = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11856);
+
+														Random_Seed_Type((unsigned __int32)Random_Seed)((Command->Random_Seed & 255) + 1);
+
+														using Random_Type = float(__cdecl*)(float Minimum, float Maximum);
+
+														static void* Random = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
+
+														float Random_X = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
+
+														Weapon_Spread = -1.f;
+
+														using Primary_Attack_Type = void(__thiscall**)(void* Weapon);
+
+														(*Primary_Attack_Type(*(unsigned __int32*)Weapon + 856))(Weapon);
+
+														float Random_Y = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
+
+														Forward[1][0] = Forward[0][0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0];
+
+														Forward[1][1] = Forward[0][1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1];
+
+														Forward[1][2] = Forward[0][2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2];
+
+														Calculate_Rotation_Label:
+														{
+															Rotations[Rotation_Number][0][0] = Forward[Rotation_Number][0];
+
+															Rotations[Rotation_Number][0][1] = Forward[Rotation_Number][1];
+
+															Rotations[Rotation_Number][0][2] = Forward[Rotation_Number][2];
+
+															Vector_Normalize(Rotations[Rotation_Number][0]);
+
+															Rotations[Rotation_Number][1][0] = Forward[Rotation_Number][1] - Forward[Rotation_Number][2];
+
+															Rotations[Rotation_Number][1][1] = Forward[Rotation_Number][2] - Forward[Rotation_Number][0];
+
+															Rotations[Rotation_Number][1][2] = Forward[Rotation_Number][0] - Forward[Rotation_Number][1];
+
+															Vector_Normalize(Rotations[Rotation_Number][1]);
+
+															Rotations[Rotation_Number][2][0] = Forward[Rotation_Number][1] * Rotations[Rotation_Number][1][2] - Forward[Rotation_Number][2] * Rotations[Rotation_Number][1][1];
+
+															Rotations[Rotation_Number][2][1] = Forward[Rotation_Number][2] * Rotations[Rotation_Number][1][0] - Forward[Rotation_Number][0] * Rotations[Rotation_Number][1][2];
+
+															Rotations[Rotation_Number][2][2] = Forward[Rotation_Number][0] * Rotations[Rotation_Number][1][1] - Forward[Rotation_Number][1] * Rotations[Rotation_Number][1][0];
+
+															Vector_Normalize(Rotations[Rotation_Number][2]);
+
+															if (Rotation_Number != 1)
+															{
+																Rotation_Number = 1;
+
+																goto Calculate_Rotation_Label;
+															}
+														}
+
+														float Rotation[3][3] =
+														{
+															{
+																Rotations[0][0][0] * Rotations[1][0][0] + Rotations[0][1][0] * Rotations[1][1][0] + Rotations[0][2][0] * Rotations[1][2][0],
+
+																Rotations[0][0][0] * Rotations[1][0][1] + Rotations[0][1][0] * Rotations[1][1][1] + Rotations[0][2][0] * Rotations[1][2][1],
+
+																Rotations[0][0][0] * Rotations[1][0][2] + Rotations[0][1][0] * Rotations[1][1][2] + Rotations[0][2][0] * Rotations[1][2][2]
+															},
+
+															{
+																Rotations[0][0][1] * Rotations[1][0][0] + Rotations[0][1][1] * Rotations[1][1][0] + Rotations[0][2][1] * Rotations[1][2][0],
+
+																Rotations[0][0][1] * Rotations[1][0][1] + Rotations[0][1][1] * Rotations[1][1][1] + Rotations[0][2][1] * Rotations[1][2][1],
+
+																Rotations[0][0][1] * Rotations[1][0][2] + Rotations[0][1][1] * Rotations[1][1][2] + Rotations[0][2][1] * Rotations[1][2][2]
+															},
+
+															{
+																Rotations[0][0][2] * Rotations[1][0][0] + Rotations[0][1][2] * Rotations[1][1][0] + Rotations[0][2][2] * Rotations[1][2][0],
+
+																Rotations[0][0][2] * Rotations[1][0][1] + Rotations[0][1][2] * Rotations[1][1][1] + Rotations[0][2][2] * Rotations[1][2][1],
+
+																Rotations[0][0][2] * Rotations[1][0][2] + Rotations[0][1][2] * Rotations[1][1][2] + Rotations[0][2][2] * Rotations[1][2][2]
+															}
+														};
+
+														float Rotated_Forward[3] =
+														{
+															Forward[0][0] * Rotation[0][0] + Forward[0][1] * Rotation[0][1] + Forward[0][2] * Rotation[0][2],
+
+															Forward[0][0] * Rotation[1][0] + Forward[0][1] * Rotation[1][1] + Forward[0][2] * Rotation[1][2],
+
+															Forward[0][0] * Rotation[2][0] + Forward[0][1] * Rotation[2][1] + Forward[0][2] * Rotation[2][2]
+														};
+
+														float* Recoil = (float*)((unsigned __int32)Local_Player + 2992);
+
+														Angles[0] = Compress_Angle(180.f - __builtin_atan2f(-Rotated_Forward[2], __builtin_hypotf(Rotated_Forward[0], Rotated_Forward[1])) * 180.f / 3.1415927f - Recoil[0] * 2.f, 65536);
+
+														Angles[1] = Compress_Angle(180.f + __builtin_atan2f(Rotated_Forward[1], Rotated_Forward[0]) * 180.f / 3.1415927f - Recoil[1] * 2.f, 65536);
+
+														float Rotated_Up[3] =
+														{
+															Up[0] * Rotation[0][0] + Up[1] * Rotation[0][1] + Up[2] * Rotation[0][2],
+
+															Up[0] * Rotation[1][0] + Up[1] * Rotation[1][1] + Up[2] * Rotation[1][2],
+
+															Up[0] * Rotation[2][0] + Up[1] * Rotation[2][1] + Up[2] * Rotation[2][2]
+														};
+
+														Angles[2] = Compress_Angle(180.f + __builtin_atan2f(Rotated_Forward[1] * Rotated_Up[0] - Rotated_Forward[0] * Rotated_Up[1], Rotated_Forward[0] * (Rotated_Forward[0] * Rotated_Up[2] - Rotated_Forward[2] * Rotated_Up[0]) - Rotated_Forward[1] * (Rotated_Forward[2] * Rotated_Up[1] - Rotated_Forward[1] * Rotated_Up[2])) * 180.f / 3.1415927f - Recoil[2] * 2.f, 256);
+
+														if (Direction != nullptr)
+														{
+															float Bullet_Angles[3] =
+															{
+																Angles[0] + Recoil[0] * 2.f,
+
+																Angles[1] + Recoil[1] * 2.f,
+
+																Angles[2] + Recoil[2] * 2.f,
+															};
+
+															Angle_Vectors(Bullet_Angles, Forward[0], Right, Up);
+
+															Direction[0] = Forward[0][0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0];
+
+															Direction[1] = Forward[0][1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1];
+
+															Direction[2] = Forward[0][2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2];
+														}
+
+														Weapon_Spread = 0.f;
+													};
 
 													using Get_Weapon_Information_Type = void*(__thiscall*)(void* Weapon);
 
@@ -690,15 +847,22 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																		Target_Origin[2] - Eye_Position[2]
 																	};
 
+																	float Angles[3] =
+																	{
+																		__builtin_atan2f(-Direction[2], __builtin_hypotf(Direction[0], Direction[1])) * 180.f / 3.1415927f,
+
+																		__builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f
+																	};
+
+																	Compensate_Angles(Angles, Direction);
+
 																	if (Perform_Trace(Direction) == 1)
 																	{
 																		Command->Tick_Number = Target->Tick_Number;
 
-																		Command->Angles[0] = __builtin_atan2f(-Direction[2], __builtin_hypotf(Direction[0], Direction[1])) * 180.f / 3.1415927f;
+																		Byte_Manager::Copy_Bytes(1, Command->Angles, sizeof(Command->Angles), Angles);
 
-																		Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f;
-
-																		Command->Buttons |= 1;
+																		In_Attack = Command->Buttons |= 1;
 
 																		if (Interface_Bruteforce.Integer == 1)
 																		{
@@ -750,136 +914,12 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 													if ((Command->Buttons & 1) == 1)
 													{
-														float Rotations[2][3][3];
-
-														__int8 Rotation_Number = 0;
-
-														float Forward[2][3];
-
-														float Right[3];
-
-														float Up[3];
-
-														Angle_Vectors(Command->Angles, Forward[0], Right, Up);
-
 														Command->Command_Number = -2076434770;
 
-														Command->Random_Seed = 32;
-
-														using Random_Seed_Type = void(__cdecl*)(__int32 Seed);
-
-														static void* Random_Seed = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11856);
-
-														Random_Seed_Type((unsigned __int32)Random_Seed)((Command->Random_Seed & 255) + 1);
-
-														using Random_Type = float(__cdecl*)(float Minimum, float Maximum);
-
-														static void* Random = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
-
-														float Random_X = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
-
-														Weapon_Spread = -1.f;
-
-														using Primary_Attack_Type = void(__thiscall**)(void* Weapon);
-
-														(*Primary_Attack_Type(*(unsigned __int32*)Weapon + 856))(Weapon);
-
-														float Random_Y = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
-
-														Forward[1][0] = Forward[0][0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0];
-
-														Forward[1][1] = Forward[0][1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1];
-
-														Forward[1][2] = Forward[0][2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2];
-
-														Weapon_Spread = 0.f;
-
-														Calculate_Rotation_Label:
+														if (In_Attack == 0)
 														{
-															Rotations[Rotation_Number][0][0] = Forward[Rotation_Number][0];
-
-															Rotations[Rotation_Number][0][1] = Forward[Rotation_Number][1];
-
-															Rotations[Rotation_Number][0][2] = Forward[Rotation_Number][2];
-
-															Vector_Normalize(Rotations[Rotation_Number][0]);
-
-															Rotations[Rotation_Number][1][0] = Forward[Rotation_Number][1] - Forward[Rotation_Number][2];
-
-															Rotations[Rotation_Number][1][1] = Forward[Rotation_Number][2] - Forward[Rotation_Number][0];
-
-															Rotations[Rotation_Number][1][2] = Forward[Rotation_Number][0] - Forward[Rotation_Number][1];
-
-															Vector_Normalize(Rotations[Rotation_Number][1]);
-
-															Rotations[Rotation_Number][2][0] = Forward[Rotation_Number][1] * Rotations[Rotation_Number][1][2] - Forward[Rotation_Number][2] * Rotations[Rotation_Number][1][1];
-
-															Rotations[Rotation_Number][2][1] = Forward[Rotation_Number][2] * Rotations[Rotation_Number][1][0] - Forward[Rotation_Number][0] * Rotations[Rotation_Number][1][2];
-
-															Rotations[Rotation_Number][2][2] = Forward[Rotation_Number][0] * Rotations[Rotation_Number][1][1] - Forward[Rotation_Number][1] * Rotations[Rotation_Number][1][0];
-
-															Vector_Normalize(Rotations[Rotation_Number][2]);
-
-															if (Rotation_Number != 1)
-															{
-																Rotation_Number = 1;
-
-																goto Calculate_Rotation_Label;
-															}
+															Compensate_Angles(Command->Angles, nullptr);
 														}
-
-														float Rotation[3][3] =
-														{
-															{
-																Rotations[0][0][0] * Rotations[1][0][0] + Rotations[0][1][0] * Rotations[1][1][0] + Rotations[0][2][0] * Rotations[1][2][0],
-
-																Rotations[0][0][0] * Rotations[1][0][1] + Rotations[0][1][0] * Rotations[1][1][1] + Rotations[0][2][0] * Rotations[1][2][1],
-
-																Rotations[0][0][0] * Rotations[1][0][2] + Rotations[0][1][0] * Rotations[1][1][2] + Rotations[0][2][0] * Rotations[1][2][2]
-															},
-
-															{
-																Rotations[0][0][1] * Rotations[1][0][0] + Rotations[0][1][1] * Rotations[1][1][0] + Rotations[0][2][1] * Rotations[1][2][0],
-
-																Rotations[0][0][1] * Rotations[1][0][1] + Rotations[0][1][1] * Rotations[1][1][1] + Rotations[0][2][1] * Rotations[1][2][1],
-
-																Rotations[0][0][1] * Rotations[1][0][2] + Rotations[0][1][1] * Rotations[1][1][2] + Rotations[0][2][1] * Rotations[1][2][2]
-															},
-
-															{
-																Rotations[0][0][2] * Rotations[1][0][0] + Rotations[0][1][2] * Rotations[1][1][0] + Rotations[0][2][2] * Rotations[1][2][0],
-
-																Rotations[0][0][2] * Rotations[1][0][1] + Rotations[0][1][2] * Rotations[1][1][1] + Rotations[0][2][2] * Rotations[1][2][1],
-
-																Rotations[0][0][2] * Rotations[1][0][2] + Rotations[0][1][2] * Rotations[1][1][2] + Rotations[0][2][2] * Rotations[1][2][2]
-															}
-														};
-
-														float Rotated_Forward[3] =
-														{
-															Forward[0][0] * Rotation[0][0] + Forward[0][1] * Rotation[0][1] + Forward[0][2] * Rotation[0][2],
-
-															Forward[0][0] * Rotation[1][0] + Forward[0][1] * Rotation[1][1] + Forward[0][2] * Rotation[1][2],
-
-															Forward[0][0] * Rotation[2][0] + Forward[0][1] * Rotation[2][1] + Forward[0][2] * Rotation[2][2]
-														};
-
-														float* Recoil = (float*)((unsigned __int32)Local_Player + 2992);
-
-														Command->Angles[0] = 180.f - __builtin_atan2f(-Rotated_Forward[2], __builtin_hypotf(Rotated_Forward[0], Rotated_Forward[1])) * 180.f / 3.1415927f - Recoil[0] * 2.f;
-
-														Command->Angles[1] = 180.f + __builtin_atan2f(Rotated_Forward[1], Rotated_Forward[0]) * 180.f / 3.1415927f - Recoil[1] * 2.f;
-
-														float Rotated_Up[3] =
-														{
-															Up[0] * Rotation[0][0] + Up[1] * Rotation[0][1] + Up[2] * Rotation[0][2],
-
-															Up[0] * Rotation[1][0] + Up[1] * Rotation[1][1] + Up[2] * Rotation[1][2],
-
-															Up[0] * Rotation[2][0] + Up[1] * Rotation[2][1] + Up[2] * Rotation[2][2]
-														};
-
-														Command->Angles[2] = 180.f + __builtin_atan2f(Rotated_Forward[1] * Rotated_Up[0] - Rotated_Forward[0] * Rotated_Up[1], Rotated_Forward[0] * (Rotated_Forward[0] * Rotated_Up[2] - Rotated_Forward[2] * Rotated_Up[0]) - Rotated_Forward[1] * (Rotated_Forward[2] * Rotated_Up[1] - Rotated_Forward[1] * Rotated_Up[2])) * 180.f / 3.1415927f - Recoil[2] * 2.f;
 
 														In_Attack = 1;
 
@@ -953,18 +993,13 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 					Command->Angles[1] = __builtin_atan2f(Direction[1], Direction[0]) * 180.f / 3.1415927f + Interface_Angle_Y.Floating_Point;
 				}
 			}
+
+			Command->Angles[0] = Compress_Angle(Command->Angles[0], 65536);
+
+			Command->Angles[1] = Compress_Angle(Command->Angles[1], 65536);
+
+			Command->Angles[2] = Compress_Angle(Command->Angles[2], 256);
 		}
-
-		auto Compress_Angle = [](float Value, __int32 Shift) -> float
-		{
-			return ((__int32)(Value / 360.f * Shift) & Shift - 1) * (360.f / Shift);
-		};
-
-		Command->Angles[0] = Compress_Angle(Command->Angles[0], 65536);
-
-		Command->Angles[1] = Compress_Angle(Command->Angles[1], 65536);
-
-		Command->Angles[2] = Compress_Angle(Command->Angles[2], 256);
 
 		Correct_Movement();
 

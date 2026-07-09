@@ -32,7 +32,7 @@ void Redirected_Post_Data_Update(void* Entity, void* Unknown_Parameter)
 	{
 		Update_Data(Global_Variables->Tick_Number - (__int32)((Simulation_Time - Previous_Simulation_Time) / Global_Variables->Interval_Per_Tick + 0.5));
 
-		*(__int8*)Player_Data->Data = 1;
+		Player_Data->Data[0] = 1;
 	}
 
 	Post_Data_Update_Manager.Special_Call(Entity, Unknown_Parameter);

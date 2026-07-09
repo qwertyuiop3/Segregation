@@ -542,6 +542,44 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 						(*Get_Eye_Position_Type(*(unsigned __int64*)Local_Player + 1128))(Local_Player, Eye_Position);
 
+						auto Compensate_Spread = [&]() -> void
+						{
+							float Spread[3] =
+							{
+								-0.041726142f * Weapon_Spread[0],
+
+								-0.015735209f * Weapon_Spread[1],
+
+								1.f
+							};
+
+							Vector_Normalize(Spread);
+
+							float Length = 1.f - __builtin_powf(Spread[0], 2.f);
+
+							float Rotation[2] =
+							{
+								max(1e-45f, __builtin_sqrtf(Length - __builtin_powf(Command->Forward[2], 2.f))),
+
+								Command->Forward[2] - (Command->Forward[2] - __builtin_copysignf(__builtin_sqrtf(Length), Command->Forward[2])) * (Rotation[0] == 1e-45f)
+							};
+
+							float Angles[3] =
+							{
+								__builtin_atan2f(Spread[1] * Rotation[0] - Spread[2] * Rotation[1], Spread[1] * Rotation[1] + Spread[2] * Rotation[0]) * 180.f / 3.1415927f,
+
+								__builtin_atan2f(Command->Forward[0] * Spread[0] + Command->Forward[1] * Rotation[0], Command->Forward[0] * Rotation[0] - Command->Forward[1] * Spread[0]) * 180.f / 3.1415927f
+							};
+
+							Angle_Vectors(Angles, Command->Forward, nullptr, nullptr);
+
+							Command->Forward[0] = __builtin_truncf(Command->Forward[0] * 1000.f) / 1000.f;
+
+							Command->Forward[1] = __builtin_truncf(Command->Forward[1] * 1000.f) / 1000.f;
+
+							Command->Forward[2] = __builtin_truncf(Command->Forward[2] * 1000.f) / 1000.f;
+						};
+
 						Recent_Player_Data_Number = 0;
 
 						Traverse_Sorted_Target_List_Label:
@@ -863,7 +901,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 											}
 										}
 
-										Byte_Manager::Copy_Bytes(1, *(void**)((unsigned __int64)Target->Self + 13768), sizeof(Animations_Data), Animations_Data);
+										Byte_Manager::Copy_Bytes(1, *(void**)((unsigned __int64)Target->Self + 13768), sizeof(Player_Data_Structure::Animations_Data), Animations_Data);
 									};
 
 									if (Target->Valid == 1)
@@ -1019,16 +1057,17 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 											*Hitbox_Z_Extremes[0] + (*Hitbox_Z_Extremes[1] - *Hitbox_Z_Extremes[0]) * Interface_Aim_Height.Get_Floating_Point() + Bones[Bone][2][3]
 										};
 
-										float Direction[3] =
-										{
-											Target_Origin[0] - Eye_Position[0],
+										Command->Forward[0] = Target_Origin[0] - Eye_Position[0];
 
-											Target_Origin[1] - Eye_Position[1],
+										Command->Forward[1] = Target_Origin[1] - Eye_Position[1];
 
-											Target_Origin[2] - Eye_Position[2]
-										};
+										Command->Forward[2] = Target_Origin[2] - Eye_Position[2];
 
-										if (Perform_Trace(Direction) == 1)
+										Vector_Normalize(Command->Forward);
+
+										Compensate_Spread();
+
+										if (Perform_Trace(Command->Forward) == 1)
 										{
 											if (Target->Valid == 1)
 											{
@@ -1058,8 +1097,6 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 											using Write_Message_Type = __int8(**)(void* Message, void* Buffer);
 
 											(*Write_Message_Type(*(unsigned __int64*)&Message + 40))(&Message, (void*)((unsigned __int64)Network_Channel + 88));
-
-											Byte_Manager::Copy_Bytes(1, Command->Forward, sizeof(Command->Forward), Direction);
 
 											Command->Context = Command->Buttons |= 1;
 
@@ -1113,87 +1150,17 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 						if ((Command->Buttons & 1) == 1)
 						{
-							auto Compute_Spread = [&](float* Spread) -> void
-							{
-								using Random_Seed_Type = void(*)(__int32 Seed);
-
-								static void* Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
-
-								static void* Random_Seed = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomSeed");
-
-								Random_Seed_Type((unsigned __int64)Random_Seed)(Command->Random_Seed & 255);
-
-								float Shot_Random[2];
-
-								using Random_Type = float(*)(float Minimum, float Maximum);
-
-								static void* Random = (void*)GetProcAddress((HMODULE)Standard_Library_Module, "RandomFloat");
-
-								static Interface_Structure* Interface_Bias_Maximum = Find_Interface((char*)"ai_shot_bias_max");
-
-								float Shot_Bias = Interface_Bias_Maximum->Get_Floating_Point();
-
-								float Flatness = __builtin_fabsf(Shot_Bias) * 0.5f;
-
-								Compute_Random_Label:
-								{
-									Shot_Random[0] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness) + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness;
-
-									Shot_Random[1] = Random_Type((unsigned __int64)Random)(-1.f, 1.f) * (1.f - Flatness) + Random_Type((unsigned __int64)Random)(-1.f, 1.f) * Flatness;
-
-									if (__builtin_signbitf(Shot_Bias) == 1)
-									{
-										Shot_Random[0] = __builtin_copysignf(1.f, Shot_Random[0]) - Shot_Random[0];
-
-										Shot_Random[1] = __builtin_copysignf(1.f, Shot_Random[1]) - Shot_Random[1];
-									}
-
-									if (__builtin_powf(Shot_Random[0], 2.f) + __builtin_powf(Shot_Random[1], 2.f) > 1.f)
-									{
-										goto Compute_Random_Label;
-									}
-								}
-
-								Spread[0] = 1.f;
-
-								Spread[1] = Shot_Random[0] * Weapon_Spread[0];
-
-								Spread[2] = Shot_Random[1] * Weapon_Spread[1];
-
-								Vector_Normalize(Spread);
-							};
-
-							Command->Command_Number = -98069271;
-
 							Command->Random_Seed = 33;
 
-							float Spread[3];
-
-							Compute_Spread(Spread);
-
-							float Length = 1.f - __builtin_powf(Spread[1], 2.f);
+							Command->Command_Number = -98069271;
 
 							if (Command->Context == 0)
 							{
 								Angle_Vectors(Command->Angles, Command->Forward, nullptr, nullptr);
+
+								Compensate_Spread();
 							}
 
-							float Rotation[2] =
-							{
-								max(1e-45f, __builtin_sqrtf(Length - __builtin_powf(Command->Forward[2], 2.f))),
-
-								Command->Forward[2] - (Command->Forward[2] - __builtin_copysignf(__builtin_sqrtf(Length), Command->Forward[2])) * (Rotation[0] == 1e-45f)
-							};
-
-							float Angles[3] =
-							{
-								__builtin_atan2f(-Spread[0] * Rotation[1] + Spread[2] * Rotation[0], Spread[0] * Rotation[0] + Spread[2] * Rotation[1]) * 180.f / 3.1415927f,
-
-								__builtin_atan2f(Command->Forward[0] * Spread[1] + Command->Forward[1] * Rotation[0], Command->Forward[0] * Rotation[0] + Command->Forward[1] * -Spread[1]) * 180.f / 3.1415927f
-							};
-
-							Angle_Vectors(Angles, Command->Forward, nullptr, nullptr);
-		
 							Command->Context = In_Attack = Send_Packet = 1;
 
 							Shot_Tick_Number = *(__int32*)((unsigned __int64)Local_Player + 11552);

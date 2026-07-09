@@ -8,23 +8,13 @@ void Save_Player_Data(void* Data, void* Player, std::vector<Player_Data_Structur
 
 	Modifications_Data.clear();
 
-	__int16 Modification_Number = 0;
-
 	void* Modification_Table = *(void**)((unsigned __int64)Player + 5688);
 
-	Traverse_Modifications_Label:
-	{
-		if (Modification_Number <= *(__int16*)((unsigned __int64)Modification_Table + 38))
-		{
-			Modifications_Data.push_back(((Player_Data_Structure::Modification_Structure*)(*(unsigned __int64*)((unsigned __int64)Modification_Table + 16) + 24))[Modification_Number]);
+	Player_Data_Structure::Modification_Structure* Modifications = (Player_Data_Structure::Modification_Structure*)(*(unsigned __int64*)((unsigned __int64)Modification_Table + 16) + 24);
 
-			Modification_Number += 1;
+	Modifications_Data.insert(Modifications_Data.end(), Modifications, &Modifications[*(__int16*)((unsigned __int64)Modification_Table + 38) + 1]);
 
-			goto Traverse_Modifications_Label;
-		}
-	}
-
-	Byte_Manager::Copy_Bytes(1, Animations_Data, sizeof(Animations_Data), *(void**)((unsigned __int64)Player + 13768));
+	Byte_Manager::Copy_Bytes(1, Animations_Data, sizeof(Player_Data_Structure::Animations_Data), *(void**)((unsigned __int64)Player + 13768));
 }
 
 void Redirected_Update_Animation(void* Player)
@@ -43,9 +33,9 @@ void Redirected_Update_Animation(void* Player)
 
 	Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Player + 136)];
 
-	if (*(__int8*)Player_Data->Data == 1)
+	if (Player_Data->Data[0] == 1)
 	{
-		*(__int8*)Player_Data->Data = 0;
+		Player_Data->Data[0] = 0;
 
 		Save_Player_Data(Player_Data->Data, Player, Player_Data->Modifications_Data, Player_Data->Animations_Data);
 	}

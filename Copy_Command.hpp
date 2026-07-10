@@ -538,132 +538,43 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 													auto Compensate_Angles = [&](float* Angles, float* Direction) -> void
 													{
-														float Rotations[2][3][3];
-
-														__int8 Rotation_Number = 0;
-
-														float Forward[2][3];
-
-														float Right[3];
-
-														float Up[3];
-
-														Angle_Vectors(Angles, Forward[0], Right, Up);
-
-														Command->Random_Seed = 32;
-
-														using Random_Seed_Type = void(__cdecl*)(__int32 Seed);
-
-														static void* Random_Seed = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11856);
-
-														Random_Seed_Type((unsigned __int32)Random_Seed)((Command->Random_Seed & 255) + 1);
-
-														using Random_Type = float(__cdecl*)(float Minimum, float Maximum);
-
-														static void* Random = (void*)((unsigned __int32)GetModuleHandleW(L"vstdlib.dll") + 11872);
-
-														float Random_X = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
-
 														Weapon_Spread = -1.f;
 
 														using Primary_Attack_Type = void(__thiscall**)(void* Weapon);
 
 														(*Primary_Attack_Type(*(unsigned __int32*)Weapon + 856))(Weapon);
 
-														float Random_Y = Random_Type(Random)(-0.5f, 0.5f) + Random_Type(Random)(-0.5f, 0.5f);
-
-														Forward[1][0] = Forward[0][0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0];
-
-														Forward[1][1] = Forward[0][1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1];
-
-														Forward[1][2] = Forward[0][2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2];
-
-														Calculate_Rotation_Label:
+														float Spread[3] =
 														{
-															Rotations[Rotation_Number][0][0] = Forward[Rotation_Number][0];
+															-0.041726127f * Weapon_Spread,
 
-															Rotations[Rotation_Number][0][1] = Forward[Rotation_Number][1];
+															-0.015735209f * Weapon_Spread,
 
-															Rotations[Rotation_Number][0][2] = Forward[Rotation_Number][2];
-
-															Vector_Normalize(Rotations[Rotation_Number][0]);
-
-															Rotations[Rotation_Number][1][0] = Forward[Rotation_Number][1] - Forward[Rotation_Number][2];
-
-															Rotations[Rotation_Number][1][1] = Forward[Rotation_Number][2] - Forward[Rotation_Number][0];
-
-															Rotations[Rotation_Number][1][2] = Forward[Rotation_Number][0] - Forward[Rotation_Number][1];
-
-															Vector_Normalize(Rotations[Rotation_Number][1]);
-
-															Rotations[Rotation_Number][2][0] = Forward[Rotation_Number][1] * Rotations[Rotation_Number][1][2] - Forward[Rotation_Number][2] * Rotations[Rotation_Number][1][1];
-
-															Rotations[Rotation_Number][2][1] = Forward[Rotation_Number][2] * Rotations[Rotation_Number][1][0] - Forward[Rotation_Number][0] * Rotations[Rotation_Number][1][2];
-
-															Rotations[Rotation_Number][2][2] = Forward[Rotation_Number][0] * Rotations[Rotation_Number][1][1] - Forward[Rotation_Number][1] * Rotations[Rotation_Number][1][0];
-
-															Vector_Normalize(Rotations[Rotation_Number][2]);
-
-															if (Rotation_Number != 1)
-															{
-																Rotation_Number = 1;
-
-																goto Calculate_Rotation_Label;
-															}
-														}
-
-														float Rotation[3][3] =
-														{
-															{
-																Rotations[0][0][0] * Rotations[1][0][0] + Rotations[0][1][0] * Rotations[1][1][0] + Rotations[0][2][0] * Rotations[1][2][0],
-
-																Rotations[0][0][0] * Rotations[1][0][1] + Rotations[0][1][0] * Rotations[1][1][1] + Rotations[0][2][0] * Rotations[1][2][1],
-
-																Rotations[0][0][0] * Rotations[1][0][2] + Rotations[0][1][0] * Rotations[1][1][2] + Rotations[0][2][0] * Rotations[1][2][2]
-															},
-
-															{
-																Rotations[0][0][1] * Rotations[1][0][0] + Rotations[0][1][1] * Rotations[1][1][0] + Rotations[0][2][1] * Rotations[1][2][0],
-
-																Rotations[0][0][1] * Rotations[1][0][1] + Rotations[0][1][1] * Rotations[1][1][1] + Rotations[0][2][1] * Rotations[1][2][1],
-
-																Rotations[0][0][1] * Rotations[1][0][2] + Rotations[0][1][1] * Rotations[1][1][2] + Rotations[0][2][1] * Rotations[1][2][2]
-															},
-
-															{
-																Rotations[0][0][2] * Rotations[1][0][0] + Rotations[0][1][2] * Rotations[1][1][0] + Rotations[0][2][2] * Rotations[1][2][0],
-
-																Rotations[0][0][2] * Rotations[1][0][1] + Rotations[0][1][2] * Rotations[1][1][1] + Rotations[0][2][2] * Rotations[1][2][1],
-
-																Rotations[0][0][2] * Rotations[1][0][2] + Rotations[0][1][2] * Rotations[1][1][2] + Rotations[0][2][2] * Rotations[1][2][2]
-															}
+															1.f
 														};
 
-														float Rotated_Forward[3] =
+														Vector_Normalize(Spread);
+
+														float Length = 1.f - __builtin_powf(Spread[0], 2.f);
+
+														float Forward[3];
+
+														Angle_Vectors(Angles, Forward, nullptr, nullptr);
+
+														float Rotation[2] =
 														{
-															Forward[0][0] * Rotation[0][0] + Forward[0][1] * Rotation[0][1] + Forward[0][2] * Rotation[0][2],
+															max(1e-45f, __builtin_sqrtf(Length - __builtin_powf(Forward[2], 2.f))),
 
-															Forward[0][0] * Rotation[1][0] + Forward[0][1] * Rotation[1][1] + Forward[0][2] * Rotation[1][2],
-
-															Forward[0][0] * Rotation[2][0] + Forward[0][1] * Rotation[2][1] + Forward[0][2] * Rotation[2][2]
+															Forward[2] - (Forward[2] - __builtin_copysignf(__builtin_sqrtf(Length), Forward[2])) * (Rotation[0] == 1e-45f)
 														};
 
 														float* Recoil = (float*)((unsigned __int32)Local_Player + 2992);
 
-														Angles[0] = Compress_Angle(180.f - __builtin_atan2f(-Rotated_Forward[2], __builtin_hypotf(Rotated_Forward[0], Rotated_Forward[1])) * 180.f / 3.1415927f - Recoil[0] * 2.f, 65536);
+														Angles[0] = Compress_Angle(180.f - __builtin_atan2f(Spread[1] * Rotation[0] - Spread[2] * Rotation[1], Spread[1] * Rotation[1] + Spread[2] * Rotation[0]) * 180.f / 3.1415927f - Recoil[0] * 2.f, 65536);
 
-														Angles[1] = Compress_Angle(180.f + __builtin_atan2f(Rotated_Forward[1], Rotated_Forward[0]) * 180.f / 3.1415927f - Recoil[1] * 2.f, 65536);
+														Angles[1] = Compress_Angle(180.f + __builtin_atan2f(Spread[0] * Forward[0] + Forward[1] * Rotation[0], Forward[0] * Rotation[0] - Spread[0] * Forward[1]) * 180.f / 3.1415927f - Recoil[1] * 2.f, 65536);
 
-														float Rotated_Up[3] =
-														{
-															Up[0] * Rotation[0][0] + Up[1] * Rotation[0][1] + Up[2] * Rotation[0][2],
-
-															Up[0] * Rotation[1][0] + Up[1] * Rotation[1][1] + Up[2] * Rotation[1][2],
-
-															Up[0] * Rotation[2][0] + Up[1] * Rotation[2][1] + Up[2] * Rotation[2][2]
-														};
-
-														Angles[2] = Compress_Angle(180.f + __builtin_atan2f(Rotated_Forward[1] * Rotated_Up[0] - Rotated_Forward[0] * Rotated_Up[1], Rotated_Forward[0] * (Rotated_Forward[0] * Rotated_Up[2] - Rotated_Forward[2] * Rotated_Up[0]) - Rotated_Forward[1] * (Rotated_Forward[2] * Rotated_Up[1] - Rotated_Forward[1] * Rotated_Up[2])) * 180.f / 3.1415927f - Recoil[2] * 2.f, 256);
+														Angles[2] = Compress_Angle(180.f - Recoil[2] * 2.f, 256);
 
 														if (Direction != nullptr)
 														{
@@ -676,13 +587,17 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 																Angles[2] + Recoil[2] * 2.f,
 															};
 
-															Angle_Vectors(Bullet_Angles, Forward[0], Right, Up);
+															float Right[3];
 
-															Direction[0] = Forward[0][0] + Random_X * Weapon_Spread * Right[0] + Random_Y * Weapon_Spread * Up[0];
+															float Up[3];
 
-															Direction[1] = Forward[0][1] + Random_X * Weapon_Spread * Right[1] + Random_Y * Weapon_Spread * Up[1];
+															Angle_Vectors(Bullet_Angles, Forward, Right, Up);
 
-															Direction[2] = Forward[0][2] + Random_X * Weapon_Spread * Right[2] + Random_Y * Weapon_Spread * Up[2];
+															Direction[0] = Forward[0] + Spread[0] * Right[0] + Spread[1] * Up[0];
+
+															Direction[1] = Forward[1] + Spread[0] * Right[1] + Spread[1] * Up[1];
+
+															Direction[2] = Forward[2] + Spread[0] * Right[2] + Spread[1] * Up[2];
 														}
 
 														Weapon_Spread = 0.f;
@@ -914,6 +829,8 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 													if ((Command->Buttons & 1) == 1)
 													{
+														Command->Random_Seed = 32;
+
 														Command->Command_Number = -2076434770;
 
 														if (In_Attack == 0)

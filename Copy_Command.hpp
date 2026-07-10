@@ -63,7 +63,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 		{
 			Command->Move[0] = 0.f;
 
-			if (*(__int32*)((unsigned __int64)Local_Player + 764) == -1)
+			if (*(__int32*)((unsigned __int64)Local_Player + 780) == -1)
 			{
 				Command->Buttons &= ~2;
 			}

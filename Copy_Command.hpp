@@ -706,17 +706,17 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 													if (Trace.Fraction == 0.f)
 													{
-														float Vertical_Offset = __builtin_copysignf(0.1f, -__builtin_signbit(Target_Origin[2]));
+														float Vertical_Offset = __builtin_copysignf(1.f, -__builtin_signbit(Target_Origin[2]));
 
 														float Directions[4][3] =
 														{
-															{ Target_Origin[0] - 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + Vertical_Offset },
+															{ Target_Origin[0] - 1.f, Target_Origin[1] - 1.f, Target_Origin[2] + Vertical_Offset },
 
-															{ Target_Origin[0] + 0.1f, Target_Origin[1] - 0.1f, Target_Origin[2] + Vertical_Offset },
+															{ Target_Origin[0] + 1.f, Target_Origin[1] - 1.f, Target_Origin[2] + Vertical_Offset },
 
-															{ Target_Origin[0] - 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + Vertical_Offset },
+															{ Target_Origin[0] - 1.f, Target_Origin[1] + 1.f, Target_Origin[2] + Vertical_Offset },
 
-															{ Target_Origin[0] + 0.1f, Target_Origin[1] + 0.1f, Target_Origin[2] + Vertical_Offset }
+															{ Target_Origin[0] + 1.f, Target_Origin[1] + 1.f, Target_Origin[2] + Vertical_Offset }
 														};
 
 														__int8 Trace_Number = 0;

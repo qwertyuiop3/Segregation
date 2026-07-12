@@ -42,12 +42,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		__int32 Jump_State = (Command->Buttons & 2) + Move_Type;
 
-		float Move_Angles[3] =
-		{
-			Command->Angles[0],
-
-			Command->Angles[1]
-		};
+		float Move_Angles[3] = { Command->Angles[0], Command->Angles[1] };
 
 		static float Previous_Move_Angle_Y;
 

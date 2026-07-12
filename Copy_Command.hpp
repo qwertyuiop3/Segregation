@@ -42,12 +42,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		__int32 Jump_State = (Command->Buttons & 2) + Move_Type;
 
-		float Move_Angles[3] =
-		{
-			Command->Angles[0],
-
-			Command->Angles[1]
-		};
+		float Move_Angles[3] = { Command->Angles[0], Command->Angles[1] };
 
 		static float Previous_Move_Angle_Y;
 
@@ -539,9 +534,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 													Get_Eye_Position_Type((unsigned __int64)Client_Module + 327360)(Local_Player, Eye_Position);
 
-													using Get_Weapon_Information_Type = void*(*)(void* Weapon);
+													using Get_Weapon_Data_Type = void*(*)(void* Weapon);
 
-													float Weapon_Range = *(float*)((unsigned __int64)Get_Weapon_Information_Type((unsigned __int64)Client_Module + 317184)(Weapon) + 2236);
+													float Weapon_Range = *(float*)((unsigned __int64)Get_Weapon_Data_Type((unsigned __int64)Client_Module + 317184)(Weapon) + 2236);
 
 													Recent_Player_Data_Number = 0;
 

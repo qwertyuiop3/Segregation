@@ -111,7 +111,7 @@ void Redirected_Draw_Crosshair()
 
 		Draw_Uber_Alles_Label:
 		{
-			float Distance = Absolute_Rotation_Angle < (720.f - Interface_Uber_Alles_Multiplicative_Interval.Floating_Point) ? min((Absolute_Rotation_Angle - 360.f) / Interface_Uber_Alles_Multiplicative_Interval.Floating_Point, 1.f) : (720.f - Absolute_Rotation_Angle) / Interface_Uber_Alles_Multiplicative_Interval.Floating_Point;
+			float Distance = Absolute_Rotation_Angle < 720.f - Interface_Uber_Alles_Multiplicative_Interval.Floating_Point ? min((Absolute_Rotation_Angle - 360.f) / Interface_Uber_Alles_Multiplicative_Interval.Floating_Point, 1.f) : (720.f - Absolute_Rotation_Angle) / Interface_Uber_Alles_Multiplicative_Interval.Floating_Point;
 
 			Uber_Alles(Interface_Uber_Alles_Scale.Integer - (Interface_Uber_Alles_Scale.Integer - Interface_Uber_Alles_Multiplicative_Scale.Integer) * Distance, Screen_Width, Interface_Uber_Alles_Multiplicative_Radius.Integer * Distance, Uber_Alles_Number * 360 / Interface_Uber_Alles_Multiplicative.Integer, Screen_Height);
 

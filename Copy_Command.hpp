@@ -48,12 +48,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 			Angle_Vectors_Type((unsigned __int64)Angle_Vectors)(Angles, Forward, Right, Up);
 		};
 
-		float Move_Angles[3] =
-		{
-			Command->Angles[0],
-
-			Command->Angles[1]
-		};
+		float Move_Angles[3] = { Command->Angles[0], Command->Angles[1] };
 
 		static float Previous_Move_Angle_Y;
 
@@ -706,24 +701,31 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 													if (Trace.Fraction == 0.f)
 													{
-														float Vertical_Offset = __builtin_copysignf(1.f, -__builtin_signbit(Target_Origin[2]));
-
-														float Directions[4][3] =
+														float Directions[8][3] =
 														{
-															{ Target_Origin[0] - 1.f, Target_Origin[1] - 1.f, Target_Origin[2] + Vertical_Offset },
+															{ Target_Origin[0] - 1.f, Target_Origin[1] - 1.f, Target_Origin[2] + 1.f },
 
-															{ Target_Origin[0] + 1.f, Target_Origin[1] - 1.f, Target_Origin[2] + Vertical_Offset },
+															{ Target_Origin[0] + 1.f, Target_Origin[1] - 1.f, Target_Origin[2] + 1.f },
 
-															{ Target_Origin[0] - 1.f, Target_Origin[1] + 1.f, Target_Origin[2] + Vertical_Offset },
+															{ Target_Origin[0] - 1.f, Target_Origin[1] + 1.f, Target_Origin[2] + 1.f },
 
-															{ Target_Origin[0] + 1.f, Target_Origin[1] + 1.f, Target_Origin[2] + Vertical_Offset }
+															{ Target_Origin[0] + 1.f, Target_Origin[1] + 1.f, Target_Origin[2] + 1.f },
+
+															{ Target_Origin[0] - 1.f, Target_Origin[1] - 1.f, Target_Origin[2] },
+
+															{ Target_Origin[0] + 1.f, Target_Origin[1] - 1.f, Target_Origin[2] },
+
+															{ Target_Origin[0] - 1.f, Target_Origin[1] + 1.f, Target_Origin[2] },
+
+															{ Target_Origin[0] + 1.f, Target_Origin[1] + 1.f, Target_Origin[2] }
+
 														};
 
 														__int8 Trace_Number = 0;
 
 														Decollision_Perform_Trace_Label:
 														{
-															(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Directions[Trace_Number], Target_Origin, 33636363, 8, &Trace);
+															(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Directions[Trace_Number], (float[3]){ Target_Origin[0], Target_Origin[1], Target_Origin[2] - 1.f }, 33636363, 8, &Trace);
 
 															if (Trace.Fraction == 0.f)
 															{

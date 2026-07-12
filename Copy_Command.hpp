@@ -725,7 +725,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 														Decollision_Perform_Trace_Label:
 														{
-															(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Directions[Trace_Number], (float[3]){ Target_Origin[0], Target_Origin[1], Target_Origin[2] - 1.f }, 33636363, 8, &Trace);
+															(*Perform_Trace_Type(*(unsigned __int64*)Movement + 88))(Movement, Directions[Trace_Number], Target_Origin, 33636363, 8, &Trace);
 
 															if (Trace.Fraction == 0.f)
 															{

@@ -92,7 +92,6 @@
     <ClInclude Include="Compute_Torso_Rotation.hpp" />
     <ClInclude Include="Draw_Crosshair.hpp" />
     <ClInclude Include="Event_Processor.hpp" />
-    <ClInclude Include="Finish_Move.hpp" />
     <ClInclude Include="Interpolate.hpp" />
     <ClInclude Include="Move.hpp" />
     <ClInclude Include="Packet_Start.hpp" />

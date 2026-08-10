@@ -34,8 +34,6 @@ void* Engine_Module;
 
 #include "Compute_Torso_Rotation.hpp"
 
-#include "Finish_Move.hpp"
-
 #include "Fire_Bullets.hpp"
 
 #include "Read_Packets.hpp"
@@ -149,13 +147,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(508445, (unsigned __int8*)Engine_Module, 15315303757620206820ull), 1, 235);
 
-					void* Event_Listener = (void*)__builtin_malloc(sizeof(void*));
+					static void* Event_Listener_Table[2] = { nullptr, (void*)Event_Processor };
 
-					void* Event_Listener_Table = __builtin_malloc(sizeof(void*) * 2);
-
-					*(void**)((unsigned __int64)Event_Listener_Table + 8) = (void*)Event_Processor;
-
-					*(void**)Event_Listener = Event_Listener_Table;
+					static void* Event_Listener = Event_Listener_Table;
 
 					using Add_Listener_Type = __int8(*)(void* Event_Manager, void* Listener, char* Event, void* Unknown_Parameter);
 
@@ -205,8 +199,6 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 				_putws(L"[ + ] Prediction");
 				{
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(33348587037, (unsigned __int8*)Client_Module, 15603247578755587463ull), 1, 235);
-
-					Finish_Move_Manager.Redirect_Function(4, Byte_Manager::Find_Bytes(502775279, (unsigned __int8*)Client_Module, 1688265399167102076), (void*)Redirected_Finish_Move);
 
 					Fire_Bullets_Manager.Redirect_Function(2, Byte_Manager::Find_Bytes(231359, (unsigned __int8*)Client_Module, 4027704381885905114), (void*)Redirected_Fire_Bullets);
 				}

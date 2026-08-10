@@ -14,7 +14,7 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 
 		__int32 Victim_Number;
 
-		__int32 Killer_Number;
+		__int32 Inflictor_Number;
 
 		if (Name[0] == 'p')
 		{
@@ -24,26 +24,26 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 
 			Victim_Number = (*Identifier_To_Number_Type(*(unsigned __int64*)Engine + 72))(Engine, (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"userid", nullptr));
 
-			Killer_Number = (*Identifier_To_Number_Type(*(unsigned __int64*)Engine + 72))(Engine, (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"attacker", nullptr));
+			Inflictor_Number = (*Identifier_To_Number_Type(*(unsigned __int64*)Engine + 72))(Engine, (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"attacker", nullptr));
 		}
 		else
 		{
 			Victim_Number = (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"entindex_killed", nullptr);
 
-			Killer_Number = (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"entindex_attacker", nullptr);
+			Inflictor_Number = (*Get_Integer_Type(*(unsigned __int64*)Event + 48))(Event, (char*)"entindex_attacker", nullptr);
 		}
 
-		if (Victim_Number != Killer_Number)
+		if (Victim_Number != Inflictor_Number)
 		{
 			__int32 Local_Number = *(__int32*)((unsigned __int64)Local_Player + 136);
 
 			if (Victim_Number == Local_Number)
 			{
-				if ((Killer_Number - 1 | Get_Global_Variables()->Maximum_Clients - Killer_Number) >= 0)
+				if ((unsigned __int32)(Inflictor_Number - 1) < Get_Global_Variables()->Maximum_Clients)
 				{
 					if (Name[0] == 'e')
 					{
-						Player_Data_Structure* Player_Data = &Players_Data[Killer_Number];
+						Player_Data_Structure* Player_Data = &Players_Data[Inflictor_Number];
 
 						Player_Data->Memory_Tolerance = 0;
 
@@ -56,7 +56,7 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 			}
 			else
 			{
-				if (Killer_Number == Local_Number)
+				if (Inflictor_Number == Local_Number)
 				{
 					if (Victim_Number == Recent_Player_Data_Number)
 					{

@@ -245,7 +245,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 					float Deviations[3] = { Calculate_Deviation(Rotations[0]) };
 
-					if (Solution_Number != 2)
+					if (Solutions[Solution_Number][1] != 0.f)
 					{
 						Deviations[1] = Calculate_Deviation(Rotations[1]);
 
@@ -671,7 +671,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 											{
 												__int32 Extrapolation_Ticks = (__int32)(max(0, Global_Variables->Tick_Number - Player_Data->Tick_Number[1]) + Latency / Global_Variables->Interval_Per_Tick + 0.5) / Exponent * Exponent;
 
-												if ((Extrapolation_Ticks - Exponent | (__int32)(1.f / Global_Variables->Interval_Per_Tick + 0.5) - Extrapolation_Ticks) >= 0)
+												if ((Extrapolation_Ticks - Exponent | (__int32)(1. / Global_Variables->Interval_Per_Tick + 0.5) - Extrapolation_Ticks) >= 0)
 												{
 													Target->Valid = 0;
 
@@ -701,7 +701,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 													if (Trace.Fraction == 0.f)
 													{
-														float Directions[8][3] =
+														float Directions[12][3] =
 														{
 															{ Target_Origin[0] - 1.f, Target_Origin[1] - 1.f, Target_Origin[2] + 1.f },
 
@@ -717,8 +717,15 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 															{ Target_Origin[0] - 1.f, Target_Origin[1] + 1.f, Target_Origin[2] },
 
-															{ Target_Origin[0] + 1.f, Target_Origin[1] + 1.f, Target_Origin[2] }
+															{ Target_Origin[0] + 1.f, Target_Origin[1] + 1.f, Target_Origin[2] },
 
+															{ Target_Origin[0] - 1.f, Target_Origin[1] - 1.f, Target_Origin[2] - 1.f },
+
+															{ Target_Origin[0] + 1.f, Target_Origin[1] - 1.f, Target_Origin[2] - 1.f },
+
+															{ Target_Origin[0] - 1.f, Target_Origin[1] + 1.f, Target_Origin[2] - 1.f },
+
+															{ Target_Origin[0] + 1.f, Target_Origin[1] + 1.f, Target_Origin[2] - 1.f }
 														};
 
 														__int8 Trace_Number = 0;

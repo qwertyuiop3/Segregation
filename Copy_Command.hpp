@@ -397,7 +397,7 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 
 		using Get_Interpolation_Time_Type = float(__cdecl*)();
 
-        float Interpolation_Time = Get_Interpolation_Time_Type(604530144)();
+		float Interpolation_Time = Get_Interpolation_Time_Type(604530144)();
 
 		float Corrected_Latency = std::clamp(Latency + Interpolation_Time, 0.f, 1.f);
 
@@ -600,9 +600,9 @@ void __thiscall Redirected_Copy_Command(void* Unknown_Parameter, Command_Structu
 														Weapon_Spread = 0.f;
 													};
 
-													using Get_Weapon_Information_Type = void*(__thiscall*)(void* Weapon);
+													using Get_Weapon_Data_Type = void*(__thiscall*)(void* Weapon);
 
-													float Weapon_Range = *(float*)((unsigned __int32)Get_Weapon_Information_Type(604037872)(Weapon) + 2020);
+													float Weapon_Range = *(float*)((unsigned __int32)Get_Weapon_Data_Type(604037872)(Weapon) + 2020);
 
 													Recent_Player_Data_Number = 0;
 

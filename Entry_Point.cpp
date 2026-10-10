@@ -155,21 +155,17 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)537149578, 1, 235);
 
-					void* Event_Listener = (void*)__builtin_malloc(sizeof(void*));
-
-					void* Event_Listener_Table = __builtin_malloc(sizeof(void*) * 2);
-
-					*(void**)((unsigned __int32)Event_Listener_Table + 4) = (void*)Event_Processor;
-
-					*(void**)Event_Listener = Event_Listener_Table;
-
 					using Add_Listener_Type = __int8(__thiscall*)(void* Event_Manager, void* Listener, char* Event, void* Unknown_Parameter);
 
-					Add_Listener_Type(537586416)((void*)540812808, Event_Listener, (char*)"player_hurt", nullptr);
+					static void* Event_Listener_Table[2] = { nullptr, (void*)Event_Processor };
 
-					Add_Listener_Type(537586416)((void*)540812808, Event_Listener, (char*)"player_death", nullptr);
+					static void* Event_Listener = Event_Listener_Table;
 
-					Add_Listener_Type(537586416)((void*)540812808, Event_Listener, (char*)"bullet_impact", nullptr);
+					Add_Listener_Type(537586416)((void*)540812808, &Event_Listener, (char*)"player_hurt", nullptr);
+
+					Add_Listener_Type(537586416)((void*)540812808, &Event_Listener, (char*)"player_death", nullptr);
+
+					Add_Listener_Type(537586416)((void*)540812808, &Event_Listener, (char*)"bullet_impact", nullptr);
 
 					Original_Write_Events_Caller = Redirection_Manager::Redirect_Function(2, (void*)537582208, (void*)Redirected_Write_Events);
 

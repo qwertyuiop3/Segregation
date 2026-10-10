@@ -54,7 +54,7 @@ struct Prediction_Copy_Structure
 	{
 		using Construct_Type = void(*)(void* Prediction_Copy, __int32 Type, void* Destination, __int8 Destination_Packed, void* Source, __int8 Source_Packed, __int8 Count_Errors, void* Unknown_Parameter_1, void* Unknown_Parameter_2, __int8 Report_Errors, void* Handler);
 
-		Construct_Type((unsigned __int64)Client_Module + 1607216)(this, 2, Destination, 0, Source, 1, 1, nullptr, nullptr, 1, Handler);
+		Construct_Type((unsigned __int64)Client_Module + 1603360)(this, 2, Destination, 0, Source, 1, 1, nullptr, nullptr, 1, Handler);
 	}
 };
 
@@ -107,7 +107,7 @@ void Predicton_Copy_Compare(void* Unknown_Parameter_1, void* Unknown_Parameter_2
 	{
 		static std::unordered_map<void*, __int32> Flat_Offsets;
 
-		Byte_Manager::Copy_Bytes(1, (void*)(*(unsigned __int64*)((unsigned __int64)Client_Module + 6245224) + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int64)Predicton_Copy.Source + Field->Offset[1]));
+		Byte_Manager::Copy_Bytes(1, (void*)(*(unsigned __int64*)((unsigned __int64)Client_Module + 6245272) + Compute_Flat_Offset(&Flat_Offsets[Field], Predicton_Copy.Descriptor, Field, 0)), Field->Bytes, (void*)((unsigned __int64)Predicton_Copy.Source + Field->Offset[1]));
 	}
 }
 
@@ -115,7 +115,7 @@ Redirection_Manager::Manager_Structure Post_Network_Data_Received_Manager;
 
 void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Commands_Acknowledged)
 {
-	void* Local_Player = *(void**)((unsigned __int64)Client_Module + 6245224);
+	void* Local_Player = *(void**)((unsigned __int64)Client_Module + 6245272);
 
 	Commands_Acknowledged = max(0, Commands_Acknowledged);
 
@@ -127,7 +127,7 @@ void Redirected_Post_Network_Data_Received(void* Unknown_Parameter, __int32 Comm
 
 		using Transfer_Data_Type = __int32(*)(Prediction_Copy_Structure* Prediction_Copy, void* Unknown_Parameter, __int32 Entity_Number, Prediction_Descriptor_Structure* Descriptor);
 
-		Transfer_Data_Type((unsigned __int64)Client_Module + 1613920)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int64)Client_Module + 6021096));
+		Transfer_Data_Type((unsigned __int64)Client_Module + 1610064)(&Predicton_Copy, nullptr, -1, (Prediction_Descriptor_Structure*)((unsigned __int64)Client_Module + 6021096));
 	}
 
 	(decltype(&Redirected_Post_Network_Data_Received)(Post_Network_Data_Received_Manager.Caller))(Unknown_Parameter, Commands_Acknowledged);

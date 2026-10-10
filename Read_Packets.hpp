@@ -9,5 +9,5 @@ void Redirected_Read_Packets(__int8 Final)
 		(decltype(&Redirected_Read_Packets)(Read_Packets_Manager.Caller))(Final);
 	}
 
-	Parsed_Packets = __builtin_return_address(0) != (void*)((unsigned __int64)Engine_Module + 1726562);
+	Parsed_Packets = __builtin_return_address(0) != (void*)((unsigned __int64)Engine_Module + 1726738);
 }

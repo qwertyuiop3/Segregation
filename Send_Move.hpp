@@ -4,7 +4,7 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 {
 	(decltype(&Redirected_Send_Move)(Send_Move_Manager.Caller))(Unknown_Parameter);
 
-	if (__builtin_return_address(0) == (void*)((unsigned __int64)Engine_Module + 576459))
+	if (__builtin_return_address(0) == (void*)((unsigned __int64)Engine_Module + 576587))
 	{
 		struct Message_Structure
 		{
@@ -14,7 +14,7 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 			{
 				Byte_Manager::Set_Bytes(1, Message, sizeof(Message), 0);
 
-				*(void**)Message = (void*)((unsigned __int64)Engine_Module + 3549168);
+				*(void**)Message = (void*)((unsigned __int64)Engine_Module + 3553280);
 
 				*(void**)((unsigned __int64)Message + 88) = Data;
 
@@ -30,7 +30,7 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 
 		Message.Construct(Data, sizeof(Data));
 
-		__int32 Choked_Commands = *(__int32*)((unsigned __int64)Engine_Module + 5497992);
+		__int32 Choked_Commands = *(__int32*)((unsigned __int64)Engine_Module + 5502088);
 
 		__int32 Commands_Queue = min(Choked_Commands + 1, 15);
 
@@ -44,7 +44,7 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 
 		__int32 From_Command_Number = -1;
 
-		__int32 Next_Command_Number = *(__int32*)((unsigned __int64)Engine_Module + 5497988) + Choked_Commands + 2;
+		__int32 Next_Command_Number = *(__int32*)((unsigned __int64)Engine_Module + 5502084) + Choked_Commands + 2;
 
 		__int32 To_Command_Number = Next_Command_Number - Commands_Queue - Backup_Commands;
 
@@ -52,7 +52,7 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 		{
 			using Write_Command_Type = __int8(*)(void* Client, void* Data, __int32 From, __int32 To, void* Unknown_Parameter);
 
-			Write_Command_Type((unsigned __int64)Client_Module + 883920)(*(void**)((unsigned __int64)Engine_Module + 5380264), (void*)((unsigned __int64)&Message + 88), From_Command_Number, To_Command_Number, nullptr);
+			Write_Command_Type((unsigned __int64)Client_Module + 883440)(*(void**)((unsigned __int64)Engine_Module + 5384360), (void*)((unsigned __int64)&Message + 88), From_Command_Number, To_Command_Number, nullptr);
 
 			From_Command_Number = To_Command_Number;
 
@@ -64,7 +64,7 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 			}
 		}
 
-		void* Network_Channel = *(void**)((unsigned __int64)Engine_Module + 5462064);
+		void* Network_Channel = *(void**)((unsigned __int64)Engine_Module + 5466160);
 
 		*(__int32*)((unsigned __int64)Network_Channel + 12) += Extra_Commands_Queue;
 
@@ -72,6 +72,6 @@ void Redirected_Send_Move(void* Unknown_Parameter)
 
 		using Send_Message_Type = void(*)(void* Network_Channel, void* Message, void* Unknown_Parameter_1, void* Unknown_Parameter_2);
 
-		Send_Message_Type((unsigned __int64)Engine_Module + 1909952)(Network_Channel, &Message, nullptr, nullptr);
+		Send_Message_Type((unsigned __int64)Engine_Module + 1910128)(Network_Channel, &Message, nullptr, nullptr);
 	}
 }

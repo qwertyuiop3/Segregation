@@ -6,7 +6,7 @@ Redirection_Manager::Manager_Structure Update_Animation_Manager;
 
 void Redirected_Update_Animation(void* Player)
 {
-	if (Player == *(void**)((unsigned __int64)Client_Module + 6245224))
+	if (Player == *(void**)((unsigned __int64)Client_Module + 6245272))
 	{
 		Byte_Manager::Copy_Bytes(1, (void*)((unsigned __int64)Player + 6824), sizeof(Update_Animation_Angles), Update_Animation_Angles);
 	}

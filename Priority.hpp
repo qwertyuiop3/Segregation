@@ -42,7 +42,7 @@ void Get_Priorities()
 
 		char Name[132];
 
-		Get_Name_Type((unsigned __int64)Engine_Module + 459536)((void*)((unsigned __int64)Engine_Module + 4588960), Player_Number, Name);
+		Get_Name_Type((unsigned __int64)Engine_Module + 459664)((void*)((unsigned __int64)Engine_Module + 4593056), Player_Number, Name);
 
 		if (Name[0] != 0)
 		{

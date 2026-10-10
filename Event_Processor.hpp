@@ -2,13 +2,13 @@ float Shot_Time;
 
 void Event_Processor(void* Unknown_Parameter, void* Event)
 {
-	void* Local_Player = *(void**)((unsigned __int64)Client_Module + 6245224);
+	void* Local_Player = *(void**)((unsigned __int64)Client_Module + 6245272);
 
 	if (Local_Player != nullptr)
 	{
 		using Get_Name_Type = char*(*)(void* Event);
 
-		char* Name = Get_Name_Type((unsigned __int64)Engine_Module + 1652960)(Event);
+		char* Name = Get_Name_Type((unsigned __int64)Engine_Module + 1653120)(Event);
 
 		using Identifier_To_Number_Type = __int32(*)(void* Engine, __int32 Identifier);
 
@@ -18,9 +18,9 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 
 		if (Name[0] == 'p')
 		{
-			__int32 Victim_Number = Identifier_To_Number_Type((unsigned __int64)Engine_Module + 459392)((void*)((unsigned __int64)Engine_Module + 4588960), Get_Integer_Type((unsigned __int64)Engine_Module + 1652944)(Event, (char*)"userid", nullptr));
+			__int32 Victim_Number = Identifier_To_Number_Type((unsigned __int64)Engine_Module + 459520)((void*)((unsigned __int64)Engine_Module + 4593056), Get_Integer_Type((unsigned __int64)Engine_Module + 1653104)(Event, (char*)"userid", nullptr));
 
-			__int32 Inflictor_Number = Identifier_To_Number_Type((unsigned __int64)Engine_Module + 459392)((void*)((unsigned __int64)Engine_Module + 4588960), Get_Integer_Type((unsigned __int64)Engine_Module + 1652944)(Event, (char*)"attacker", nullptr));
+			__int32 Inflictor_Number = Identifier_To_Number_Type((unsigned __int64)Engine_Module + 459520)((void*)((unsigned __int64)Engine_Module + 4593056), Get_Integer_Type((unsigned __int64)Engine_Module + 1653104)(Event, (char*)"attacker", nullptr));
 
 			if (Victim_Number != Inflictor_Number)
 			{
@@ -54,7 +54,7 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 								{
 									if (Interface_Aim_Intersection.Integer == 0)
 									{
-										Revert = Get_Integer_Type((unsigned __int64)Engine_Module + 1652944)(Event, (char*)"hitgroup", nullptr);
+										Revert = Get_Integer_Type((unsigned __int64)Engine_Module + 1653104)(Event, (char*)"hitgroup", nullptr);
 									}
 
 									if (Revert == 1)
@@ -80,7 +80,7 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 									{
 										if (Interface_Aim_Intersection.Integer == 0)
 										{
-											Revert = Get_Integer_Type((unsigned __int64)Engine_Module + 1652944)(Event, (char*)"headshot", nullptr);
+											Revert = Get_Integer_Type((unsigned __int64)Engine_Module + 1653104)(Event, (char*)"headshot", nullptr);
 										}
 
 										if (Revert == 1)
@@ -112,7 +112,7 @@ void Event_Processor(void* Unknown_Parameter, void* Event)
 		}
 		else
 		{
-			Shot_Time *= Identifier_To_Number_Type((unsigned __int64)Engine_Module + 459392)((void*)((unsigned __int64)Engine_Module + 4588960), Get_Integer_Type((unsigned __int64)Engine_Module + 1652944)(Event, (char*)"userid", nullptr)) != Local_Number;
+			Shot_Time *= Identifier_To_Number_Type((unsigned __int64)Engine_Module + 459520)((void*)((unsigned __int64)Engine_Module + 4593056), Get_Integer_Type((unsigned __int64)Engine_Module + 1653104)(Event, (char*)"userid", nullptr)) != Local_Number;
 		}
 	}
 }

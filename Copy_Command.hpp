@@ -27,7 +27,7 @@ Redirection_Manager::Manager_Structure Copy_Command_Manager;
 
 void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Stack)
 {
-	void* Local_Player = *(void**)((unsigned __int64)Client_Module + 6245224);
+	void* Local_Player = *(void**)((unsigned __int64)Client_Module + 6245272);
 
 	if (*(__int8*)((unsigned __int64)Local_Player + 207) == 0)
 	{
@@ -37,7 +37,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 		{
 			using Angle_Vectors_Type = void(*)(float* Angles, float* Forward, float* Right, float* Up);
 
-			Angle_Vectors_Type((unsigned __int64)Client_Module + 2812512)(Angles, Forward, Right, Up);
+			Angle_Vectors_Type((unsigned __int64)Client_Module + 2808880)(Angles, Forward, Right, Up);
 		};
 
 		__int32 Jump_State = (Command->Buttons & 2) + Move_Type;
@@ -109,7 +109,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 		{
 			using Vector_Normalize_Type = float(*)(float* Vector);
 
-			return Vector_Normalize_Type((unsigned __int64)Client_Module + 2810192)(Vector);
+			return Vector_Normalize_Type((unsigned __int64)Client_Module + 2806560)(Vector);
 		};
 
 		auto Get_Ladder_Move = [&](float* Move, float* Forward, float Forward_Move, float* Right, float Side_Move) -> void
@@ -251,9 +251,9 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Correct_Movement();
 
-		void* Previous_Audio_Device = *(void**)((unsigned __int64)Engine_Module + 5141912);
+		void* Previous_Audio_Device = *(void**)((unsigned __int64)Engine_Module + 5146008);
 
-		*(void**)((unsigned __int64)Engine_Module + 5141912) = nullptr;
+		*(void**)((unsigned __int64)Engine_Module + 5146008) = nullptr;
 
 		float Local_Previous_Origin[2];
 
@@ -267,13 +267,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 			using Set_Host_Type = void(*)(void* Move_Helper, void* Player);
 
-			Set_Host_Type((unsigned __int64)Client_Module + 1439184)((void*)((unsigned __int64)Client_Module + 5984240), Local_Player);
+			Set_Host_Type((unsigned __int64)Client_Module + 1435344)((void*)((unsigned __int64)Client_Module + 5984240), Local_Player);
 
 			using Run_Command_Type = void(*)(void* Prediction, void* Player, Command_Structure* Command, void* Move_Helper);
 
-			Run_Command_Type((unsigned __int64)Client_Module + 1602624)((void*)((unsigned __int64)Client_Module + 6889744), Local_Player, Command, (void*)((unsigned __int64)Client_Module + 5984240));
+			Run_Command_Type((unsigned __int64)Client_Module + 1598768)((void*)((unsigned __int64)Client_Module + 6888432), Local_Player, Command, (void*)((unsigned __int64)Client_Module + 5984240));
 
-			Set_Host_Type((unsigned __int64)Client_Module + 1439184)((void*)((unsigned __int64)Client_Module + 5984240), nullptr);
+			Set_Host_Type((unsigned __int64)Client_Module + 1435344)((void*)((unsigned __int64)Client_Module + 5984240), nullptr);
 		};
 
 		if (Jump_State * (Interface_Duck_Advantage.Floating_Point != 0.f) == 4)
@@ -288,7 +288,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 				using Run_Prediction_Type = void(*)();
 
-				Run_Prediction_Type((unsigned __int64)Engine_Module + 599696)();
+				Run_Prediction_Type((unsigned __int64)Engine_Module + 599824)();
 
 				return Speed;
 			};
@@ -313,11 +313,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		Predict(0);
 
-		*(void**)((unsigned __int64)Engine_Module + 5141912) = Previous_Audio_Device;
+		*(void**)((unsigned __int64)Engine_Module + 5146008) = Previous_Audio_Device;
 
 		static __int8 Send_Packet;
 
-		__int32 Choked_Commands = *(__int32*)((unsigned __int64)Engine_Module + 5497992);
+		__int32 Choked_Commands = *(__int32*)((unsigned __int64)Engine_Module + 5502088);
 
 		__int8 Predicted_Send_Packet = 0;
 
@@ -397,13 +397,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 		using Get_Latency_Type = float(*)(void* Network_Channel, __int32 Type);
 
-		void* Network_Channel = *(void**)((unsigned __int64)Engine_Module + 5462064);
+		void* Network_Channel = *(void**)((unsigned __int64)Engine_Module + 5466160);
 
-		float Latency = Get_Latency_Type((unsigned __int64)Engine_Module + 1895920)(Network_Channel, 0);
+		float Latency = Get_Latency_Type((unsigned __int64)Engine_Module + 1896096)(Network_Channel, 0);
 
 		using Get_Interpolation_Time_Type = float(*)();
 
-		float Interpolation_Time = Get_Interpolation_Time_Type((unsigned __int64)Engine_Module + 666592)();
+		float Interpolation_Time = Get_Interpolation_Time_Type((unsigned __int64)Engine_Module + 666720)();
 
 		float Corrected_Latency = std::clamp(Latency + Interpolation_Time, 0.f, 1.f);
 
@@ -432,7 +432,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 			if (Player_Data->Priority != -1)
 			{
-				void* Entity = *(void**)((unsigned __int64)Client_Module + 6592712 + ((Entity_Number - 8193) << 5));
+				void* Entity = *(void**)((unsigned __int64)Client_Module + 6592760 + ((Entity_Number - 8193) << 5));
 
 				if (Entity != nullptr)
 				{
@@ -516,7 +516,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 								{
 									using Get_Weapon_Type = void*(*)(void* Entity);
 
-									void* Weapon = Get_Weapon_Type((unsigned __int64)Client_Module + 305296)(Local_Player);
+									void* Weapon = Get_Weapon_Type((unsigned __int64)Client_Module + 304704)(Local_Player);
 
 									if (Weapon != nullptr)
 									{
@@ -532,11 +532,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 													float Eye_Position[3];
 
-													Get_Eye_Position_Type((unsigned __int64)Client_Module + 327360)(Local_Player, Eye_Position);
+													Get_Eye_Position_Type((unsigned __int64)Client_Module + 326768)(Local_Player, Eye_Position);
 
 													using Get_Weapon_Data_Type = void*(*)(void* Weapon);
 
-													float Weapon_Range = *(float*)((unsigned __int64)Get_Weapon_Data_Type((unsigned __int64)Client_Module + 317184)(Weapon) + 2236);
+													float Weapon_Range = *(float*)((unsigned __int64)Get_Weapon_Data_Type((unsigned __int64)Client_Module + 316592)(Weapon) + 2236);
 
 													Recent_Player_Data_Number = 0;
 
@@ -554,7 +554,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																float Bones[128][3][4];
 
-																if (Setup_Bones_Type((unsigned __int64)Client_Module + 504992)((void*)((unsigned __int64)Target->Self + 8), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Time) == 1)
+																if (Setup_Bones_Type((unsigned __int64)Client_Module + 504400)((void*)((unsigned __int64)Target->Self + 8), Bones, sizeof(Bones) / sizeof(Bones[0]), 524032, Global_Variables->Time) == 1)
 																{
 																	auto Perform_Trace = [&](float* Direction) -> __int8
 																	{
@@ -624,11 +624,11 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																		Ray.Initialize(Eye_Position, End);
 
-																		Filter_Structure Filter = { (void*)((unsigned __int64)Client_Module + 4589368), Local_Player };
+																		Filter_Structure Filter = { (void*)((unsigned __int64)Client_Module + 4587416), Local_Player };
 
 																		Trace_Structure Trace;
 
-																		Perform_Trace_Type((unsigned __int64)Engine_Module + 1632208)((void*)((unsigned __int64)Engine_Module + 4691696), &Ray, 1174421515, &Filter, &Trace);
+																		Perform_Trace_Type((unsigned __int64)Engine_Module + 1632368)((void*)((unsigned __int64)Engine_Module + 4691696), &Ray, 1174421515, &Filter, &Trace);
 
 																		using Clip_Trace_Type = void(*)(float* Start, float* End, __int32 Mask, Filter_Structure* Filter, Trace_Structure* Trace);
 
@@ -638,7 +638,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																		End[2] += Direction[2] * 40.f;
 
-																		Clip_Trace_Type((unsigned __int64)Client_Module + 1756976)(Eye_Position, End, 1174421515, &Filter, &Trace);
+																		Clip_Trace_Type((unsigned __int64)Client_Module + 1753200)(Eye_Position, End, 1174421515, &Filter, &Trace);
 
 																		if (Trace.Entity == Target->Self)
 																		{
@@ -655,7 +655,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 																	using Get_Studio_Header_Type = void*(*)(void* Entity);
 
-																	void* Studio_Header = *(void**)Get_Studio_Header_Type((unsigned __int64)Client_Module + 479648)(Target->Self);
+																	void* Studio_Header = *(void**)Get_Studio_Header_Type((unsigned __int64)Client_Module + 479056)(Target->Self);
 
 																	void* Hitbox_Set = (void*)((unsigned __int64)Studio_Header + *(__int32*)((unsigned __int64)Studio_Header + 176));
 
@@ -783,7 +783,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 														static void* Standard_Library_Module = GetModuleHandleW(L"vstdlib.dll");
 
-														Random_Seed_Type((unsigned __int64)Standard_Library_Module + 64640)((Command->Random_Seed & 255) + 1);
+														Random_Seed_Type((unsigned __int64)Standard_Library_Module + 64848)((Command->Random_Seed & 255) + 1);
 
 														using Random_Type = float(*)(float Minimum, float Maximum);
 
@@ -797,13 +797,13 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 
 														float Random[4] =
 														{
-															Random_Type((unsigned __int64)Standard_Library_Module + 64512)(0.f, 6.283185f),
+															Random_Type((unsigned __int64)Standard_Library_Module + 64720)(0.f, 6.283185f),
 
-															Random_Type((unsigned __int64)Standard_Library_Module + 64512)(0.f, (*Get_Inaccuracy_Type(*(unsigned __int64*)Weapon + 3056))(Weapon)),
+															Random_Type((unsigned __int64)Standard_Library_Module + 64720)(0.f, (*Get_Inaccuracy_Type(*(unsigned __int64*)Weapon + 3056))(Weapon)),
 
-															Random_Type((unsigned __int64)Standard_Library_Module + 64512)(0.f, 6.283185f),
+															Random_Type((unsigned __int64)Standard_Library_Module + 64720)(0.f, 6.283185f),
 
-															Random_Type((unsigned __int64)Standard_Library_Module + 64512)(0.f, (*Get_Spread_Type(*(unsigned __int64*)Weapon + 3064))(Weapon))
+															Random_Type((unsigned __int64)Standard_Library_Module + 64720)(0.f, (*Get_Spread_Type(*(unsigned __int64*)Weapon + 3064))(Weapon))
 														};
 
 														float Spread[3] =
@@ -918,7 +918,7 @@ void Copy_Command(void* Unknown_Parameter, Command_Structure* Command, void* Sta
 		{
 			__int32 Sequence_Number = *(__int32*)((unsigned __int64)Network_Channel + 12) = Redirected_Send_Datagram(Network_Channel, nullptr);
 
-			Sequences[Sequence_Number % 90] = *(__int32*)((unsigned __int64)Engine_Module + 5497988);
+			Sequences[Sequence_Number % 90] = *(__int32*)((unsigned __int64)Engine_Module + 5502084);
 		}
 		else
 		{

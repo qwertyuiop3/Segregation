@@ -2,7 +2,7 @@ Redirection_Manager::Manager_Structure Compute_Torso_Rotation_Manager;
 
 void Redirected_Compute_Torso_Rotation(void* Animation_State)
 {
-	if (__builtin_return_address(0) == (void*)((unsigned __int64)Client_Module + 299907))
+	if (__builtin_return_address(0) == (void*)((unsigned __int64)Client_Module + 299315))
 	{
 		(decltype(&Redirected_Compute_Torso_Rotation)(Compute_Torso_Rotation_Manager.Caller))(Animation_State);
 	}
@@ -11,9 +11,9 @@ void Redirected_Compute_Torso_Rotation(void* Animation_State)
 	{
 		void* Entity = *(void**)((unsigned __int64)Animation_State + 32);
 
-		if (Entity != *(void**)((unsigned __int64)Client_Module + 6245224))
+		if (Entity != *(void**)((unsigned __int64)Client_Module + 6245272))
 		{
-			if (*(void**)Entity == (void*)((unsigned __int64)Client_Module + 4657304))
+			if (*(void**)Entity == (void*)((unsigned __int64)Client_Module + 4655512))
 			{
 				Player_Data_Structure* Player_Data = &Players_Data[*(__int32*)((unsigned __int64)Entity + 136)];
 
@@ -23,11 +23,11 @@ void Redirected_Compute_Torso_Rotation(void* Animation_State)
 
 					using Get_Studio_Header_Type = void*(*)(void* Entity);
 
-					void* Studio_Header = Get_Studio_Header_Type((unsigned __int64)Client_Module + 479648)(Entity);
+					void* Studio_Header = Get_Studio_Header_Type((unsigned __int64)Client_Module + 479056)(Entity);
 
 					if (*(float*)((unsigned __int64)Animation_State + 44) == -179.91206f)
 					{
-						Set_Pose_Parameter_Type((unsigned __int64)Client_Module + 504592)(Entity, Studio_Header, 1, Player_Data->Switch_X == 0 ? 90.f : -90.f);
+						Set_Pose_Parameter_Type((unsigned __int64)Client_Module + 504000)(Entity, Studio_Header, 1, Player_Data->Switch_X == 0 ? 90.f : -90.f);
 					}
 
 					if (Player_Data->Memory_Tolerance == 0)
@@ -39,7 +39,7 @@ void Redirected_Compute_Torso_Rotation(void* Animation_State)
 						*(float*)((unsigned __int64)Animation_State + 80) = *(float*)((unsigned __int64)Animation_State + 40) - Player_Data->Memorized_Y;
 					}
 
-					Set_Pose_Parameter_Type((unsigned __int64)Client_Module + 504592)(Entity, Studio_Header, 2, __builtin_remainderf(*(float*)((unsigned __int64)Animation_State + 40) - *(float*)((unsigned __int64)Animation_State + 80), 360.f));
+					Set_Pose_Parameter_Type((unsigned __int64)Client_Module + 504000)(Entity, Studio_Header, 2, __builtin_remainderf(*(float*)((unsigned __int64)Animation_State + 40) - *(float*)((unsigned __int64)Animation_State + 80), 360.f));
 				}
 			}
 		}

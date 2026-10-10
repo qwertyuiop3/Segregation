@@ -2,7 +2,7 @@ Redirection_Manager::Manager_Structure Draw_Crosshair_Manager;
 
 void Redirected_Draw_Crosshair()
 {
-	*(__int32*)((unsigned __int64)Client_Module + 6758152) = 0;
+	*(__int32*)((unsigned __int64)Client_Module + 6756840) = 0;
 
 	static float Rotation_Angle;
 
@@ -10,7 +10,7 @@ void Redirected_Draw_Crosshair()
 	{
 		using Set_Color_Type = void(**)(void* Surface, unsigned __int8 Red, unsigned __int8 Green, unsigned __int8 Blue, unsigned __int8 Alpha);
 
-		void* Surface = *(void**)((unsigned __int64)Client_Module + 7146864);
+		void* Surface = *(void**)((unsigned __int64)Client_Module + 7145552);
 
 		(*Set_Color_Type(*(unsigned __int64*)Surface + 88))(Surface, 0, 0, 0, 255);
 
@@ -95,7 +95,7 @@ void Redirected_Draw_Crosshair()
 
 	__int32 Screen_Height;
 
-	Get_Screen_Size_Type((unsigned __int64)Client_Module + 1780880)(&Screen_Width, &Screen_Height);
+	Get_Screen_Size_Type((unsigned __int64)Client_Module + 1777104)(&Screen_Width, &Screen_Height);
 
 	Screen_Width /= 2;
 

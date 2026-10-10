@@ -77,13 +77,13 @@ void Implement_Extended_Interface()
 		{
 			using Create_Command_Type = void(*)(Interface_Structure* Interface, char* Name, void* Handler, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Unknown_Parameter_3);
 
-			Create_Command_Type((unsigned __int64)Client_Module + 3117008)(Interface, Name, Handler, nullptr, nullptr, nullptr);
+			Create_Command_Type((unsigned __int64)Client_Module + 3113392)(Interface, Name, Handler, nullptr, nullptr, nullptr);
 		}
 		else
 		{
 			using Create_Variable_Type = void(*)(Interface_Structure* Interface, char* Name, char* Value, void* Unknown_Parameter_1, void* Unknown_Parameter_2, void* Handler);
 
-			Create_Variable_Type((unsigned __int64)Engine_Module + 2637600)(Interface, Name, Value, nullptr, nullptr, Handler);
+			Create_Variable_Type((unsigned __int64)Engine_Module + 2637824)(Interface, Name, Value, nullptr, nullptr, Handler);
 		}
 
 		wprintf(L"[ + ] %hs -> %p\n", Name, Interface);

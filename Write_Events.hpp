@@ -4,7 +4,7 @@ Redirection_Manager::Manager_Structure Write_Events_Manager;
 
 void Redirected_Write_Events(void* Unknown_Parameter_1, void* Unknown_Parameter_2)
 {
-	if (*(__int32*)((unsigned __int64)Engine_Module + 5462364) != 6)
+	if (*(__int32*)((unsigned __int64)Engine_Module + 5466460) != 6)
 	{
 		Byte_Manager::Set_Bytes(1, Players_Data, sizeof(Players_Data), 0);
 

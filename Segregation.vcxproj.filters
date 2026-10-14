@@ -55,6 +55,9 @@
     <ClInclude Include="Compute_Torso_Rotation.hpp">
       <Filter>Header++</Filter>
     </ClInclude>
+	<ClInclude Include="Compute_Move_Rotation.hpp">
+      <Filter>Header++</Filter>
+    </ClInclude>
     <ClInclude Include="Shutdown.hpp">
       <Filter>Header++</Filter>
     </ClInclude>

@@ -26,6 +26,8 @@
 
 #include "Compute_Torso_Rotation.hpp"
 
+#include "Compute_Move_Rotation.hpp"
+
 #include "Setup_Move.hpp"
 
 #include "Fall_Damage.hpp"
@@ -192,6 +194,8 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 					Byte_Manager::Set_Bytes(0, (void*)604287917, 2, 144);
 
 					Original_Compute_Torso_Rotation_Caller = Redirection_Manager::Redirect_Function(1, (void*)604022496, (void*)Redirected_Compute_Torso_Rotation);
+
+					Original_Compute_Move_Rotation_Caller = Redirection_Manager::Redirect_Function(0, (void*)604029584, (void*)Redirected_Compute_Move_Rotation);
 
 					unsigned __int8 Maintain_Sequence_Transitions_Bytes[3] = { 194, 24 };
 

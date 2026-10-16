@@ -137,13 +137,9 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int64)Engine_Module + 591860), 1, 235);
 
-					void* Event_Listener = (void*)__builtin_malloc(sizeof(void*));
+					static void* Event_Listener_Table[2] = { nullptr, (void*)Event_Processor };
 
-					void* Event_Listener_Table = __builtin_malloc(sizeof(void*) * 2);
-
-					*(void**)((unsigned __int64)Event_Listener_Table + 8) = (void*)Event_Processor;
-
-					*(void**)Event_Listener = Event_Listener_Table;
+					static void* Event_Listener = Event_Listener_Table;
 
 					using Add_Listener_Type = __int8(*)(void* Event_Manager, void* Listener, char* Event, void* Unknown_Parameter);
 

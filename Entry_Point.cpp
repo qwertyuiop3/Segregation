@@ -137,21 +137,17 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, (void*)((unsigned __int64)Engine_Module + 591860), 1, 235);
 
-					void* Event_Listener = (void*)__builtin_malloc(sizeof(void*));
-
-					void* Event_Listener_Table = __builtin_malloc(sizeof(void*) * 2);
-
-					*(void**)((unsigned __int64)Event_Listener_Table + 8) = (void*)Event_Processor;
-
-					*(void**)Event_Listener = Event_Listener_Table;
-
 					using Add_Listener_Type = __int8(*)(void* Event_Manager, void* Listener, char* Event, void* Unknown_Parameter);
 
-					Add_Listener_Type((unsigned __int64)Engine_Module + 1649952)((void*)((unsigned __int64)Engine_Module + 4696128), Event_Listener, (char*)"player_hurt", nullptr);
+					static void* Event_Listener_Table[2] = { nullptr, (void*)Event_Processor };
 
-					Add_Listener_Type((unsigned __int64)Engine_Module + 1649952)((void*)((unsigned __int64)Engine_Module + 4696128), Event_Listener, (char*)"player_death", nullptr);
+					static void* Event_Listener = Event_Listener_Table;
 
-					Add_Listener_Type((unsigned __int64)Engine_Module + 1649952)((void*)((unsigned __int64)Engine_Module + 4696128), Event_Listener, (char*)"bullet_impact", nullptr);
+					Add_Listener_Type((unsigned __int64)Engine_Module + 1649952)((void*)((unsigned __int64)Engine_Module + 4696128), &Event_Listener, (char*)"player_hurt", nullptr);
+
+					Add_Listener_Type((unsigned __int64)Engine_Module + 1649952)((void*)((unsigned __int64)Engine_Module + 4696128), &Event_Listener, (char*)"player_death", nullptr);
+
+					Add_Listener_Type((unsigned __int64)Engine_Module + 1649952)((void*)((unsigned __int64)Engine_Module + 4696128), &Event_Listener, (char*)"bullet_impact", nullptr);
 
 					Write_Events_Manager.Redirect_Function(3, (void*)((unsigned __int64)Engine_Module + 1659280), (void*)Redirected_Write_Events);
 

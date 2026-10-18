@@ -147,19 +147,19 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Byte_Manager::Set_Bytes(0, Byte_Manager::Find_Bytes(508445, (unsigned __int8*)Engine_Module, 15315303757620206820ull), 1, 235);
 
-					static void* Event_Listener_Table[2] = { nullptr, (void*)Event_Processor };
-
-					static void* Event_Listener = Event_Listener_Table;
-
 					using Add_Listener_Type = __int8(*)(void* Event_Manager, void* Listener, char* Event, void* Unknown_Parameter);
 
 					void* Add_Listener = Byte_Manager::Find_Bytes(253935, (unsigned __int8*)Engine_Module, 8835901034313384778);
 
 					void* Event_Manager = Byte_Manager::Solve_Relative(Byte_Manager::Find_Bytes(31623, (unsigned __int8*)Engine_Module, 11190410533011393613ull), 3);
 
-					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, Event_Listener, (char*)"player_hurt", nullptr);
+					static void* Event_Listener_Table[2] = { nullptr, (void*)Event_Processor };
 
-					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, Event_Listener, (char*)"entity_killed", nullptr);
+					static void* Event_Listener = Event_Listener_Table;
+
+					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, &Event_Listener, (char*)"player_hurt", nullptr);
+
+					Add_Listener_Type((unsigned __int64)Add_Listener)(Event_Manager, &Event_Listener, (char*)"entity_killed", nullptr);
 
 					void* Set_Simulation_Time_Reference = (void*)((unsigned __int64)Byte_Manager::Solve_Relative((void*)((unsigned __int64)Byte_Manager::Find_Bytes(2168606945952456417, (unsigned __int8*)Client_Module, 16499196670633112084ull) - 7), 3) + 48);
 

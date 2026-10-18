@@ -14,7 +14,7 @@ void Save_Player_Data(void* Data, void* Player, std::vector<Player_Data_Structur
 
 	Modifications_Data.insert(Modifications_Data.end(), Modifications, &Modifications[*(__int16*)((unsigned __int64)Modification_Table + 38) + 1]);
 
-	Byte_Manager::Copy_Bytes(1, Animations_Data, sizeof(Player_Data_Structure::Animations_Data), *(void**)((unsigned __int64)Player + 13768));
+	Byte_Manager::Copy_Bytes(1, Animations_Data, sizeof(Player_Data_Structure::Animations_Data), *(void**)((unsigned __int64)Player + 13776));
 }
 
 void Redirected_Update_Animation(void* Player)

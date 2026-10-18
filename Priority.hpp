@@ -35,7 +35,7 @@ struct Player_Data_Structure
 
 	__int8 Teleported;
 
-	__int8 Data[14784];
+	__int8 Data[14792];
 
 	struct Modification_Structure
 	{

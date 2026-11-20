@@ -215,7 +215,7 @@ __int32 __stdcall DllMain(HMODULE This_Module, unsigned __int32 Call_Reason, voi
 
 					Send_Move_Manager.Redirect_Function(2, Byte_Manager::Find_Bytes(3599, (unsigned __int8*)Engine_Module, 14280183856799702616ull), (void*)Redirected_Send_Move);
 
-					Send_Datagram_Manager.Redirect_Function(3, Byte_Manager::Find_Bytes(1723518316740607, (unsigned __int8*)Engine_Module, 12226165932995495392ull), (void*)Redirected_Send_Datagram);
+					Send_Datagram_Manager.Redirect_Function(1, Byte_Manager::Find_Bytes(139263, (unsigned __int8*)Engine_Module, 17532321279309914820ull), (void*)Redirected_Send_Datagram);
 
 					Packet_Start_Manager.Redirect_Function(0, Byte_Manager::Find_Bytes(502260163, (unsigned __int8*)Engine_Module, 1280923722067716817), (void*)Redirected_Packet_Start);
 				}
